@@ -6,7 +6,7 @@ interface PageWrapperProps {
 
 function PageWrapper({ children }: PageWrapperProps) {
     return (
-        <div className="flex">
+        <div className="flex flex-col h-screen max-w-4xl mx-auto">
             {children}
         </div>
     )
