@@ -11,6 +11,13 @@ function InputField() {
         setInputValue(e.target.value);
     }
 
+    function handleKeyDown(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            console.log(inputValue);
+        }
+    }
+
     function handleClick() {
         console.log(inputValue)
     }
@@ -28,6 +35,7 @@ function InputField() {
                         maxRows={10}
                         value={inputValue}
                         onChange={handleInputValue}
+                        onKeyDown={handleKeyDown}
                     />
                     <Button
                         icon={<PaperplaneIcon
