@@ -1,11 +1,18 @@
+import { useState } from "react";
 import { HStack, Button, Textarea, BodyShort, VStack, Link } from "@navikt/ds-react";
 import { PaperplaneIcon } from '@navikt/aksel-icons';
 
 import './InputField.css';
 
 function InputField() {
+    const [inputValue, setInputValue] = useState('Spør Bob om noe...');
+
+    function handleInputValue(e) {
+        setInputValue(e.target.value);
+    }
+
     function handleClick() {
-        console.log("Du har klikket på knappen!")
+        console.log(inputValue)
     }
 
     return (
@@ -19,6 +26,8 @@ function InputField() {
                         className="flex-grow"
                         minRows={1}
                         maxRows={10}
+                        value={inputValue}
+                        onChange={handleInputValue}
                     />
                     <Button
                         icon={<PaperplaneIcon
