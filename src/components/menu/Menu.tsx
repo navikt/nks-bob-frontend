@@ -1,19 +1,13 @@
-import { Button } from '@navikt/ds-react';
-import { PencilIcon } from "@navikt/aksel-icons";
+import { HistorikkButton, NewButton } from "./Buttons.tsx";
+import './Menu.css';
 
 function Menu() {
     return (
-        <div className="
-        fixed
-        content-center
-        top-16
-        bg-bg-default
-        w-full
-        min-h-16
-        ">
-            <Button variant="tertiary" size="medium" icon={<PencilIcon aria-hidden />}>
-                Ny chat
-            </Button>
+        <div className="fixed-menu">
+            <div className="flex gap-2 justify-end">
+            <HistorikkButton />
+            <NewButton />
+            </div>
         </div>
     )
 }

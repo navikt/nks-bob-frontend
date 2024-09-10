@@ -10,7 +10,7 @@ function PageWrapper({ children }: PageWrapperProps) {
         flex
         flex-col
         h-screen
-        max-w-4xl
+        max-w-3xl
         mx-auto
         px-4
         ">

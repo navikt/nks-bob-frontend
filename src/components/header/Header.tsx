@@ -6,7 +6,7 @@ import {
 
 function Header() {
     return (
-        <InternalHeader className="flex min-h-16 fixed top-0 left-0 right-0 z-3">
+        <InternalHeader className="flex min-h-16 fixed top-0 left-0 right-0 z-10">
             <InternalHeader.Title as="h1">NKS-Bob</InternalHeader.Title>
             <Spacer />
             <InternalHeader.User name={mockUser.username} description={mockUser.aadUsername} />

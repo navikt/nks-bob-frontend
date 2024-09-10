@@ -1,3 +1,43 @@
+NKS-Bob
+================
+
+Dette er en frontend-applikasjon vi kaller for NKS-Bob, som bruker React og Typescript.
+
+NKS-Bob er en "språkgenereringsmodell", eller "språkbehandlingsassistent" som skal hjelpe veilederne i NKS med å besvare spørsmål fra brukere som ringer inn.
+
+# Komme i gang
+
+For å kjøre applikasjonen lokalt, kan du først installere dependencies:
+
+# Komme i gang
+
+For å kjøre applikasjonen lokalt, kan du først installere dependencies:
+
+- npm install
+
+Deretter starte development server:
+
+- npm start
+
+Dette vil starte en lokal utviklingsserver som du får tilgang til via nettleser på http://localhost:3000.
+
+---
+
+# Henvendelser
+
+Spørsmål knyttet til koden eller prosjektet kan stilles som issues her på GitHub.
+
+
+## For NAV-ansatte
+
+Interne henvendelser kan sendes via Slack i kanalen #team-nks-ai-og-automatisering.
+
+Mer om teamet finner du her:
+https://teamkatalog.nav.no/team/415e12bc-61fb-4579-840a-c9307765f2fc
+
+
+---
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
