@@ -4,6 +4,9 @@ import { PaperplaneIcon } from '@navikt/aksel-icons';
 import './InputField.css';
 
 function InputField() {
+    function handleClick() {
+        console.log("Du har klikket på knappen!")
+    }
 
     return (
         <div className="fixed-input">
@@ -11,7 +14,7 @@ function InputField() {
                 <HStack gap="2">
                     <Textarea
                         size="small"
-                        label="Skriv inn spørsmål"
+                        label=""
                         hideLabel
                         className="flex-grow"
                         minRows={1}
@@ -23,6 +26,7 @@ function InputField() {
                         variant="primary"
                         size="small"
                         className="max-h-8"
+                        onClick={handleClick}
                     />
                 </HStack>
                 <BodyShort size="small" align="center">
