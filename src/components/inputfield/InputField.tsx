@@ -1,40 +1,45 @@
-import { useState } from "react";
-import { HStack, Button, Textarea, BodyShort, VStack, Link } from "@navikt/ds-react";
-import { PaperplaneIcon } from '@navikt/aksel-icons';
+import {useState} from "react";
+import {BodyShort, Button, HStack, Link, Textarea, VStack} from "@navikt/ds-react";
+import {PaperplaneIcon} from '@navikt/aksel-icons';
 
 import './InputField.css';
+import {Message, UserType} from "../../types/Message.ts";
 
+interface InputFieldProps {
+    onSend: (message: Message) => void
+}
 
-function InputField() {
+function InputField( { onSend }: InputFieldProps ) {
     const placeholderText = 'Spør Bob om noe';
     const [inputValue, setInputValue] = useState<string>('');
 
-    function handleInputValue(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    function sendMessage() {
+        const message: Message = {
+            userType: UserType.Bruker,
+            text: inputValue
+        }
+        onSend(message)
+    }
+
+    function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
         setInputValue(e.target.value);
     }
 
     function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
-        if (e.key === 'Enter') {
-            if (e.shiftKey) {
-                alert('Jeg trykket på shift-knappen')
-            } else {
-                if (inputValue.trim() === '') {
-                    return;
-                }
-                e.preventDefault();
-                console.log(inputValue);
+        if (e.key === 'Enter'){
+            if (!e.shiftKey) {
+                e.preventDefault()
+                sendMessage()
                 setInputValue('');
             }
         }
     }
 
-    function handleClick() {
+    function handleButtonClick() {
         if (inputValue.trim() !== '') {
-            console.log(inputValue)
-            // om tekst: send meldingen
+            sendMessage()
             setInputValue('');
         }
-
     }
 
     return (
@@ -50,7 +55,7 @@ function InputField() {
                         maxRows={10}
                         placeholder={placeholderText}
                         value={inputValue}
-                        onChange={handleInputValue}
+                        onChange={handleInputChange}
                         onKeyDown={handleKeyDown}
                     />
                     <Button
@@ -59,7 +64,7 @@ function InputField() {
                         variant="primary"
                         size="small"
                         className="max-h-8"
-                        onClick={handleClick}
+                        onClick={handleButtonClick}
                     />
                 </HStack>
                 <BodyShort size="small" align="center" className="max-sm:hidden">
