@@ -4,22 +4,37 @@ import { PaperplaneIcon } from '@navikt/aksel-icons';
 
 import './InputField.css';
 
-function InputField() {
-    const [inputValue, setInputValue] = useState('Spør Bob om noe...');
 
-    function handleInputValue(e) {
+function InputField() {
+    const placeholderText = 'Spør Bob om noe';
+    const [inputValue, setInputValue] = useState<string>('');
+
+    function handleInputValue(e: React.ChangeEvent<HTMLTextAreaElement>) {
         setInputValue(e.target.value);
     }
 
-    function handleKeyDown(e) {
+    function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
         if (e.key === 'Enter') {
-            e.preventDefault();
-            console.log(inputValue);
+            if (e.shiftKey) {
+                alert('Jeg trykket på shift-knappen')
+            } else {
+                if (inputValue.trim() === '') {
+                    return;
+                }
+                e.preventDefault();
+                console.log(inputValue);
+                setInputValue('');
+            }
         }
     }
 
     function handleClick() {
-        console.log(inputValue)
+        if (inputValue.trim() !== '') {
+            console.log(inputValue)
+            // om tekst: send meldingen
+            setInputValue('');
+        }
+
     }
 
     return (
@@ -33,6 +48,7 @@ function InputField() {
                         className="flex-grow"
                         minRows={1}
                         maxRows={10}
+                        placeholder={placeholderText}
                         value={inputValue}
                         onChange={handleInputValue}
                         onKeyDown={handleKeyDown}
@@ -46,7 +62,7 @@ function InputField() {
                         onClick={handleClick}
                     />
                 </HStack>
-                <BodyShort size="small" align="center">
+                <BodyShort size="small" align="center" className="max-sm:hidden">
                     Bob baserer svarene på informasjonen fra <Link
                     href="https://data.ansatt.nav.no/quarto/e7b3e02a-0c45-4b5c-92a2-a6d364120dfb/index.html"
                 >
@@ -56,6 +72,6 @@ function InputField() {
             </VStack>
         </div>
     );
-};
+}
 
 export default InputField
