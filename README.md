@@ -1,5 +1,4 @@
-NKS-Bob
-================
+# NKS-Bob
 
 Dette er en frontend-applikasjon vi kaller for NKS-Bob, som bruker React og Typescript.
 
@@ -27,14 +26,12 @@ Dette vil starte en lokal utviklingsserver som du får tilgang til via nettleser
 
 Spørsmål knyttet til koden eller prosjektet kan stilles som issues her på GitHub.
 
-
 ## For NAV-ansatte
 
 Interne henvendelser kan sendes via Slack i kanalen #team-nks-ai-og-automatisering.
 
 Mer om teamet finner du her:
 https://teamkatalog.nav.no/team/415e12bc-61fb-4579-840a-c9307765f2fc
-
 
 ---
 
@@ -58,11 +55,11 @@ export default tseslint.config({
   languageOptions: {
     // other options...
     parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+      project: ["./tsconfig.node.json", "./tsconfig.app.json"],
       tsconfigRootDir: import.meta.dirname,
     },
   },
-})
+});
 ```
 
 - Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
@@ -71,11 +68,11 @@ export default tseslint.config({
 
 ```js
 // eslint.config.js
-import react from 'eslint-plugin-react'
+import react from "eslint-plugin-react";
 
 export default tseslint.config({
   // Set the react version
-  settings: { react: { version: '18.3' } },
+  settings: { react: { version: "18.3" } },
   plugins: {
     // Add the react plugin
     react,
@@ -84,7 +81,7 @@ export default tseslint.config({
     // other rules...
     // Enable its recommended rules
     ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
+    ...react.configs["jsx-runtime"].rules,
   },
-})
+});
 ```

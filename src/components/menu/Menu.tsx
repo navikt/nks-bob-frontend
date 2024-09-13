@@ -1,20 +1,19 @@
 import { HistorikkButton, NewButton } from "./Buttons.tsx";
-import './Menu.css';
+import "./Menu.css";
 
 interface MenuProps {
-    onNewChatClick: () => void
+  onNewChatClick: () => void;
 }
 
-function Menu( {onNewChatClick}: MenuProps ) {
-
-    return (
-        <div className="fixed-menu">
-            <div className="flex gap-2 justify-end">
-            <HistorikkButton />
-            <NewButton newChatClick={onNewChatClick} />
-            </div>
-        </div>
-    )
+function Menu({ onNewChatClick }: MenuProps) {
+  return (
+    <div className="fixed-menu">
+      <div className="flex gap-2 justify-end">
+        <HistorikkButton />
+        <NewButton newChatClick={onNewChatClick} />
+      </div>
+    </div>
+  );
 }
 
-export default Menu
+export default Menu;

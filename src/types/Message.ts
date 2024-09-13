@@ -1,9 +1,9 @@
 export enum UserType {
-    Bruker = 'BRUKER',
-    ChatBob = 'CHATBOB'
+  Bruker = "BRUKER",
+  ChatBob = "CHATBOB",
 }
 
 export interface Message {
-    userType: UserType;
-    text: string;
+  userType: UserType;
+  text: string;
 }
