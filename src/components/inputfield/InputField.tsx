@@ -43,7 +43,7 @@ function InputField( { onSend }: InputFieldProps ) {
     }
 
     return (
-        <div className="fixed-input">
+        <div className="fixed-input bg-bg-default">
             <VStack align="stretch" gap="5">
                 <HStack gap="2">
                     <Textarea
