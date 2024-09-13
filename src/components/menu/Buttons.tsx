@@ -1,6 +1,10 @@
 import { Button } from '@navikt/ds-react';
 import { NotePencilIcon, ClockDashedIcon } from "@navikt/aksel-icons";
 
+interface ButtonsProps {
+    newChatClick: () => void
+}
+
 export const HistorikkButton = () => {
     return (
         <>
@@ -15,7 +19,7 @@ export const HistorikkButton = () => {
     )
 }
 
-export const NewButton = () => {
+export const NewButton = ( {newChatClick}: ButtonsProps ) => {
     return (
         <>
             <Button
@@ -23,6 +27,7 @@ export const NewButton = () => {
                 size="small"
                 icon={<NotePencilIcon aria-hidden />}
                 className="lg:hidden"
+                onClick={newChatClick}
             >
             </Button>
             <Button
@@ -30,6 +35,7 @@ export const NewButton = () => {
                 size="medium"
                 icon={<NotePencilIcon aria-hidden />}
                 className="max-lg:hidden"
+                onClick={newChatClick}
             >
                 Ny chat
             </Button>
