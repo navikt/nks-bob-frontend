@@ -9,3 +9,12 @@
   transform: translateX(-50%);
   padding: 0 16px 20px 16px;
 }
+
+.fixed-input::before {
+  content: "";
+  position: fixed;
+  bottom: 100%;
+  left: 0;
+  width: 100%;
+  height: 20px;
+}

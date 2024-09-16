@@ -49,9 +49,9 @@ function InputField({ onSend }: InputFieldProps) {
   }
 
   return (
-    <div className="fixed-input bg-bg-default">
-      <VStack align="stretch" gap="5">
-        <HStack gap="2">
+  //  <div className="fixed-input bg-bg-default">
+      <VStack gap="4" className="sticky bottom-0 pb-6 bg-bg-default">
+        <HStack gap="2" align="end">
           <Textarea
             size="small"
             label=""
@@ -80,7 +80,7 @@ function InputField({ onSend }: InputFieldProps) {
           .
         </BodyShort>
       </VStack>
-    </div>
+ //   </div>
   );
 }
 

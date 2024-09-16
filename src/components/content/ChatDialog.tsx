@@ -27,7 +27,7 @@ function ChatDialog({ messages }: ChatDialogProps) {
           ? <UserQuestionBubble userQuestion={message} />
           : <BobAnswerBubble answer={message} />)
     }
-   <div ref={lastMessageRef} className="pb-24"  />
+   <div ref={lastMessageRef} className="pb-14 sm:pb-24"  />
   </VStack>;
 }
 
