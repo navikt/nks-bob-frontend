@@ -28,7 +28,7 @@ jobs:
         with:
           app: nks-bob-frontend
           team: nks-aiautomatisering
-          source: ./build
+          source: ./dist
           ingress: https://bob.ansatt.dev.nav.no
           environment: dev
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
