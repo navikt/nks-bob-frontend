@@ -10,10 +10,10 @@ import {
 import { PaperplaneIcon } from "@navikt/aksel-icons";
 
 import "./InputField.css";
-import { Message, UserType } from "../../types/Message.ts";
+import { NewMessage } from "../../types/Message.ts";
 
 interface InputFieldProps {
-  onSend: (message: Message) => void;
+  onSend: (message: NewMessage) => void;
 }
 
 function InputField({ onSend }: InputFieldProps) {
@@ -21,9 +21,8 @@ function InputField({ onSend }: InputFieldProps) {
   const [inputValue, setInputValue] = useState<string>("");
 
   function sendMessage() {
-    const message: Message = {
-      userType: UserType.Bruker,
-      text: inputValue,
+    const message: NewMessage = {
+      content: inputValue,
     };
     onSend(message);
   }

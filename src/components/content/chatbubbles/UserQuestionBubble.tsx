@@ -8,7 +8,7 @@ interface UserChatBubbleProps {
 function UserQuestionBubble({ userQuestion }: UserChatBubbleProps) {
   return (
     <Chat variant="subtle" position="right">
-      <Chat.Bubble className="max-w-prose">{userQuestion?.text}</Chat.Bubble>
+      <Chat.Bubble className="max-w-prose">{userQuestion?.content}</Chat.Bubble>
     </Chat>
   );
 }

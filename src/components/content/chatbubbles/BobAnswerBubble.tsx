@@ -1,13 +1,14 @@
 import { Chat, HStack } from "@navikt/ds-react";
 
 import bobhead from "../../../assets/Bob-hode-svg.svg";
+import { Message } from "../../../types/Message";
 
-function BobAnswerBubble() {
+function BobAnswerBubble({ answer }: { answer: Message }) {
   return (
     <HStack gap="3" wrap={false}>
       <img src={bobhead} alt="Bob" width="50px" className="hidehead" />
       <Chat variant="info" className="flex grow">
-        <Chat.Bubble>Svar fra Bob.</Chat.Bubble>
+        <Chat.Bubble>{answer.content}</Chat.Bubble>
       </Chat>
     </HStack>
   );
