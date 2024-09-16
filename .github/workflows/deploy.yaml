@@ -1,0 +1,35 @@
+name: Deploy SPA
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # - run: npm ci
+      - run: npm install
+      - run: npm run build
+        env:
+          VITE_API_URL: https://nks-bob-api.ansatt.dev.nav.no
+          PUBLIC_URL: https://cdn.nav.no/nks-aiautomatisering/nks-bob-frontend/dev
+      - uses: nais/deploy/actions/spa-deploy/v2@main
+        with:
+          app: nks-bob-frontend
+          team: nks-aiautomatisering
+          source: ./dist
+          ingress: https://bob.ansatt.dev.nav.no
+          environment: dev
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
