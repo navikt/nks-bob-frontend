@@ -12,14 +12,14 @@ export default defineConfig({
   },
   server: {
     port: 5173,
-    proxy: {
-      '/bob-api': {
-        target: 'https://nks-bob-api.ansatt.dev.nav.no:8080/api/v1',
-        changeOrigin: true,
-        secure: true,
-        rewrite: (path) => path.replace(/bob-api/, '')
-      }
-    }
+    // proxy: {
+    //   '/bob-api': {
+    //     target: 'https://nks-bob-api.ansatt.dev.nav.no:8080/api/v1',
+    //     changeOrigin: true,
+    //     secure: true,
+    //     rewrite: (path) => path.replace(/bob-api/, '')
+    //   }
+    // }
   },
   build: {
     sourcemap: true
