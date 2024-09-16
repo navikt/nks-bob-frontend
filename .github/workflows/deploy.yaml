@@ -19,6 +19,7 @@ jobs:
         with:
           node-version: 22
       # - run: npm ci
+      - run: npm install
       - run: npm run build
         env:
           VITE_API_URL: https://nks-bob-api.ansatt.dev.nav.no
