@@ -17,22 +17,18 @@ function ChatDialog({ messages }: ChatDialogProps) {
 
   useEffect(() => {
     if (lastMessageRef.current) {
-      lastMessageRef.current.scrollIntoView({ behavior: "smooth" })
+      lastMessageRef.current.scrollIntoView({ behavior: "smooth" }) // sjekk om det kan være lurt å kjøre smooth på ny melding og instant når man henter alle
     }
   }, [messages]);
 
-  return (
-    <VStack gap="10" width="100%" className="pb-24">
-      {
-        messages.map(message => (
-          message.messageRole === "human"
-            ? <UserQuestionBubble userQuestion={message} />
-            : <BobAnswerBubble answer={message} />
-        ))
-      }
-     <div ref={lastMessageRef} />
-    </VStack>
-  );
+  return <VStack gap="10" width="100%" >
+    {
+      messages.map(message => message.messageRole === "human"
+          ? <UserQuestionBubble userQuestion={message} />
+          : <BobAnswerBubble answer={message} />)
+    }
+   <div ref={lastMessageRef} className="pb-24"  />
+  </VStack>;
 }
 
 export default ChatDialog;

@@ -10,10 +10,10 @@ function PageWrapper({ children }: PageWrapperProps) {
       className="
         flex
         flex-col
-        h-screen
         max-w-3xl
         mx-auto
         px-4
+        mt-48
         "
     >
       {children}
