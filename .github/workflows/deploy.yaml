@@ -24,7 +24,7 @@ jobs:
         env:
           VITE_API_URL: https://nks-bob-api.ansatt.dev.nav.no
           PUBLIC_URL: https://cdn.nav.no/nks-aiautomatisering/nks-bob-frontend/dev
-      - uses: nais/deploy/actions/spa-deploy/v2@main
+      - uses: nais/deploy/actions/spa-deploy/v2@master
         with:
           app: nks-bob-frontend
           team: nks-aiautomatisering
