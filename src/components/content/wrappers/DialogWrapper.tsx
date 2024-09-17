@@ -13,14 +13,16 @@ function DialogWrapper({ children }: DialogWrapperProps) {
         h-full
         bg-bg-default
         justify-center
-        overflow-scroll
         px-4
+        overflow-scroll
         ">
             <div className="
+            flex
             flex-col
             max-w-3xl
             w-full
-            h-full
+            min-h-screen
+            items-center
             ">
                 {children}
             </div>

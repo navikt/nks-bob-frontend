@@ -11,6 +11,7 @@ function Menu({ onNewChatClick }: MenuProps) {
     <div className="
     sticky
     top-0
+    w-full
     bg-bg-default
     ">
       <HStack justify="start" align="center" className="min-h-16">

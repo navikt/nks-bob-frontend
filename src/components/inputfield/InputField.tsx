@@ -50,7 +50,7 @@ function InputField({ onSend }: InputFieldProps) {
 
   return (
   //  <div className="fixed-input bg-bg-default">
-      <VStack gap="4" className="sticky bottom-20 bg-bg-default">
+      <VStack gap="4" className="sticky bottom-20 bg-bg-default w-full">
         <HStack gap="2" align="end">
           <Textarea
             size="small"
