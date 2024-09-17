@@ -29,6 +29,7 @@ spec:
       memory: 256Mi
   azure:
     application:
+      tenant: nav.no
       enabled: true
       allowAllUsers: true # TODO add groups
     sidecar:
