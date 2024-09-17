@@ -2,18 +2,20 @@ import useSWR from "swr"
 import useSWRMutation from "swr/mutation"
 import { Message } from "../types/Message"
 
+const API_URL = `${import.meta.env.BASE_URL}bob-api`
+
 async function fetcher<JSON = any>(
   input: RequestInfo,
   init?: RequestInit
 ): Promise<JSON> {
   const res = await fetch(
-    `${import.meta.env.VITE_API_URL}${input}`,
+    `${API_URL}${input}`,
     {
       ...init,
-      // credentials: 'include',
+      credentials: 'include',
       headers: {
         ...init?.headers,
-        Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`
+        // Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`
       }
     })
   return res.json()

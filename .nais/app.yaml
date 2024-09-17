@@ -1,0 +1,83 @@
+apiVersion: 'nais.io/v1alpha1'
+kind: 'Application'
+metadata:
+  name: nks-bob-frontend
+  namespace: nks-aiautomatisering
+  labels:
+    team: nks-aiautomatisering
+spec:
+  image: europe-north1-docker.pkg.dev/nais-management-233d/poao/poao-frontend:2024.08.30_10.15-9c1569b22e37
+  port: 8080
+  ingresses:
+    - https://bob.ansatt.dev.nav.no
+  liveness:
+    path: /internal/alive
+    initialDelay: 10
+  readiness:
+    path: /internal/ready
+    initialDelay: 10
+  replicas:
+    min: 1
+    max: 1
+    # cpuThresholdPercentage: 75
+  resources:
+    limits:
+      cpu: '1'
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+  azure:
+    application:
+      enabled: true
+      allowAllUsers: true # TODO add groups
+    sidecar:
+      enabled: true
+      autoLogin: true
+      autoLoginIgnorePaths:
+        - /assets/*
+        - /asset-manifest.json
+        - /bob-api/**
+  gcp:
+    buckets:
+      - name: nks-bob-frontend-dev
+        cascadingDelete: false
+  accessPolicy:
+    outbound:
+      rules:
+        - application: nks-bob-api
+  env:
+    - name: JSON_CONFIG
+      value: >
+        {
+          "fallbackStrategy": "SERVE_INDEX_HTML",
+          "gcs": {
+            "bucketName": "nks-bob-frontend-dev"
+          },
+          "auth": {
+            "loginProvider": "AZURE_AD"
+          },
+          "cors": {
+            "origin": []
+          },
+          "proxies": [
+            {
+              "fromPath": "/bob-api",
+              "toUrl": "http://nks-bob-api",
+              "toApp": {
+                "name": "nks-bob-api",
+                "namespace": "nks-aiautomatisering",
+                "cluster": "dev-gcp"
+              }
+            }
+          ]
+        }
+
+  # observability:
+  #   autoInstrumentation:
+  #     enabled: true
+  #     runtime: nodejs
+  #   logging:
+  #     destinations:
+  #       - id: elastic
+  #       - id: loki

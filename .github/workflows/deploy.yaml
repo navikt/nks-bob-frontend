@@ -24,12 +24,27 @@ jobs:
         env:
           VITE_API_URL: https://nks-bob-api.ansatt.dev.nav.no
           PUBLIC_URL: https://cdn.nav.no/nks-aiautomatisering/nks-bob-frontend/dev
-      - uses: nais/deploy/actions/spa-deploy/v2@master
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
         with:
-          app: nks-bob-frontend
-          team: nks-aiautomatisering
-          source: ./dist
-          ingress: https://bob.ansatt.dev.nav.no
-          environment: dev
-          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
-          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          workload_identity_provider: ${{ NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+      - name: Upload files to GCS
+        run: gsutil -m rsync -r ./dist gs://nks-bob-frontend-dev
+      - name: Deploy application
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: dev-gcp
+          RESOURCE: .nais/app.yaml
+          PRINT_PAYLOAD: true
+
+      # - uses: nais/deploy/actions/spa-deploy/v2@master
+      #   with:
+      #     app: nks-bob-frontend
+      #     team: nks-aiautomatisering
+      #     source: ./dist
+      #     ingress: https://bob.ansatt.dev.nav.no
+      #     environment: dev
+      #     project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+      #     identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
