@@ -32,12 +32,6 @@ jobs:
         uses: google-github-actions/setup-gcloud@v2
       - name: Upload files to GCS
         run: gsutil -m rsync -r ./dist gs://nks-bob-frontend-dev
-      - name: Deploy application
-        uses: nais/deploy/actions/deploy@v2
-        env:
-          CLUSTER: dev-gcp
-          RESOURCE: .nais/app.yaml
-          PRINT_PAYLOAD: true
 
       # - uses: nais/deploy/actions/spa-deploy/v2@master
       #   with:
