@@ -1,16 +1,16 @@
+import { useParams } from "react-router-dom";
 import Content from "./components/content/Content.tsx";
 import Header from "./components/header/Header.tsx";
 import PageWrapper from "./components/PageWrapper/PageWrapper.tsx";
 
-const conversationId = "6cf0b651-e5f1-4148-a2e1-9634e6cfa29e";
-
-function App() {
+function Samtale() {
+  const { conversationId } = useParams();
   return (
     <PageWrapper>
       <Header />
-      <Content conversationId={conversationId} />
+      <Content conversationId={conversationId!} />
     </PageWrapper>
   );
 }
 
-export default App;
+export default Samtale;

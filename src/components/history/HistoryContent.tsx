@@ -1,4 +1,5 @@
 import { Heading, Link } from "@navikt/ds-react";
+import * as ReactRouter from "react-router-dom";
 import { useConversations } from "../../api/api";
 import { Conversation } from "../../types/Message";
 
@@ -27,7 +28,11 @@ function HistoryContent() {
 }
 
 function ConversationLink({ conversation }: { conversation: Conversation }) {
-  return <Link>{conversation.title}</Link>;
+  return (
+    <Link as={ReactRouter.Link} to={`/samtaler/${conversation.id}`}>
+      {conversation.title}
+    </Link>
+  );
 }
 
 export default HistoryContent;
