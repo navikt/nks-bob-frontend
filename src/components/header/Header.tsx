@@ -1,10 +1,13 @@
-import { mockUser } from "./mockUser.ts";
 import { InternalHeader, Spacer } from "@navikt/ds-react";
+import { Link } from "react-router-dom";
+import { mockUser } from "./mockUser.ts";
 
 function Header() {
   return (
-      <InternalHeader className="sticky top-0 min-h-16 z-10 w-full">
-      <InternalHeader.Title as="h1">NKS-Bob</InternalHeader.Title>
+    <InternalHeader className="sticky top-0 z-10 min-h-16 w-full">
+      <Link to="/">
+        <InternalHeader.Title as="h1">NKS-Bob</InternalHeader.Title>
+      </Link>
       <Spacer />
       <InternalHeader.User
         name={mockUser.username}
