@@ -1,3 +1,4 @@
+import { Heading, Link } from '@navikt/ds-react';
 
 function HistoryContent() {
     return(
@@ -7,10 +8,13 @@ function HistoryContent() {
         top-16
         min-w-60
         bg-bg-subtle
-        min-h-screen">
-            <ul className="list-none w-full">
-                <li>Hei</li>
-            </ul>
+        max-md:hidden
+        p-4
+        ">
+          <Heading size="small" className="mb-6 pt-2">Dine samtaler</Heading>
+          <ul className="list-none w-full">
+            <li><Link>Hei</Link></li>
+          </ul>
         </div>
     )
 }

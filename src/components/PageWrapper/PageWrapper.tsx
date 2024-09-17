@@ -8,10 +8,8 @@ function PageWrapper({ children }: PageWrapperProps) {
     return (
         <div
             className="
-            max-w-screen
-            w-full
-            h-full
-            max-h-screen
+            h-screen
+            w-screen
             overflow-hidden
             "
         >

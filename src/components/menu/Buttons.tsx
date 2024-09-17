@@ -9,10 +9,10 @@ export const HistorikkButton = () => {
   return (
     <>
       <Button
-        variant="secondary"
-        size="small"
+        variant="tertiary"
+        size="medium"
         icon={<ClockDashedIcon aria-hidden />}
-        className="lg:hidden mr-2"
+        className="md:hidden mr-2"
       ></Button>
     </>
   );
@@ -22,17 +22,17 @@ export const NewButton = ({ newChatClick }: ButtonsProps) => {
   return (
     <>
       <Button
-        variant="secondary"
-        size="small"
+        variant="tertiary"
+        size="medium"
         icon={<NotePencilIcon aria-hidden />}
-        className="lg:hidden"
+        className="md:hidden"
         onClick={newChatClick}
       ></Button>
       <Button
         variant="tertiary"
         size="medium"
         icon={<NotePencilIcon aria-hidden />}
-        className="max-lg:hidden"
+        className="max-md:hidden"
         onClick={newChatClick}
       >
         Ny chat

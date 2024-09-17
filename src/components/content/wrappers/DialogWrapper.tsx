@@ -1,14 +1,16 @@
 import { ReactNode } from "react";
 
-interface ChatDialogWrapperProps {
+interface DialogWrapperProps {
     children: ReactNode;
 }
 
-function ChatDialogWrapper({ children }: ChatDialogWrapperProps) {
+function DialogWrapper({ children }: DialogWrapperProps) {
     return (
         <div className="
         flex
-        w-screen
+        max-w-full
+        w-full
+        h-full
         bg-bg-default
         justify-center
         overflow-scroll
@@ -17,11 +19,13 @@ function ChatDialogWrapper({ children }: ChatDialogWrapperProps) {
             <div className="
             flex-col
             max-w-3xl
-            w-full">
+            w-full
+            h-full
+            ">
                 {children}
             </div>
         </div>
     );
 }
 
-export default ChatDialogWrapper
+export default DialogWrapper

@@ -3,7 +3,7 @@ import { InternalHeader, Spacer } from "@navikt/ds-react";
 
 function Header() {
   return (
-      <InternalHeader className="sticky top-0 min-h-16 z-10">
+      <InternalHeader className="sticky top-0 min-h-16 z-10 w-full">
       <InternalHeader.Title as="h1">NKS-Bob</InternalHeader.Title>
       <Spacer />
       <InternalHeader.User

@@ -7,8 +7,8 @@ import InputField from "../inputfield/InputField.tsx";
 import { NewMessage } from "../../types/Message.ts";
 import { useMessages, useSendMessage, } from "../../api/api.ts";
 
-import { HStack } from "@navikt/ds-react";
-import ChatDialogWrapper from "./contentwrapper/ChatContentWrapper.tsx";
+import DialogWrapper from "./wrappers/DialogWrapper.tsx";
+import ContentWrapper from "./wrappers/ContentWrapper.tsx";
 
 // TODO opprett conversation
 const CONVERSATION_ID = "6cf0b651-e5f1-4148-a2e1-9634e6cfa29e"
@@ -32,9 +32,9 @@ function Content() {
   }
 
   return (
-      <HStack wrap={false} className="h-screen">
+      <ContentWrapper>
         <HistoryContent />
-      <ChatDialogWrapper>
+      <DialogWrapper>
       <Menu onNewChatClick={handleNewChatClick} />
       {isLoading || !messages || messages.length < 0 ? (
         <BobPlaceHolder />
@@ -42,8 +42,8 @@ function Content() {
         <ChatDialog messages={messages} conversationId={CONVERSATION_ID} />
       )}
       <InputField onSend={handleUserMessage} />
-      </ChatDialogWrapper>
-      </HStack>
+      </DialogWrapper>
+      </ContentWrapper>
   );
 }
 
