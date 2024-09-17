@@ -1,4 +1,4 @@
-name: Deploy SPA
+name: Deploy Bob frontend to dev
 
 on:
   push:
@@ -18,12 +18,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      # - run: npm ci
       - run: npm install
       - run: npm run build
-        env:
-          VITE_API_URL: https://nks-bob-api.ansatt.dev.nav.no
-          PUBLIC_URL: https://cdn.nav.no/nks-aiautomatisering/nks-bob-frontend/dev
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
@@ -32,13 +28,3 @@ jobs:
         uses: google-github-actions/setup-gcloud@v2
       - name: Upload files to GCS
         run: gsutil -m rsync -r ./dist gs://nks-bob-frontend-dev
-
-      # - uses: nais/deploy/actions/spa-deploy/v2@master
-      #   with:
-      #     app: nks-bob-frontend
-      #     team: nks-aiautomatisering
-      #     source: ./dist
-      #     ingress: https://bob.ansatt.dev.nav.no
-      #     environment: dev
-      #     project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
-      #     identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
