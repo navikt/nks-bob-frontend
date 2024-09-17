@@ -1,10 +1,14 @@
-import BobPlaceHolder from "./BobPlaceHolder.tsx";
-import InputField from "../inputfield/InputField.tsx";
-import ChatDialog from "./ChatDialog.tsx";
-import { NewMessage } from "../../types/Message.ts";
+import HistoryContent from "../history/HistoryContent.tsx";
 import Menu from "../menu/Menu.tsx";
+import BobPlaceHolder from "./BobPlaceHolder.tsx";
+import ChatDialog from "./ChatDialog.tsx";
+import InputField from "../inputfield/InputField.tsx";
+
+import { NewMessage } from "../../types/Message.ts";
 import { useMessages, useSendMessage, } from "../../api/api.ts";
-import {VStack} from "@navikt/ds-react";
+
+import { HStack } from "@navikt/ds-react";
+import ChatDialogWrapper from "./contentwrapper/ChatContentWrapper.tsx";
 
 // TODO opprett conversation
 const CONVERSATION_ID = "6cf0b651-e5f1-4148-a2e1-9634e6cfa29e"
@@ -28,7 +32,9 @@ function Content() {
   }
 
   return (
-      <VStack>
+      <HStack wrap={false} className="h-screen">
+        <HistoryContent />
+      <ChatDialogWrapper>
       <Menu onNewChatClick={handleNewChatClick} />
       {isLoading || !messages || messages.length < 0 ? (
         <BobPlaceHolder />
@@ -36,7 +42,8 @@ function Content() {
         <ChatDialog messages={messages} conversationId={CONVERSATION_ID} />
       )}
       <InputField onSend={handleUserMessage} />
-      </VStack>
+      </ChatDialogWrapper>
+      </HStack>
   );
 }
 

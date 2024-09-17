@@ -12,7 +12,7 @@ interface ChatDialogProps {
 // Husk funksjon for at man må vente til Bob
 // har svart før man kan sende ny message.
 
-function ChatDialog({ messages }: ChatDialogProps) {
+function  ChatDialog({ messages }: ChatDialogProps) {
   const lastMessageRef = useRef <HTMLDivElement | null>(null)
 
   useEffect(() => {
@@ -21,14 +21,21 @@ function ChatDialog({ messages }: ChatDialogProps) {
     }
   }, [messages]);
 
-  return <VStack gap="10" width="100%" >
+  return (
+  <VStack
+      gap="5"
+      align="stretch"
+      width="full"
+      className="pt-16"
+  >
     {
       messages.map(message => message.messageRole === "human"
           ? <UserQuestionBubble userQuestion={message} />
           : <BobAnswerBubble answer={message} />)
     }
-   <div ref={lastMessageRef} className="pb-14 sm:pb-24"  />
-  </VStack>;
+   <div ref={lastMessageRef} className="pb-4"  />
+  </VStack>
+)
 }
 
 export default ChatDialog;

@@ -1,17 +1,14 @@
-import PageWrapper from "./components/pagewrapper/PageWrapper.tsx";
 import Content from "./components/content/Content.tsx";
-
 import Header from "./components/header/Header.tsx";
+import PageWrapper from "./components/PageWrapper/PageWrapper.tsx";
 
 function App() {
   return (
-    <div>
+    <PageWrapper>
       <Header />
-      <PageWrapper>
         <Content />
-      </PageWrapper>
-    </div>
-  );
+    </PageWrapper>
+  )
 }
 
 export default App;
