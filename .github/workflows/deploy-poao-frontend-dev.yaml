@@ -12,8 +12,11 @@ jobs:
   deploy-dev:
     name: Deploy poao-frontend to DEV
     runs-on: ubuntu-latest
+
     permissions:
-      id-token: 'write' # Needed for `nais/deploy/actions/deploy`
+      contents: 'read'
+      id-token: 'write'
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
