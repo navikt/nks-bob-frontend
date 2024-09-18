@@ -1,9 +1,6 @@
 import { ClockDashedIcon, NotePencilIcon } from "@navikt/aksel-icons";
 import { Button } from "@navikt/ds-react";
-
-interface ButtonsProps {
-  newChatClick: () => void;
-}
+import { Link } from "react-router-dom";
 
 export const HistorikkButton = () => {
   return (
@@ -18,25 +15,27 @@ export const HistorikkButton = () => {
   );
 };
 
-export const NewButton = ({ newChatClick }: ButtonsProps) => {
+export const NewButton = () => {
   return (
     <>
-      <Button
-        variant="tertiary"
-        size="medium"
-        icon={<NotePencilIcon aria-hidden />}
-        className="md:hidden"
-        onClick={newChatClick}
-      ></Button>
-      <Button
-        variant="tertiary"
-        size="medium"
-        icon={<NotePencilIcon aria-hidden />}
-        className="max-md:hidden"
-        onClick={newChatClick}
-      >
-        Ny chat
-      </Button>
+      <Link to="/">
+        <Button
+          variant="tertiary"
+          size="medium"
+          icon={<NotePencilIcon aria-hidden />}
+          className="md:hidden"
+        ></Button>
+      </Link>
+      <Link to="/">
+        <Button
+          variant="tertiary"
+          size="medium"
+          icon={<NotePencilIcon aria-hidden />}
+          className="max-md:hidden"
+        >
+          Ny chat
+        </Button>
+      </Link>
     </>
   );
 };

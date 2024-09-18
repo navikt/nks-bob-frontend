@@ -46,13 +46,11 @@ function NewConversationContent() {
     });
   }
 
-  function handleNewChatClick() {}
-
   return (
     <ContentWrapper>
       <HistoryContent />
       <DialogWrapper>
-        <Menu onNewChatClick={handleNewChatClick} />
+        <Menu />
         {messagePlaceholders.length === 0 && <BobPlaceHolder />}
         {messagePlaceholders.length !== 0 && (
           <ChatDialog
@@ -85,13 +83,11 @@ function ExistingConversationContent({
     });
   }
 
-  function handleNewChatClick() {}
-
   return (
     <ContentWrapper>
       <HistoryContent />
       <DialogWrapper>
-        <Menu onNewChatClick={handleNewChatClick} />
+        <Menu />
         {isLoading || !messages || messages.length < 0 ? (
           <BobPlaceHolder />
         ) : (
