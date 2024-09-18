@@ -21,7 +21,7 @@ function ChatDialog({ messages }: ChatDialogProps) {
   }, [messages]);
 
   return (
-    <div className="flex w-full flex-col py-28">
+    <div className="flex w-full flex-col gap-8 pb-16 pt-28">
       {messages.map((message) =>
         message.messageRole === "human" ? (
           <UserQuestionBubble userQuestion={message} />
