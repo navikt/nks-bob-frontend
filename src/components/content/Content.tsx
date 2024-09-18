@@ -9,8 +9,9 @@ import {
   useMessages,
   useSendMessage,
 } from "../../api/api.ts";
-import { NewConversation, NewMessage } from "../../types/Message.ts";
+import { Message, NewConversation, NewMessage } from "../../types/Message.ts";
 
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ContentWrapper from "./wrappers/ContentWrapper.tsx";
 import DialogWrapper from "./wrappers/DialogWrapper.tsx";
@@ -26,6 +27,9 @@ function Content({ conversationId }: { conversationId?: string }) {
 function NewConversationContent() {
   const { createConversation } = useCreateConversation();
   const navigate = useNavigate();
+  const [messagePlaceholders, setMessagePlaceholders] = useState<
+    Partial<Message>[]
+  >([]);
 
   function handleUserMessage(message: NewMessage) {
     const newConversation: NewConversation = {
@@ -33,7 +37,11 @@ function NewConversationContent() {
       initialMessage: { content: message.content },
     };
 
-    createConversation(newConversation).then((conversation: any) => {
+    setMessagePlaceholders([
+      { content: message.content, messageRole: "human" },
+      { content: " ", messageRole: "ai" }, // TODO loading tekst/komponent.
+    ]);
+    createConversation(newConversation).then((conversation) => {
       navigate(`/samtaler/${conversation.id}`);
     });
   }
@@ -45,7 +53,13 @@ function NewConversationContent() {
       <HistoryContent />
       <DialogWrapper>
         <Menu onNewChatClick={handleNewChatClick} />
-        <BobPlaceHolder />
+        {messagePlaceholders.length === 0 && <BobPlaceHolder />}
+        {messagePlaceholders.length !== 0 && (
+          <ChatDialog
+            messages={messagePlaceholders as Message[]}
+            conversationId={"unknown"}
+          />
+        )}
         <InputField onSend={handleUserMessage} />
       </DialogWrapper>
     </ContentWrapper>
