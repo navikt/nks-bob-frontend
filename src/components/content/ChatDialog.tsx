@@ -24,9 +24,9 @@ function ChatDialog({ messages }: ChatDialogProps) {
     <div className="flex w-full flex-col gap-8 pb-16 pt-28">
       {messages.map((message) =>
         message.messageRole === "human" ? (
-          <UserQuestionBubble userQuestion={message} />
+          <UserQuestionBubble key={message.id} userQuestion={message} />
         ) : (
-          <BobAnswerBubble answer={message} />
+          <BobAnswerBubble key={message.id} answer={message} />
         ),
       )}
       <div ref={lastMessageRef} className="pb-4" />

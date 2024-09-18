@@ -41,9 +41,15 @@ function NewConversationContent() {
       { content: message.content, messageRole: "human" },
       { content: " ", messageRole: "ai" }, // TODO loading tekst/komponent.
     ]);
-    createConversation(newConversation).then((conversation) => {
-      navigate(`/samtaler/${conversation.id}`);
-    });
+    createConversation(newConversation)
+      .then((conversation) => {
+        navigate(`/samtaler/${conversation.id}`);
+      })
+      .catch((error) => {
+        // blir på en måte det samme som `rollbackOnError`
+        console.error(error);
+        setMessagePlaceholders([]);
+      });
   }
 
   return (
