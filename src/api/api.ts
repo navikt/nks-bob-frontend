@@ -1,6 +1,6 @@
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
-import { Conversation, Message } from "../types/Message";
+import { Conversation, Message, NewConversation } from "../types/Message";
 
 const API_URL = `${import.meta.env.BASE_URL}bob-api`;
 
@@ -83,7 +83,10 @@ export const useCreateConversation = () => {
   );
 
   return {
-    createConversation: trigger,
+    createConversation: trigger as (
+      newConversation: NewConversation,
+      // TODO add options/config
+    ) => Promise<Conversation>,
     isLoading: isMutating,
   };
 };
