@@ -1,4 +1,3 @@
-import { VStack } from "@navikt/ds-react";
 import { useEffect, useRef } from "react";
 import { Message } from "../../types/Message.ts";
 import BobAnswerBubble from "./chatbubbles/BobAnswerBubble.tsx";
@@ -22,7 +21,7 @@ function ChatDialog({ messages }: ChatDialogProps) {
   }, [messages]);
 
   return (
-    <VStack gap="5" align="stretch" width="full" className="pt-16">
+    <div className="flex w-full flex-col">
       {messages.map((message) =>
         message.messageRole === "human" ? (
           <UserQuestionBubble userQuestion={message} />
@@ -31,7 +30,7 @@ function ChatDialog({ messages }: ChatDialogProps) {
         ),
       )}
       <div ref={lastMessageRef} className="pb-4" />
-    </VStack>
+    </div>
   );
 }
 

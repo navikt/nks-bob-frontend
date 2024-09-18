@@ -8,7 +8,7 @@ interface MenuProps {
 
 function Menu({ onNewChatClick }: MenuProps) {
   return (
-    <div className="sticky top-0 w-full bg-bg-default">
+    <div className="fixed top-16 min-h-16 w-full max-w-2xl bg-bg-default">
       <HStack justify="start" align="center" className="min-h-16">
         <HistorikkButton />
         <NewButton newChatClick={onNewChatClick} />
