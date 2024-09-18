@@ -4,13 +4,59 @@ import Menu from "../menu/Menu.tsx";
 import BobPlaceHolder from "./BobPlaceHolder.tsx";
 import ChatDialog from "./ChatDialog.tsx";
 
-import { useMessages, useSendMessage } from "../../api/api.ts";
-import { NewMessage } from "../../types/Message.ts";
+import {
+  useCreateConversation,
+  useMessages,
+  useSendMessage,
+} from "../../api/api.ts";
+import { NewConversation, NewMessage } from "../../types/Message.ts";
 
+import { useNavigate } from "react-router-dom";
 import ContentWrapper from "./wrappers/ContentWrapper.tsx";
 import DialogWrapper from "./wrappers/DialogWrapper.tsx";
 
-function Content({ conversationId }: { conversationId: string }) {
+function Content({ conversationId }: { conversationId?: string }) {
+  if (!conversationId) {
+    return <NewConversationContent />;
+  }
+
+  return <ExistingConversationContent conversationId={conversationId} />;
+}
+
+function NewConversationContent() {
+  const { createConversation } = useCreateConversation();
+  const navigate = useNavigate();
+
+  function handleUserMessage(message: NewMessage) {
+    const newConversation: NewConversation = {
+      title: message.content,
+      initialMessage: { content: message.content },
+    };
+
+    createConversation(newConversation).then((conversation: any) => {
+      navigate(`/samtaler/${conversation.id}`);
+    });
+  }
+
+  function handleNewChatClick() {}
+
+  return (
+    <ContentWrapper>
+      <HistoryContent />
+      <DialogWrapper>
+        <Menu onNewChatClick={handleNewChatClick} />
+        <BobPlaceHolder />
+        <InputField onSend={handleUserMessage} />
+      </DialogWrapper>
+    </ContentWrapper>
+  );
+}
+
+function ExistingConversationContent({
+  conversationId,
+}: {
+  conversationId: string;
+}) {
   const { messages, isLoading } = useMessages(conversationId);
   const { sendMessage } = useSendMessage(conversationId);
 

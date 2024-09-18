@@ -32,6 +32,11 @@ export type Message = {
   citations: Citation[];
 };
 
+export type NewConversation = {
+  title: string;
+  initialMessage?: NewMessage;
+};
+
 export type Conversation = {
   id: string;
   title: string;
