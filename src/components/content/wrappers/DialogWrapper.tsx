@@ -1,33 +1,17 @@
 import { ReactNode } from "react";
 
 interface DialogWrapperProps {
-    children: ReactNode;
+  children: ReactNode;
 }
 
 function DialogWrapper({ children }: DialogWrapperProps) {
-    return (
-        <div className="
-        flex
-        max-w-full
-        w-full
-        h-full
-        bg-bg-default
-        justify-center
-        px-4
-        overflow-scroll
-        ">
-            <div className="
-            flex
-            flex-col
-            max-w-3xl
-            w-full
-            min-h-screen
-            items-center
-            ">
-                {children}
-            </div>
-        </div>
-    );
+  return (
+    <div className="flex h-full w-full max-w-full justify-center overflow-scroll bg-bg-default px-4">
+      <div className="flex min-h-screen w-full max-w-3xl flex-col items-center">
+        {children}
+      </div>
+    </div>
+  );
 }
 
-export default DialogWrapper
+export default DialogWrapper;

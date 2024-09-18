@@ -1,6 +1,6 @@
+import { HStack } from "@navikt/ds-react";
 import { HistorikkButton, NewButton } from "./Buttons.tsx";
 import "./Menu.css";
-import {HStack} from "@navikt/ds-react";
 
 interface MenuProps {
   onNewChatClick: () => void;
@@ -8,12 +8,7 @@ interface MenuProps {
 
 function Menu({ onNewChatClick }: MenuProps) {
   return (
-    <div className="
-    sticky
-    top-0
-    w-full
-    bg-bg-default
-    ">
+    <div className="sticky top-0 w-full bg-bg-default">
       <HStack justify="start" align="center" className="min-h-16">
         <HistorikkButton />
         <NewButton newChatClick={onNewChatClick} />

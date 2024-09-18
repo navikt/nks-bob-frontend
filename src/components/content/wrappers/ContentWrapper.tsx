@@ -6,17 +6,10 @@ interface ContentWrapperProps {
 
 function ContentWrapper({ children }: ContentWrapperProps) {
   return (
-    <div
-      className="
-        flex
-        h-screen
-        max-w-screen
-        w-full
-        overflow-hidden
-        ">
-        {children}
+    <div className="max-w-screen flex h-screen w-full overflow-hidden">
+      {children}
     </div>
   );
 }
 
-export default ContentWrapper
+export default ContentWrapper;

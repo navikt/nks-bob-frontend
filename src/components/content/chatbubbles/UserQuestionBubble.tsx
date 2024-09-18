@@ -7,11 +7,13 @@ interface UserChatBubbleProps {
 
 function UserQuestionBubble({ userQuestion }: UserChatBubbleProps) {
   return (
-      <div className="flex justify-end pt-8">
-        <Chat variant="subtle" position="right">
-          <Chat.Bubble className="max-w-prose">{userQuestion?.content}</Chat.Bubble>
-        </Chat>
-      </div>
+    <div className="flex justify-end pt-8">
+      <Chat variant="subtle" position="right">
+        <Chat.Bubble className="max-w-prose">
+          {userQuestion?.content}
+        </Chat.Bubble>
+      </Chat>
+    </div>
   );
 }
 

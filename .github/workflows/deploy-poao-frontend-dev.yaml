@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - '.github/workflows/deploy-poao-frontend-dev.yaml'
+      - ".github/workflows/deploy-poao-frontend-dev.yaml"
       - .nais/nais-dev.yaml
     branches:
       - main
@@ -14,8 +14,8 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: 'read'
-      id-token: 'write'
+      contents: "read"
+      id-token: "write"
 
     steps:
       - name: Checkout

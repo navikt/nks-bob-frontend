@@ -1,5 +1,5 @@
+import { ClockDashedIcon, NotePencilIcon } from "@navikt/aksel-icons";
 import { Button } from "@navikt/ds-react";
-import { NotePencilIcon, ClockDashedIcon } from "@navikt/aksel-icons";
 
 interface ButtonsProps {
   newChatClick: () => void;
@@ -12,7 +12,7 @@ export const HistorikkButton = () => {
         variant="tertiary"
         size="medium"
         icon={<ClockDashedIcon aria-hidden />}
-        className="md:hidden mr-2"
+        className="mr-2 md:hidden"
       ></Button>
     </>
   );

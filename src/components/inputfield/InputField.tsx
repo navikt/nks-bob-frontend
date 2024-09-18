@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { PaperplaneIcon } from "@navikt/aksel-icons";
 import {
   BodyShort,
   Button,
@@ -7,10 +7,10 @@ import {
   Textarea,
   VStack,
 } from "@navikt/ds-react";
-import { PaperplaneIcon } from "@navikt/aksel-icons";
+import { useState } from "react";
 
-import "./InputField.css";
 import { NewMessage } from "../../types/Message.ts";
+import "./InputField.css";
 
 interface InputFieldProps {
   onSend: (message: NewMessage) => void;
@@ -49,38 +49,36 @@ function InputField({ onSend }: InputFieldProps) {
   }
 
   return (
-  //  <div className="fixed-input bg-bg-default">
-      <VStack gap="4" className="sticky bottom-20 bg-bg-default w-full">
-        <HStack gap="2" align="end">
-          <Textarea
-            size="small"
-            label=""
-            hideLabel
-            className="flex-grow"
-            minRows={1}
-            maxRows={10}
-            placeholder={placeholderText}
-            value={inputValue}
-            onChange={handleInputChange}
-            onKeyDown={handleKeyDown}
-          />
-          <Button
-            icon={<PaperplaneIcon title="Historikk" />}
-            variant="primary"
-            size="small"
-            className="max-h-8"
-            onClick={handleButtonClick}
-          />
-        </HStack>
-        <BodyShort size="small" align="center" className="max-sm:hidden">
-          Bob baserer svarene på informasjonen fra{" "}
-          <Link href="https://data.ansatt.nav.no/quarto/e7b3e02a-0c45-4b5c-92a2-a6d364120dfb/index.html">
-            nks kunnskapsartikler
-          </Link>
-          .
-        </BodyShort>
-      </VStack>
- //   </div>
+    <VStack gap="4" className="sticky bottom-20 w-full bg-bg-default">
+      <HStack gap="2" align="end">
+        <Textarea
+          size="small"
+          label=""
+          hideLabel
+          className="flex-grow"
+          minRows={1}
+          maxRows={10}
+          placeholder={placeholderText}
+          value={inputValue}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
+        />
+        <Button
+          icon={<PaperplaneIcon title="Historikk" />}
+          variant="primary"
+          size="small"
+          className="max-h-8"
+          onClick={handleButtonClick}
+        />
+      </HStack>
+      <BodyShort size="small" align="center" className="max-sm:hidden">
+        Bob baserer svarene på informasjonen fra{" "}
+        <Link href="https://data.ansatt.nav.no/quarto/e7b3e02a-0c45-4b5c-92a2-a6d364120dfb/index.html">
+          nks kunnskapsartikler
+        </Link>
+        .
+      </BodyShort>
+    </VStack>
   );
 }
 
