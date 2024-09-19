@@ -9,7 +9,8 @@ import {
 } from "@navikt/ds-react"
 import { useState } from "react"
 
-import { NewMessage } from "../../types/Message.ts"
+import { NewMessage } from "../../types/Message"
+
 import "./InputField.css"
 
 interface InputFieldProps {

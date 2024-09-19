@@ -1,7 +1,8 @@
 import { useEffect, useRef } from "react"
-import { Message } from "../../types/Message.ts"
-import BobAnswerBubble from "./chatbubbles/BobAnswerBubble.tsx"
-import UserQuestionBubble from "./chatbubbles/UserQuestionBubble.tsx"
+
+import { Message } from "../../types/Message"
+import BobAnswerBubble from "./chatbubbles/BobAnswerBubble"
+import UserQuestionBubble from "./chatbubbles/UserQuestionBubble"
 
 interface ChatDialogProps {
   conversationId: string

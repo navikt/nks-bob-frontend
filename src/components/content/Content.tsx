@@ -1,20 +1,19 @@
-import HistoryContent from "../history/HistoryContent.tsx"
-import InputField from "../inputfield/InputField.tsx"
-import Menu from "../menu/Menu.tsx"
-import BobPlaceHolder from "./BobPlaceHolder.tsx"
-import ChatDialog from "./ChatDialog.tsx"
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 import {
   useCreateConversation,
   useMessages,
   useSendMessage,
-} from "../../api/api.ts"
-import { Message, NewConversation, NewMessage } from "../../types/Message.ts"
-
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
-import ContentWrapper from "./wrappers/ContentWrapper.tsx"
-import DialogWrapper from "./wrappers/DialogWrapper.tsx"
+} from "../../api/api"
+import { Message, NewConversation, NewMessage } from "../../types/Message"
+import HistoryContent from "../history/HistoryContent"
+import InputField from "../inputfield/InputField"
+import Menu from "../menu/Menu"
+import BobPlaceHolder from "./BobPlaceHolder"
+import ChatDialog from "./ChatDialog"
+import ContentWrapper from "./wrappers/ContentWrapper"
+import DialogWrapper from "./wrappers/DialogWrapper"
 
 function Content({ conversationId }: { conversationId?: string }) {
   if (!conversationId) {

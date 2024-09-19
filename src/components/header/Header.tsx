@@ -1,6 +1,7 @@
 import { InternalHeader, Spacer } from "@navikt/ds-react"
 import { Link } from "react-router-dom"
-import { mockUser } from "./mockUser.ts"
+
+import { mockUser } from "./mockUser"
 
 function Header() {
   return (

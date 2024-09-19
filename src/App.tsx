@@ -1,4 +1,4 @@
-import Content from "./components/content/Content.tsx"
+import Content from "./components/content/Content"
 
 function App() {
   return (

@@ -1,5 +1,6 @@
 import { Chat } from "@navikt/ds-react"
-import { Message } from "../../../types/Message.ts"
+
+import { Message } from "../../../types/Message"
 
 interface UserChatBubbleProps {
   userQuestion?: Message

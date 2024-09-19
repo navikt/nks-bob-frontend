@@ -1,5 +1,7 @@
 import { HStack } from "@navikt/ds-react"
-import { HistorikkButton, NewButton } from "./Buttons.tsx"
+
+import { HistorikkButton, NewButton } from "./Buttons"
+
 import "./Menu.css"
 
 function Menu() {

@@ -1,5 +1,6 @@
 import { Heading, Link } from "@navikt/ds-react"
 import * as ReactRouter from "react-router-dom"
+
 import { useConversations } from "../../api/api"
 import { Conversation } from "../../types/Message"
 

@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom"
-import Content from "./components/content/Content.tsx"
+
+import Content from "./components/content/Content"
 
 function Samtale() {
   const { conversationId } = useParams()
