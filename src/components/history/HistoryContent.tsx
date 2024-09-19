@@ -12,16 +12,16 @@ function HistoryContent() {
         Dine samtaler
       </Heading>
       {conversations && conversations.length > 0 && !isLoading && (
-        <ul className="w-full list-none">
-          {conversations.map((conversation) => (
-            <li>
-              <ConversationLink
-                key={conversation.id}
-                conversation={conversation}
-              />
-            </li>
-          ))}
-        </ul>
+        <ol className="w-full list-none">
+          {conversations
+            .slice()
+            .reverse()
+            .map((conversation) => (
+              <li key={conversation.id}>
+                <ConversationLink conversation={conversation} />
+              </li>
+            ))}
+        </ol>
       )}
     </div>
   );
