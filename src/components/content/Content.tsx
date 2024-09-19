@@ -53,7 +53,7 @@ function NewConversationContent() {
   }
 
   return (
-    <ContentWrapper>
+    <div className="contentwrapper">
       <HistoryContent />
       <DialogWrapper>
         <Menu />
@@ -66,7 +66,7 @@ function NewConversationContent() {
         )}
         <InputField onSend={handleUserMessage} />
       </DialogWrapper>
-    </ContentWrapper>
+    </div>
   );
 }
 

@@ -1,13 +1,12 @@
 import Content from "./components/content/Content.tsx";
 import Header from "./components/header/Header.tsx";
-import PageWrapper from "./components/PageWrapper/PageWrapper.tsx";
 
 function App() {
   return (
-    <PageWrapper>
+    <div className="pagewrapper">
       <Header />
       <Content />
-    </PageWrapper>
+    </div>
   );
 }
 

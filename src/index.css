@@ -2,3 +2,33 @@
 @import "@navikt/ds-css";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+.pagewrapper {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+.contentwrapper {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+.dialogwrapper {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    overflow: scroll;
+    padding-inline: 1rem;
+    justify-content: center;
+}
+
+.dialogcontentwrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    max-width: 42rem;
+}
