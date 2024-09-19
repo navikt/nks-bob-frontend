@@ -7,7 +7,7 @@ function HistoryContent() {
   const { conversations, isLoading } = useConversations();
 
   return (
-    <div className="sticky left-0 top-16 z-auto h-full w-full max-w-60 overflow-scroll bg-bg-subtle p-4 max-md:hidden">
+    <div className="h-full w-full max-w-60 overflow-scroll bg-bg-subtle p-4 max-md:hidden">
       <Heading size="small" className="mb-6 pt-2">
         Dine samtaler
       </Heading>

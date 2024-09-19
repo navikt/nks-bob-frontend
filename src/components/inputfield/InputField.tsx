@@ -49,7 +49,7 @@ function InputField({ onSend }: InputFieldProps) {
   }
 
   return (
-    <VStack gap="4" className="sticky bottom-16 w-full max-w-2xl bg-bg-default">
+    <VStack gap="4" className="sticky bottom-4 w-full max-w-2xl bg-bg-default">
       <HStack gap="2" align="end">
         <Textarea
           size="small"
@@ -67,7 +67,7 @@ function InputField({ onSend }: InputFieldProps) {
           icon={<PaperplaneIcon title="Historikk" />}
           variant="primary"
           size="small"
-          className="max-h-8"
+          className="h-full max-h-10"
           onClick={handleButtonClick}
         />
       </HStack>

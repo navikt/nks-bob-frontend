@@ -16,7 +16,10 @@ function ChatDialog({ messages }: ChatDialogProps) {
 
   useEffect(() => {
     if (lastMessageRef.current) {
-      lastMessageRef.current.scrollIntoView({ behavior: "smooth" }); // sjekk om det kan være lurt å kjøre smooth på ny melding og instant når man henter alle
+      lastMessageRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      }); // sjekk om det kan være lurt å kjøre smooth på ny melding og instant når man henter alle
     }
   }, [messages]);
 
