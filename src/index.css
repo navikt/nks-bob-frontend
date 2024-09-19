@@ -3,20 +3,18 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-body {
-  height: auto;
-}
-
 .pagewrapper {
+  display: flex;
+  flex-direction: column;
   position: relative;
-  height: 100vh;
   width: 100%;
+  height: 100vh;
 }
 
 .contentwrapper {
   display: flex;
   position: relative;
-  height: 100vh;
+  height: 500px;
   width: 100%;
 }
 
@@ -24,7 +22,7 @@ body {
   display: flex;
   flex-direction: column;
   position: relative;
-  height: 100%;
+  height: auto;
   width: 100%;
   align-items: center;
   overflow-y: auto;
