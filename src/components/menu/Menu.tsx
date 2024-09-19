@@ -4,7 +4,7 @@ import "./Menu.css";
 
 function Menu() {
   return (
-    <div className="sticky top-0 min-h-16 w-full max-w-2xl bg-bg-default">
+    <div className="sticky top-0 z-10 min-h-16 w-full max-w-2xl bg-bg-subtle">
       <HStack justify="start" align="center" className="min-h-16">
         <HistorikkButton />
         <NewButton />

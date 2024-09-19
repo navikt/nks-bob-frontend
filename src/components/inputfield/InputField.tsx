@@ -45,11 +45,14 @@ function InputField({ onSend }: InputFieldProps) {
     if (inputValue.trim() !== "") {
       sendMessage();
       setInputValue("");
-    }
+    } 
   }
 
   return (
-    <VStack gap="4" className="sticky bottom-4 w-full max-w-2xl bg-bg-default">
+    <VStack
+      gap="4"
+      className="sticky pb-2 z-10 bottom-0 flex w-full max-w-2xl bg-bg-subtle"
+    >
       <HStack gap="2" align="end">
         <Textarea
           size="small"

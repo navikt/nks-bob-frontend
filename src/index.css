@@ -3,6 +3,10 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+body {
+    height: auto;
+}
+
 .pagewrapper {
     position: relative;
     height: 100vh;
@@ -11,6 +15,7 @@
 
 .contentwrapper {
     display: flex;
+    position: relative;
     height: 100%;
     width: 100%;
     overflow: hidden;
@@ -18,6 +23,7 @@
 
 .dialogwrapper {
     display: flex;
+    position: relative;
     height: 100%;
     width: 100%;
     overflow: scroll;
@@ -28,7 +34,8 @@
 .dialogcontentwrapper {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: auto;
     width: 100%;
     max-width: 42rem;
+    position: relative;
 }
