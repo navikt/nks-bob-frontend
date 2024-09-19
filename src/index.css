@@ -14,7 +14,7 @@
 .contentwrapper {
   display: flex;
   position: relative;
-  height: 500px;
+  height: 100%;
   width: 100%;
 }
 
