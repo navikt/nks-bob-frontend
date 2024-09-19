@@ -4,8 +4,8 @@ import { mockUser } from "./mockUser.ts";
 
 function Header() {
   return (
-    <InternalHeader className="fixed left-0 right-0 top-0 z-10 min-h-16 w-full">
-      <Link to="/">
+    <InternalHeader className="sticky left-0 right-0 top-0 z-10 h-16 w-full">
+      <Link to="/" className="items-center">
         <InternalHeader.Title as="h1">NKS-Bob</InternalHeader.Title>
       </Link>
       <Spacer />

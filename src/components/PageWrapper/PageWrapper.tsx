@@ -5,7 +5,9 @@ interface PageWrapperProps {
 }
 
 function PageWrapper({ children }: PageWrapperProps) {
-  return <div className="h-screen w-screen overflow-hidden">{children}</div>;
+  return (
+    <div className="relative h-screen w-screen overflow-hidden">{children}</div>
+  );
 }
 
 export default PageWrapper;

@@ -49,10 +49,7 @@ function InputField({ onSend }: InputFieldProps) {
   }
 
   return (
-    <VStack
-      gap="4"
-      className="fixed bottom-4 w-full max-w-2xl bg-bg-default px-4"
-    >
+    <VStack gap="4" className="sticky bottom-16 w-full max-w-2xl bg-bg-default">
       <HStack gap="2" align="end">
         <Textarea
           size="small"
