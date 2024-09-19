@@ -1,10 +1,10 @@
-import { Heading, Link } from "@navikt/ds-react";
-import * as ReactRouter from "react-router-dom";
-import { useConversations } from "../../api/api";
-import { Conversation } from "../../types/Message";
+import { Heading, Link } from "@navikt/ds-react"
+import * as ReactRouter from "react-router-dom"
+import { useConversations } from "../../api/api"
+import { Conversation } from "../../types/Message"
 
 function HistoryContent() {
-  const { conversations, isLoading } = useConversations();
+  const { conversations, isLoading } = useConversations()
 
   return (
     <div className="h-full w-full max-w-60 overflow-scroll bg-bg-subtle p-4 max-md:hidden">
@@ -24,7 +24,7 @@ function HistoryContent() {
         </ol>
       )}
     </div>
-  );
+  )
 }
 
 function ConversationLink({ conversation }: { conversation: Conversation }) {
@@ -32,7 +32,7 @@ function ConversationLink({ conversation }: { conversation: Conversation }) {
     <Link as={ReactRouter.Link} to={`/samtaler/${conversation.id}`}>
       {conversation.title}
     </Link>
-  );
+  )
 }
 
-export default HistoryContent;
+export default HistoryContent

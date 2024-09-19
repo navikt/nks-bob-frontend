@@ -1,8 +1,8 @@
-import { Chat, HStack } from "@navikt/ds-react";
+import { Chat, HStack } from "@navikt/ds-react"
 
-import Markdown from "react-markdown";
-import bobhead from "../../../assets/Bob-hode-svg.svg";
-import { Message } from "../../../types/Message";
+import Markdown from "react-markdown"
+import bobhead from "../../../assets/Bob-hode-svg.svg"
+import { Message } from "../../../types/Message"
 
 function BobAnswerBubble({ answer }: { answer: Message }) {
   return (
@@ -14,7 +14,7 @@ function BobAnswerBubble({ answer }: { answer: Message }) {
         </Chat.Bubble>
       </Chat>
     </HStack>
-  );
+  )
 }
 
-export default BobAnswerBubble;
+export default BobAnswerBubble

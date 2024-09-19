@@ -1,45 +1,45 @@
-export type MessageType = "question" | "answer";
+export type MessageType = "question" | "answer"
 
-export type MessageRole = "human" | "ai";
+export type MessageRole = "human" | "ai"
 
 export type Feedback = {
-  id: string;
-  liked: boolean;
-  createdAt: string;
-};
+  id: string
+  liked: boolean
+  createdAt: string
+}
 
 export type Citation = {
-  id: string;
-  text: string;
-  article: string;
-  title: string;
-  section: string;
-  createdAt: string;
-};
+  id: string
+  text: string
+  article: string
+  title: string
+  section: string
+  createdAt: string
+}
 
 export type NewMessage = {
-  content: string;
-};
+  content: string
+}
 
 export type Message = {
-  id: string;
-  content: string;
-  createdAt: string;
-  feedback: Feedback;
-  messageType: MessageType;
-  messageRole: MessageRole;
-  createdBy: string;
-  citations: Citation[];
-};
+  id: string
+  content: string
+  createdAt: string
+  feedback: Feedback
+  messageType: MessageType
+  messageRole: MessageRole
+  createdBy: string
+  citations: Citation[]
+}
 
 export type NewConversation = {
-  title: string;
-  initialMessage?: NewMessage;
-};
+  title: string
+  initialMessage?: NewMessage
+}
 
 export type Conversation = {
-  id: string;
-  title: string;
-  createdAt: string;
-  owner: string;
-};
+  id: string
+  title: string
+  createdAt: string
+  owner: string
+}

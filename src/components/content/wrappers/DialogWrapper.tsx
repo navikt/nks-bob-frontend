@@ -1,11 +1,11 @@
-import { ReactNode } from "react";
+import { ReactNode } from "react"
 
 interface DialogWrapperProps {
-  children: ReactNode;
+  children: ReactNode
 }
 
 function DialogWrapper({ children }: DialogWrapperProps) {
-  return <div className="dialogwrapper">{children}</div>;
+  return <div className="dialogwrapper">{children}</div>
 }
 
-export default DialogWrapper;
+export default DialogWrapper

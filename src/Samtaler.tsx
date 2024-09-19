@@ -1,13 +1,13 @@
-import { useParams } from "react-router-dom";
-import Content from "./components/content/Content.tsx";
+import { useParams } from "react-router-dom"
+import Content from "./components/content/Content.tsx"
 
 function Samtale() {
-  const { conversationId } = useParams();
+  const { conversationId } = useParams()
   return (
     <div className="pagewrapper">
       <Content conversationId={conversationId!} />
     </div>
-  );
+  )
 }
 
-export default Samtale;
+export default Samtale

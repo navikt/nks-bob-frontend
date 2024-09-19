@@ -1,8 +1,8 @@
-import { Chat } from "@navikt/ds-react";
-import { Message } from "../../../types/Message.ts";
+import { Chat } from "@navikt/ds-react"
+import { Message } from "../../../types/Message.ts"
 
 interface UserChatBubbleProps {
-  userQuestion?: Message;
+  userQuestion?: Message
 }
 
 function UserQuestionBubble({ userQuestion }: UserChatBubbleProps) {
@@ -14,7 +14,7 @@ function UserQuestionBubble({ userQuestion }: UserChatBubbleProps) {
         </Chat.Bubble>
       </Chat>
     </div>
-  );
+  )
 }
 
-export default UserQuestionBubble;
+export default UserQuestionBubble
