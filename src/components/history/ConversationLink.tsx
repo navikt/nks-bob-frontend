@@ -4,9 +4,10 @@ import { Conversation } from "../../types/Message.ts";
 
 interface ConversationLinkProps {
   conversation: Conversation;
+  loading: boolean;
 }
 
-function ConversationLink({ conversation }: ConversationLinkProps) {
+function ConversationLink({ conversation, loading }: ConversationLinkProps) {
   return (
     <Button
       size="small"
@@ -14,6 +15,7 @@ function ConversationLink({ conversation }: ConversationLinkProps) {
       as={ReactRouter.Link}
       to={`/samtaler/${conversation.id}`}
       className="flex grow justify-start"
+      loading={loading}
     >
       <BodyShort size="small">{conversation.title}</BodyShort>
     </Button>
