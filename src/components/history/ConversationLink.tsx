@@ -2,7 +2,6 @@ import { BodyShort, Button } from "@navikt/ds-react";
 import * as ReactRouter from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { Conversation } from "../../types/Message.ts";
-import DeleteConversation from "./DeleteConversation.tsx";
 
 interface ConversationLinkProps {
   conversation: Conversation;
@@ -29,7 +28,6 @@ function ConversationLink({ conversation, loading }: ConversationLinkProps) {
           {conversation.title}
         </BodyShort>
       </Button>
-      <DeleteConversation conversationId={conversation.id} />
     </div>
   );
 }
