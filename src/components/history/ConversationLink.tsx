@@ -5,10 +5,9 @@ import { Conversation } from "../../types/Message.ts";
 
 interface ConversationLinkProps {
   conversation: Conversation;
-  loading: boolean;
 }
 
-function ConversationLink({ conversation, loading }: ConversationLinkProps) {
+function ConversationLink({ conversation }: ConversationLinkProps) {
   const location = useLocation();
   const isActive = location.pathname === `/samtaler/${conversation.id}`;
 
@@ -22,7 +21,6 @@ function ConversationLink({ conversation, loading }: ConversationLinkProps) {
         className={`flex grow justify-start ${
           isActive ? "bg-surface-neutral-subtle" : ""
         }`}
-        loading={loading}
       >
         <BodyShort size="small" weight={isActive ? "semibold" : "regular"}>
           {conversation.title}

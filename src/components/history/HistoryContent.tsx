@@ -19,7 +19,6 @@ function HistoryContent() {
               <li key={conversation.id}>
                 <ConversationLink
                   conversation={conversation}
-                  loading={isLoading}
                 />
               </li>
             ))}
