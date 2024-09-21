@@ -34,3 +34,7 @@
   max-width: 42rem;
   padding-inline: 1rem;
 }
+
+.unset {
+  all: unset;
+}

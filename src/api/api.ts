@@ -10,10 +10,10 @@ async function fetcher<JSON = any>(
 ): Promise<JSON> {
   const res = await fetch(`${API_URL}${input}`, {
     ...init,
-    credentials: "include",
+    // credentials: "include",
     headers: {
       ...init?.headers,
-      // Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
+      Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
     },
   })
   return res.json()

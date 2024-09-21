@@ -1,39 +1,31 @@
-import { Heading, Link } from "@navikt/ds-react"
-import * as ReactRouter from "react-router-dom"
-
-import { useConversations } from "../../api/api"
-import { Conversation } from "../../types/Message"
+import { Heading } from "@navikt/ds-react";
+import { useConversations } from "../../api/api";
+import ConversationLink from "./ConversationLink.tsx";
 
 function HistoryContent() {
-  const { conversations, isLoading } = useConversations()
+  const { conversations, isLoading } = useConversations();
 
   return (
-    <div className="h-full w-full max-w-60 overflow-scroll bg-bg-subtle p-4 max-md:hidden">
-      <Heading size="small" className="mb-6 pt-2">
+    <div className="h-full w-full max-w-60 overflow-scroll bg-bg-subtle p-3 max-md:hidden">
+      <Heading size="small" className="mb-6 pl-3 pt-2">
         Dine samtaler
       </Heading>
       {conversations && conversations.length > 0 && !isLoading && (
-        <ol className="w-full list-none">
+        <ol className="flex w-full list-none flex-col gap-0.5">
           {conversations
             .slice()
             .reverse()
             .map((conversation) => (
               <li key={conversation.id}>
-                <ConversationLink conversation={conversation} />
+                <ConversationLink
+                  conversation={conversation}
+                />
               </li>
             ))}
         </ol>
       )}
     </div>
-  )
+  );
 }
 
-function ConversationLink({ conversation }: { conversation: Conversation }) {
-  return (
-    <Link as={ReactRouter.Link} to={`/samtaler/${conversation.id}`}>
-      {conversation.title}
-    </Link>
-  )
-}
-
-export default HistoryContent
+export default HistoryContent;
