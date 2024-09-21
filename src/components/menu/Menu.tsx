@@ -2,8 +2,6 @@ import { HStack } from "@navikt/ds-react"
 
 import { HistorikkButton, NewButton } from "./Buttons"
 
-import "./Menu.css"
-
 function Menu() {
   return (
     <div className="dialogcontent sticky top-0 z-10 flex min-h-16 bg-bg-default">
