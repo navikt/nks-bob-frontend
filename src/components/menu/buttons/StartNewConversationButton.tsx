@@ -1,21 +1,8 @@
-import { ClockDashedIcon, NotePencilIcon } from "@navikt/aksel-icons"
+import { NotePencilIcon } from "@navikt/aksel-icons"
 import { Button } from "@navikt/ds-react"
 import { Link } from "react-router-dom"
 
-export const HistorikkButton = () => {
-  return (
-    <>
-      <Button
-        variant="tertiary"
-        size="medium"
-        icon={<ClockDashedIcon aria-hidden />}
-        className="mr-2 md:hidden"
-      ></Button>
-    </>
-  )
-}
-
-export const NewButton = () => {
+const StartNewConversationButton = () => {
   return (
     <>
       <Link to="/">
@@ -39,3 +26,5 @@ export const NewButton = () => {
     </>
   )
 }
+
+export default StartNewConversationButton
