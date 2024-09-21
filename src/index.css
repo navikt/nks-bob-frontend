@@ -3,16 +3,6 @@
 @import "tailwindcss/utilities";
 @import "@navikt/ds-css";
 
-.dialogwrapper {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  height: auto;
-  width: 100%;
-  align-items: center;
-  overflow-y: auto;
-}
-
 .dialogcontent {
   display: flex;
   width: 100%;
