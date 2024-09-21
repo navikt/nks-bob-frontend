@@ -52,7 +52,7 @@ function InputField({ onSend }: InputFieldProps) {
   return (
     <VStack
       gap="4"
-      className="dialogcontent sticky bottom-0 z-10 flex bg-bg-default pb-2"
+      className="dialogcontent sticky bottom-0 z-10 bg-bg-default pb-2"
     >
       <HStack gap="2" align="end">
         <Textarea

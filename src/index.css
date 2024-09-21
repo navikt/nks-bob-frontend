@@ -6,9 +6,8 @@
 .dialogcontent {
   display: flex;
   width: 100%;
-  max-width: 42rem;
+  max-width: 42rem; /* TODO: Ønskes denne bredden for Menu?*/
   padding-inline: 1rem;
-  background: aquamarine;
 }
 
 .unset {
