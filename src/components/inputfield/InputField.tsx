@@ -11,8 +11,6 @@ import { useState } from "react"
 
 import { NewMessage } from "../../types/Message"
 
-import "./InputField.css"
-
 interface InputFieldProps {
   onSend: (message: NewMessage) => void
 }

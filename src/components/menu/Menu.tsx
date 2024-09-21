@@ -5,7 +5,7 @@ import { HistorikkButton, NewButton } from "./Buttons"
 function Menu() {
   return (
     <div className="dialogcontent sticky top-0 z-10 min-h-16 bg-bg-default">
-      <HStack justify="start" align="center" className="min-h-16">
+      <HStack justify="start" align="center">
         <HistorikkButton />
         <NewButton />
       </HStack>
