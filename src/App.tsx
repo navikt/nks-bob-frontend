@@ -1,9 +1,9 @@
-import NewConversationContent from "./components/content/NewConversationContent"
+import { Outlet } from "react-router-dom"
 
 function App() {
   return (
     <div className="pagewrapper">
-      <NewConversationContent />
+      <Outlet />
     </div>
   )
 }

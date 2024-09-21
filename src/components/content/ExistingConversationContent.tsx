@@ -1,3 +1,4 @@
+import { useParams } from "react-router-dom"
 import { useMessages, useSendMessage } from "../../api/api"
 import { NewMessage } from "../../types/Message"
 import HistoryContent from "../history/HistoryContent"
@@ -8,13 +9,11 @@ import ChatDialog from "./ChatDialog"
 import ContentWrapper from "./wrappers/ContentWrapper"
 import DialogWrapper from "./wrappers/DialogWrapper"
 
-function ExistingConversationContent({
-  conversationId,
-}: {
-  conversationId: string
-}) {
-  const { messages, isLoading } = useMessages(conversationId)
-  const { sendMessage } = useSendMessage(conversationId)
+function ExistingConversationContent() {
+  const { conversationId } = useParams()
+
+  const { messages, isLoading } = useMessages(conversationId!)
+  const { sendMessage } = useSendMessage(conversationId!)
 
   function handleUserMessage(message: NewMessage) {
     sendMessage(message, {
@@ -35,7 +34,7 @@ function ExistingConversationContent({
         {isLoading || !messages || messages.length < 0 ? (
           <BobPlaceHolder />
         ) : (
-          <ChatDialog messages={messages} conversationId={conversationId} />
+          <ChatDialog messages={messages} conversationId={conversationId!} />
         )}
         <InputField onSend={handleUserMessage} />
       </DialogWrapper>
