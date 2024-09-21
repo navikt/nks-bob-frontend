@@ -1,12 +1,12 @@
 import { useParams } from "react-router-dom"
 
-import Content from "./components/content/Content"
+import ExistingConversationContent from "./components/content/ExistingConversationContent"
 
 function Samtale() {
   const { conversationId } = useParams()
   return (
     <div className="pagewrapper">
-      <Content conversationId={conversationId!} />
+      <ExistingConversationContent conversationId={conversationId!} />
     </div>
   )
 }

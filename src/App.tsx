@@ -1,9 +1,9 @@
-import Content from "./components/content/Content"
+import NewConversationContent from "./components/content/NewConversationContent"
 
 function App() {
   return (
     <div className="pagewrapper">
-      <Content />
+      <NewConversationContent />
     </div>
   )
 }
