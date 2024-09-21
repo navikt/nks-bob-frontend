@@ -1,12 +1,14 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+
 import { useCreateConversation } from "../../api/api"
 import { Message, NewConversation, NewMessage } from "../../types/Message"
-import HistoryContent from "../history/HistoryContent"
+import HistorySidebar from "../history/HistorySidebar"
 import InputField from "../inputfield/InputField"
 import Menu from "../menu/Menu"
 import BobPlaceHolder from "./BobPlaceHolder"
 import ChatDialog from "./ChatDialog"
+import ContentWrapper from "./wrappers/ContentWrapper"
 import DialogWrapper from "./wrappers/DialogWrapper"
 
 function NewConversationContent() {
@@ -38,8 +40,8 @@ function NewConversationContent() {
   }
 
   return (
-    <div className="contentwrapper">
-      <HistoryContent />
+    <ContentWrapper>
+      <HistorySidebar />
       <DialogWrapper>
         <Menu />
         {messagePlaceholders.length === 0 && <BobPlaceHolder />}
@@ -51,7 +53,7 @@ function NewConversationContent() {
         )}
         <InputField onSend={handleUserMessage} />
       </DialogWrapper>
-    </div>
+    </ContentWrapper>
   )
 }
 

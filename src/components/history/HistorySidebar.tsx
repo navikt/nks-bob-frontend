@@ -1,9 +1,10 @@
-import { Heading } from "@navikt/ds-react";
-import { useConversations } from "../../api/api";
-import ConversationLink from "./ConversationLink.tsx";
+import { Heading } from "@navikt/ds-react"
 
-function HistoryContent() {
-  const { conversations, isLoading } = useConversations();
+import { useConversations } from "../../api/api"
+import ConversationLink from "./ConversationLink.tsx"
+
+function HistorySidebar() {
+  const { conversations, isLoading } = useConversations()
 
   return (
     <div className="h-full w-full max-w-60 overflow-scroll bg-bg-subtle p-3 max-md:hidden">
@@ -17,15 +18,13 @@ function HistoryContent() {
             .reverse()
             .map((conversation) => (
               <li key={conversation.id}>
-                <ConversationLink
-                  conversation={conversation}
-                />
+                <ConversationLink conversation={conversation} />
               </li>
             ))}
         </ol>
       )}
     </div>
-  );
+  )
 }
 
-export default HistoryContent;
+export default HistorySidebar

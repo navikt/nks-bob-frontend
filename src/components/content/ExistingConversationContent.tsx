@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom"
 import { useMessages, useSendMessage } from "../../api/api"
 import { NewMessage } from "../../types/Message"
-import HistoryContent from "../history/HistoryContent"
+import HistorySidebar from "../history/HistorySidebar"
 import InputField from "../inputfield/InputField"
 import Menu from "../menu/Menu"
 import BobPlaceHolder from "./BobPlaceHolder"
@@ -28,7 +28,7 @@ function ExistingConversationContent() {
 
   return (
     <ContentWrapper>
-      <HistoryContent />
+      <HistorySidebar />
       <DialogWrapper>
         <Menu />
         {isLoading || !messages || messages.length < 0 ? (
