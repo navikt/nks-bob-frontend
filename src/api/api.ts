@@ -33,6 +33,29 @@ async function poster<Body, Response>(
   });
 }
 
+async function deleter<Response>(url: string): Promise<Response> {
+  return fetcher(url, {
+    method: "DELETE",
+    headers: {
+      Accept: "application/json",
+    },
+  });
+}
+
+export const useDeleteConversation = (conversationId: string) => {
+  const { trigger, data, error, isMutating } = useSWRMutation(
+    `/api/v1/conversations/${conversationId}`,
+    deleter,
+  );
+
+  return {
+    deleteConversation: trigger,
+    data,
+    error,
+    isMutating,
+  };
+};
+
 export const useMessages = (conversationId: string) => {
   const {
     data: messages,
