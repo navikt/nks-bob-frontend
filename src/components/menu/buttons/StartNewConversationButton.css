@@ -1,0 +1,7 @@
+@media (max-width: 768px) {
+    .StartNewConversationButton {
+        .navds-label {
+            display: none;
+        }
+    }
+}
