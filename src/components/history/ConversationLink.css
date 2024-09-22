@@ -1,6 +1,13 @@
-.text-overflow {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 200px;
+.ConversationLink {
+    .ConversationLink__button.navds-button {
+        display: block;
+    }
+
+    .ConversationLink__button--text-overflow {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 200px;
+    }
 }
+

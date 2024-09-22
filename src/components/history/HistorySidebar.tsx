@@ -3,6 +3,8 @@ import { Heading } from "@navikt/ds-react"
 import { Conversation } from "../../types/message"
 import ConversationLink from "./ConversationLink"
 
+import "./HistorySidebar.css"
+
 function HistorySidebar() {
   //const { conversations, isLoading } = useConversations()
 
@@ -28,8 +30,8 @@ function HistorySidebar() {
   /*********************************************/
 
   return (
-    <div className="h-full w-full max-w-60 overflow-scroll bg-bg-subtle p-3 max-md:hidden">
-      <Heading size="small" className="mb-6 pl-3 pt-2">
+    <div className="HistorySidebar h-full w-full max-w-60 overflow-scroll bg-bg-subtle p-3 max-md:hidden">
+      <Heading size="small" className="HistorySidebar__heading pl-3 pt-2">
         Dine samtaler
       </Heading>
 
