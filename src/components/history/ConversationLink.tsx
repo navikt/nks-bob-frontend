@@ -5,6 +5,8 @@ import { useLocation } from "react-router-dom"
 
 import { Conversation } from "../../types/message.ts"
 
+import "./ConversationLink.css"
+
 interface ConversationLinkProps {
   conversation: Conversation
 }
@@ -24,7 +26,11 @@ function ConversationLink({ conversation }: ConversationLinkProps) {
           "bg-surface-neutral-subtle": isActive,
         })}
       >
-        <BodyShort size="small" weight={isActive ? "semibold" : "regular"}>
+        <BodyShort
+          size="small"
+          weight={isActive ? "semibold" : "regular"}
+          className="text-overflow"
+        >
           {conversation.title}
         </BodyShort>
       </Button>

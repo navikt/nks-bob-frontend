@@ -1,4 +1,4 @@
-import { BodyLong, ExpansionCard } from "@navikt/ds-react";
+import { Box, Heading } from "@navikt/ds-react";
 
 interface BobAnswerCitationProps {
   citation: {
@@ -9,16 +9,10 @@ interface BobAnswerCitationProps {
 
 function BobAnswerCitation({ citation }: BobAnswerCitationProps) {
   return (
-    <ExpansionCard size="small" aria-label="Sitat fra kunnskapsbasen">
-      <ExpansionCard.Header>
-        <ExpansionCard.Title as="h4" size="small">
-          {citation.title}
-        </ExpansionCard.Title>
-      </ExpansionCard.Header>
-      <ExpansionCard.Content>
-        <BodyLong>{citation.text}</BodyLong>
-      </ExpansionCard.Content>
-    </ExpansionCard>
+    <Box padding="4" className="flex flex-col gap-2 bg-bg-subtle">
+      <Heading size="xsmall">{citation.title}</Heading>
+      {citation.text}
+    </Box>
   );
 }
 
