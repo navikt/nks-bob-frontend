@@ -12,7 +12,9 @@ function BobAnswerCitation({ citation }: BobAnswerCitationProps) {
     <div className="grid gap-6">
       <ExpansionCard size="small" aria-label="Small-variant">
         <ExpansionCard.Header>
-          <ExpansionCard.Title>{citation.title}</ExpansionCard.Title>
+          <ExpansionCard.Title size="small">
+            {citation.title}
+          </ExpansionCard.Title>
         </ExpansionCard.Header>
         <ExpansionCard.Content>
           <BodyLong>{citation.text}</BodyLong>
