@@ -19,11 +19,12 @@ import DialogWrapper from "./wrappers/DialogWrapper"
 function NewConversationContent() {
   const { createConversation } = useCreateConversation()
   const navigate = useNavigate()
+
   const [messagePlaceholders, setMessagePlaceholders] = useState<
     Partial<Message>[]
   >([])
 
-  function handleUserMessage(message: NewMessage) {
+  const handleUserMessage = (message: NewMessage) => {
     const newConversation: NewConversation = {
       title: message.content,
       initialMessage: { content: message.content },
@@ -49,8 +50,9 @@ function NewConversationContent() {
       <HistorySidebar />
       <DialogWrapper>
         <Menu />
-        {messagePlaceholders.length === 0 && <BobPlaceHolder />}
-        {messagePlaceholders.length !== 0 && (
+        {messagePlaceholders.length === 0 ? (
+          <BobPlaceHolder />
+        ) : (
           <ChatDialog
             messages={messagePlaceholders as Message[]}
             conversationId={"unknown"}

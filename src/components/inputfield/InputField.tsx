@@ -7,7 +7,8 @@ import {
   Textarea,
   VStack,
 } from "@navikt/ds-react"
-import { useState } from "react"
+import React, { useState } from "react"
+
 import { NewMessage } from "../../types/message"
 
 interface InputFieldProps {
@@ -15,7 +16,6 @@ interface InputFieldProps {
 }
 
 function InputField({ onSend }: InputFieldProps) {
-  const placeholderText = "Spør Bob om noe"
   const [inputValue, setInputValue] = useState<string>("")
 
   function sendMessage() {
@@ -25,31 +25,26 @@ function InputField({ onSend }: InputFieldProps) {
     onSend(message)
   }
 
-  function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    setInputValue(e.target.value)
-  }
-
-  function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
-    if (e.key === "Enter") {
-      if (!e.shiftKey) {
-        e.preventDefault()
-        sendMessage()
-        setInputValue("")
-      }
-    }
-  }
-
-  function handleButtonClick() {
+  const sendMessageAndResetInput = () => {
     if (inputValue.trim() !== "") {
       sendMessage()
       setInputValue("")
     }
   }
 
+  function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
+    if (e.key === "Enter") {
+      if (!e.shiftKey) {
+        e.preventDefault()
+        sendMessageAndResetInput()
+      }
+    }
+  }
+
   return (
     <VStack
       gap="4"
-      className="dialogcontent sticky bottom-0 z-10 bg-bg-default pb-2"
+      className="dialogcontent sticky bottom-0 z-10 bg-bg-default pb-3"
     >
       <HStack gap="2" align="end">
         <Textarea
@@ -59,17 +54,17 @@ function InputField({ onSend }: InputFieldProps) {
           className="flex-grow"
           minRows={1}
           maxRows={10}
-          placeholder={placeholderText}
+          placeholder="Spør Bob om noe"
           value={inputValue}
-          onChange={handleInputChange}
+          onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}
         />
         <Button
-          icon={<PaperplaneIcon title="Historikk" />}
+          icon={<PaperplaneIcon title="Send spørsmål" />}
           variant="primary"
           size="small"
           className="h-full max-h-10"
-          onClick={handleButtonClick}
+          onClick={sendMessageAndResetInput}
         />
       </HStack>
       <BodyShort size="small" align="center" className="max-sm:hidden">
