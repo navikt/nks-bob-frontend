@@ -17,14 +17,14 @@ function BobAnswerBubble({ answer }: { answer: Message }) {
         </Chat>
       </HStack>
       {answer.citations?.length > 0 && (
-        <div className="ml-16">
+        <VStack gap="3" align="stretch" className="pl-16">
           <Heading as="h5" size="xsmall">
             Referanser
           </Heading>
           {answer.citations.map((citation) => (
             <BobAnswerCitation citation={citation} key={citation.id} />
           ))}
-        </div>
+        </VStack>
       )}
     </VStack>
   );
