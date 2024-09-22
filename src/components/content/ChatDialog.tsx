@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react"
 
-import { Message, MessageRole } from "../../types/Message"
+import { Message, MessageRole } from "../../types/message"
 import BobAnswerBubble from "./chatbubbles/BobAnswerBubble"
 import UserQuestionBubble from "./chatbubbles/UserQuestionBubble"
 

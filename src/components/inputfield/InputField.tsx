@@ -8,8 +8,7 @@ import {
   VStack,
 } from "@navikt/ds-react"
 import { useState } from "react"
-
-import { NewMessage } from "../../types/Message"
+import { NewMessage } from "../../types/message"
 
 interface InputFieldProps {
   onSend: (message: NewMessage) => void

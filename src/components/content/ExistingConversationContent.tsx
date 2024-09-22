@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom"
 import { useMessages, useSendMessage } from "../../api/api"
-import { MessageRole, NewMessage } from "../../types/Message"
+import { MessageRole, NewMessage } from "../../types/message"
 import HistorySidebar from "../history/HistorySidebar"
 import InputField from "../inputfield/InputField"
 import Menu from "../menu/Menu"

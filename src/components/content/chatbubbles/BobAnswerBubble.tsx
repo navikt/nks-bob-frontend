@@ -2,7 +2,7 @@ import { Chat, HStack } from "@navikt/ds-react"
 
 import Markdown from "react-markdown"
 import bobhead from "../../../assets/Bob-hode-svg.svg"
-import { Message } from "../../../types/Message"
+import { Message } from "../../../types/message"
 
 function BobAnswerBubble({ answer }: { answer: Message }) {
   return (

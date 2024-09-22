@@ -7,7 +7,7 @@ import {
   MessageRole,
   NewConversation,
   NewMessage,
-} from "../../types/Message"
+} from "../../types/message"
 import HistorySidebar from "../history/HistorySidebar"
 import InputField from "../inputfield/InputField"
 import Menu from "../menu/Menu"
