@@ -1,14 +1,20 @@
-export type MessageType = "question" | "answer"
+export enum MessageType {
+  Question = "question",
+  Answer = "answer",
+}
 
-export type MessageRole = "human" | "ai"
+export enum MessageRole {
+  Human = "human",
+  AI = "ai",
+}
 
-export type Feedback = {
+export interface Feedback {
   id: string
   liked: boolean
   createdAt: string
 }
 
-export type Citation = {
+export interface Citation {
   id: string
   text: string
   article: string
@@ -17,11 +23,11 @@ export type Citation = {
   createdAt: string
 }
 
-export type NewMessage = {
+export interface NewMessage {
   content: string
 }
 
-export type Message = {
+export interface Message {
   id: string
   content: string
   createdAt: string
@@ -32,12 +38,12 @@ export type Message = {
   citations: Citation[]
 }
 
-export type NewConversation = {
+export interface NewConversation {
   title: string
   initialMessage?: NewMessage
 }
 
-export type Conversation = {
+export interface Conversation {
   id: string
   title: string
   createdAt: string

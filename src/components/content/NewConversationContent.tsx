@@ -2,7 +2,12 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 import { useCreateConversation } from "../../api/api"
-import { Message, NewConversation, NewMessage } from "../../types/Message"
+import {
+  Message,
+  MessageRole,
+  NewConversation,
+  NewMessage,
+} from "../../types/Message"
 import HistorySidebar from "../history/HistorySidebar"
 import InputField from "../inputfield/InputField"
 import Menu from "../menu/Menu"
@@ -25,8 +30,8 @@ function NewConversationContent() {
     }
 
     setMessagePlaceholders([
-      { content: message.content, messageRole: "human" },
-      { content: " ", messageRole: "ai" }, // TODO loading tekst/komponent.
+      { content: message.content, messageRole: MessageRole.Human },
+      { content: " ", messageRole: MessageRole.AI }, // TODO loading tekst/komponent.
     ])
     createConversation(newConversation)
       .then((conversation) => {

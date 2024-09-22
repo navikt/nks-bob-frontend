@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom"
 import { useMessages, useSendMessage } from "../../api/api"
-import { NewMessage } from "../../types/Message"
+import { MessageRole, NewMessage } from "../../types/Message"
 import HistorySidebar from "../history/HistorySidebar"
 import InputField from "../inputfield/InputField"
 import Menu from "../menu/Menu"
@@ -19,8 +19,8 @@ function ExistingConversationContent() {
     sendMessage(message, {
       optimisticData: [
         ...(messages ?? []),
-        { content: message.content, messageRole: "human" },
-        { content: " ", messageRole: "ai" }, // TODO loading tekst/komponent.
+        { content: message.content, messageRole: MessageRole.Human },
+        { content: " ", messageRole: MessageRole.AI }, // TODO loading tekst/komponent.
       ],
       rollbackOnError: true, // TODO default svar fra Bob hvis KBS ikke svarer.
     })

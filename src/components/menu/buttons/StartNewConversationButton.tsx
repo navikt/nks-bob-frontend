@@ -6,18 +6,16 @@ import "./StartNewConversationButton.css"
 
 const StartNewConversationButton = () => {
   return (
-    <>
-      <Link to="/">
-        <Button
-          variant="tertiary"
-          size="medium"
-          icon={<NotePencilIcon aria-hidden />}
-          className="StartNewConversationButton"
-        >
-          Ny chat
-        </Button>
-      </Link>
-    </>
+    <Link to="/">
+      <Button
+        variant="tertiary"
+        size="medium"
+        icon={<NotePencilIcon aria-hidden />}
+        className="StartNewConversationButton"
+      >
+        Ny chat
+      </Button>
+    </Link>
   )
 }
 

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react"
 
-import { Message } from "../../types/Message"
+import { Message, MessageRole } from "../../types/Message"
 import BobAnswerBubble from "./chatbubbles/BobAnswerBubble"
 import UserQuestionBubble from "./chatbubbles/UserQuestionBubble"
 
@@ -27,7 +27,7 @@ function ChatDialog({ messages }: ChatDialogProps) {
   return (
     <div className="dialogcontent h-auto grow flex-col gap-8">
       {messages.map((message) =>
-        message.messageRole === "human" ? (
+        message.messageRole === MessageRole.Human ? (
           <UserQuestionBubble key={message.id} userQuestion={message} />
         ) : (
           <BobAnswerBubble key={message.id} answer={message} />
