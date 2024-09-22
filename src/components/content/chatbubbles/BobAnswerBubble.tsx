@@ -7,7 +7,7 @@ import BobAnswerCitation from "./BobAnswerCitation.tsx";
 
 function BobAnswerBubble({ answer }: { answer: Message }) {
   return (
-    <VStack gap="3" align="stretch">
+    <VStack gap="10" align="stretch">
       <HStack gap="3" align="end" wrap={false} width="full">
         <img src={Bobhead} alt="Bob" width="50px" className="hidehead" />
         <Chat variant="info" className="flex w-full">
@@ -16,12 +16,16 @@ function BobAnswerBubble({ answer }: { answer: Message }) {
           </Chat.Bubble>
         </Chat>
       </HStack>
-      <div>
-        <Heading size="small">Referanser</Heading>
-        {answer.citations?.map((citation) => (
-          <BobAnswerCitation citation={citation} key={citation.id} />
-        ))}
-      </div>
+      {answer.citations?.length > 0 && (
+        <div className="ml-16">
+          <Heading as="h5" size="xsmall">
+            Referanser
+          </Heading>
+          {answer.citations.map((citation) => (
+            <BobAnswerCitation citation={citation} key={citation.id} />
+          ))}
+        </div>
+      )}
     </VStack>
   );
 }
