@@ -8,9 +8,6 @@ interface ChatDialogProps {
   messages: Message[];
 }
 
-// Husk funksjon for at man må vente til Bob
-// har svart før man kan sende ny message.
-
 function ChatDialog({ messages }: ChatDialogProps) {
   const lastMessageRef = useRef<HTMLDivElement | null>(null);
 

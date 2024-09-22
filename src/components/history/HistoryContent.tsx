@@ -17,9 +17,7 @@ function HistoryContent() {
             .reverse()
             .map((conversation) => (
               <li key={conversation.id}>
-                <ConversationLink
-                  conversation={conversation}
-                />
+                <ConversationLink conversation={conversation} />
               </li>
             ))}
         </ol>
