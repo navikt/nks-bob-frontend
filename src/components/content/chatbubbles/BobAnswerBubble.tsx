@@ -7,19 +7,19 @@ import BobAnswerCitation from "./BobAnswerCitation.tsx";
 
 function BobAnswerBubble({ answer }: { answer: Message }) {
   return (
-    <HStack gap="3" align="end" wrap={false} width="full">
-      <img src={Bobhead} alt="Bob" width="50px" className="hidehead" />
-      <Chat variant="info" className="flex w-full">
-        <VStack>
+    <VStack>
+      <HStack gap="3" align="end" wrap={false} width="full">
+        <img src={Bobhead} alt="Bob" width="50px" className="hidehead" />
+        <Chat variant="info" className="flex w-full">
           <Chat.Bubble>
             <Markdown>{answer.content}</Markdown>
           </Chat.Bubble>
-          {answer.citations.map((citation) => (
-            <BobAnswerCitation citation={citation} key={citation.id} />
-          ))}
-        </VStack>
-      </Chat>
-    </HStack>
+        </Chat>
+      </HStack>
+      {answer.citations?.map((citation) => (
+        <BobAnswerCitation citation={citation} key={citation.id} />
+      ))}
+    </VStack>
   );
 }
 
