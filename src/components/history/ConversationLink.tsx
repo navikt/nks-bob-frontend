@@ -1,6 +1,8 @@
 import { BodyShort, Button } from "@navikt/ds-react"
+import clsx from "clsx"
 import * as ReactRouter from "react-router-dom"
 import { useLocation } from "react-router-dom"
+
 import { Conversation } from "../../types/message.ts"
 
 interface ConversationLinkProps {
@@ -18,9 +20,9 @@ function ConversationLink({ conversation }: ConversationLinkProps) {
         variant="tertiary-neutral"
         as={ReactRouter.Link}
         to={`/samtaler/${conversation.id}`}
-        className={`flex grow justify-start ${
-          isActive ? "bg-surface-neutral-subtle" : ""
-        }`}
+        className={clsx("flex grow justify-start", {
+          "bg-surface-neutral-subtle": isActive,
+        })}
       >
         <BodyShort size="small" weight={isActive ? "semibold" : "regular"}>
           {conversation.title}

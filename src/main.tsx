@@ -18,7 +18,7 @@ const router = createBrowserRouter(
     <Route path="/" element={<App />}>
       <Route index element={<NewConversationContent />} />
       <Route
-        path="/samtaler/:conversationId"
+        path="samtaler/:conversationId"
         element={<ExistingConversationContent />}
       />
     </Route>,
