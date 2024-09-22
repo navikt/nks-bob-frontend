@@ -1,4 +1,4 @@
-import { Chat, HStack, VStack } from "@navikt/ds-react";
+import { Chat, Heading, HStack, VStack } from "@navikt/ds-react";
 
 import Markdown from "react-markdown";
 import Bobhead from "../../../assets/Bob-hode-svg.svg";
@@ -7,7 +7,7 @@ import BobAnswerCitation from "./BobAnswerCitation.tsx";
 
 function BobAnswerBubble({ answer }: { answer: Message }) {
   return (
-    <VStack>
+    <VStack gap="3" align="stretch">
       <HStack gap="3" align="end" wrap={false} width="full">
         <img src={Bobhead} alt="Bob" width="50px" className="hidehead" />
         <Chat variant="info" className="flex w-full">
@@ -16,9 +16,12 @@ function BobAnswerBubble({ answer }: { answer: Message }) {
           </Chat.Bubble>
         </Chat>
       </HStack>
-      {answer.citations?.map((citation) => (
-        <BobAnswerCitation citation={citation} key={citation.id} />
-      ))}
+      <div>
+        <Heading size="small">Referanser</Heading>
+        {answer.citations?.map((citation) => (
+          <BobAnswerCitation citation={citation} key={citation.id} />
+        ))}
+      </div>
     </VStack>
   );
 }
