@@ -1,8 +1,8 @@
 import { Heading } from "@navikt/ds-react";
 import { useConversations } from "../../api/api";
-import ConversationLink from "./ConversationLink.tsx";
+import ConversationLink from "./conversationlink/ConversationLink.tsx";
 
-function HistoryContent() {
+function HistorySidebar() {
   const { conversations, isLoading } = useConversations();
 
   return (
@@ -26,4 +26,4 @@ function HistoryContent() {
   );
 }
 
-export default HistoryContent;
+export default HistorySidebar;

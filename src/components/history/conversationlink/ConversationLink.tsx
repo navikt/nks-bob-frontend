@@ -1,7 +1,7 @@
 import { BodyShort, Button } from "@navikt/ds-react";
 import * as ReactRouter from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import { Conversation } from "../../types/Message.ts";
+import { Conversation } from "../../../types/Message.ts";
 import "./ConversationLink.css";
 
 interface ConversationLinkProps {

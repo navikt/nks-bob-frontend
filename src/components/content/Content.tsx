@@ -1,4 +1,4 @@
-import HistoryContent from "../history/HistoryContent.tsx";
+import HistoryContent from "../history/HistorySidebar.tsx";
 import InputField from "../inputfield/InputField.tsx";
 import Menu from "../menu/Menu.tsx";
 import BobPlaceHolder from "./BobPlaceHolder.tsx";
