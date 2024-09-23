@@ -8,15 +8,6 @@ export type Feedback = {
   createdAt: string;
 };
 
-export type Citation = {
-  id: string;
-  text: string;
-  article: string;
-  title: string;
-  section: string;
-  createdAt: string;
-};
-
 export type NewMessage = {
   content: string;
 };
@@ -30,6 +21,15 @@ export type Message = {
   messageRole: MessageRole;
   createdBy: string;
   citations: Citation[];
+};
+
+export type Citation = {
+  id: string;
+  text: string;
+  article: string;
+  title: string;
+  section: string;
+  createdAt: string;
 };
 
 export type NewConversation = {

@@ -1,4 +1,4 @@
-import { Box, Heading } from "@navikt/ds-react";
+import { BodyShort, Box, Heading } from "@navikt/ds-react";
 
 interface BobAnswerCitationProps {
   citation: {
@@ -11,7 +11,7 @@ function BobAnswerCitation({ citation }: BobAnswerCitationProps) {
   return (
     <Box padding="4" className="flex flex-col gap-2 bg-bg-subtle">
       <Heading size="xsmall">{citation.title}</Heading>
-      {citation.text}
+      <BodyShort className="italic">{citation.text}</BodyShort>
     </Box>
   );
 }

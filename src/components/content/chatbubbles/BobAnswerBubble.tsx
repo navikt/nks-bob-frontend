@@ -5,7 +5,11 @@ import Bobhead from "../../../assets/Bob-hode-svg.svg";
 import { Message } from "../../../types/Message";
 import BobAnswerCitation from "./BobAnswerCitation.tsx";
 
-function BobAnswerBubble({ answer }: { answer: Message }) {
+interface BobAnswerBubbleProps {
+  answer: Message;
+}
+
+function BobAnswerBubble({ answer }: BobAnswerBubbleProps) {
   return (
     <VStack gap="10" align="stretch">
       <HStack gap="3" align="end" wrap={false} width="full">
