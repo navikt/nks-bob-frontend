@@ -1,9 +1,9 @@
 import { Heading } from "@navikt/ds-react"
 
 import { useConversations } from "../../api/api"
-import ConversationLink from "./ConversationLink"
 
 import "./HistorySidebar.css"
+import ConversationLink from "./conversationlink/ConversationLink"
 
 function HistorySidebar() {
   const { conversations, isLoading } = useConversations()
