@@ -13,6 +13,15 @@ import NewConversationContent from "./components/content/NewConversationContent"
 
 import "./index.css"
 
+async function enableMocking() {
+  if (process.env.NODE_ENV !== "development") {
+    return
+  }
+
+  const { serviceWorker } = await import("./mocks/browser")
+  return serviceWorker.start()
+}
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
@@ -25,8 +34,10 @@ const router = createBrowserRouter(
   ),
 )
 
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <RouterProvider router={router} />
-  </StrictMode>,
-)
+enableMocking().then(() => {
+  createRoot(document.getElementById("root")!).render(
+    <StrictMode>
+      <RouterProvider router={router} />
+    </StrictMode>,
+  )
+})
