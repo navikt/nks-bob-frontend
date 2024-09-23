@@ -1,5 +1,6 @@
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 
+import { useEffect } from "react"
 import { useMessages, useSendMessage } from "../../api/api"
 import { MessageRole, NewMessage } from "../../types/message"
 import HistorySidebar from "../history/HistorySidebar"
@@ -11,10 +12,22 @@ import ContentWrapper from "./wrappers/ContentWrapper"
 import DialogWrapper from "./wrappers/DialogWrapper"
 
 function ExistingConversationContent() {
-  const { conversationId } = useParams()
+  const { conversationId } = useParams<{ conversationId: string }>()
+  const navigate = useNavigate()
 
-  const { messages, isLoading } = useMessages(conversationId!)
+  const { messages, isLoading, error } = useMessages(conversationId!)
   const { sendMessage } = useSendMessage(conversationId!)
+
+  // TODO: Håndtere når param :conversationId ikke er en gyldig id.
+  useEffect(() => {
+    if (error) {
+      // TODO: Vise en midlertidig feilmelding?
+      console.log(
+        `En feil skjedde ved innhenting av Messages. Error: ${error.message}`,
+      )
+      navigate("/")
+    }
+  }, [error, navigate])
 
   function handleUserMessage(message: NewMessage) {
     sendMessage(message, {

@@ -1,6 +1,7 @@
 import { ClockDashedIcon } from "@navikt/aksel-icons"
 import { Button } from "@navikt/ds-react"
 
+// TODO: Åpne når viewport er smalt?
 function OpenHistorySidebarButton() {
   return (
     <Button

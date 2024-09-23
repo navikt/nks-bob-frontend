@@ -5,10 +5,10 @@ import { Conversation, Message, NewConversation } from "../types/message"
 
 const API_URL = `${import.meta.env.BASE_URL}bob-api`
 
-async function fetcher<JSON = any>(
+const fetcher = async <JSON = any>(
   input: RequestInfo,
   init?: RequestInit,
-): Promise<JSON> {
+): Promise<JSON> => {
   const res = await fetch(`${API_URL}${input}`, {
     ...init,
     // credentials: "include",
@@ -20,10 +20,10 @@ async function fetcher<JSON = any>(
   return res.json()
 }
 
-async function poster<Body, Response>(
+const poster = async <Body, Response>(
   url: string,
   { arg }: { arg: Body },
-): Promise<Response> {
+): Promise<Response> => {
   return fetcher(url, {
     method: "POST",
     headers: {
@@ -39,7 +39,7 @@ export const useMessages = (conversationId: string) => {
     data: messages,
     isLoading,
     error,
-  } = useSWR<Message[]>(
+  } = useSWR<Message[], Error>(
     `/api/v1/conversations/${conversationId}/messages`,
     fetcher,
   )
@@ -68,12 +68,12 @@ export const useConversations = () => {
     data: conversations,
     isLoading,
     error,
-  } = useSWR<Conversation[]>(`/api/v1/conversations`, fetcher)
+  } = useSWR<Conversation[], Error>(`/api/v1/conversations`, fetcher)
 
   return {
-    conversations,
+    conversations: conversations ?? [],
     isLoading,
-    error,
+    error, // TODO: Hvordan skal Errors håndteres?
   }
 }
 

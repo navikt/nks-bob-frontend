@@ -14,7 +14,7 @@ function HistorySidebar() {
         Dine samtaler
       </Heading>
 
-      {conversations && conversations.length > 0 && !isLoading && (
+      {conversations.length > 0 && !isLoading && (
         <ol className="flex w-full list-none flex-col gap-0.5">
           {conversations
             .slice()
