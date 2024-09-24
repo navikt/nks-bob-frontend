@@ -4,7 +4,7 @@ import "./Menu.css";
 
 function Menu() {
   return (
-    <div className="dialogcontent sticky top-0 z-10 mx-4 flex min-h-16 border-b border-border-divider bg-bg-default">
+    <div className="dialogcontent sticky top-0 z-10 flex min-h-16 bg-bg-default px-4">
       <HStack justify="start" align="center" className="min-h-16">
         <HistorikkButton />
         <NewButton />
