@@ -1,4 +1,4 @@
-import Bob from "../../assets/Bob.svg";
+import Bob from "../../assets/Bob-Subtle.svg";
 
 function BobPlaceHolder() {
   return (
