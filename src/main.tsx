@@ -1,20 +1,20 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router-dom";
 import App from "./App.tsx";
 import "./index.css";
-import Samtale from "./Samtaler.tsx";
+import NewConversationContent from "./components/content/NewConversationContent.tsx";
+import ExistingConversationContent from "./components/content/ExisitingConversationContent.tsx";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-  },
-  {
-    path: "/samtaler/:conversationId",
-    element: <Samtale />,
-  },
-]);
+
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<App />}>
+    <Route index element={<NewConversationContent />}/>
+<Route path="/samtaler/:conversationId" element={<ExistingConversationContent/>}/>
+    </Route>,
+  ),
+)
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

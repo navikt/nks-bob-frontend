@@ -1,9 +1,9 @@
-import Content from "./components/content/Content.tsx";
+import { Outlet } from "react-router-dom";
 
 function App() {
   return (
     <div className="pagewrapper">
-      <Content />
+      <Outlet />
     </div>
   );
 }
