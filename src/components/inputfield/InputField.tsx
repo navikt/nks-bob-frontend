@@ -1,4 +1,4 @@
-import { PaperplaneIcon } from "@navikt/aksel-icons";
+import { PaperplaneIcon } from "@navikt/aksel-icons"
 import {
   BodyShort,
   Button,
@@ -6,45 +6,45 @@ import {
   Link,
   Textarea,
   VStack,
-} from "@navikt/ds-react";
-import { useState } from "react";
+} from "@navikt/ds-react"
+import { useState } from "react"
 
-import { NewMessage } from "../../types/Message.ts";
-import "./InputField.css";
+import { NewMessage } from "../../types/Message.ts"
+import "./InputField.css"
 
 interface InputFieldProps {
-  onSend: (message: NewMessage) => void;
+  onSend: (message: NewMessage) => void
 }
 
 function InputField({ onSend }: InputFieldProps) {
-  const placeholderText = "Spør Bob om noe";
-  const [inputValue, setInputValue] = useState<string>("");
+  const placeholderText = "Spør Bob om noe"
+  const [inputValue, setInputValue] = useState<string>("")
 
   function sendMessage() {
     const message: NewMessage = {
       content: inputValue,
-    };
-    onSend(message);
+    }
+    onSend(message)
   }
 
   function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    setInputValue(e.target.value);
+    setInputValue(e.target.value)
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     if (e.key === "Enter") {
       if (!e.shiftKey) {
-        e.preventDefault();
-        sendMessage();
-        setInputValue("");
+        e.preventDefault()
+        sendMessage()
+        setInputValue("")
       }
     }
   }
 
   function handleButtonClick() {
     if (inputValue.trim() !== "") {
-      sendMessage();
-      setInputValue("");
+      sendMessage()
+      setInputValue("")
     }
   }
 
@@ -82,7 +82,7 @@ function InputField({ onSend }: InputFieldProps) {
         .
       </BodyShort>
     </VStack>
-  );
+  )
 }
 
-export default InputField;
+export default InputField

@@ -1,9 +1,9 @@
-import { BodyShort, Heading } from "@navikt/ds-react";
-import { useConversations } from "../../api/api";
-import ConversationLink from "./conversationlink/ConversationLink.tsx";
+import { BodyShort, Heading } from "@navikt/ds-react"
+import { useConversations } from "../../api/api"
+import ConversationLink from "./conversationlink/ConversationLink.tsx"
 
 function HistorySidebar() {
-  const { conversations, isLoading } = useConversations();
+  const { conversations, isLoading } = useConversations()
 
   return (
     <div className="h-full w-full max-w-60 overflow-scroll bg-bg-subtle p-3 max-md:hidden">
@@ -25,7 +25,7 @@ function HistorySidebar() {
         <BodyShort className="pl-3">Du har ingen tidligere samtaler.</BodyShort>
       )}
     </div>
-  );
+  )
 }
 
-export default HistorySidebar;
+export default HistorySidebar

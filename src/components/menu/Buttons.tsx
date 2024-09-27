@@ -1,6 +1,6 @@
-import { ClockDashedIcon, NotePencilIcon } from "@navikt/aksel-icons";
-import { Button } from "@navikt/ds-react";
-import { Link } from "react-router-dom";
+import { ClockDashedIcon, NotePencilIcon } from "@navikt/aksel-icons"
+import { Button } from "@navikt/ds-react"
+import { Link } from "react-router-dom"
 
 export const HistorikkButton = () => {
   return (
@@ -12,8 +12,8 @@ export const HistorikkButton = () => {
         className="mr-2 md:hidden"
       ></Button>
     </>
-  );
-};
+  )
+}
 
 export const NewButton = () => {
   return (
@@ -37,5 +37,5 @@ export const NewButton = () => {
         </Button>
       </Link>
     </>
-  );
-};
+  )
+}

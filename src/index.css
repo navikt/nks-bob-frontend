@@ -3,6 +3,10 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+* {
+  scrollbar-color: var(--a-grayalpha-400) transparent;
+}
+
 .pagewrapper {
   display: flex;
   flex-direction: column;
@@ -32,7 +36,6 @@
   display: flex;
   width: 100%;
   max-width: 48rem;
-
 }
 
 .unset {

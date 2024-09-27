@@ -1,6 +1,6 @@
-import { HStack } from "@navikt/ds-react";
-import { HistorikkButton, NewButton } from "./Buttons.tsx";
-import "./Menu.css";
+import { HStack } from "@navikt/ds-react"
+import { HistorikkButton, NewButton } from "./Buttons.tsx"
+import "./Menu.css"
 
 function Menu() {
   return (
@@ -10,7 +10,7 @@ function Menu() {
         <NewButton />
       </HStack>
     </div>
-  );
+  )
 }
 
-export default Menu;
+export default Menu
