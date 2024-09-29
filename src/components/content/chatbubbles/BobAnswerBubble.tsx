@@ -1,12 +1,12 @@
-import { Chat, Heading, HStack, VStack } from "@navikt/ds-react";
+import { Chat, Heading, HStack, VStack } from "@navikt/ds-react"
 
-import Markdown from "react-markdown";
-import Bobhead from "../../../assets/Bob-hode-svg.svg";
-import { Message } from "../../../types/Message";
-import BobAnswerCitation from "./BobAnswerCitation.tsx";
+import Markdown from "react-markdown"
+import Bobhead from "../../../assets/Bob-hode-svg.svg"
+import { Message } from "../../../types/Message"
+import BobAnswerCitation from "./BobAnswerCitation.tsx"
 
 interface BobAnswerBubbleProps {
-  answer: Message;
+  answer: Message
 }
 
 function BobAnswerBubble({ answer }: BobAnswerBubbleProps) {
@@ -31,7 +31,7 @@ function BobAnswerBubble({ answer }: BobAnswerBubbleProps) {
         </VStack>
       )}
     </VStack>
-  );
+  )
 }
 
-export default BobAnswerBubble;
+export default BobAnswerBubble

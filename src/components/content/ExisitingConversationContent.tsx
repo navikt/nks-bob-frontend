@@ -1,18 +1,18 @@
-import { useMessages, useSendMessage } from "../../api/api.ts";
-import { NewMessage } from "../../types/Message.ts";
-import ContentWrapper from "./wrappers/ContentWrapper.tsx";
-import HistoryContent from "../history/HistorySidebar.tsx";
-import DialogWrapper from "./wrappers/DialogWrapper.tsx";
-import Menu from "../menu/Menu.tsx";
-import BobPlaceHolder from "./BobPlaceHolder.tsx";
-import ChatDialog from "./ChatDialog.tsx";
-import InputField from "../inputfield/InputField.tsx";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router-dom"
+import { useMessages, useSendMessage } from "../../api/api.ts"
+import { NewMessage } from "../../types/Message.ts"
+import HistoryContent from "../history/HistorySidebar.tsx"
+import InputField from "../inputfield/InputField.tsx"
+import Menu from "../menu/Menu.tsx"
+import BobPlaceHolder from "./BobPlaceHolder.tsx"
+import ChatDialog from "./ChatDialog.tsx"
+import ContentWrapper from "./wrappers/ContentWrapper.tsx"
+import DialogWrapper from "./wrappers/DialogWrapper.tsx"
 
 function ExistingConversationContent() {
-  const { conversationId } = useParams();
-  const { messages, isLoading } = useMessages(conversationId!);
-  const { sendMessage } = useSendMessage(conversationId!);
+  const { conversationId } = useParams()
+  const { messages, isLoading } = useMessages(conversationId!)
+  const { sendMessage } = useSendMessage(conversationId!)
 
   function handleUserMessage(message: NewMessage) {
     sendMessage(message, {
@@ -22,7 +22,7 @@ function ExistingConversationContent() {
         { content: " ", messageRole: "ai" }, // TODO loading tekst/komponent.
       ],
       rollbackOnError: true, // TODO default svar fra Bob hvis KBS ikke svarer.
-    });
+    })
   }
 
   return (
@@ -38,7 +38,7 @@ function ExistingConversationContent() {
         <InputField onSend={handleUserMessage} />
       </DialogWrapper>
     </ContentWrapper>
-  );
+  )
 }
 
 export default ExistingConversationContent

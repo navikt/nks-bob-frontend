@@ -1,11 +1,11 @@
-import { ReactNode } from "react";
+import { ReactNode } from "react"
 
 interface ContentWrapperProps {
-  children: ReactNode;
+  children: ReactNode
 }
 
 function ContentWrapper({ children }: ContentWrapperProps) {
-  return <div className="flex h-full w-full">{children}</div>;
+  return <div className="flex h-full w-full">{children}</div>
 }
 
-export default ContentWrapper;
+export default ContentWrapper
