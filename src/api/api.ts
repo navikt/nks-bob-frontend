@@ -4,10 +4,7 @@ import { Conversation, Message, NewConversation } from "../types/Message"
 
 const API_URL = `${import.meta.env.BASE_URL}bob-api`
 
-async function fetcher<T>(
-  input: RequestInfo,
-  init?: RequestInit,
-): Promise<T> {
+async function fetcher<T>(input: RequestInfo, init?: RequestInit): Promise<T> {
   const isLocal = import.meta.env.MODE === "development"
   const res = await fetch(`${API_URL}${input}`, {
     ...init,
@@ -22,7 +19,7 @@ async function fetcher<T>(
   if (res.status === 204) {
     return {} as T
   }
-  
+
   return res.json() as Promise<T>
 }
 
@@ -109,13 +106,12 @@ export const useCreateConversation = () => {
 }
 
 export const useDeleteConversation = (conversation: Conversation) => {
-
   const { trigger, isMutating } = useSWRMutation(
     `/api/v1/conversations/${conversation.id}`,
     async (url) => {
       await deleter(url)
-      mutate(`/api/v1/conversations`)
-    }
+      await mutate(`/api/v1/conversations`)
+    },
   )
   return {
     deleteConversation: trigger,
