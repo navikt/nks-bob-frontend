@@ -1,7 +1,7 @@
 import { BodyShort } from "@navikt/ds-react"
 import { useConversations } from "../../api/api"
 import {
-  Before30Days,
+  Before30DaysConversations,
   Last30DaysConversations,
   Last7DaysConversations,
   TodayConversations,
@@ -21,7 +21,7 @@ function HistorySidebar() {
           <YesterdayConversations />
           <Last7DaysConversations />
           <Last30DaysConversations />
-          <Before30Days />
+          <Before30DaysConversations />
         </div>
       ) : (
         <BodyShort className="pl-3">Du har ingen tidligere samtaler.</BodyShort>
