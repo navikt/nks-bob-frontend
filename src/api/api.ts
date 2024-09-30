@@ -1,6 +1,7 @@
-import useSWR from "swr"
+import useSWR, { mutate } from "swr"
 import useSWRMutation from "swr/mutation"
 import { Conversation, Message, NewConversation } from "../types/Message"
+import { useLocation, useNavigate } from "react-router-dom"
 
 const API_URL = `${import.meta.env.BASE_URL}bob-api`
 
@@ -105,9 +106,18 @@ export const useCreateConversation = () => {
 }
 
 export const useDeleteConversation = (conversation: Conversation) => {
+  const navigate = useNavigate()
+  const location = useLocation()
   const { trigger, isMutating } = useSWRMutation(
     `/api/v1/conversations/${conversation.id}`,
-    async (url) => deleter(url),
+    async (url) => {
+      await deleter(url)
+      mutate(`/api/v1/conversations`)
+
+      if (location.pathname === `/conversations/${conversation.id}`) {
+        navigate('/')
+      }
+    }
   )
   return {
     deleteConversation: trigger,
