@@ -8,12 +8,13 @@ async function fetcher<JSON = any>(
   input: RequestInfo,
   init?: RequestInit,
 ): Promise<JSON> {
+  const isLocal = import.meta.env.MODE === 'development'
   const res = await fetch(`${API_URL}${input}`, {
     ...init,
-    credentials: "include",
+     credentials: "include",
     headers: {
       ...init?.headers,
-      //  Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
+      ...(isLocal && { Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}` })
     },
   })
   return res.json()
