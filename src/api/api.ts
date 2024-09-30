@@ -1,4 +1,4 @@
-import useSWR from "swr"
+import useSWR, { mutate } from "swr"
 import useSWRMutation from "swr/mutation"
 import { Conversation, Message, NewConversation } from "../types/Message"
 
@@ -8,13 +8,15 @@ async function fetcher<JSON = any>(
   input: RequestInfo,
   init?: RequestInit,
 ): Promise<JSON> {
-  const isLocal = import.meta.env.MODE === 'development'
+  const isLocal = import.meta.env.MODE === "development"
   const res = await fetch(`${API_URL}${input}`, {
     ...init,
-     credentials: "include",
+    credentials: "include",
     headers: {
       ...init?.headers,
-      ...(isLocal && { Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}` })
+      ...(isLocal && {
+        Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
+      }),
     },
   })
   return res.json()
@@ -105,7 +107,10 @@ export const useCreateConversation = () => {
 export const useDeleteConversation = (conversation: Conversation) => {
   const { trigger, isMutating } = useSWRMutation(
     `/api/v1/conversations/${conversation.id}`,
-    (url) => deleter(url),
+    async (url) => {
+      await deleter(url)
+      await mutate("/api/vi/conversations")
+    },
   )
   return {
     deleteConversation: trigger,
