@@ -92,17 +92,17 @@ export const Last30DaysConversations = () => {
   ) : null
 }
 
-export const Before30Days = () => {
+export const Before30DaysConversations = () => {
   const { conversations = [] } = useConversations()
-  const before30Days = filterConversations(
+  const before30DaysConversations = filterConversations(
     conversations,
     (conversation: Conversation) => {
       return new Date(conversation.createdAt) < subDays(new Date(), 30)
     },
   )
-  return before30Days.length > 0 ? (
+  return before30DaysConversations.length > 0 ? (
     <div className="flex flex-col">
-      <ol>{before30Days}</ol>
+      <ol>{before30DaysConversations}</ol>
     </div>
   ) : null
 }

@@ -90,3 +90,14 @@ export const useCreateConversation = () => {
     isLoading: isMutating,
   }
 }
+
+export const useDeleteConversation = (conversation: Conversation) => {
+  const { trigger, isMutating } = useSWRMutation(
+    `/api/v1/conversations/${conversation.id}`,
+    (url) => fetch(url, { method: "DELETE" }),
+  )
+  return {
+    deleteConversation: trigger,
+    isLoading: isMutating,
+  }
+}
