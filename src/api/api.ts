@@ -1,4 +1,4 @@
-import useSWR, { mutate } from "swr"
+import useSWR from "swr"
 import useSWRMutation from "swr/mutation"
 import { Conversation, Message, NewConversation } from "../types/Message"
 
@@ -107,10 +107,7 @@ export const useCreateConversation = () => {
 export const useDeleteConversation = (conversation: Conversation) => {
   const { trigger, isMutating } = useSWRMutation(
     `/api/v1/conversations/${conversation.id}`,
-    async (url) => {
-      await deleter(url)
-      await mutate("/api/vi/conversations")
-    },
+    async (url) => deleter(url),
   )
   return {
     deleteConversation: trigger,
