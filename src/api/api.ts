@@ -10,10 +10,10 @@ async function fetcher<JSON = any>(
 ): Promise<JSON> {
   const res = await fetch(`${API_URL}${input}`, {
     ...init,
-    credentials: "include",
+    // credentials: "include",
     headers: {
       ...init?.headers,
-      // Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
+      Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
     },
   })
   return res.json()
@@ -30,6 +30,16 @@ async function poster<Body, Response>(
       Accept: "application/json",
     },
     body: JSON.stringify(arg),
+  })
+}
+
+async function deleter<Response>(conversationId: string): Promise<Response> {
+  return fetcher(`/conversations/${conversationId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
   })
 }
 
@@ -94,7 +104,7 @@ export const useCreateConversation = () => {
 export const useDeleteConversation = (conversation: Conversation) => {
   const { trigger, isMutating } = useSWRMutation(
     `/api/v1/conversations/${conversation.id}`,
-    (url) => fetch(url, { method: "DELETE" }),
+    (url) => deleter(url),
   )
   return {
     deleteConversation: trigger,
