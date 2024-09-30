@@ -13,8 +13,8 @@ function DeleteConversation({ conversation }: DeleteConversationProps) {
   const navigate = useNavigate()
 
   const handleDelete = async () => {
+    await deleteConversation()
     if (location.pathname === `/samtaler/${conversation.id}`) {
-      deleteConversation()
       navigate("/")
     }
   }
