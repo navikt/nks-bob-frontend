@@ -1,14 +1,13 @@
 import useSWR, { mutate } from "swr"
 import useSWRMutation from "swr/mutation"
 import { Conversation, Message, NewConversation } from "../types/Message"
-import { useLocation, useNavigate } from "react-router-dom"
 
 const API_URL = `${import.meta.env.BASE_URL}bob-api`
 
-async function fetcher<JSON = any>(
+async function fetcher<T>(
   input: RequestInfo,
   init?: RequestInit,
-): Promise<JSON> {
+): Promise<T> {
   const isLocal = import.meta.env.MODE === "development"
   const res = await fetch(`${API_URL}${input}`, {
     ...init,
@@ -20,6 +19,10 @@ async function fetcher<JSON = any>(
       }),
     },
   })
+  if (res.status === 204) {
+    return {} as Promise<T>
+  }
+  
   return res.json()
 }
 
@@ -106,17 +109,12 @@ export const useCreateConversation = () => {
 }
 
 export const useDeleteConversation = (conversation: Conversation) => {
-  const navigate = useNavigate()
-  const location = useLocation()
+
   const { trigger, isMutating } = useSWRMutation(
     `/api/v1/conversations/${conversation.id}`,
     async (url) => {
       await deleter(url)
       mutate(`/api/v1/conversations`)
-
-      if (location.pathname === `/conversations/${conversation.id}`) {
-        navigate('/')
-      }
     }
   )
   return {
