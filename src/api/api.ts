@@ -20,10 +20,10 @@ async function fetcher<T>(
     },
   })
   if (res.status === 204) {
-    return {} as Promise<T>
+    return {} as T
   }
   
-  return res.json()
+  return res.json() as Promise<T>
 }
 
 async function poster<Body, Response>(
