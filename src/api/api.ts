@@ -13,7 +13,7 @@ async function fetcher<JSON = any>(
     credentials: "include",
     headers: {
       ...init?.headers,
-      // Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
+      //  Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
     },
   })
   return res.json()
@@ -33,8 +33,8 @@ async function poster<Body, Response>(
   })
 }
 
-async function deleter<Response>(conversationId: string): Promise<Response> {
-  return fetcher(`/conversations/${conversationId}`, {
+async function deleter<Response>(url: string): Promise<Response> {
+  return fetcher(url, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
