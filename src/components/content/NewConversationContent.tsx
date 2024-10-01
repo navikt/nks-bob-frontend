@@ -38,7 +38,7 @@ function NewConversationContent() {
   }
 
   return (
-    <div className="contentwrapper">
+    <div className='contentwrapper'>
       <HistoryContent />
       <DialogWrapper>
         <Menu />

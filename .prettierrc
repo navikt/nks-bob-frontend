@@ -3,5 +3,10 @@
     "prettier-plugin-organize-imports",
     "prettier-plugin-tailwindcss"
   ],
-  "semi": false
+  "semi": false,
+  "printWidth": 80,
+  "jsxSingleQuote": true,
+  "jsxBracketSameLine": false,
+  "arrowParens": "always",
+  "bracketSpacing": true
 }

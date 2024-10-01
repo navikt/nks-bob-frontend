@@ -13,10 +13,10 @@ import "./index.css"
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<App />}>
+    <Route path='/' element={<App />}>
       <Route index element={<NewConversationContent />} />
       <Route
-        path="/samtaler/:conversationId"
+        path='/samtaler/:conversationId'
         element={<ExistingConversationContent />}
       />
     </Route>,

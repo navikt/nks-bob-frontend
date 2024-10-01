@@ -5,7 +5,7 @@ interface DialogWrapperProps {
 }
 
 function DialogWrapper({ children }: DialogWrapperProps) {
-  return <div className="dialogwrapper">{children}</div>
+  return <div className='dialogwrapper'>{children}</div>
 }
 
 export default DialogWrapper

@@ -14,9 +14,9 @@ function HistorySidebar() {
   const { isLoading } = useConversations()
 
   return (
-    <div className="h-full w-full max-w-60 overflow-scroll bg-bg-subtle p-3 max-md:hidden">
+    <div className='h-full w-full max-w-60 overflow-scroll bg-surface-neutral-subtle px-3 max-md:hidden'>
       {!isLoading ? (
-        <div className="flex flex-col gap-4">
+        <div className='flex flex-col gap-4'>
           <TodayConversations />
           <YesterdayConversations />
           <Last7DaysConversations />
@@ -24,7 +24,7 @@ function HistorySidebar() {
           <Before30DaysConversations />
         </div>
       ) : (
-        <BodyShort className="pl-3">Du har ingen tidligere samtaler.</BodyShort>
+        <BodyShort className='pl-3'>Du har ingen tidligere samtaler.</BodyShort>
       )}
     </div>
   )

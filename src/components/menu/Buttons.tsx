@@ -6,10 +6,10 @@ export const HistorikkButton = () => {
   return (
     <>
       <Button
-        variant="tertiary"
-        size="medium"
+        variant='tertiary'
+        size='medium'
         icon={<ClockDashedIcon aria-hidden />}
-        className="mr-2 md:hidden"
+        className='mr-2 md:hidden'
       ></Button>
     </>
   )
@@ -18,20 +18,20 @@ export const HistorikkButton = () => {
 export const NewButton = () => {
   return (
     <>
-      <Link to="/">
+      <Link to='/'>
         <Button
-          variant="tertiary"
-          size="medium"
+          variant='tertiary'
+          size='medium'
           icon={<NotePencilIcon aria-hidden />}
-          className="md:hidden"
+          className='md:hidden'
         ></Button>
       </Link>
-      <Link to="/">
+      <Link to='/'>
         <Button
-          variant="tertiary"
-          size="medium"
+          variant='tertiary'
+          size='medium'
           icon={<NotePencilIcon aria-hidden />}
-          className="max-md:hidden"
+          className='max-md:hidden'
         >
           Ny chat
         </Button>

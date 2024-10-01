@@ -11,18 +11,18 @@ interface BobAnswerBubbleProps {
 
 function BobAnswerBubble({ answer }: BobAnswerBubbleProps) {
   return (
-    <VStack gap="10" align="stretch">
-      <HStack gap="3" align="end" wrap={false} width="full">
-        <img src={Bobhead} alt="Bob" width="50px" className="hidehead" />
-        <Chat variant="info" className="flex w-full">
+    <VStack gap='10' align='stretch'>
+      <HStack gap='3' align='end' wrap={false} width='full'>
+        <img src={Bobhead} alt='Bob' width='50px' className='hidehead' />
+        <Chat variant='info' className='flex w-full'>
           <Chat.Bubble>
             <Markdown>{answer.content}</Markdown>
           </Chat.Bubble>
         </Chat>
       </HStack>
       {answer.citations?.length > 0 && (
-        <VStack gap="3" align="stretch" className="pl-16">
-          <Heading as="h5" size="xsmall">
+        <VStack gap='3' align='stretch' className='pl-16'>
+          <Heading as='h5' size='xsmall'>
             Sitater hentet fra kunnskapsartiklene
           </Heading>
           {answer.citations.map((citation) => (

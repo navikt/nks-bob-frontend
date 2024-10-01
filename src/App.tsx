@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom"
 
 function App() {
   return (
-    <div className="pagewrapper">
+    <div className='pagewrapper'>
       <Outlet />
     </div>
   )

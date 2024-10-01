@@ -9,9 +9,9 @@ interface BobAnswerCitationProps {
 
 function BobAnswerCitation({ citation }: BobAnswerCitationProps) {
   return (
-    <Box padding="4" className="flex flex-col gap-2 bg-bg-subtle">
-      <Heading size="xsmall">{citation.title}</Heading>
-      <BodyShort className="italic">{citation.text}</BodyShort>
+    <Box padding='4' className='flex flex-col gap-2 bg-bg-subtle'>
+      <Heading size='xsmall'>{citation.title}</Heading>
+      <BodyShort className='italic'>{citation.text}</BodyShort>
     </Box>
   )
 }

@@ -50,15 +50,15 @@ function InputField({ onSend }: InputFieldProps) {
 
   return (
     <VStack
-      gap="4"
-      className="dialogcontent sticky bottom-0 z-10 flex bg-bg-default px-4 pb-2"
+      gap='4'
+      className='dialogcontent sticky bottom-0 z-10 flex bg-bg-default px-4 pb-2'
     >
-      <HStack gap="2" align="end">
+      <HStack gap='2' align='end'>
         <Textarea
-          size="small"
-          label=""
+          size='small'
+          label=''
           hideLabel
-          className="flex-grow"
+          className='flex-grow'
           minRows={1}
           maxRows={10}
           placeholder={placeholderText}
@@ -67,16 +67,16 @@ function InputField({ onSend }: InputFieldProps) {
           onKeyDown={handleKeyDown}
         />
         <Button
-          icon={<PaperplaneIcon title="Historikk" />}
-          variant="primary"
-          size="small"
-          className="h-full max-h-10"
+          icon={<PaperplaneIcon title='Historikk' />}
+          variant='primary'
+          size='small'
+          className='h-full max-h-10'
           onClick={handleButtonClick}
         />
       </HStack>
-      <BodyShort size="small" align="center" className="max-sm:hidden">
+      <BodyShort size='small' align='center' className='max-sm:hidden'>
         Bob baserer svarene på informasjonen fra{" "}
-        <Link href="https://data.ansatt.nav.no/quarto/e7b3e02a-0c45-4b5c-92a2-a6d364120dfb/index.html">
+        <Link href='https://data.ansatt.nav.no/quarto/e7b3e02a-0c45-4b5c-92a2-a6d364120dfb/index.html'>
           nks kunnskapsartikler
         </Link>
         .

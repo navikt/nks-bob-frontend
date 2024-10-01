@@ -1,19 +1,11 @@
 .conversationlink {
   display: flex;
-  flex-grow: 1;
-  padding-inline: .7rem;
-  padding-block: .3rem;
   color: var(--a-text-default);
   border-radius: 8px;
 }
 
 .conversationlink:hover {
-  background-color: var(--a-surface-neutral-subtle-hover);
-  font-weight: bolder;
-}
 
-.conversationlink:hover .displaydelete {
-  display: flex;
 }
 
 .conversationtext {
@@ -22,8 +14,7 @@
   line-height: 20px;
 }
 
-.displaydelete {
-
+.displaydelete:hover {
+  display: flex;
+  position: absolute;
 }
-
-

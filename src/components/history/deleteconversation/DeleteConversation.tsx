@@ -1,4 +1,5 @@
-import { BodyShort } from "@navikt/ds-react"
+import { TrashIcon } from "@navikt/aksel-icons"
+import { Button } from "@navikt/ds-react"
 import { useLocation, useNavigate } from "react-router-dom"
 import { useDeleteConversation } from "../../../api/api.ts"
 import { Conversation } from "../../../types/Message.ts"
@@ -20,10 +21,16 @@ function DeleteConversation({ conversation }: DeleteConversationProps) {
   }
 
   return (
-    <div onClick={handleDelete} className="displaydelete hidden">
-      <BodyShort size="small" className="hover:font-semibold">
-        {isLoading ? "Sletter..." : "Slett"}
-      </BodyShort>
+    <div onClick={handleDelete} className='displaydelete'>
+      {isLoading ? (
+        "Sletter..."
+      ) : (
+        <Button
+          variant='tertiary-neutral'
+          size='small'
+          icon={<TrashIcon title='Slett' />}
+        />
+      )}
     </div>
   )
 }

@@ -2,8 +2,8 @@ import Bob from "../../assets/bob-subtle-background.svg"
 
 function BobPlaceHolder() {
   return (
-    <div className="dialogcontent h-full items-center justify-center">
-      <img src={Bob} alt="NKS-Bob" className="w-3/5" />
+    <div className='dialogcontent h-full items-center justify-center'>
+      <img src={Bob} alt='NKS-Bob' className='w-3/5' />
     </div>
   )
 }
