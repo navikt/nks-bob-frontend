@@ -9,7 +9,7 @@ const filterConversations = (
   byDate: (conversation: Conversation) => boolean,
 ) => {
   return conversations.filter(byDate).map((conversation: Conversation) => (
-    <li key={conversation.id} className='flex flex-col'>
+    <li key={conversation.id} className='flex flex-grow flex-col'>
       <ConversationLink conversation={conversation} />
     </li>
   ))
@@ -22,8 +22,8 @@ export const TodayConversations = () => {
     (conversation: Conversation) => isToday(new Date(conversation.createdAt)),
   )
   return todayConversations.length > 0 ? (
-    <div className='flex flex-col'>
-      <Heading size='xsmall' className='px-2'>
+    <div className='flex w-full flex-col'>
+      <Heading size='xsmall' className='mb-3 px-2'>
         I dag
       </Heading>
       <ol>{todayConversations}</ol>
@@ -39,7 +39,7 @@ export const YesterdayConversations = () => {
   )
   return yesterdayConversations.length > 0 ? (
     <div className='flex flex-col'>
-      <Heading size='xsmall' className='mb-2 pl-3 pt-2'>
+      <Heading size='xsmall' className='mb-3 px-2'>
         I dag
       </Heading>
       <ol>{yesterdayConversations}</ol>
@@ -62,7 +62,7 @@ export const Last7DaysConversations = () => {
   )
   return last7DaysConversations.length > 0 ? (
     <div className='flex flex-col'>
-      <Heading size='xsmall' className='mb-2 pl-3 pt-2'>
+      <Heading size='xsmall' className='mb-3 px-2'>
         Siste 7 dagene
       </Heading>
       <ol>{last7DaysConversations}</ol>
@@ -84,7 +84,7 @@ export const Last30DaysConversations = () => {
   )
   return last30DaysConversations.length > 0 ? (
     <div className='flex flex-col'>
-      <Heading size='xsmall' className='mb-2 pl-3 pt-2'>
+      <Heading size='xsmall' className='mb-3 px-2'>
         Siste 30 dagene
       </Heading>
       <ol>{last30DaysConversations}</ol>
@@ -102,6 +102,9 @@ export const Before30DaysConversations = () => {
   )
   return before30DaysConversations.length > 0 ? (
     <div className='flex flex-col'>
+      <Heading size='xsmall' className='mb-3 px-2'>
+        Mer enn 30 dager
+      </Heading>
       <ol>{before30DaysConversations}</ol>
     </div>
   ) : null

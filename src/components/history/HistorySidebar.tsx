@@ -1,4 +1,4 @@
-import { BodyShort } from "@navikt/ds-react"
+import { BodyShort, Heading } from "@navikt/ds-react"
 import { useConversations } from "../../api/api"
 import {
   Before30DaysConversations,
@@ -8,15 +8,20 @@ import {
   YesterdayConversations,
 } from "./historycategory/HistorySortedByCategory.tsx"
 
+import { ClockDashedIcon } from "@navikt/aksel-icons"
 import "./HistorySidebar.css"
 
 function HistorySidebar() {
   const { isLoading } = useConversations()
 
   return (
-    <div className='h-full w-full max-w-60 overflow-scroll bg-surface-neutral-subtle px-3 max-md:hidden'>
+    <div className='layout h-full px-3 max-md:hidden'>
+      <div className='mb-2 flex w-full justify-between px-2'>
+        <Heading size='xsmall'>Dine samtaler</Heading>
+        <ClockDashedIcon title='Dine samtaler' fontSize='1.5rem' />
+      </div>
       {!isLoading ? (
-        <div className='flex flex-col gap-4'>
+        <div className='flex w-full flex-grow'>
           <TodayConversations />
           <YesterdayConversations />
           <Last7DaysConversations />
@@ -24,7 +29,7 @@ function HistorySidebar() {
           <Before30DaysConversations />
         </div>
       ) : (
-        <BodyShort className='pl-3'>Du har ingen tidligere samtaler.</BodyShort>
+        <BodyShort className='px-2'>Du har ingen tidligere samtaler.</BodyShort>
       )}
     </div>
   )

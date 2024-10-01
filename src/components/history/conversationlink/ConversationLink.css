@@ -1,20 +1,33 @@
 .conversationlink {
   display: flex;
+  width: 100%;
+  padding: 6px 8px;
+  align-items: center;
   color: var(--a-text-default);
-  border-radius: 8px;
+
+  border-radius: 4px;
 }
 
 .conversationlink:hover {
-
+  background: #D5D9DE;
 }
 
-.conversationtext {
-  width: 100%;
-  font-size: 16px;
-  line-height: 20px;
+.active-conversation {
+  background: #D5D9DE;
 }
 
-.displaydelete:hover {
-  display: flex;
+.deletebutton {
+  display: none;
   position: absolute;
+  left: 220px;
+  background: #D5D9DE;
+  box-shadow: -15px 0 6px 0 #D5D9DE;
+}
+
+.conversationlink:hover .deletebutton {
+  display: flex;
+}
+
+.deletebutton:hover {
+  color: var(--a-icon-danger)
 }

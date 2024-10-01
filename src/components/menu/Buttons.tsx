@@ -31,6 +31,7 @@ export const NewButton = () => {
           variant='tertiary'
           size='medium'
           icon={<NotePencilIcon aria-hidden />}
+          iconPosition='right'
           className='max-md:hidden'
         >
           Ny chat
