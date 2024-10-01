@@ -17,6 +17,7 @@
 }
 
 .deletebutton {
+  color: var(--a-surface-neutral-hover);
   display: none;
   position: absolute;
   left: 220px;
