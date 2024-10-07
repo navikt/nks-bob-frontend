@@ -34,7 +34,7 @@ export const NewButton = () => {
           iconPosition='right'
           className='max-md:hidden'
         >
-          Ny chat
+          Ny samtale
         </Button>
       </Link>
     </>

@@ -35,7 +35,9 @@ function ExistingConversationContent() {
         ) : (
           <ChatDialog messages={messages} conversationId={conversationId!} />
         )}
-        <InputField onSend={handleUserMessage} />
+        <div className='dialogcontent'>
+          <InputField onSend={handleUserMessage} />
+        </div>
       </DialogWrapper>
     </ContentWrapper>
   )

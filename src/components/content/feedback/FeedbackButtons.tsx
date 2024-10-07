@@ -2,7 +2,7 @@ import { Button } from "@navikt/ds-react"
 import {
   ThumbDownOutline,
   ThumbUpOutline,
-} from "../../../assets/Icons/Thumbs.tsx"
+} from "../../../assets/icons/Thumbs.tsx"
 
 function FeedbackButtons() {
   return (

@@ -4,7 +4,6 @@ import { useCreateConversation } from "../../api/api.ts"
 import { Message, NewConversation, NewMessage } from "../../types/Message.ts"
 import HistoryContent from "../history/HistorySidebar.tsx"
 import InputField from "../inputfield/InputField.tsx"
-import Menu from "../menu/Menu.tsx"
 import BobPlaceHolder from "./BobPlaceHolder.tsx"
 import ChatDialog from "./ChatDialog.tsx"
 import DialogWrapper from "./wrappers/DialogWrapper.tsx"
@@ -41,7 +40,6 @@ function NewConversationContent() {
     <div className='contentwrapper'>
       <HistoryContent />
       <DialogWrapper>
-        <Menu />
         {messagePlaceholders.length === 0 && <BobPlaceHolder />}
         {messagePlaceholders.length !== 0 && (
           <ChatDialog
@@ -49,7 +47,9 @@ function NewConversationContent() {
             conversationId={"unknown"}
           />
         )}
-        <InputField onSend={handleUserMessage} />
+        <div className='dialogcontent pb-14'>
+          <InputField onSend={handleUserMessage} />
+        </div>
       </DialogWrapper>
     </div>
   )
