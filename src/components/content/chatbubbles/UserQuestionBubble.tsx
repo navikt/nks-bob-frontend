@@ -8,8 +8,8 @@ interface UserChatBubbleProps {
 function UserQuestionBubble({ userQuestion }: UserChatBubbleProps) {
   return (
     <div className='flex justify-end pt-8'>
-      <Chat variant='subtle' position='right'>
-        <Chat.Bubble className='max-w-prose'>
+      <Chat position='right'>
+        <Chat.Bubble className='max-w-prose bg-blue-50'>
           {userQuestion?.content}
         </Chat.Bubble>
       </Chat>

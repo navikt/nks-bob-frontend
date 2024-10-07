@@ -1,6 +1,6 @@
 import { TrashIcon } from "@navikt/aksel-icons"
 import { BodyShort } from "@navikt/ds-react"
-import { Link, useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { useDeleteConversation } from "../../../api/api.ts"
 import { Conversation } from "../../../types/Message.ts"
 import "./ConversationLink.css"
@@ -13,10 +13,14 @@ function ConversationLink({ conversation }: ConversationLinkProps) {
   const { deleteConversation } = useDeleteConversation(conversation)
 
   const location = useLocation()
+  const navigate = useNavigate()
   const isActive = location.pathname === `/samtaler/${conversation.id}`
 
   const handleDelete = async () => {
     await deleteConversation()
+    if (isActive) {
+      navigate("/")
+    }
   }
 
   return (
@@ -27,13 +31,13 @@ function ConversationLink({ conversation }: ConversationLinkProps) {
       <BodyShort truncate={true} size='medium'>
         {conversation.title}
       </BodyShort>
-      <Link to='/' onClick={handleDelete} className='deletebutton'>
+      <a onClick={handleDelete} className='deletebutton'>
         <TrashIcon
           title='Slett'
           fontSize='1.3rem'
           className='hover:accent-surface-danger-hover'
         />
-      </Link>
+      </a>
     </a>
   )
 }

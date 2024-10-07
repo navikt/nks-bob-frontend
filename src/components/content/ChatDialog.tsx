@@ -1,6 +1,9 @@
 import { useEffect, useRef } from "react"
 import { Message } from "../../types/Message.ts"
-import BobAnswerBubble from "./chatbubbles/BobAnswerBubble.tsx"
+import {
+  BobAnswerBubble,
+  BobAnswerMock,
+} from "./chatbubbles/BobAnswerBubble.tsx"
 import UserQuestionBubble from "./chatbubbles/UserQuestionBubble.tsx"
 
 interface ChatDialogProps {
@@ -9,6 +12,7 @@ interface ChatDialogProps {
 }
 
 function ChatDialog({ messages }: ChatDialogProps) {
+  const isLocal = import.meta.env.MODE === "development"
   const lastMessageRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
@@ -29,6 +33,7 @@ function ChatDialog({ messages }: ChatDialogProps) {
           <BobAnswerBubble key={message.id} answer={message} />
         ),
       )}
+      {isLocal && <BobAnswerMock />}
       <div ref={lastMessageRef} className='pb-18' />
     </div>
   )
