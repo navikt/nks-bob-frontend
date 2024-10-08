@@ -55,6 +55,7 @@ export const useMessages = (conversationId: string) => {
   } = useSWR<Message[]>(
     `/api/v1/conversations/${conversationId}/messages`,
     fetcher,
+    { refreshInterval: 1000 },
   )
 
   return {
