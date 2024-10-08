@@ -1,4 +1,4 @@
-import { BobTheWizard } from "../../assets/illustrations/BobTheWizard.tsx"
+import { BobTheWizard } from "../../../assets/illustrations/BobTheWizard.tsx"
 
 function BobPlaceHolder() {
   return (

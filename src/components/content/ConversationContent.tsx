@@ -4,12 +4,12 @@ import { NewMessage } from "../../types/Message.ts"
 import HistoryContent from "../history/HistorySidebar.tsx"
 import InputField from "../inputfield/InputField.tsx"
 import Menu from "../menu/Menu.tsx"
-import BobPlaceHolder from "./BobPlaceHolder.tsx"
-import ChatDialog from "./ChatDialog.tsx"
+import ChatDialog from "./chat/ChatDialog.tsx"
+import BobPlaceHolder from "./placeholders/BobPlaceHolder.tsx"
 import ContentWrapper from "./wrappers/ContentWrapper.tsx"
 import DialogWrapper from "./wrappers/DialogWrapper.tsx"
 
-function ExistingConversationContent() {
+function ConversationContent() {
   const { conversationId } = useParams()
   const { messages, isLoading } = useMessages(conversationId!)
   const { sendMessage } = useSendMessage(conversationId!)
@@ -18,8 +18,8 @@ function ExistingConversationContent() {
     sendMessage(message, {
       optimisticData: [
         ...(messages ?? []),
-        { content: message.content, messageRole: "human" },
-        { content: "", messageRole: "ai" }, // TODO loading tekst/komponent.
+        { id: "temp-human", content: message.content, messageRole: "human" },
+        { id: "temp-ai", content: "Bob tenker...", messageRole: "ai" },
       ],
       rollbackOnError: true, // TODO default svar fra Bob hvis KBS ikke svarer.
     })
@@ -43,4 +43,4 @@ function ExistingConversationContent() {
   )
 }
 
-export default ExistingConversationContent
+export default ConversationContent

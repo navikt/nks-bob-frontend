@@ -1,9 +1,9 @@
 import { Chat, Heading, HStack, VStack } from "@navikt/ds-react"
 
 import Markdown from "react-markdown"
-import Bobhead from "../../../assets/Bob-hode-svg.svg"
-import { Message } from "../../../types/Message"
-import FeedbackButtons from "../feedback/FeedbackButtons.tsx"
+import Bobhead from "../../../../assets/Bob-hode-svg.svg"
+import { Message } from "../../../../types/Message.ts"
+import FeedbackButtons from "../../feedback/FeedbackButtons.tsx"
 import BobAnswerCitation from "./BobAnswerCitation.tsx"
 
 interface BobAnswerBubbleProps {
