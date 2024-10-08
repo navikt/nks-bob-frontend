@@ -19,7 +19,7 @@ function ExistingConversationContent() {
       optimisticData: [
         ...(messages ?? []),
         { content: message.content, messageRole: "human" },
-        { content: "Bob tenker", messageRole: "ai" }, // TODO loading tekst/komponent.
+        { content: "", messageRole: "ai" }, // TODO loading tekst/komponent.
       ],
       rollbackOnError: true, // TODO default svar fra Bob hvis KBS ikke svarer.
     })
