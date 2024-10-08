@@ -7,17 +7,17 @@ import {
   RouterProvider,
 } from "react-router-dom"
 import App from "./App.tsx"
-import ExistingConversationContent from "./components/content/ExisitingConversationContent.tsx"
-import NewConversationContent from "./components/content/NewConversationContent.tsx"
+import ConversationContent from "./components/content/ConversationContent.tsx"
+import CreateConversationContent from "./components/content/CreateConversationContent.tsx"
 import "./index.css"
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
-      <Route index element={<NewConversationContent />} />
+      <Route index element={<CreateConversationContent />} />
       <Route
         path='/samtaler/:conversationId'
-        element={<ExistingConversationContent />}
+        element={<ConversationContent />}
       />
     </Route>,
   ),
