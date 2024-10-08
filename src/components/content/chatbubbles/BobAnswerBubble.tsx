@@ -12,10 +12,10 @@ interface BobAnswerBubbleProps {
 
 export const BobAnswerBubble = ({ answer }: BobAnswerBubbleProps) => {
   return (
-    <VStack gap='3' align='end'>
+    <VStack gap='3' align='stretch'>
       <HStack gap='3' align='end' wrap={false} width='full'>
         <img src={Bobhead} alt='Bob' width='50px' className='hidehead' />
-        <Chat.Bubble className='bg-bg-default'>
+        <Chat.Bubble className='flex-grow bg-bg-default'>
           <Markdown>{answer.content}</Markdown>
         </Chat.Bubble>
       </HStack>
@@ -36,15 +36,11 @@ export const BobAnswerBubble = ({ answer }: BobAnswerBubbleProps) => {
 
 export const BobAnswerMock = () => {
   return (
-    <VStack gap='3' align='end'>
+    <VStack gap='3' align='stretch'>
       <HStack gap='3' align='end' wrap={false} width='full'>
         <img src={Bobhead} alt='Bob' width='50px' className='hidehead' />
-        <Chat.Bubble className='bg-bg-default'>
-          <Markdown>
-            Dette er bare en test, så du får se hvordan dette ser ut. Du kan
-            selv bestemme lengden på teksten, men det er helt opp til deg når du
-            skal slutte.
-          </Markdown>
+        <Chat.Bubble className='flex-grow bg-bg-default'>
+          <Markdown>Dette er bare en test.</Markdown>
         </Chat.Bubble>
       </HStack>
       <FeedbackButtons />

@@ -6,7 +6,7 @@ import {
 
 function FeedbackButtons() {
   return (
-    <div className='flex'>
+    <div className='flex justify-end'>
       <Button
         variant='tertiary-neutral'
         size='small'
