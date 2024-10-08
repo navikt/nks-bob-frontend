@@ -21,10 +21,10 @@ function NewConversationContent() {
       initialMessage: { content: message.content },
     }
 
-    setMessagePlaceholders([
-      { content: message.content, messageRole: "human" },
-      { content: " ", messageRole: "ai" }, // TODO loading tekst/komponent.
-    ])
+    // setMessagePlaceholders([
+    //   { content: message.content, messageRole: "human" },
+    //   { content: " ", messageRole: "ai" }, // TODO loading tekst/komponent.
+    // ])
     createConversation(newConversation)
       .then((conversation) => {
         navigate(`/samtaler/${conversation.id}`)
