@@ -39,11 +39,11 @@ export const BobAnswerLoading = () => {
     <VStack gap='3' align='stretch'>
       <HStack gap='3' align='end' wrap={false} width='full'>
         <img src={Bobhead} alt='Bob' width='50px' className='hidehead' />
-        <Chat.Bubble className='flex-grow bg-bg-default'>
-          <Skeleton variant='text' width='100%' />
+        <Chat.Bubble className='w-full max-w-md bg-bg-default'>
+          <Skeleton variant='text' width='100%' height={20} />
+          <Skeleton variant='text' width='70%' height={20} />
         </Chat.Bubble>
       </HStack>
-      <FeedbackButtons />
     </VStack>
   )
 }
