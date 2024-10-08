@@ -1,5 +1,6 @@
 .conversationlink {
   display: flex;
+  position: relative;
   width: 100%;
   padding: 6px 8px;
   align-items: center;
@@ -20,9 +21,9 @@
   color: var(--a-surface-neutral-hover);
   display: none;
   position: absolute;
-  left: 220px;
+  right: 0;
   background: #D5D9DE;
-  box-shadow: -15px 0 6px 0 #D5D9DE;
+  padding: 2px;
 }
 
 .conversationlink:hover .deletebutton {
