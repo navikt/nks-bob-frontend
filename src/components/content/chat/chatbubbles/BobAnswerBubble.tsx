@@ -1,4 +1,4 @@
-import { Chat, Heading, HStack, VStack } from "@navikt/ds-react"
+import { Chat, Heading, HStack, Skeleton, VStack } from "@navikt/ds-react"
 
 import Markdown from "react-markdown"
 import Bobhead from "../../../../assets/Bob-hode-svg.svg"
@@ -34,13 +34,13 @@ export const BobAnswerBubble = ({ answer }: BobAnswerBubbleProps) => {
   )
 }
 
-export const BobAnswerMock = () => {
+export const BobAnswerLoading = () => {
   return (
     <VStack gap='3' align='stretch'>
       <HStack gap='3' align='end' wrap={false} width='full'>
         <img src={Bobhead} alt='Bob' width='50px' className='hidehead' />
         <Chat.Bubble className='flex-grow bg-bg-default'>
-          <Markdown>Dette er bare en test.</Markdown>
+          <Skeleton variant='text' width='100%' />
         </Chat.Bubble>
       </HStack>
       <FeedbackButtons />
