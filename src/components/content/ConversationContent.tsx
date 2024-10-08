@@ -18,8 +18,8 @@ function ConversationContent() {
     sendMessage(message, {
       optimisticData: [
         ...(messages ?? []),
-        { id: "temp-human", content: message.content, messageRole: "human" },
-        { id: "temp-ai", content: "Bob tenker...", messageRole: "ai" },
+        { content: message.content, messageRole: "human" },
+        { content: "", messageRole: "ai" },
       ],
       rollbackOnError: true, // TODO default svar fra Bob hvis KBS ikke svarer.
     })

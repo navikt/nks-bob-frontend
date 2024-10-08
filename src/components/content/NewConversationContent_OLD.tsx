@@ -1,17 +1,19 @@
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useCreateConversation } from "../../api/api.ts"
-import { NewConversation, NewMessage } from "../../types/Message.ts"
+import { Message, NewConversation, NewMessage } from "../../types/Message.ts"
 import HistoryContent from "../history/HistorySidebar.tsx"
 import InputField from "../inputfield/InputField.tsx"
+import ChatDialog from "./chat/ChatDialog.tsx"
 import BobPlaceHolder from "./placeholders/BobPlaceHolder.tsx"
 import DialogWrapper from "./wrappers/DialogWrapper.tsx"
 
 function NewConversationContent() {
   const { createConversation } = useCreateConversation()
   const navigate = useNavigate()
-  // const [messagePlaceholders, setMessagePlaceholders] = useState<
-  //   Partial<Message>[]
-  // >([])
+  const [messagePlaceholders, setMessagePlaceholders] = useState<
+    Partial<Message>[]
+  >([])
 
   function handleUserMessage(message: NewMessage) {
     const newConversation: NewConversation = {
@@ -21,7 +23,7 @@ function NewConversationContent() {
 
     // setMessagePlaceholders([
     //   { content: message.content, messageRole: "human" },
-    //   { content: " ", messageRole: "ai" }, // TODO loading tekst/komponent.
+    //   { content: "Dette er en test", messageRole: "ai" }, // TODO loading tekst/komponent.
     // ])
     createConversation(newConversation)
       .then((conversation) => {
@@ -30,7 +32,7 @@ function NewConversationContent() {
       .catch((error) => {
         // blir på en måte det samme som `rollbackOnError`
         console.error(error)
-        // setMessagePlaceholders([])
+        setMessagePlaceholders([])
       })
   }
 
@@ -38,13 +40,13 @@ function NewConversationContent() {
     <div className='contentwrapper'>
       <HistoryContent />
       <DialogWrapper>
-        <BobPlaceHolder />
-        {/*{messagePlaceholders.length !== 0 && (*/}
-        {/*  <ChatDialog*/}
-        {/*    messages={messagePlaceholders as Message[]}*/}
-        {/*    conversationId={"unknown"}*/}
-        {/*  />*/}
-        {/*)}*/}
+        {messagePlaceholders.length === 0 && <BobPlaceHolder />}
+        {messagePlaceholders.length !== 0 && (
+          <ChatDialog
+            messages={messagePlaceholders as Message[]}
+            conversationId={"unknown"}
+          />
+        )}
         <InputField onSend={handleUserMessage} />
       </DialogWrapper>
     </div>
