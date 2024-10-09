@@ -2,8 +2,8 @@ export const ThumbUpOutline = () => {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
-      width='0.9em'
-      height='0.9em'
+      width='0.8em'
+      height='0.8em'
       viewBox='0 0 76 82'
       fill='none'
       focusable={false}
@@ -25,8 +25,8 @@ export const ThumbUpFilled = () => {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
-      width='0.9em'
-      height='0.9em'
+      width='0.8em'
+      height='0.8em'
       viewBox='0 0 76 82'
       fill='none'
       role='img'
@@ -56,8 +56,8 @@ export const ThumbDownOutline = () => {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
-      width='0.9em'
-      height='0.9em'
+      width='0.8em'
+      height='0.8em'
       viewBox='0 0 76 82'
       fill='none'
     >
@@ -76,8 +76,8 @@ export const ThumbDownFilled = () => {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
-      width='0.9em'
-      height='0.9em'
+      width='0.8em'
+      height='0.8em'
       viewBox='0 0 76 82'
       fill='none'
     >

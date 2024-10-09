@@ -1,13 +1,11 @@
 import {
-  Button,
   Chat,
+  CopyButton,
   Heading,
   HStack,
   Skeleton,
   VStack,
 } from "@navikt/ds-react"
-
-import { FilesIcon } from "@navikt/aksel-icons"
 import Markdown from "react-markdown"
 import Bobhead from "../../../../assets/Bob-hode-svg.svg"
 import { Message } from "../../../../types/Message.ts"
@@ -36,13 +34,7 @@ export const BobAnswerBubble = ({ message }: BobAnswerBubbleProps) => {
         </Chat.Bubble>
       </HStack>
       <div className='flex flex-grow justify-end'>
-        <Button
-          variant='tertiary-neutral'
-          size='small'
-          icon={<FilesIcon className='text-icon-subtle' />}
-          className='w-fit'
-          onClick={() => navigator.clipboard.writeText(message.content)}
-        />
+        <CopyButton copyText={message.content} size='small' />
         <FeedbackButtons message={message} />
       </div>
       {message.citations?.length > 0 && (
