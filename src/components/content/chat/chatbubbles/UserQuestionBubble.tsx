@@ -7,12 +7,12 @@ interface UserChatBubbleProps {
 
 function UserQuestionBubble({ userQuestion }: UserChatBubbleProps) {
   return (
-    <div className='flex flex-col justify-end pt-8'>
-      <Chat position='right'>
+    <div className='flex flex-col pt-8 flex-grow'>
+      <div className="flex justify-end">
         <Chat.Bubble className='max-w-prose bg-blue-50'>
           {userQuestion?.content}
         </Chat.Bubble>
-      </Chat>
+      </div>
     </div>
   )
 }

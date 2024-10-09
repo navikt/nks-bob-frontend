@@ -27,7 +27,7 @@ function FeedbackButtons( { message }: FeedbackButtonsProps) {
   }
 
 return (
-    <div className='mt-2 flex justify-end'>
+    <div className='flex justify-end'>
       {feedback === null && (
         <>
           <Button
