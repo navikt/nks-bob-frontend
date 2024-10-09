@@ -34,8 +34,8 @@ export const BobAnswerBubble = ({ message }: BobAnswerBubbleProps) => {
         </Chat.Bubble>
       </HStack>
       <div className='flex flex-grow justify-end'>
-        <CopyButton copyText={message.content} size='small' />
         <FeedbackButtons message={message} />
+        <CopyButton copyText={message.content} size='small' />
       </div>
       {message.citations?.length > 0 && (
         <VStack gap='3' align='stretch' className='pl-16'>
