@@ -1,4 +1,4 @@
-import { Chat, Heading, HStack, VStack } from "@navikt/ds-react"
+import { Chat, Heading, HStack, Skeleton, VStack } from "@navikt/ds-react"
 
 import Markdown from "react-markdown"
 import Bobhead from "../../../../assets/Bob-hode-svg.svg"
@@ -16,7 +16,15 @@ export const BobAnswerBubble = ({ message }: BobAnswerBubbleProps) => {
       <HStack gap='3' align='end' wrap={false} width='full'>
         <img src={Bobhead} alt='Bob' width='50px' className='hidehead' />
         <Chat.Bubble className='w-full bg-bg-default'>
-          <Markdown>{message.content}</Markdown>
+          {message.content === "" ? (
+            <>
+              <Skeleton width='100%' variant='text' />
+              <Skeleton width='100%' variant='text' />
+              <Skeleton width={80} variant='text' />
+            </>
+          ) : (
+            <Markdown>{message.content}</Markdown>
+          )}
         </Chat.Bubble>
       </HStack>
       <FeedbackButtons />
