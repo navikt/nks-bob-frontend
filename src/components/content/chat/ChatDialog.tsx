@@ -1,14 +1,13 @@
 import { useEffect, useRef } from "react"
-import { Conversation, Message } from "../../../types/Message.ts"
+import { Message } from "../../../types/Message.ts"
 import { BobAnswerBubble } from "./chatbubbles/BobAnswerBubble.tsx"
 import UserQuestionBubble from "./chatbubbles/UserQuestionBubble.tsx"
 
 interface ChatDialogProps {
-  conversationId: Conversation["id"]
   messages: Message[]
 }
 
-function ChatContainer({ messages, conversationId }: ChatDialogProps) {
+function ChatContainer({ messages }: ChatDialogProps) {
   const lastMessageRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
@@ -26,11 +25,7 @@ function ChatContainer({ messages, conversationId }: ChatDialogProps) {
         message.messageRole === "human" ? (
           <UserQuestionBubble key={message.id} userQuestion={message} />
         ) : (
-          <BobAnswerBubble
-            key={message.id}
-            message={message}
-            conversationId={conversationId}
-          />
+          <BobAnswerBubble key={message.id} message={message} />
         ),
       )}
       <div ref={lastMessageRef} className='pb-18' />
