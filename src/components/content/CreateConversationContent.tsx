@@ -18,7 +18,9 @@ const CreateConversationContent = () => {
 
     createConversation(newConversation)
       .then((conversation) => {
-        navigate(`/samtaler/${conversation.id}`)
+        navigate(`/samtaler/${conversation.id}`, {
+          state: { newQuestion: "message.content" },
+        })
       })
 
       .catch((error) => {
