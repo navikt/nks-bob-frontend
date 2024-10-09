@@ -3,22 +3,26 @@ import { Chat, Heading, HStack, Skeleton, VStack } from "@navikt/ds-react"
 import Markdown from "react-markdown"
 import { useMessages } from "../../../../api/api.ts"
 import Bobhead from "../../../../assets/Bob-hode-svg.svg"
-import { Message } from "../../../../types/Message.ts"
+import { Conversation, Message } from "../../../../types/Message.ts"
 import FeedbackButtons from "../../feedback/FeedbackButtons.tsx"
 import BobAnswerCitation from "./BobAnswerCitation.tsx"
 
 interface BobAnswerBubbleProps {
+  conversationId: Conversation["id"]
   message: Message
 }
 
-export const BobAnswerBubble = ({ message }: BobAnswerBubbleProps) => {
-  const { isLoading } = useMessages(message.id)
+export const BobAnswerBubble = ({
+  message,
+  conversationId,
+}: BobAnswerBubbleProps) => {
+  const { isLoading } = useMessages(conversationId)
 
   return (
     <VStack gap='3' align='stretch'>
       <HStack gap='3' align='end' wrap={false} width='full'>
         <img src={Bobhead} alt='Bob' width='50px' className='hidehead' />
-        <Chat.Bubble className='w-full max-w-md bg-bg-default'>
+        <Chat.Bubble className='w-full bg-bg-default'>
           {isLoading ? (
             <>
               <Skeleton variant='text' width='100%' height={20} />
