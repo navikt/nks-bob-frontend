@@ -9,7 +9,7 @@ import {
 import App from "./App.tsx"
 import ConversationContent from "./components/content/ConversationContent.tsx"
 import CreateConversationContent from "./components/content/CreateConversationContent.tsx"
-import "./index.css"
+import "./global.css"
 
 const router = createBrowserRouter(
   createRoutesFromElements(

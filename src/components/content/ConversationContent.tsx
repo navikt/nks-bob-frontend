@@ -35,9 +35,7 @@ function ConversationContent() {
         ) : (
           <ChatContainer messages={messages} conversationId={conversationId!} />
         )}
-        <div className='dialogcontent'>
           <InputField onSend={handleUserMessage} />
-        </div>
       </DialogWrapper>
     </ContentWrapper>
   )
