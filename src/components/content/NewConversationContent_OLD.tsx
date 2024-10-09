@@ -4,7 +4,7 @@ import { useCreateConversation } from "../../api/api.ts"
 import { Message, NewConversation, NewMessage } from "../../types/Message.ts"
 import HistoryContent from "../history/HistorySidebar.tsx"
 import InputField from "../inputfield/InputField.tsx"
-import ChatDialog from "./chat/ChatDialog.tsx"
+import ChatDialog from "./chat/ChatContainer.tsx"
 import BobPlaceHolder from "./placeholders/BobPlaceHolder.tsx"
 import DialogWrapper from "./wrappers/DialogWrapper.tsx"
 
