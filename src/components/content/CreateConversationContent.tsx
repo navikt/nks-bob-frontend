@@ -19,7 +19,7 @@ const CreateConversationContent = () => {
     createConversation(newConversation)
       .then((conversation) => {
         navigate(`/samtaler/${conversation.id}`, {
-          state: { newQuestion: "message.content" },
+          state: { newQuestion: message.content },
         })
       })
 
