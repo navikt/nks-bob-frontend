@@ -1,16 +1,14 @@
 import { useNavigate } from "react-router-dom"
-import { useCreateConversation, useMessages } from "../../api/api.ts"
+import { useCreateConversation } from "../../api/api.ts"
 import { NewConversation, NewMessage } from "../../types/Message.ts"
 import HistoryContent from "../history/HistorySidebar.tsx"
 import InputField from "../inputfield/InputField.tsx"
-import ChatContainer from "./chat/ChatContainer.tsx"
 import BobPlaceHolder from "./placeholders/BobPlaceHolder.tsx"
 import DialogWrapper from "./wrappers/DialogWrapper.tsx"
 
 const CreateConversationContent = () => {
   const { createConversation } = useCreateConversation()
   const navigate = useNavigate()
-  const { messages, addOptimisticMessage } = useMessages("new")
 
   function handleUserMessage(message: NewMessage) {
     const newConversation: NewConversation = {
@@ -18,14 +16,9 @@ const CreateConversationContent = () => {
       initialMessage: { content: message.content },
     }
 
-    addOptimisticMessage({ content: message.content, messageRole: "human" })
-    addOptimisticMessage({ content: "", messageRole: "ai" })
-
     createConversation(newConversation)
       .then((conversation) => {
-        navigate(`/samtaler/${conversation.id}`, {
-          state: { messages: messages },
-        })
+        navigate(`/samtaler/${conversation.id}`, {})
       })
 
       .catch((error) => {
@@ -37,11 +30,6 @@ const CreateConversationContent = () => {
     <div className='contentwrapper'>
       <HistoryContent />
       <DialogWrapper>
-        {messages && messages.length > 0 ? (
-          <ChatContainer messages={messages} conversationId='new message' />
-        ) : (
-          <BobPlaceHolder />
-        )}
         <BobPlaceHolder />
         <InputField onSend={handleUserMessage} />
       </DialogWrapper>

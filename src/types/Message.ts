@@ -43,8 +43,3 @@ export type Conversation = {
   createdAt: string
   owner: string
 }
-
-export type OptimisticMessage = {
-  content: string;
-  messageRole: "human" | "ai";
-}

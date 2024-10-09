@@ -1,6 +1,6 @@
 import useSWR, { mutate } from "swr"
 import useSWRMutation from "swr/mutation"
-import { Conversation, Message, NewConversation, OptimisticMessage } from "../types/Message"
+import { Conversation, Message, NewConversation } from "../types/Message"
 
 const API_URL = `${import.meta.env.BASE_URL}bob-api`
 
@@ -55,19 +55,13 @@ export const useMessages = (conversationId: string) => {
   } = useSWR<Message[]>(
     `/api/v1/conversations/${conversationId}/messages`,
     fetcher,
-    { refreshInterval: 1000 ,
-    fallbackData: [], }
+    { refreshInterval: 1000 },
   )
-
-  const addOptimisticMessage = (newMessage: OptimisticMessage) => {
-    mutate([...(messages || []), newMessage], false)
-  }
 
   return {
     messages,
     isLoading,
     error,
-    addOptimisticMessage
   }
 }
 
