@@ -57,6 +57,7 @@ function FeedbackButtons({ message }: FeedbackButtonsProps) {
           size='small'
           icon={<ThumbUpFilled />}
           disabled={true}
+          className='hover:cursor-not-allowed'
         ></Button>
       )}
       {feedback === "negative" && (
@@ -65,6 +66,7 @@ function FeedbackButtons({ message }: FeedbackButtonsProps) {
           size='small'
           icon={<ThumbDownFilled />}
           disabled={true}
+          className='hover:cursor-not-allowed'
         ></Button>
       )}
     </div>
