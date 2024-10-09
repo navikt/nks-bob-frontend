@@ -1,5 +1,4 @@
-import React from "react"
-import { useLocation, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { useMessages, useSendMessage } from "../../api/api.ts"
 import { NewMessage } from "../../types/Message.ts"
 import HistoryContent from "../history/HistorySidebar.tsx"
@@ -11,31 +10,9 @@ import ContentWrapper from "./wrappers/ContentWrapper.tsx"
 import DialogWrapper from "./wrappers/DialogWrapper.tsx"
 
 function ConversationContent() {
-  const location = useLocation()
   const { conversationId } = useParams()
   const { messages, isLoading } = useMessages(conversationId!)
   const { sendMessage } = useSendMessage(conversationId!)
-
-  React.useEffect(() => {
-    if (location.state && location.state.newQuestion) {
-      const optimisticMessage = {
-        content: "",
-        messageRole: "ai",
-      }
-
-      sendMessage(
-        { content: location.state.newQuestion },
-        {
-          optimisticData: [
-            ...(messages ?? []),
-            { content: location.state.newQuestion, messageRole: "human" },
-            optimisticMessage,
-          ],
-          rollbackOnError: true,
-        },
-      )
-    }
-  }, [conversationId, location.state, messages, sendMessage])
 
   function handleUserMessage(message: NewMessage) {
     sendMessage(message, {
