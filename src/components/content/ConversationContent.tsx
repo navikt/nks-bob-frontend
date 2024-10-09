@@ -33,7 +33,7 @@ function ConversationContent() {
         {isLoading || !messages || messages.length < 0 ? (
           <BobPlaceHolder />
         ) : (
-          <ChatDialog messages={messages} />
+          <ChatDialog messages={messages} conversationId={conversationId!} />
         )}
         <div className='dialogcontent'>
           <InputField onSend={handleUserMessage} />
