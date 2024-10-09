@@ -1,14 +1,19 @@
 import { Button } from "@navikt/ds-react"
 import { useState } from "react"
-import { ThumbDownOutline, ThumbUpOutline } from "../../../assets/icons/Thumbs"
-import { Feedback, Message } from "../../../types/Message.ts"
 import { useSendFeedback } from "../../../api/api.ts"
+import {
+  ThumbDownFilled,
+  ThumbDownOutline,
+  ThumbUpFilled,
+  ThumbUpOutline,
+} from "../../../assets/icons/Thumbs"
+import { Feedback, Message } from "../../../types/Message.ts"
 
 interface FeedbackButtonsProps {
   message: Message
 }
 
-function FeedbackButtons( { message }: FeedbackButtonsProps) {
+function FeedbackButtons({ message }: FeedbackButtonsProps) {
   const [feedback, setFeedback] = useState<"positive" | "negative" | null>(null)
   const { sendFeedback, isLoading } = useSendFeedback(message)
 
@@ -26,7 +31,7 @@ function FeedbackButtons( { message }: FeedbackButtonsProps) {
     }
   }
 
-return (
+  return (
     <div className='flex justify-end'>
       {feedback === null && (
         <>
@@ -50,14 +55,16 @@ return (
         <Button
           variant='tertiary-neutral'
           size='small'
-          icon={<ThumbUpOutline />}
+          icon={<ThumbUpFilled />}
+          disabled={true}
         ></Button>
       )}
       {feedback === "negative" && (
         <Button
           variant='tertiary-neutral'
           size='small'
-          icon={<ThumbDownOutline />}
+          icon={<ThumbDownFilled />}
+          disabled={true}
         ></Button>
       )}
     </div>

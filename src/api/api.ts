@@ -1,6 +1,11 @@
 import useSWR, { mutate } from "swr"
 import useSWRMutation from "swr/mutation"
-import { Conversation, Feedback, Message, NewConversation } from "../types/Message"
+import {
+  Conversation,
+  Feedback,
+  Message,
+  NewConversation,
+} from "../types/Message"
 
 const API_URL = `${import.meta.env.BASE_URL}bob-api`
 

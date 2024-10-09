@@ -10,11 +10,11 @@
 }
 
 .conversationlink:hover {
-  background: #D5D9DE;
+  background: #d5d9de;
 }
 
 .active-conversation {
-  background: #D5D9DE;
+  background: #d5d9de;
 }
 
 .deletebutton {
@@ -22,7 +22,7 @@
   display: none;
   position: absolute;
   right: 0;
-  background: #D5D9DE;
+  background: #d5d9de;
   padding: 2px;
 }
 
@@ -31,5 +31,5 @@
 }
 
 .deletebutton:hover {
-  color: var(--a-icon-danger)
+  color: var(--a-icon-danger);
 }

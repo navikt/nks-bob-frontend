@@ -4,10 +4,10 @@ import { NewMessage } from "../../types/Message.ts"
 import HistoryContent from "../history/HistorySidebar.tsx"
 import InputField from "../inputfield/InputField.tsx"
 import Menu from "../menu/Menu.tsx"
+import ChatContainer from "./chat/ChatContainer.tsx"
 import BobPlaceHolder from "./placeholders/BobPlaceHolder.tsx"
 import ContentWrapper from "./wrappers/ContentWrapper.tsx"
 import DialogWrapper from "./wrappers/DialogWrapper.tsx"
-import ChatContainer from "./chat/ChatContainer.tsx"
 
 function ConversationContent() {
   const { conversationId } = useParams()
@@ -35,7 +35,7 @@ function ConversationContent() {
         ) : (
           <ChatContainer messages={messages} conversationId={conversationId!} />
         )}
-          <InputField onSend={handleUserMessage} />
+        <InputField onSend={handleUserMessage} />
       </DialogWrapper>
     </ContentWrapper>
   )
