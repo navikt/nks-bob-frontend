@@ -1,6 +1,6 @@
 import useSWR, { mutate } from "swr"
 import useSWRMutation from "swr/mutation"
-import { Conversation, Message, NewConversation } from "../types/Message"
+import { Conversation, Feedback, Message, NewConversation } from "../types/Message"
 
 const API_URL = `${import.meta.env.BASE_URL}bob-api`
 
@@ -73,6 +73,18 @@ export const useSendMessage = (conversationId: string) => {
 
   return {
     sendMessage: trigger,
+    isLoading: isMutating,
+  }
+}
+
+export const useSendFeedback = (message: Message) => {
+  const { trigger, isMutating } = useSWRMutation(
+    `/api/v1/messages/${message.id}/feedback`,
+    poster,
+  )
+
+  return {
+    sendFeedback: trigger as (feedback: Feedback) => Promise<Feedback>,
     isLoading: isMutating,
   }
 }

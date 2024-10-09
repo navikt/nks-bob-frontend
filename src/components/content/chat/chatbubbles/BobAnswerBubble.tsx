@@ -27,7 +27,7 @@ export const BobAnswerBubble = ({ message }: BobAnswerBubbleProps) => {
           )}
         </Chat.Bubble>
       </HStack>
-      <FeedbackButtons />
+      <FeedbackButtons message={message} />
       {message.citations?.length > 0 && (
         <VStack gap='3' align='stretch' className='pl-16'>
           <Heading as='h5' size='xsmall'>
