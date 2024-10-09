@@ -1,9 +1,6 @@
 import { useEffect, useRef } from "react"
 import { Message } from "../../../types/Message.ts"
-import {
-  BobAnswerBubble,
-  BobAnswerLoading,
-} from "./chatbubbles/BobAnswerBubble.tsx"
+import { BobAnswerBubble } from "./chatbubbles/BobAnswerBubble.tsx"
 import UserQuestionBubble from "./chatbubbles/UserQuestionBubble.tsx"
 
 interface ChatDialogProps {
@@ -23,18 +20,15 @@ function ChatContainer({ messages }: ChatDialogProps) {
     }
   }, [messages])
 
-  const isLocal = process.env.NODE_ENV === "development"
-
   return (
     <div className='dialogcontent flex h-auto grow flex-col gap-8 px-4'>
       {messages.map((message) =>
         message.messageRole === "human" ? (
           <UserQuestionBubble key={message.id} userQuestion={message} />
         ) : (
-          <BobAnswerBubble key={message.id} answer={message} />
+          <BobAnswerBubble key={message.id} message={message} />
         ),
       )}
-      {isLocal && <BobAnswerLoading />}
       <div ref={lastMessageRef} className='pb-18' />
     </div>
   )

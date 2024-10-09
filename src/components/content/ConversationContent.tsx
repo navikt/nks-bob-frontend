@@ -4,7 +4,6 @@ import { NewMessage } from "../../types/Message.ts"
 import HistoryContent from "../history/HistorySidebar.tsx"
 import InputField from "../inputfield/InputField.tsx"
 import Menu from "../menu/Menu.tsx"
-import { BobAnswerLoading } from "./chat/chatbubbles/BobAnswerBubble.tsx"
 import ChatDialog from "./chat/ChatDialog.tsx"
 import BobPlaceHolder from "./placeholders/BobPlaceHolder.tsx"
 import ContentWrapper from "./wrappers/ContentWrapper.tsx"
@@ -20,7 +19,7 @@ function ConversationContent() {
       optimisticData: [
         ...(messages ?? []),
         { content: message.content, messageRole: "human" },
-        <BobAnswerLoading />,
+        { content: "", messageRole: "ai" },
       ],
       rollbackOnError: true, // TODO default svar fra Bob hvis KBS ikke svarer.
     })

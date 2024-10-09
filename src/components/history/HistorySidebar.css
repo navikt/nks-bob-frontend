@@ -11,5 +11,4 @@
   overflow: auto;
 
   background: var(--a-surface-subtle);
-  box-shadow: 0 -25px 15px -10px #F2F3F5 inset;
 }
