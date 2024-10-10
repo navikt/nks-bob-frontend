@@ -21,6 +21,7 @@ export type Message = {
   messageRole: MessageRole
   createdBy: string
   citations: Citation[]
+  context: Context[]
 }
 
 export type Citation = {
@@ -30,6 +31,26 @@ export type Citation = {
   title: string
   section: string
   createdAt: string
+}
+
+export type Context = {
+  content: string
+  metadata: Metadata[]
+}
+
+export type Metadata = {
+  Tab: string
+  Score: number
+  Title: string
+  Headers: null
+  Section: string
+  Fragment: string
+  ArticleType: string
+  ContentColumn: string
+  DataCategories: [string]
+  KnowledgeArticleId: string
+  SemanticSimilarity: number
+  KnowledgeArticle_QuartoUrl: string
 }
 
 export type NewConversation = {

@@ -43,7 +43,11 @@ export const BobAnswerBubble = ({ message }: BobAnswerBubbleProps) => {
             Sitater fra kunnskapsartiklene
           </Heading>
           {message.citations.map((citation) => (
-            <BobAnswerCitations citation={citation} key={citation.id} />
+            <BobAnswerCitations
+              citation={citation}
+              key={citation.id}
+              context={message.context}
+            />
           ))}
         </VStack>
       )}

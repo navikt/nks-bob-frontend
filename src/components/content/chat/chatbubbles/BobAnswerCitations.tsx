@@ -1,14 +1,26 @@
-import { BodyLong, ExpansionCard } from "@navikt/ds-react"
+import { BodyLong, ExpansionCard, Link } from "@navikt/ds-react"
+import { Context } from "../../../../types/Message.ts"
 
 interface BobAnswerCitationProps {
   citation: {
     title: string
     text: string
     section: string
+    article: string
   }
+  context: Context[]
 }
 
-function BobAnswerCitations({ citation }: BobAnswerCitationProps) {
+function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
+  const matchingMetadata = context
+    .flatMap((ctx) => ctx.metadata)
+    .find(
+      (metadata) =>
+        metadata.Title === citation.title &&
+        metadata.Section === citation.section &&
+        metadata.KnowledgeArticleId === citation.article,
+    )
+
   return (
     <ExpansionCard
       size='small'
@@ -20,11 +32,19 @@ function BobAnswerCitations({ citation }: BobAnswerCitationProps) {
           {citation.title}
         </ExpansionCard.Title>
         <ExpansionCard.Description>
-          Fra seksjonen:{citation.section}
+          Hentet fra: {citation.section}
         </ExpansionCard.Description>
       </ExpansionCard.Header>
       <ExpansionCard.Content>
         <BodyLong className='italic'>{citation.text}</BodyLong>
+        {matchingMetadata && (
+          <Link
+            href={matchingMetadata.KnowledgeArticle_QuartoUrl}
+            target='_blank'
+          >
+            Åpne artikkelen i ny fane
+          </Link>
+        )}
       </ExpansionCard.Content>
     </ExpansionCard>
   )
