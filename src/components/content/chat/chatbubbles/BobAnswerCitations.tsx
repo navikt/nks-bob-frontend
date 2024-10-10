@@ -10,13 +10,17 @@ interface BobAnswerCitationProps {
 
 function BobAnswerCitations({ citation }: BobAnswerCitationProps) {
   return (
-    <ExpansionCard size='small' aria-label='Sitat fra kunnskapsartiklene'>
+    <ExpansionCard
+      size='small'
+      aria-label='Sitat fra kunnskapsartiklene'
+      open={true}
+    >
       <ExpansionCard.Header>
         <ExpansionCard.Title as='h4' size='small'>
           {citation.title}
         </ExpansionCard.Title>
         <ExpansionCard.Description>
-          {citation.section}
+          Fra seksjonen:{citation.section}
         </ExpansionCard.Description>
       </ExpansionCard.Header>
       <ExpansionCard.Content>
