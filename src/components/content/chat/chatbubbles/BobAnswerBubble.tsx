@@ -10,7 +10,7 @@ import Markdown from "react-markdown"
 import Bobhead from "../../../../assets/Bob-hode-svg.svg"
 import { Message } from "../../../../types/Message.ts"
 import FeedbackButtons from "../../feedback/FeedbackButtons.tsx"
-import BobAnswerCitation from "./BobAnswerCitation.tsx"
+import BobAnswerCitations from "./BobAnswerCitations.tsx"
 
 interface BobAnswerBubbleProps {
   message: Message
@@ -43,7 +43,7 @@ export const BobAnswerBubble = ({ message }: BobAnswerBubbleProps) => {
             Sitater fra kunnskapsartiklene
           </Heading>
           {message.citations.map((citation) => (
-            <BobAnswerCitation citation={citation} key={citation.id} />
+            <BobAnswerCitations citation={citation} key={citation.id} />
           ))}
         </VStack>
       )}

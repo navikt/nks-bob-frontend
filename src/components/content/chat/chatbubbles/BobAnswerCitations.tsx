@@ -8,11 +8,13 @@ interface BobAnswerCitationProps {
   }
 }
 
-function BobAnswerCitation({ citation }: BobAnswerCitationProps) {
+function BobAnswerCitations({ citation }: BobAnswerCitationProps) {
   return (
-    <ExpansionCard size='small' aria-label='Small-variant med description'>
+    <ExpansionCard size='small' aria-label='Sitat fra kunnskapsartiklene'>
       <ExpansionCard.Header>
-        <ExpansionCard.Title>{citation.title}</ExpansionCard.Title>
+        <ExpansionCard.Title as='h4' size='small'>
+          {citation.title}
+        </ExpansionCard.Title>
         <ExpansionCard.Description>
           {citation.section}
         </ExpansionCard.Description>
@@ -26,4 +28,4 @@ function BobAnswerCitation({ citation }: BobAnswerCitationProps) {
 
 // https://data.ansatt.nav.no/quarto/e7b3e02a-0c45-4b5c-92a2-a6d364120dfb/Sykepenger/kA02o000000M7qQCAS.html#ag-mer-informasjon
 
-export default BobAnswerCitation
+export default BobAnswerCitations
