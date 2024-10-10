@@ -1,6 +1,6 @@
-import { BodyLong } from "@navikt/ds-react"
 import { Message } from "../../../../types/Message.ts"
 
+import Markdown from "react-markdown"
 import "./ChatBubbles.css"
 
 interface UserChatBubbleProps {
@@ -10,7 +10,7 @@ interface UserChatBubbleProps {
 function UserQuestionBubble({ userQuestion }: UserChatBubbleProps) {
   return (
     <div className='questionbubble w-fit max-w-prose'>
-      <BodyLong className='text-balance'>{userQuestion?.content}</BodyLong>
+      <Markdown>{userQuestion?.content}</Markdown>
     </div>
   )
 }
