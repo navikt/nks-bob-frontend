@@ -35,7 +35,7 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
           Hentet fra: {citation.section}
         </ExpansionCard.Description>
       </ExpansionCard.Header>
-      <ExpansionCard.Content>
+      <ExpansionCard.Content className='gap-4'>
         <BodyLong className='italic'>{citation.text}</BodyLong>
         {matchingMetadata && (
           <Link
