@@ -53,16 +53,17 @@ function InputField({ onSend }: InputFieldProps) {
   return (
     <VStack
       gap='4'
-      className='dialogcontent sticky bottom-0 z-10 bg-bg-default px-4 pb-4'
+      className='dialogcontent sticky bottom-0 z-10 h-auto bg-bg-default px-4 pb-4'
+      align='stretch'
     >
-      <HStack gap='1' align='stretch'>
+      <HStack gap='1' align='end'>
         <Textarea
           size='medium'
           label=''
           hideLabel
-          className='max-h-11 flex-grow'
+          className='flex-grow'
           minRows={1}
-          maxRows={10}
+          maxRows={8}
           placeholder={placeholderText}
           value={inputValue}
           onChange={handleInputChange}

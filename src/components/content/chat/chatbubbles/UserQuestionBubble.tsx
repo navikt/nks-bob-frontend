@@ -1,5 +1,7 @@
-import { Chat } from "@navikt/ds-react"
+import { BodyLong } from "@navikt/ds-react"
 import { Message } from "../../../../types/Message.ts"
+
+import "./ChatBubbles.css"
 
 interface UserChatBubbleProps {
   userQuestion?: Message
@@ -7,14 +9,19 @@ interface UserChatBubbleProps {
 
 function UserQuestionBubble({ userQuestion }: UserChatBubbleProps) {
   return (
-    <div className='flex flex-col pt-8'>
-      <Chat position='right' className='max-w-full'>
-        <Chat.Bubble className='max-w-prose bg-blue-50'>
-          {userQuestion?.content}
-        </Chat.Bubble>
-      </Chat>
+    <div className='questionbubble'>
+      <BodyLong className='max-w-prose break-words'>
+        {userQuestion?.content}
+      </BodyLong>
     </div>
   )
 }
 
 export default UserQuestionBubble
+
+// display: flex;
+// padding: 16px;
+// flex-direction: column;
+// align-items: flex-start;
+// gap: 8px;
+// flex: 1 0 0;

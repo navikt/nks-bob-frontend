@@ -1,0 +1,14 @@
+.questionbubble {
+    display: flex;
+    padding: 16px;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1 0 0;
+    width: 100%;
+    max-width: fit-content;
+    align-self: flex-end;
+
+    border-radius: 12px 12px 2px 12px;
+    background: var(--a-surface-default);
+    box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.20), 0 1px 3px 0 rgba(0, 0, 0, 0.15);
+}
