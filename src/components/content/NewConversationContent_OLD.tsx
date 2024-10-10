@@ -5,7 +5,7 @@ import { Message, NewConversation, NewMessage } from "../../types/Message.ts"
 import HistoryContent from "../history/HistorySidebar.tsx"
 import InputField from "../inputfield/InputField.tsx"
 import ChatDialog from "./chat/ChatContainer.tsx"
-import BobPlaceHolder from "./placeholders/BobPlaceHolder.tsx"
+import Placeholders from "./placeholders/Placeholders.tsx"
 import DialogWrapper from "./wrappers/DialogWrapper.tsx"
 
 function NewConversationContent() {
@@ -40,7 +40,7 @@ function NewConversationContent() {
     <div className='contentwrapper'>
       <HistoryContent />
       <DialogWrapper>
-        {messagePlaceholders.length === 0 && <BobPlaceHolder />}
+        {messagePlaceholders.length === 0 && <Placeholders />}
         {messagePlaceholders.length !== 0 && (
           <ChatDialog
             messages={messagePlaceholders as Message[]}

@@ -3,7 +3,7 @@ import { useCreateConversation } from "../../api/api.ts"
 import { NewConversation, NewMessage } from "../../types/Message.ts"
 import HistoryContent from "../history/HistorySidebar.tsx"
 import InputField from "../inputfield/InputField.tsx"
-import BobPlaceHolder from "./placeholders/BobPlaceHolder.tsx"
+import { BobPlaceholder } from "./placeholders/Placeholders.tsx"
 import DialogWrapper from "./wrappers/DialogWrapper.tsx"
 
 const CreateConversationContent = () => {
@@ -30,7 +30,7 @@ const CreateConversationContent = () => {
     <div className='contentwrapper'>
       <HistoryContent />
       <DialogWrapper>
-        <BobPlaceHolder />
+        <BobPlaceholder />
         <InputField onSend={handleUserMessage} />
       </DialogWrapper>
     </div>

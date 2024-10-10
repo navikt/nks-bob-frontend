@@ -40,7 +40,7 @@ export const BobAnswerBubble = ({ message }: BobAnswerBubbleProps) => {
       {message.citations?.length > 0 && (
         <VStack gap='3' align='stretch' className='pl-16'>
           <Heading as='h5' size='xsmall'>
-            Sitater hentet fra kunnskapsartiklene
+            Sitater fra kunnskapsartiklene
           </Heading>
           {message.citations.map((citation) => (
             <BobAnswerCitation citation={citation} key={citation.id} />

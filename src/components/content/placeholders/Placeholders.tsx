@@ -1,6 +1,6 @@
 import { BobTheWizard } from "../../../assets/illustrations/BobTheWizard.tsx"
 
-function BobPlaceHolder() {
+export const BobPlaceholder = () => {
   return (
     <div className='dialogcontent h-full items-center justify-center pt-8'>
       <BobTheWizard />
@@ -8,4 +8,8 @@ function BobPlaceHolder() {
   )
 }
 
-export default BobPlaceHolder
+export const WhitespacePlaceholder = () => {
+  return (
+    <div className='dialogcontent h-full items-center justify-center pt-8' />
+  )
+}

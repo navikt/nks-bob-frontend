@@ -48,6 +48,8 @@ function InputField({ onSend }: InputFieldProps) {
     }
   }
 
+  // TODO: inputfeltet vokser ikke oppover når man skriver lengre tekster
+
   return (
     <VStack
       gap='4'

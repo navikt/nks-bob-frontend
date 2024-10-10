@@ -5,7 +5,7 @@ import HistoryContent from "../history/HistorySidebar.tsx"
 import InputField from "../inputfield/InputField.tsx"
 import Menu from "../menu/Menu.tsx"
 import ChatContainer from "./chat/ChatContainer.tsx"
-import BobPlaceHolder from "./placeholders/BobPlaceHolder.tsx"
+import { WhitespacePlaceholder } from "./placeholders/Placeholders.tsx"
 import ContentWrapper from "./wrappers/ContentWrapper.tsx"
 import DialogWrapper from "./wrappers/DialogWrapper.tsx"
 
@@ -31,7 +31,7 @@ function ConversationContent() {
       <DialogWrapper>
         <Menu />
         {isLoading || !messages || messages.length < 0 ? (
-          <BobPlaceHolder />
+          <WhitespacePlaceholder />
         ) : (
           <ChatContainer messages={messages} conversationId={conversationId!} />
         )}
