@@ -13,7 +13,7 @@ function BobAnswerCitations({ citation }: BobAnswerCitationProps) {
     <ExpansionCard
       size='small'
       aria-label='Sitat fra kunnskapsartiklene'
-      open={true}
+      defaultOpen={true}
     >
       <ExpansionCard.Header>
         <ExpansionCard.Title as='h4' size='small'>
