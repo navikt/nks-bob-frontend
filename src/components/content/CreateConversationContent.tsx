@@ -3,7 +3,6 @@ import { useCreateConversation } from "../../api/api.ts"
 import { NewConversation, NewMessage } from "../../types/Message.ts"
 import HistoryContent from "../history/HistorySidebar.tsx"
 import InputField from "../inputfield/InputField.tsx"
-import { BobPlaceholder } from "./placeholders/Placeholders.tsx"
 import DialogWrapper from "./wrappers/DialogWrapper.tsx"
 
 const CreateConversationContent = () => {
@@ -30,7 +29,13 @@ const CreateConversationContent = () => {
     <div className='contentwrapper'>
       <HistoryContent />
       <DialogWrapper>
-        <BobPlaceholder />
+        <div className='flex flex-grow'>
+          <iframe
+            id='iFrameExample'
+            title='iFrame Example'
+            src='https://data.ansatt.nav.no/quarto/e7b3e02a-0c45-4b5c-92a2-a6d364120dfb/Arbeidsavklaringspenger/kA02o000000M9BVCA0.html'
+          ></iframe>
+        </div>
         <InputField onSend={handleUserMessage} />
       </DialogWrapper>
     </div>
