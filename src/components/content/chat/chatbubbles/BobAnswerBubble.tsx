@@ -18,7 +18,7 @@ interface BobAnswerBubbleProps {
 
 export const BobAnswerBubble = ({ message }: BobAnswerBubbleProps) => {
   return (
-    <VStack gap='3' align='stretch'>
+    <VStack gap='3' align='stretch' className='mb-4'>
       <HStack gap='3' align='end' wrap={false} width='full'>
         <img src={Bobhead} alt='Bob' width='50px' className='hidehead' />
         <Chat.Bubble className='w-full bg-bg-default'>

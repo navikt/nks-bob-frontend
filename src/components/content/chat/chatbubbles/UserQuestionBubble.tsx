@@ -16,10 +16,3 @@ function UserQuestionBubble({ userQuestion }: UserChatBubbleProps) {
 }
 
 export default UserQuestionBubble
-
-// display: flex;
-// padding: 16px;
-// flex-direction: column;
-// align-items: flex-start;
-// gap: 8px;
-// flex: 1 0 0;
