@@ -1,4 +1,6 @@
-import { BodyLong, ExpansionCard, Link } from "@navikt/ds-react"
+import { ExternalLinkIcon } from "@navikt/aksel-icons"
+import { BodyShort, ExpansionCard, Link } from "@navikt/ds-react"
+import Markdown from "react-markdown"
 import { Context } from "../../../../types/Message.ts"
 
 interface BobAnswerCitationProps {
@@ -12,13 +14,13 @@ interface BobAnswerCitationProps {
 }
 
 function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
-  const matchingMetadata = context
-    .flatMap((ctx) => ctx.metadata)
+  const matchingContextCitationData = context
+    .flatMap((context) => context.metadata)
     .find(
-      (metadata) =>
-        metadata.Title === citation.title &&
-        metadata.Section === citation.section &&
-        metadata.KnowledgeArticleId === citation.article,
+      (contextMetadata) =>
+        contextMetadata.Title === citation.title &&
+        contextMetadata.Section === citation.section &&
+        contextMetadata.KnowledgeArticleId === citation.article,
     )
 
   return (
@@ -36,20 +38,23 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
         </ExpansionCard.Description>
       </ExpansionCard.Header>
       <ExpansionCard.Content className='gap-4'>
-        <BodyLong className='mb-4 italic'>{citation.text}</BodyLong>
-        {matchingMetadata && (
+        <Markdown className='mb-4 italic'>{citation.text}</Markdown>
+        {matchingContextCitationData ? (
           <Link
-            href={matchingMetadata.KnowledgeArticle_QuartoUrl}
+            href={matchingContextCitationData.KnowledgeArticle_QuartoUrl}
             target='_blank'
           >
             Åpne artikkelen i ny fane
+            <ExternalLinkIcon title='Åpne artikkelen i ny fane' />
           </Link>
+        ) : (
+          <BodyShort size='medium'>
+            Kunne ikke finne lenke til artikkelen.
+          </BodyShort>
         )}
       </ExpansionCard.Content>
     </ExpansionCard>
   )
 }
-
-// https://data.ansatt.nav.no/quarto/e7b3e02a-0c45-4b5c-92a2-a6d364120dfb/Sykepenger/kA02o000000M7qQCAS.html#ag-mer-informasjon
 
 export default BobAnswerCitations
