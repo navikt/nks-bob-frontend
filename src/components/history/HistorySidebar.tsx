@@ -15,7 +15,7 @@ function HistorySidebar() {
   const { isLoading } = useConversations()
 
   return (
-    <div className='layout h-full px-3 max-md:hidden'>
+    <div className='layout h-auto px-3 max-md:hidden'>
       <div className='mb-2 flex w-full justify-between px-2'>
         <Heading size='xsmall'>Dine samtaler</Heading>
         <ClockDashedIcon title='Dine samtaler' fontSize='1.5rem' />

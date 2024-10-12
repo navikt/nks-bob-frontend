@@ -1,4 +1,4 @@
 export interface User {
-  username: string
-  aadUsername: string
+  fornavn: string
+  etternavn: string
 }
