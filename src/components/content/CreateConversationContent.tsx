@@ -4,6 +4,7 @@ import { NewConversation, NewMessage } from "../../types/Message.ts"
 import HistoryContent from "../history/HistorySidebar.tsx"
 import InputField from "../inputfield/InputField.tsx"
 import { BobPlaceholder } from "./placeholders/Placeholders.tsx"
+import ContentWrapper from "./wrappers/ContentWrapper.tsx"
 import DialogWrapper from "./wrappers/DialogWrapper.tsx"
 
 const CreateConversationContent = () => {
@@ -27,13 +28,13 @@ const CreateConversationContent = () => {
   }
 
   return (
-    <div className='contentwrapper'>
+    <ContentWrapper>
       <HistoryContent />
       <DialogWrapper>
         <BobPlaceholder />
         <InputField onSend={handleUserMessage} />
       </DialogWrapper>
-    </div>
+    </ContentWrapper>
   )
 }
 
