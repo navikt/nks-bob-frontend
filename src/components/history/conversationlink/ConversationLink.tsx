@@ -29,8 +29,9 @@ function ConversationLink({ conversation }: ConversationLinkProps) {
     >
       <div
         onClick={() => navigate(`/samtaler/${conversation.id}`)}
-        className='flex w-full flex-grow'
+        className='p flex w-full flex-grow px-2 py-1.5'
       >
+        {/*padding: 6px 8px;*/}
         <BodyShort truncate={true} size='medium' className='w-full'>
           {conversation.title}
         </BodyShort>

@@ -2,7 +2,6 @@
   display: flex;
   position: relative;
   width: 100%;
-  padding: 6px 8px;
   align-items: center;
   color: var(--a-text-default);
   border-radius: 4px;
