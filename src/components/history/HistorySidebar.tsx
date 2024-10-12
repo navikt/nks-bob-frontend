@@ -21,7 +21,7 @@ function HistorySidebar() {
         <ClockDashedIcon title='Dine samtaler' fontSize='1.5rem' />
       </div>
       {!isLoading ? (
-        <div className='flex w-full flex-col-reverse gap-6'>
+        <div className='flex w-full flex-col gap-6'>
           <TodayConversations />
           <YesterdayConversations />
           <Last7DaysConversations />

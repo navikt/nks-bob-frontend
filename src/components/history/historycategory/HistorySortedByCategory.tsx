@@ -26,7 +26,7 @@ export const TodayConversations = () => {
       <Heading size='xsmall' className='mb-3 px-2'>
         I dag
       </Heading>
-      <ol>{todayConversations}</ol>
+      <ol className='flex flex-col-reverse'>{todayConversations}</ol>
     </div>
   ) : null
 }
@@ -42,7 +42,7 @@ export const YesterdayConversations = () => {
       <Heading size='xsmall' className='mb-3 px-2'>
         I dag
       </Heading>
-      <ol>{yesterdayConversations}</ol>
+      <ol className='flex flex-col-reverse'>{yesterdayConversations}</ol>
     </div>
   ) : null
 }
@@ -65,7 +65,7 @@ export const Last7DaysConversations = () => {
       <Heading size='xsmall' className='mb-3 px-2'>
         Siste 7 dagene
       </Heading>
-      <ol>{last7DaysConversations}</ol>
+      <ol className='flex flex-col-reverse'>{last7DaysConversations}</ol>
     </div>
   ) : null
 }
@@ -87,7 +87,7 @@ export const Last30DaysConversations = () => {
       <Heading size='xsmall' className='mb-3 px-2'>
         Siste 30 dagene
       </Heading>
-      <ol>{last30DaysConversations}</ol>
+      <ol className='flex flex-col-reverse'>{last30DaysConversations}</ol>
     </div>
   ) : null
 }
@@ -105,7 +105,7 @@ export const Before30DaysConversations = () => {
       <Heading size='xsmall' className='mb-3 px-2'>
         Mer enn 30 dager
       </Heading>
-      <ol>{before30DaysConversations}</ol>
+      <ol className='flex flex-col-reverse'>{before30DaysConversations}</ol>
     </div>
   ) : null
 }

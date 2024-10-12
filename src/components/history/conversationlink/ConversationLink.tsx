@@ -24,21 +24,25 @@ function ConversationLink({ conversation }: ConversationLinkProps) {
   }
 
   return (
-    <a
-      href={`/samtaler/${conversation.id}`}
-      className={`conversationlink ${isActive ? "active-conversation" : ""}`}
+    <div
+      className={`${isActive ? "active-conversation" : ""} conversationlink cursor-pointer`}
     >
-      <BodyShort truncate={true} size='medium'>
-        {conversation.title}
-      </BodyShort>
-      <a onClick={handleDelete} className='deletebutton'>
+      <div
+        onClick={() => navigate(`/samtaler/${conversation.id}`)}
+        className='flex w-full flex-grow'
+      >
+        <BodyShort truncate={true} size='medium' className='w-full'>
+          {conversation.title}
+        </BodyShort>
+      </div>
+      <div onClick={handleDelete} className='deletebutton'>
         <TrashIcon
           title='Slett'
-          fontSize='1.3rem'
+          fontSize='1.2rem'
           className='hover:accent-surface-danger-hover'
         />
-      </a>
-    </a>
+      </div>
+    </div>
   )
 }
 
