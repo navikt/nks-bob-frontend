@@ -10,15 +10,11 @@ import {
 const API_URL = `${import.meta.env.BASE_URL}bob-api`
 
 async function fetcher<T>(input: RequestInfo, init?: RequestInit): Promise<T> {
-  const isLocal = import.meta.env.MODE === "development"
   const res = await fetch(`${API_URL}${input}`, {
     ...init,
     credentials: "include",
     headers: {
       ...init?.headers,
-      ...(isLocal && {
-        Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
-      }),
     },
   })
   if (res.status === 204) {
