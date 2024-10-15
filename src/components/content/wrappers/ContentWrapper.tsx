@@ -5,7 +5,7 @@ interface ContentWrapperProps {
 }
 
 function ContentWrapper({ children }: ContentWrapperProps) {
-  return <div className='flex h-full w-full overflow-hidden'>{children}</div>
+  return <div className='contentwrapper'>{children}</div>
 }
 
 export default ContentWrapper

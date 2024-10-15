@@ -21,7 +21,7 @@ function ChatContainer({ messages }: ChatDialogProps) {
   }, [messages])
 
   return (
-    <div className='dialogcontent h-auto grow flex-col gap-4 px-4 pt-8'>
+    <div className='dialogcontent h-auto grow flex-col gap-4 px-4 py-10'>
       {messages.map((message) =>
         message.messageRole === "human" ? (
           <UserQuestionBubble key={message.id} userQuestion={message} />

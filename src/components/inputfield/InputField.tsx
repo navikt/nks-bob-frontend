@@ -51,11 +51,7 @@ function InputField({ onSend }: InputFieldProps) {
   // TODO: inputfeltet vokser ikke oppover når man skriver lengre tekster
 
   return (
-    <VStack
-      gap='4'
-      className='dialogcontent sticky bottom-0 z-10 h-auto bg-bg-default px-4 pb-4'
-      align='stretch'
-    >
+    <VStack gap='4' className='w-full max-w-3xl px-4 pb-4' align='stretch'>
       <HStack gap='1' align='end'>
         <Textarea
           size='medium'

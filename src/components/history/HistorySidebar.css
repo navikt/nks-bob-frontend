@@ -2,7 +2,7 @@
   display: flex;
   flex-shrink: 0;
   width: 260px;
-  padding: 30px 12px;
+  padding: 24px 12px;
   flex-direction: column;
   align-items: flex-start;
   gap: 30px;
@@ -11,5 +11,5 @@
   overflow-x: hidden;
   overflow-y: auto;
 
-  background: var(--a-surface-subtle);
+  background: #FEF5EF;
 }
