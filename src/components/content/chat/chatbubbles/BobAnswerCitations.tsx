@@ -23,6 +23,11 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
         contextMetadata.KnowledgeArticleId === citation.article,
     )
 
+  const words = citation.text.split(" ")
+  const textStart = words.slice(0, 4).join(" ")
+  const textEnd = words.slice(-4).join(" ")
+  const textFragment = `${encodeURIComponent(textStart)},${encodeURIComponent(textEnd)}`
+
   return (
     <ExpansionCard
       size='small'
@@ -41,7 +46,7 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
         <Markdown className='mb-4 italic'>{citation.text}</Markdown>
         {matchingContextCitationData ? (
           <Link
-            href={matchingContextCitationData.KnowledgeArticle_QuartoUrl}
+            href={`${matchingContextCitationData.KnowledgeArticle_QuartoUrl}#:~:text=${textFragment}`}
             target='_blank'
           >
             Åpne artikkelen i ny fane
