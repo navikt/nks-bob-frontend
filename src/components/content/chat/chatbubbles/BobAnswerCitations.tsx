@@ -43,7 +43,7 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
         </ExpansionCard.Description>
       </ExpansionCard.Header>
       <ExpansionCard.Content className='gap-4'>
-        <Markdown className='mb-4 italic'>{citation.text}</Markdown>
+        <Markdown className='markdown mb-4 italic'>{citation.text}</Markdown>
         {matchingContextCitationData ? (
           <Link
             href={`${matchingContextCitationData.KnowledgeArticle_QuartoUrl}#:~:text=${textFragment}`}
