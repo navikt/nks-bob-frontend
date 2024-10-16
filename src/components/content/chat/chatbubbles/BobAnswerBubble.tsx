@@ -29,7 +29,7 @@ export const BobAnswerBubble = ({ message }: BobAnswerBubbleProps) => {
               <Skeleton width={80} variant='text' />
             </>
           ) : (
-            <Markdown>{message.content}</Markdown>
+            <Markdown className='markdown'>{message.content}</Markdown>
           )}
         </Chat.Bubble>
       </HStack>

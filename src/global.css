@@ -7,6 +7,11 @@
   scrollbar-color: var(--a-grayalpha-400) transparent;
 }
 
+ol, ul {
+  all: revert;
+  padding-left: 2rem;
+}
+
 .pagewrapper {
   display: flex;
   flex-direction: column;

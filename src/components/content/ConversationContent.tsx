@@ -1,7 +1,6 @@
 import { useParams } from "react-router-dom"
 import { useMessages, useSendMessage } from "../../api/api.ts"
 import { NewMessage } from "../../types/Message.ts"
-import HistoryContent from "../history/HistorySidebar.tsx"
 import InputField from "../inputfield/InputField.tsx"
 import Menu from "../menu/Menu.tsx"
 import ChatContainer from "./chat/ChatContainer.tsx"
@@ -27,7 +26,6 @@ function ConversationContent() {
 
   return (
     <ContentWrapper>
-      <HistoryContent />
       <DialogWrapper>
         <Menu />
         {isLoading || !messages || messages.length < 0 ? (

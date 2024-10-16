@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { useCreateConversation } from "../../api/api.ts"
 import { NewConversation, NewMessage } from "../../types/Message.ts"
-import HistoryContent from "../history/HistorySidebar.tsx"
 import InputField from "../inputfield/InputField.tsx"
 import { BobPlaceholder } from "./placeholders/Placeholders.tsx"
 import ContentWrapper from "./wrappers/ContentWrapper.tsx"
@@ -29,7 +28,6 @@ const CreateConversationContent = () => {
 
   return (
     <ContentWrapper>
-      <HistoryContent />
       <DialogWrapper>
         <BobPlaceholder />
         <InputField onSend={handleUserMessage} />
