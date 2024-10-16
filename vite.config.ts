@@ -1,6 +1,6 @@
 import react from "@vitejs/plugin-react"
 import { config } from "dotenv"
-import express from "express"
+import express, { NextFunction } from "express"
 import memoize from "just-memoize"
 import { defineConfig, PluginOption, ProxyOptions, ViteDevServer } from "vite"
 
@@ -33,7 +33,7 @@ const getToken = memoize(fetchToken)
 
 const app = express()
 
-app.use("/bob-api", async (_req, res, next) => {
+app.use("/bob-api", async (_req: any, res: any, next: NextFunction) => {
   const token = await getToken()
   res.setHeader("Authorization", `Bearer ${token}`)
   next()
