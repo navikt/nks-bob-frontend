@@ -3,9 +3,7 @@ export type MessageType = "question" | "answer"
 export type MessageRole = "human" | "ai"
 
 export type Feedback = {
-  id: string
   liked: boolean
-  createdAt: string
 }
 
 export type NewMessage = {
