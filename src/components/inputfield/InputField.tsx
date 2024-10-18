@@ -48,15 +48,13 @@ function InputField({ onSend }: InputFieldProps) {
     }
   }
 
-  // TODO: inputfeltet vokser ikke oppover når man skriver lengre tekster
-
   return (
     <VStack
       gap='4'
       className='dialogcontent sticky bottom-0 z-10 h-auto bg-bg-default px-4 pb-4'
       align='stretch'
     >
-      <HStack gap='1' align='end'>
+      <HStack gap='1' align='end' className='relative'>
         <Textarea
           size='medium'
           label=''
@@ -71,9 +69,9 @@ function InputField({ onSend }: InputFieldProps) {
         />
         <Button
           icon={<PaperplaneIcon title='Historikk' />}
-          variant='primary'
+          variant='tertiary'
           size='medium'
-          className='h-full max-h-11 max-w-10'
+          className='absolute right-0 h-full max-h-11 max-w-10'
           onClick={handleButtonClick}
         />
       </HStack>

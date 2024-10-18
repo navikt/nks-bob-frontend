@@ -30,10 +30,10 @@ export const BobAnswerBubble = ({ message }: BobAnswerBubbleProps) => {
   }, [message])
 
   return (
-    <VStack gap='3' align='stretch' className='mb-14'>
+    <VStack gap='1' align='stretch' className='relative mb-14'>
       <HStack gap='2' align='start' wrap={false} width='full'>
         <img src={Bobhead} alt='Bob' width='35px' className='hidehead' />
-        <div className='w-full pt-3'>
+        <div className='mb-2 w-full pt-4'>
           {message.content === "" ? (
             <>
               <Skeleton width='100%' variant='text' />
@@ -46,11 +46,14 @@ export const BobAnswerBubble = ({ message }: BobAnswerBubbleProps) => {
           )}
         </div>
       </HStack>
-
+      <div className='bottom-0 mb-6 flex flex-grow justify-end pl-10'>
+        <FeedbackButtons message={message} />
+        <CopyButton copyText={message.content} size='small' />
+      </div>
       <div ref={lastMessageRef} />
       {message.citations?.length > 0 && (
         <ReadMore
-          header='Fra kunnskapsartiklene'
+          header='Hentet fra kunnskapsartiklene'
           defaultOpen={true}
           className='pl-8'
         >
@@ -65,10 +68,6 @@ export const BobAnswerBubble = ({ message }: BobAnswerBubbleProps) => {
           </div>
         </ReadMore>
       )}
-      <div className='flex flex-grow justify-end'>
-        <FeedbackButtons message={message} />
-        <CopyButton copyText={message.content} size='small' />
-      </div>
     </VStack>
   )
 }

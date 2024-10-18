@@ -9,7 +9,7 @@ interface ChatDialogProps {
 
 function ChatContainer({ messages }: ChatDialogProps) {
   return (
-    <div className='dialogcontent h-auto grow flex-col gap-8 px-4 pt-8'>
+    <div className='dialogcontent relative h-auto grow flex-col gap-8 px-4 pt-8'>
       {messages.map((message) =>
         message.messageRole === "human" ? (
           <UserQuestionBubble key={message.id} userQuestion={message} />
