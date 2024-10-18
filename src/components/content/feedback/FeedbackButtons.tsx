@@ -13,17 +13,27 @@ interface FeedbackButtonsProps {
   message: Message
 }
 
+type FeedbackState = "positive" | "negative" | null
+
+const toFeedbackState = (liked: boolean | null | undefined): FeedbackState => {
+  if (liked === true) {
+    return "positive"
+  }
+  if (liked === false) {
+    return "negative"
+  }
+  return null
+}
+
 function FeedbackButtons({ message }: FeedbackButtonsProps) {
-  const [feedback, setFeedback] = useState<"positive" | "negative" | null>(null)
+  const [feedback, setFeedback] = useState<FeedbackState>(
+    toFeedbackState(message.feedback?.liked),
+  )
   const { sendFeedback, isLoading } = useSendFeedback(message)
 
   async function handleFeedback(liked: boolean) {
     setFeedback(liked ? "positive" : "negative")
-    const feedbackData: Feedback = {
-      id: message.feedback.id,
-      liked,
-      createdAt: new Date().toISOString(),
-    }
+    const feedbackData: Feedback = { liked }
     try {
       await sendFeedback(feedbackData)
     } catch (error) {
