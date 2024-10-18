@@ -75,10 +75,10 @@ function InputField({ onSend }: InputFieldProps) {
           onClick={handleButtonClick}
         />
       </HStack>
-      <BodyShort size='small' align='center' className='max-sm:hidden'>
+      <BodyShort size='small' align='center'>
         Bob baserer svarene på informasjonen fra{" "}
         <Link href='https://data.ansatt.nav.no/quarto/e7b3e02a-0c45-4b5c-92a2-a6d364120dfb/index.html'>
-          nks kunnskapsartikler
+          Kunnskapsbasen
         </Link>
         .
       </BodyShort>

@@ -29,8 +29,10 @@ const CreateConversationContent = () => {
   return (
     <ContentWrapper>
       <DialogWrapper>
-        <BobPlaceholder />
-        <InputField onSend={handleUserMessage} />
+        <div className='mt-20 flex w-full max-w-2xl flex-col justify-center gap-20'>
+          <BobPlaceholder />
+          <InputField onSend={handleUserMessage} />
+        </div>
       </DialogWrapper>
     </ContentWrapper>
   )
