@@ -1,5 +1,5 @@
 import { ExternalLinkIcon } from "@navikt/aksel-icons"
-import { BodyShort, ExpansionCard, Link } from "@navikt/ds-react"
+import { BodyLong, BodyShort, Heading, Link } from "@navikt/ds-react"
 import Markdown from "react-markdown"
 import { Context } from "../../../../types/Message.ts"
 
@@ -29,27 +29,14 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
   const textFragment = `${encodeURIComponent(textStart)},${encodeURIComponent(textEnd)}`
 
   return (
-    <ExpansionCard
-      size='small'
-      aria-label='Sitat fra kunnskapsartiklene'
-      defaultOpen={true}
-    >
-      <ExpansionCard.Header>
-        <ExpansionCard.Title as='h4' size='small'>
-          {citation.title}
-        </ExpansionCard.Title>
-        <ExpansionCard.Description>
-          Hentet fra: {citation.section}
-        </ExpansionCard.Description>
-      </ExpansionCard.Header>
-      <ExpansionCard.Content className='gap-4'>
-        <Markdown className='markdown mb-4 italic'>{citation.text}</Markdown>
+    <div className='flex flex-col'>
+      <Heading size='xsmall' spacing={true}>
         {matchingContextCitationData ? (
           <Link
             href={`${matchingContextCitationData.KnowledgeArticle_QuartoUrl}#:~:text=${textFragment}`}
             target='_blank'
           >
-            Åpne artikkelen i ny fane
+            {citation.title}
             <ExternalLinkIcon title='Åpne artikkelen i ny fane' />
           </Link>
         ) : (
@@ -57,8 +44,11 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
             Kunne ikke finne lenke til artikkelen.
           </BodyShort>
         )}
-      </ExpansionCard.Content>
-    </ExpansionCard>
+      </Heading>
+      <BodyLong>
+        <Markdown className='markdown mb-4 italic'>{citation.text}</Markdown>
+      </BodyLong>
+    </div>
   )
 }
 
