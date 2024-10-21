@@ -1,12 +1,12 @@
+import {
+  ThumbDownFillIcon,
+  ThumbDownIcon,
+  ThumbUpFillIcon,
+  ThumbUpIcon,
+} from "@navikt/aksel-icons"
 import { Button } from "@navikt/ds-react"
 import { useState } from "react"
 import { useSendFeedback } from "../../../api/api.ts"
-import {
-  ThumbDownFilled,
-  ThumbDownOutline,
-  ThumbUpFilled,
-  ThumbUpOutline,
-} from "../../../assets/icons/Thumbs"
 import { Feedback, Message } from "../../../types/Message.ts"
 
 interface FeedbackButtonsProps {
@@ -48,14 +48,14 @@ function FeedbackButtons({ message }: FeedbackButtonsProps) {
           <Button
             variant='tertiary-neutral'
             size='small'
-            icon={<ThumbUpOutline />}
+            icon={<ThumbUpIcon />}
             onClick={() => handleFeedback(true)}
             disabled={isLoading}
           ></Button>
           <Button
             variant='tertiary-neutral'
             size='small'
-            icon={<ThumbDownOutline />}
+            icon={<ThumbDownIcon />}
             onClick={() => handleFeedback(false)}
             disabled={isLoading}
           ></Button>
@@ -65,7 +65,7 @@ function FeedbackButtons({ message }: FeedbackButtonsProps) {
         <Button
           variant='tertiary-neutral'
           size='small'
-          icon={<ThumbUpFilled />}
+          icon={<ThumbUpFillIcon />}
           disabled={true}
           className='hover:cursor-not-allowed'
         ></Button>
@@ -74,7 +74,7 @@ function FeedbackButtons({ message }: FeedbackButtonsProps) {
         <Button
           variant='tertiary-neutral'
           size='small'
-          icon={<ThumbDownFilled />}
+          icon={<ThumbDownFillIcon />}
           disabled={true}
           className='hover:cursor-not-allowed'
         ></Button>

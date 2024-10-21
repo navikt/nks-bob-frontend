@@ -1,14 +1,14 @@
-import { HStack } from "@navikt/ds-react"
-import { HistorikkButton, NewButton } from "./Buttons.tsx"
+import { NewButton } from "./Buttons.tsx"
+import DarkModeToggle from "./darkmode/DarkModeSwitch.tsx"
 import "./Menu.css"
 
 function Menu() {
   return (
-    <div className='dialogcontent sticky top-0 z-10 flex min-h-16 justify-end bg-bg-default px-4'>
-      <HStack justify='start' align='center' className='min-h-16'>
-        <HistorikkButton />
+    <div className='dialogcontent max-h-16 grow p-4'>
+      <div className='flex h-full grow items-center justify-between'>
+        <DarkModeToggle />
         <NewButton />
-      </HStack>
+      </div>
     </div>
   )
 }

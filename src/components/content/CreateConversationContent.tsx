@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom"
 import { useCreateConversation } from "../../api/api.ts"
 import { NewConversation, NewMessage } from "../../types/Message.ts"
 import InputField from "../inputfield/InputField.tsx"
+import DarkModeToggle from "../menu/darkmode/DarkModeSwitch.tsx"
 import { BobPlaceholder } from "./placeholders/Placeholders.tsx"
 import ContentWrapper from "./wrappers/ContentWrapper.tsx"
 import DialogWrapper from "./wrappers/DialogWrapper.tsx"
@@ -28,9 +29,14 @@ const CreateConversationContent = () => {
 
   return (
     <ContentWrapper>
+      <div className='flex w-full max-w-2xl p-4'>
+        <DarkModeToggle />
+      </div>
       <DialogWrapper>
-        <BobPlaceholder />
-        <InputField onSend={handleUserMessage} />
+        <div className='mt-20 flex w-full max-w-2xl flex-col justify-center gap-20'>
+          <BobPlaceholder />
+          <InputField onSend={handleUserMessage} />
+        </div>
       </DialogWrapper>
     </ContentWrapper>
   )
