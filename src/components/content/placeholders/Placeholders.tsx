@@ -1,10 +1,18 @@
-import { BobTheWizard } from "../../../assets/illustrations/BobTheWizard.tsx"
+import {
+  BobTheWizardDark,
+  BobTheWizardDefault,
+} from "../../../assets/illustrations/BobTheWizard.tsx"
 
 export const BobPlaceholder = () => {
   return (
-    <div className='h-full w-full max-w-xs self-center'>
-      <BobTheWizard />
-    </div>
+    <>
+      <div className='flex h-full w-full max-w-sm self-center dark:hidden'>
+        <BobTheWizardDefault />
+      </div>
+      <div className='hidden h-full w-full max-w-sm self-center dark:flex'>
+        <BobTheWizardDark />
+      </div>
+    </>
   )
 }
 
