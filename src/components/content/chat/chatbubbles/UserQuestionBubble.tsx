@@ -10,7 +10,7 @@ interface UserChatBubbleProps {
 function UserQuestionBubble({ userQuestion }: UserChatBubbleProps) {
   return (
     <div className='questionbubble w-fit max-w-prose'>
-      <Markdown className='break-all'>{userQuestion?.content}</Markdown>
+      <Markdown>{userQuestion?.content}</Markdown>
     </div>
   )
 }
