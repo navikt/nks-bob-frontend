@@ -45,8 +45,8 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
           </BodyShort>
         )}
       </Heading>
-      <BodyLong size='small'>
-        <Markdown className='markdown mb-4 italic'>{citation.text}</Markdown>
+      <BodyLong size='small' spacing>
+        <Markdown className='markdown italic'>{citation.text}</Markdown>
       </BodyLong>
     </div>
   )
