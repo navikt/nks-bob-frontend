@@ -5,7 +5,6 @@ import InputField from "../inputfield/InputField.tsx"
 import Menu from "../menu/Menu.tsx"
 import ChatContainer from "./chat/ChatContainer.tsx"
 import { WhitespacePlaceholder } from "./placeholders/Placeholders.tsx"
-import ContentWrapper from "./wrappers/ContentWrapper.tsx"
 import DialogWrapper from "./wrappers/DialogWrapper.tsx"
 
 function ConversationContent() {
@@ -25,17 +24,17 @@ function ConversationContent() {
   }
 
   return (
-    <ContentWrapper>
-      <DialogWrapper>
-        <Menu />
+    <DialogWrapper>
+      <Menu />
+      <div className='chatcontainer'>
         {isLoading || !messages || messages.length < 0 ? (
           <WhitespacePlaceholder />
         ) : (
           <ChatContainer messages={messages} conversationId={conversationId!} />
         )}
-        <InputField onSend={handleUserMessage} />
-      </DialogWrapper>
-    </ContentWrapper>
+      </div>
+      <InputField onSend={handleUserMessage} />
+    </DialogWrapper>
   )
 }
 

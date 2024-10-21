@@ -48,15 +48,13 @@ function InputField({ onSend }: InputFieldProps) {
     }
   }
 
-  // TODO: inputfeltet vokser ikke oppover når man skriver lengre tekster
-
   return (
     <VStack
       gap='4'
-      className='dialogcontent sticky bottom-0 z-10 h-auto bg-bg-default px-4 pb-4'
+      className='dialogcontent sticky bottom-0 z-10 h-auto px-4 pb-5'
       align='stretch'
     >
-      <HStack gap='1' align='end'>
+      <HStack gap='1' align='end' className='relative'>
         <Textarea
           size='medium'
           label=''
@@ -71,16 +69,16 @@ function InputField({ onSend }: InputFieldProps) {
         />
         <Button
           icon={<PaperplaneIcon title='Historikk' />}
-          variant='primary'
+          variant='tertiary'
           size='medium'
-          className='h-full max-h-11 max-w-10'
+          className='absolute right-0 h-full max-h-11 max-w-10'
           onClick={handleButtonClick}
         />
       </HStack>
-      <BodyShort size='small' align='center' className='max-sm:hidden'>
+      <BodyShort size='small' align='center'>
         Bob baserer svarene på informasjonen fra{" "}
         <Link href='https://data.ansatt.nav.no/quarto/e7b3e02a-0c45-4b5c-92a2-a6d364120dfb/index.html'>
-          nks kunnskapsartikler
+          Kunnskapsbasen
         </Link>
         .
       </BodyShort>

@@ -3,6 +3,8 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+/*  LAYOUT  */
+
 * {
   scrollbar-color: var(--a-grayalpha-400) transparent;
 }
@@ -31,11 +33,13 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  height: auto;
+  height: 100%;
   width: 100%;
   align-items: center;
-  overflow-y: auto;
+  justify-content: center;
+  overflow: hidden;
 }
+
 
 .dialogcontent {
   display: flex;
@@ -43,6 +47,77 @@
   max-width: 48rem;
 }
 
+.chatcontainer {
+  display: flex;
+  overflow-y: scroll;
+  width: 100%;
+  justify-content: center;
+  height: 100%;
+}
+
 .unset {
   all: unset;
 }
+
+/*    DARKMODE - NEW DS STYLING    */
+
+:root, :host {
+
+  --new-bg-raised: rgba(28, 35, 47, 1);
+  --new-bg-sunken: rgba(7, 9, 13, 1);
+
+  --button-neutral-text: rgba(118, 126, 140, 1);
+  --button-neutral-hover-text: rgba(196, 201, 208, 1);
+  --button-neutral-hover-bg: rgba(28, 35, 47, 1);
+
+  --new-link-text: rgba(34, 119, 213, 1);
+}
+
+
+
+body.dark {
+  background: rgba(14, 21, 31, 1);
+  --a-text-default: rgba(196, 201, 208, 1);
+  color: rgba(196, 201, 208, 1);
+
+  /* Action Buttons   */
+
+  --ac-button-tertiary-text: rgba(68, 127, 201, 1);
+  --ac-button-tertiary-hover-bg: rgba(228, 238, 255, 1);
+
+  /*  Inputfield  */
+  --ac-textarea-bg: var(--new-bg-sunken);
+  --ac-textarea-text: var(--text-default);
+  --ac-textarea-placeholder: rgba(73, 81, 94, 1);
+
+/*  Feedback buttons  */
+  --ac-button-tertiary-neutral-text: rgba(118, 126, 140, 1);
+  --ac-button-tertiary-neutral-hover-text: var(--button-neutral-hover-text);
+  --ac-button-tertiary-neutral-hover-bg: var(--button-neutral-hover-bg);
+  --ac-button-tertiary-neutral-active-bg: rgba(28, 35, 47, 1);
+
+  /*  Copy button */
+  --ac-copybutton-neutral-text: rgba(118, 126, 140, 1);
+  --ac-copybutton-neutral-active-text:var(--button-neutral-hover-text);
+  --ac-copybutton-neutral-hover-text: var(--button-neutral-hover-text);
+  --ac-copybutton-neutral-hover-bg: var(--button-neutral-hover-bg);
+
+  /*    Link text   */
+  --ac-link-text: white;
+  --ac-link-neutral-text: var(--new-link-text);
+
+
+  --ac-read-more-text: var(--new-link-text);
+  --ac-read-more-hover-text: rgba(0, 78, 163, 1);
+  --ac-read-more-content-text: white;
+
+}
+
+body.dark a {
+  color: var(--new-link-text);
+}
+
+body.dark .questionbubble {
+  background: rgba(176, 104, 134, 1);
+}
+

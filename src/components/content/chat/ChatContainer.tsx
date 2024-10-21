@@ -15,21 +15,22 @@ function ChatContainer({ messages }: ChatDialogProps) {
     if (lastMessageRef.current) {
       lastMessageRef.current.scrollIntoView({
         behavior: "smooth",
-        block: "nearest",
-      }) // sjekk om det kan være lurt å kjøre smooth på ny melding og instant når man henter alle
+      })
     }
   }, [messages])
 
   return (
-    <div className='dialogcontent h-auto grow flex-col gap-4 px-4 pt-8'>
+    <div className='dialogcontent h-auto grow flex-col px-4 pt-4'>
       {messages.map((message) =>
         message.messageRole === "human" ? (
-          <UserQuestionBubble key={message.id} userQuestion={message} />
+          <>
+            <div ref={lastMessageRef} />
+            <UserQuestionBubble key={message.id} userQuestion={message} />
+          </>
         ) : (
           <BobAnswerBubble key={message.id} message={message} />
         ),
       )}
-      <div ref={lastMessageRef} className='pb-18' />
     </div>
   )
 }
