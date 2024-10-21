@@ -1,10 +1,13 @@
 import react from "@vitejs/plugin-react"
 import { config } from "dotenv"
 import express, { NextFunction } from "express"
-import memoize from "just-memoize"
+import { CacheContainer } from "node-ts-cache"
+import { MemoryStorage } from "node-ts-cache-storage-memory"
 import { defineConfig, PluginOption, ProxyOptions, ViteDevServer } from "vite"
 
 config()
+
+const tokenCache = new CacheContainer(new MemoryStorage())
 
 async function fetchToken() {
   const url = "https://fakedings.intern.dev.nav.no/fake/custom"
@@ -29,7 +32,18 @@ async function fetchToken() {
   return token
 }
 
-const getToken = memoize(fetchToken)
+async function getToken() {
+  const cachedToken = await tokenCache.getItem<string>("token")
+  if (cachedToken) {
+    return cachedToken
+  }
+
+  console.log("Token expired. Fetching new token.")
+  const newToken = fetchToken()
+  await tokenCache.setItem("token", newToken, { ttl: 55 })
+
+  return newToken
+}
 
 const app = express()
 
