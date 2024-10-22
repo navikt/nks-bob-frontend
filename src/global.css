@@ -74,14 +74,10 @@ ul {
 
   --new-link-text: rgba(34, 119, 213, 1);
 
-  --ac-switch-action: var(--a-surface-action-selected);
-  --ac-switch-bg: var(--a-surface-neutral);
-  --ac-switch-checked-bg: var(--a-surface-action-selected);
-  --ac-switch-hover-bg: var(--a-surface-neutral-hover);
-  --ac-switch-checked-hover-bg: var(--a-surface-action-selected-hover);
-  --ac-switch-thumb-bg: var(--a-surface-default);
-  --ac-switch-thumb-icon: var(--a-icon-subtle);
-  --ac-switch-thumb-icon-checked: var(--a-icon-action-selected);
+  --ac-button-tertiary-text: rgba(34, 119, 213, 1);
+  --ac-button-tertiary-hover-bg: rgba(228, 238, 255, 1);
+  --ac-button-tertiary-active-bg: rgba(0, 91, 182, 1);
+  --ac-button-tertiary-active-hover-bg: rgba(0, 91, 182, 1);
 }
 
 body.dark {
@@ -91,8 +87,12 @@ body.dark {
 
   /* Action Buttons   */
 
-  --ac-button-tertiary-text: rgba(68, 127, 201, 1);
-  --ac-button-tertiary-hover-bg: rgba(228, 238, 255, 1);
+  --ac-button-tertiary-text: rgba(186, 213, 251, 1);
+  --ac-button-tertiary-hover-bg: rgba(21, 36, 54, 1);
+  --ac-button-tertiary-hover-text: rgba(186, 213, 251, 1);
+  --ac-button-tertiary-active-bg: rgba(186, 213, 251, 1);
+  --ac-button-tertiary-active-text: black;
+  --ac-button-tertiary-active-hover-bg: rgba(186, 213, 251, 1);
 
   /*  Inputfield  */
   --ac-textarea-bg: var(--new-bg);
@@ -123,7 +123,7 @@ body.dark {
   --ac-read-more-content-text: white;
 
   /*    Skeleton    */
-  --ac-skeleton-bg: rgba(236, 237, 239, 1);
+  --ac-skeleton-bg: var(--new-bg-raised);
 }
 
 body.dark a {

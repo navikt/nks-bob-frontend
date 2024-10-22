@@ -71,7 +71,7 @@ function InputField({ onSend }: InputFieldProps) {
           icon={<PaperplaneIcon title='Historikk' />}
           variant='tertiary'
           size='medium'
-          className='absolute right-0 h-full max-h-11 max-w-10'
+          className='absolute bottom-0.5 right-0.5 h-full max-h-10 max-w-10'
           onClick={handleButtonClick}
         />
       </HStack>

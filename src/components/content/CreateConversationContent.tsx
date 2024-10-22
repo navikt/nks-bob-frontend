@@ -29,7 +29,7 @@ const CreateConversationContent = () => {
 
   return (
     <ContentWrapper>
-      <Header />
+      <Header conversation={undefined} />
       <DialogWrapper>
         <div className='mt-20 flex w-full max-w-2xl flex-col justify-center gap-20'>
           <BobPlaceholder />
