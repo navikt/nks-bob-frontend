@@ -26,11 +26,12 @@ export const BobAnswerBubble = ({ message }: BobAnswerBubbleProps) => {
         <img src={Bobhead} alt='Bob' width='35px' />
         <div className='flex flex-col gap-3 pt-3'>
           <div className='flex w-full'>
+            {/*TODO: fikse slik at skeleton strekker seg hele bredden*/}
             {message.content === "" ? (
-              <>
+              <div className='w-full'>
                 <Skeleton width='100%' variant='text' />
-                <Skeleton width='60%' variant='text' />
-              </>
+                <Skeleton width='60' variant='text' />
+              </div>
             ) : (
               <BodyLong>
                 <Markdown className='markdown'>{message.content}</Markdown>

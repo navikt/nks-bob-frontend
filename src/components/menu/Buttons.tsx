@@ -20,7 +20,7 @@ export const NewButton = () => {
     <Link to='/'>
       <Button
         variant='tertiary'
-        size='medium'
+        size='small'
         icon={<NotePencilIcon aria-hidden />}
         iconPosition='right'
       >

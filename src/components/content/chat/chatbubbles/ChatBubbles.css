@@ -1,16 +1,12 @@
 .questionbubble {
-    display: flex;
-    padding: 16px;
-    flex-direction: column;
-    gap: 8px;
-    align-self: flex-end;
-    margin-bottom: 20px;
+  display: flex;
+  padding: 16px;
+  flex-direction: column;
+  gap: 8px;
+  align-self: flex-end;
+  margin-bottom: 20px;
 
-    border-radius: 12px 12px 2px 12px;
-    color: rgba(255, 255, 255, 1);
-    background: rgba(182, 87, 129, 1);
-    }
-
-
-
-
+  border-radius: 12px 12px 2px 12px;
+  color: rgba(255, 255, 255, 1);
+  background: rgba(182, 87, 129, 1);
+}

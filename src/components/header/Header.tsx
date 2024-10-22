@@ -1,15 +1,15 @@
-import { InternalHeader, Spacer } from "@navikt/ds-react"
-import { Link } from "react-router-dom"
+import DarkModeToggle from "../menu/darkmode/DarkModeToggle.tsx"
+import "./Header.css"
+import { NAVLogo } from "./nav-logo.tsx"
 
 function Header() {
   return (
-    <InternalHeader className='sticky left-0 right-0 top-0 z-10 flex min-h-16'>
-      <Link to='/' className='flex'>
-        <InternalHeader.Title as='h1'>NKS-Bob</InternalHeader.Title>
-      </Link>
-      <Spacer />
-      <InternalHeader.User name='Brukernavn' />
-    </InternalHeader>
+    <div className='create-conversation max-sm:px-4'>
+      <div className='flex w-14'>
+        <NAVLogo />
+      </div>
+      <DarkModeToggle />
+    </div>
   )
 }
 

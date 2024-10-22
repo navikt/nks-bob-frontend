@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom"
 import { useMessages, useSendMessage } from "../../api/api.ts"
 import { NewMessage } from "../../types/Message.ts"
+import Header from "../header/Header.tsx"
 import InputField from "../inputfield/InputField.tsx"
 import Menu from "../menu/Menu.tsx"
 import ChatContainer from "./chat/ChatContainer.tsx"
@@ -25,7 +26,7 @@ function ConversationContent() {
 
   return (
     <DialogWrapper>
-      <Menu />
+      <Header />
       <div className='chatcontainer'>
         {isLoading || !messages || messages.length < 0 ? (
           <WhitespacePlaceholder />
@@ -33,6 +34,7 @@ function ConversationContent() {
           <ChatContainer messages={messages} conversationId={conversationId!} />
         )}
       </div>
+      <Menu />
       <InputField onSend={handleUserMessage} />
     </DialogWrapper>
   )

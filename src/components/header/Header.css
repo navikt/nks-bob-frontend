@@ -1,0 +1,11 @@
+.create-conversation {
+  display: flex;
+  max-height: 4rem;
+  max-width: 1200px;
+  width: 100%;
+  margin-inline: auto;
+  justify-content: space-between;
+  padding-inline: 4rem;
+  padding-block: 1rem;
+  margin-bottom: 20px;
+}

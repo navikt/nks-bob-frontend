@@ -10,7 +10,8 @@
   scrollbar-color: var(--a-grayalpha-400) transparent;
 }
 
-.markdown > ol, ul {
+.markdown > ol,
+ul {
   all: revert;
   padding-left: 2rem;
 }
@@ -41,7 +42,6 @@
   overflow: hidden;
 }
 
-
 .dialogcontent {
   display: flex;
   width: 100%;
@@ -62,7 +62,8 @@
 
 /*    DARKMODE - NEW DS STYLING    */
 
-:root, :host {
+:root,
+:host {
   --new-bg: rgba(14, 21, 31, 1);
   --new-bg-raised: rgba(28, 35, 47, 1);
   --new-bg-sunken: rgba(7, 9, 13, 1);
@@ -72,9 +73,16 @@
   --button-neutral-hover-bg: rgba(28, 35, 47, 1);
 
   --new-link-text: rgba(34, 119, 213, 1);
+
+  --ac-switch-action: var(--a-surface-action-selected);
+  --ac-switch-bg: var(--a-surface-neutral);
+  --ac-switch-checked-bg: var(--a-surface-action-selected);
+  --ac-switch-hover-bg: var(--a-surface-neutral-hover);
+  --ac-switch-checked-hover-bg: var(--a-surface-action-selected-hover);
+  --ac-switch-thumb-bg: var(--a-surface-default);
+  --ac-switch-thumb-icon: var(--a-icon-subtle);
+  --ac-switch-thumb-icon-checked: var(--a-icon-action-selected);
 }
-
-
 
 body.dark {
   background: var(--new-bg);
@@ -94,8 +102,7 @@ body.dark {
   --ac-textarea-hover-border: rgba(66, 138, 227, 1);
   --ac-textarea-active-border: rgba(66, 138, 227, 1);
 
-
-/*  Feedback buttons  */
+  /*  Feedback buttons  */
   --ac-button-tertiary-neutral-text: rgba(118, 126, 140, 1);
   --ac-button-tertiary-neutral-hover-text: var(--button-neutral-hover-text);
   --ac-button-tertiary-neutral-hover-bg: var(--button-neutral-hover-bg);
@@ -103,7 +110,7 @@ body.dark {
 
   /*  Copy button */
   --ac-copybutton-neutral-text: rgba(118, 126, 140, 1);
-  --ac-copybutton-neutral-active-text:var(--button-neutral-hover-text);
+  --ac-copybutton-neutral-active-text: var(--button-neutral-hover-text);
   --ac-copybutton-neutral-hover-text: var(--button-neutral-hover-text);
   --ac-copybutton-neutral-hover-bg: var(--button-neutral-hover-bg);
 
@@ -111,11 +118,12 @@ body.dark {
   --ac-link-text: white;
   --ac-link-neutral-text: var(--new-link-text);
 
-
   --ac-read-more-text: var(--new-link-text);
   --ac-read-more-hover-text: rgba(0, 78, 163, 1);
   --ac-read-more-content-text: white;
 
+  /*    Skeleton    */
+  --ac-skeleton-bg: rgba(236, 237, 239, 1);
 }
 
 body.dark a {
@@ -125,4 +133,3 @@ body.dark a {
 body.dark .questionbubble {
   background: rgba(176, 104, 134, 1);
 }
-
