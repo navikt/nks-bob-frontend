@@ -55,7 +55,7 @@ function FeedbackButtons({ message }: FeedbackButtonsProps) {
           <Button
             variant='tertiary-neutral'
             size='small'
-            icon={<ThumbDownIcon />}
+            icon={<ThumbDownIcon className='scale-x-[-1]' />}
             onClick={() => handleFeedback(false)}
             disabled={isLoading}
           ></Button>
@@ -74,7 +74,7 @@ function FeedbackButtons({ message }: FeedbackButtonsProps) {
         <Button
           variant='tertiary-neutral'
           size='small'
-          icon={<ThumbDownFillIcon />}
+          icon={<ThumbDownFillIcon className='scale-x-[-1]' />}
           disabled={true}
           className='hover:cursor-not-allowed'
         ></Button>

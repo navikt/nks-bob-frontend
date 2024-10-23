@@ -5,8 +5,12 @@
   gap: 8px;
   align-self: flex-end;
   margin-bottom: 20px;
-
+  color: #ffffff;
   border-radius: 12px 12px 2px 12px;
-  color: rgba(255, 255, 255, 1);
-  background: rgba(182, 87, 129, 1);
+  background-color: rgba(182, 87, 129, 1);
+}
+
+body.dark .questionbubble {
+  background: rgba(58, 24, 39, 1);
+  color: rgba(251, 243, 246, 1);
 }

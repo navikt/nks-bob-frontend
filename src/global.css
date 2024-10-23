@@ -74,13 +74,47 @@ ul {
 
   --new-link-text: rgba(34, 119, 213, 1);
 
+
   --ac-button-tertiary-text: rgba(34, 119, 213, 1);
   --ac-button-tertiary-hover-bg: rgba(228, 238, 255, 1);
   --ac-button-tertiary-active-bg: rgba(0, 91, 182, 1);
   --ac-button-tertiary-active-hover-bg: rgba(0, 91, 182, 1);
+
 }
 
-body.dark {
+  /*   Read more styling   */
+
+.navds-read-more__button {
+  background: rgba(241, 247, 255, 1);
+  width: 100%;
+  border-radius: 3rem;
+  padding-block: .8rem;
+  padding-inline: 1.2rem;
+  justify-content: space-between;
+  flex-direction: row-reverse;
+}
+
+.navds-read-more__content {
+  margin-left: 1.4rem;
+  margin-top: .6rem;
+}
+
+.navds-read-more__button:hover {
+  background: rgba(228, 238, 255, 1);
+}
+
+body.dark .navds-read-more__button {
+  color: rgba(186, 213, 251, 1);
+  background: rgba(16, 29, 45, 1);
+}
+
+body.dark .navds-read-more__button:hover {
+  background: rgba(21, 36, 54, 1);
+}
+
+  /*  DARK MODE    */
+
+  body.dark {
   background: var(--new-bg);
   --a-text-default: rgba(196, 201, 208, 1);
   color: rgba(196, 201, 208, 1);
@@ -124,12 +158,11 @@ body.dark {
 
   /*    Skeleton    */
   --ac-skeleton-bg: var(--new-bg-raised);
+
+    /*    Read more   */
+    --ac-read-more-line: rgba(101, 109, 123, 1);
 }
 
 body.dark a {
   color: var(--new-link-text);
-}
-
-body.dark .questionbubble {
-  background: rgba(176, 104, 134, 1);
 }
