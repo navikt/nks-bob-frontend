@@ -1,6 +1,6 @@
 import { uniqBy } from "lodash"
 import { useEffect, useState } from "react"
-import useWebSocket, { ReadyState } from "react-use-websocket"
+import useWebSocket, { ReadyState, useEventSource } from "react-use-websocket"
 import useSWR, { mutate } from "swr"
 import useSWRMutation from "swr/mutation"
 import {
@@ -167,6 +167,35 @@ export const useMessagesSubscription = (conversationId: string) => {
 
   return {
     sendMessage: sendJsonMessage,
+    messages,
+    isLoading: readyState !== ReadyState.OPEN,
+  }
+}
+
+export const useMessagesEventSource = (conversationId: string) => {
+  const [messages, setMessages] = useState<Message[]>([])
+  const { readyState } = useEventSource(
+    `${API_URL}/api/v1/conversations/${conversationId}/messages/sse`,
+    {
+      onClose(event) {
+        console.log("SSE connection closed", event)
+      },
+      onError(event) {
+        console.error("SSE error", event)
+      },
+      onMessage(event) {
+        const message = JSON.parse(event.data) as Message
+        setMessages((prev) =>
+          uniqBy(prev.concat(message).reverse(), "id").reverse(),
+        )
+      },
+      onOpen(event) {
+        console.log("SSE connection opened", event)
+      },
+    },
+  )
+
+  return {
     messages,
     isLoading: readyState !== ReadyState.OPEN,
   }
