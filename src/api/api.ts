@@ -177,6 +177,7 @@ export const useMessagesEventSource = (conversationId: string) => {
   const { readyState } = useEventSource(
     `${API_URL}/api/v1/conversations/${conversationId}/messages/sse`,
     {
+      withCredentials: true,
       onClose(event) {
         console.log("SSE connection closed", event)
       },
