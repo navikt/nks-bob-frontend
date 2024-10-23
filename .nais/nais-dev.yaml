@@ -80,6 +80,15 @@ spec:
                 "namespace": "nks-aiautomatisering",
                 "cluster": "dev-gcp"
               }
+            },
+            {
+              "fromPath": "/bob-api-ws",
+              "toUrl": "ws://nks-bob-api",
+              "toApp": {
+                "name": "nks-bob-api",
+                "namespace": "nks-aiautomatisering",
+                "cluster": "dev-gcp"
+              }
             }
           ]
         }

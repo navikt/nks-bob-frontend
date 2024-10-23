@@ -1,3 +1,6 @@
+import { uniqBy } from "lodash"
+import { useEffect, useState } from "react"
+import useWebSocket, { ReadyState } from "react-use-websocket"
 import useSWR, { mutate } from "swr"
 import useSWRMutation from "swr/mutation"
 import {
@@ -8,6 +11,8 @@ import {
 } from "../types/Message"
 
 const API_URL = `${import.meta.env.BASE_URL}bob-api`
+
+const WS_API_URL = `${import.meta.env.BASE_URL}bob-api-ws`
 
 async function fetcher<T>(input: RequestInfo, init?: RequestInit): Promise<T> {
   const res = await fetch(`${API_URL}${input}`, {
@@ -130,5 +135,32 @@ export const useDeleteConversation = (conversation: Conversation) => {
   return {
     deleteConversation: trigger,
     isLoading: isMutating,
+  }
+}
+
+export const useMessagesSubscription = (conversationId: string) => {
+  const [messages, setMessages] = useState<Message[]>([])
+  const { sendJsonMessage, lastJsonMessage, readyState } =
+    useWebSocket<Message>(
+      `${WS_API_URL}/api/v1/conversations/${conversationId}/messages/ws`,
+      {
+        shouldReconnect: (_closeEvent) => true,
+        reconnectInterval: 5000,
+      },
+    )
+
+  useEffect(() => {
+    if (lastJsonMessage !== null) {
+      setMessages((prev) =>
+        // Reverse to add newest (last) messages to the array, then reverse again.
+        uniqBy(prev.concat(lastJsonMessage).reverse(), "id").reverse(),
+      )
+    }
+  }, [lastJsonMessage])
+
+  return {
+    sendMessage: sendJsonMessage,
+    messages,
+    isLoading: readyState !== ReadyState.OPEN,
   }
 }
