@@ -185,6 +185,7 @@ export const useMessagesEventSource = (conversationId: string) => {
         console.error("SSE error", event)
       },
       onMessage(event) {
+        console.log("received message", event)
         const message = JSON.parse(event.data) as Message
         setMessages((prev) =>
           uniqBy(prev.concat(message).reverse(), "id").reverse(),
