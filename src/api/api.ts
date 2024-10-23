@@ -146,6 +146,13 @@ export const useMessagesSubscription = (conversationId: string) => {
       {
         shouldReconnect: (_closeEvent) => true,
         reconnectInterval: 5000,
+        reconnectAttempts: 10,
+        heartbeat: {
+          message: JSON.stringify({ type: "Heartbeat", data: "ping" }),
+          returnMessage: "pong",
+          timeout: 60_000,
+          interval: 25_000,
+        },
       },
     )
 
