@@ -38,7 +38,7 @@ spec:
           - id: "ad604335-b339-4804-82ee-fb5e2bcb87c9" # Brukergruppe
       singlePageApplication: true
       replyURLs:
-        - https://bob.ansatt.test.nav.no/oauth2/callback
+        - https://bob.ansatt.dev.nav.no/oauth2/callback
         - http://localhost:5173/oauth2/callback
         - http://localhost:5173/auth/callback/microsoft-entra-id
 
