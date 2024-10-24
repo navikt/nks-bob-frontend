@@ -9,15 +9,17 @@ import {
 import { useEffect, useRef, useState } from "react"
 import Markdown from "react-markdown"
 import Bobhead from "../../../../assets/illustrations/Bob-hode-svg.svg"
-import { Message } from "../../../../types/Message.ts"
-import FeedbackButtons from "../../feedback/FeedbackButtons.tsx"
+import { Message, NewMessage } from "../../../../types/Message.ts"
+import FeedbackButtons from "../feedback/FeedbackButtons.tsx"
+import BobSuggests from "../suggestions/BobSuggests.tsx"
 import BobAnswerCitations from "./BobAnswerCitations.tsx"
 
 interface BobAnswerBubbleProps {
   message: Message
+  onSend: (message: NewMessage) => void
 }
 
-export const BobAnswerBubble = ({ message }: BobAnswerBubbleProps) => {
+export const BobAnswerBubble = ({ message, onSend }: BobAnswerBubbleProps) => {
   const readMoreRef = useRef<HTMLDivElement | null>(null)
   const [isReadMoreOpen, setIsReadMoreOpen] = useState<boolean | null>(false)
 
@@ -51,6 +53,7 @@ export const BobAnswerBubble = ({ message }: BobAnswerBubbleProps) => {
               <CopyButton copyText={message.content} size='small' />
               <FeedbackButtons message={message} />
             </div>
+            <BobSuggests message={message} onSend={onSend} />
             <div ref={readMoreRef} />
             {message.citations && message.citations.length > 0 && (
               <ReadMore

@@ -9,7 +9,7 @@ spec:
   image: europe-north1-docker.pkg.dev/nais-management-233d/poao/poao-frontend:2024.10.24_05.59-90531c38ccc5
   port: 8080
   ingresses:
-    - https://bob.ansatt.dev.nav.no
+    - https://bob.ansatt.test.nav.no
   liveness:
     path: /internal/alive
     initialDelay: 10
@@ -38,7 +38,7 @@ spec:
           - id: "ad604335-b339-4804-82ee-fb5e2bcb87c9" # Brukergruppe
       singlePageApplication: true
       replyURLs:
-        - https://bob.ansatt.dev.nav.no/oauth2/callback
+        - https://bob.ansatt.test.nav.no/oauth2/callback
         - http://localhost:5173/oauth2/callback
         - http://localhost:5173/auth/callback/microsoft-entra-id
 

@@ -6,8 +6,8 @@ import {
 } from "@navikt/aksel-icons"
 import { Button } from "@navikt/ds-react"
 import { useState } from "react"
-import { useSendFeedback } from "../../../api/api.ts"
-import { Feedback, Message } from "../../../types/Message.ts"
+import { useSendFeedback } from "../../../../api/api.ts"
+import { Feedback, Message } from "../../../../types/Message.ts"
 
 interface FeedbackButtonsProps {
   message: Message

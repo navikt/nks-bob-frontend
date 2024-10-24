@@ -3,7 +3,7 @@ name: Deploy Bob frontend to dev
 on:
   push:
     branches:
-      - main
+      - forslag-fra-bob
 
 jobs:
   build-and-deploy:

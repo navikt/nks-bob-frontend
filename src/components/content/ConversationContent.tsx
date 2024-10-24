@@ -30,7 +30,11 @@ function ConversationContent() {
         {isLoading || !messages || messages.length < 0 ? (
           <WhitespacePlaceholder />
         ) : (
-          <ChatContainer messages={messages} conversationId={conversationId!} />
+          <ChatContainer
+            messages={messages}
+            conversationId={conversationId!}
+            onSend={handleUserMessage}
+          />
         )}
       </div>
       <InputField onSend={handleUserMessage} />
