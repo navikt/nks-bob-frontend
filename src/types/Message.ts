@@ -23,12 +23,10 @@ export type Message = {
 }
 
 export type Citation = {
-  id: string
   text: string
   article: string
   title: string
   section: string
-  createdAt: string
 }
 
 export type Context = {

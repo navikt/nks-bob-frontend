@@ -60,10 +60,10 @@ export const BobAnswerBubble = ({ message }: BobAnswerBubbleProps) => {
                 className='readmore-styling'
               >
                 <div className='flex flex-col gap-2 pt-4'>
-                  {message.citations.map((citation) => (
+                  {message.citations.map((citation, index) => (
                     <BobAnswerCitations
                       citation={citation}
-                      key={citation.id}
+                      key={`citation-${index}`}
                       context={message.context}
                     />
                   ))}
