@@ -196,6 +196,12 @@ export const useMessagesEventSource = (conversationId: string) => {
       heartbeat: true,
       reconnectInterval: 10_000,
       reconnectAttempts: 10,
+      shouldReconnect(event) {
+        console.log("should reconnect")
+        console.log(event)
+        return true
+      },
+      retryOnError: true,
     },
   )
 
