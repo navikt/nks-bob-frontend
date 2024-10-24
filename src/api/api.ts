@@ -185,7 +185,6 @@ export const useMessagesEventSource = (conversationId: string) => {
         console.error("SSE error", event)
       },
       onMessage(event) {
-        console.log("received message", event)
         const message = JSON.parse(event.data) as Message
         setMessages((prev) =>
           uniqBy(prev.concat(message).reverse(), "id").reverse(),
@@ -194,6 +193,9 @@ export const useMessagesEventSource = (conversationId: string) => {
       onOpen(event) {
         console.log("SSE connection opened", event)
       },
+      heartbeat: true,
+      reconnectInterval: 10_000,
+      reconnectAttempts: 10,
     },
   )
 
