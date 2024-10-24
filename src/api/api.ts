@@ -194,7 +194,7 @@ export const useMessagesEventSource = (conversationId: string) => {
         console.log("SSE connection opened", event)
       },
       heartbeat: true,
-      reconnectInterval: 100,
+      reconnectInterval: 1_000,
       reconnectAttempts: 1_000,
       shouldReconnect(event) {
         console.log("should reconnect")
