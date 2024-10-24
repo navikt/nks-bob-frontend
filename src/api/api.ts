@@ -172,7 +172,9 @@ export const useMessagesSubscription = (conversationId: string) => {
   }
 }
 
-export const useMessagesEventSource = (conversationId: string) => {
+export const useMessagesEventSource = (
+  conversationId: string,
+): { messages: Message[]; isLoading: boolean } => {
   const [messages, setMessages] = useState<Message[]>([])
   const { readyState } = useEventSource(
     `${API_URL}/api/v1/conversations/${conversationId}/messages/sse`,
@@ -194,7 +196,7 @@ export const useMessagesEventSource = (conversationId: string) => {
         console.log("SSE connection opened", event)
       },
       heartbeat: true,
-      reconnectInterval: 1_000,
+      reconnectInterval: 100,
       reconnectAttempts: 1_000,
       shouldReconnect(event) {
         console.log("should reconnect")
