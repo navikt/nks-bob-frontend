@@ -6,7 +6,7 @@ metadata:
   labels:
     team: nks-aiautomatisering
 spec:
-  image: europe-north1-docker.pkg.dev/nais-management-233d/poao/poao-frontend:2024.10.17_12.00-d5d8892ecb27
+  image: europe-north1-docker.pkg.dev/nais-management-233d/poao/poao-frontend:2024.10.24_05.59-90531c38ccc5
   port: 8080
   ingresses:
     - https://bob.ansatt.dev.nav.no
