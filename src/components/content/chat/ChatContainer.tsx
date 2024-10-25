@@ -1,14 +1,15 @@
 import { Fragment, useEffect, useRef } from "react"
-import { Message } from "../../../types/Message.ts"
+import { Message, NewMessage } from "../../../types/Message.ts"
 import { BobAnswerBubble } from "./chatbubbles/BobAnswerBubble.tsx"
 import UserQuestionBubble from "./chatbubbles/UserQuestionBubble.tsx"
 
 interface ChatDialogProps {
   conversationId: string
   messages: Message[]
+  onSend: (message: NewMessage) => void
 }
 
-function ChatContainer({ messages }: ChatDialogProps) {
+function ChatContainer({ messages, onSend }: ChatDialogProps) {
   const lastMessageRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
@@ -28,7 +29,7 @@ function ChatContainer({ messages }: ChatDialogProps) {
             <UserQuestionBubble userQuestion={message} />
           </Fragment>
         ) : (
-          <BobAnswerBubble key={message.id} message={message} />
+          <BobAnswerBubble key={message.id} message={message} onSend={onSend} />
         ),
       )}
     </div>
