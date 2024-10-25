@@ -69,7 +69,7 @@ ul {
   --new-bg-sunken: rgba(7, 9, 13, 1);
 
   --button-neutral-text: rgba(118, 126, 140, 1);
-  --button-neutral-hover-text: rgba(196, 201, 208, 1);
+  --button-neutral-hover-text: rgba(165, 172, 182, 1);
   --button-neutral-hover-bg: rgba(28, 35, 47, 1);
 
   --new-link-text: rgba(34, 119, 213, 1);
@@ -99,12 +99,15 @@ ul {
   margin-top: .6rem;
 }
 
+body.dark .navds-read-more__content {
+  color: var(--darkmode-text-default)
+}
+
 .navds-read-more__button:hover {
   background: rgba(228, 238, 255, 1);
 }
 
 body.dark .navds-read-more__button {
-  color: rgba(186, 213, 251, 1);
   background: rgba(16, 29, 45, 1);
 }
 
@@ -116,53 +119,57 @@ body.dark .navds-read-more__button:hover {
 
   body.dark {
   background: var(--new-bg);
-  --a-text-default: rgba(196, 201, 208, 1);
   color: rgba(196, 201, 208, 1);
+
+    --darkmode-text-default: rgba(196, 201, 208, 1);
+    --darkmode-linktext-default: rgba(95, 148, 216, 1);
+    --darkmode-icon-text: rgba(118, 126, 140, 1);
+    --darkmode-actiontext: rgba(132, 174, 230, 1);
 
   /* Action Buttons   */
 
-  --ac-button-tertiary-text: rgba(186, 213, 251, 1);
-  --ac-button-tertiary-hover-bg: rgba(21, 36, 54, 1);
-  --ac-button-tertiary-hover-text: rgba(186, 213, 251, 1);
+  --ac-button-tertiary-text: var(--darkmode-actiontext);
+  --ac-button-tertiary-hover-bg: rgba(26, 44, 65, 1);
+  --ac-button-tertiary-hover-text: var(--darkmode-actiontext);
   --ac-button-tertiary-active-bg: rgba(186, 213, 251, 1);
   --ac-button-tertiary-active-text: black;
   --ac-button-tertiary-active-hover-bg: rgba(186, 213, 251, 1);
 
   /*  Inputfield  */
   --ac-textarea-bg: var(--new-bg);
-  --ac-textarea-text: var(--text-default);
+  --ac-textarea-text: var(--darkmode-text-default);
   --ac-textarea-placeholder: rgba(73, 81, 94, 1);
   --ac-textarea-border: rgba(101, 109, 123, 1);
   --ac-textarea-hover-border: rgba(66, 138, 227, 1);
   --ac-textarea-active-border: rgba(66, 138, 227, 1);
 
   /*  Feedback buttons  */
-  --ac-button-tertiary-neutral-text: rgba(118, 126, 140, 1);
+  --ac-button-tertiary-neutral-text: var(--darkmode-icon-text);
   --ac-button-tertiary-neutral-hover-text: var(--button-neutral-hover-text);
   --ac-button-tertiary-neutral-hover-bg: var(--button-neutral-hover-bg);
   --ac-button-tertiary-neutral-active-bg: rgba(28, 35, 47, 1);
 
   /*  Copy button */
-  --ac-copybutton-neutral-text: rgba(118, 126, 140, 1);
+  --ac-copybutton-neutral-text: var(--darkmode-icon-text);
   --ac-copybutton-neutral-active-text: var(--button-neutral-hover-text);
   --ac-copybutton-neutral-hover-text: var(--button-neutral-hover-text);
   --ac-copybutton-neutral-hover-bg: var(--button-neutral-hover-bg);
 
   /*    Link text   */
-  --ac-link-text: white;
+  --ac-link-text: var(--darkmode-linktext-default);
   --ac-link-neutral-text: var(--new-link-text);
-
-  --ac-read-more-text: var(--new-link-text);
-  --ac-read-more-hover-text: rgba(0, 78, 163, 1);
-  --ac-read-more-content-text: white;
 
   /*    Skeleton    */
   --ac-skeleton-bg: var(--new-bg-raised);
 
     /*    Read more   */
     --ac-read-more-line: rgba(101, 109, 123, 1);
+    --ac-read-more-text: var(--darkmode-actiontext);
+    --ac-read-more-hover-text: var(--darkmode-actiontext);
+    --ac-read-more-hover-bg: rgba(26, 44, 65, 1);
+    --ac-read-more-content-text: var(--darkmode-text-default);
 }
 
 body.dark a {
-  color: var(--new-link-text);
+  color: var(--darkmode-linktext-default);
 }

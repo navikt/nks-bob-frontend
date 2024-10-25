@@ -52,7 +52,7 @@
 }
 
 input:checked + .slider {
-  background-color: rgba(186, 213, 251, 1);
+  background-color: var(--darkmode-actiontext);
 }
 
 input:checked + .slider:before {
