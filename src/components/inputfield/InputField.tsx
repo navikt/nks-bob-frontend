@@ -52,7 +52,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
   return (
     <VStack
       gap='4'
-      className='dialogcontent sticky bottom-0 z-10 h-auto px-4 pb-5'
+      className='dialogcontent sticky bottom-0 z-10 h-auto self-center px-4 pb-5'
       align='stretch'
     >
       <HStack gap='1' align='end' className='relative'>

@@ -57,25 +57,28 @@ export const BobAnswerBubble = ({
           </div>
           <div className='flex flex-col'>
             <div className='mb-6 flex flex-col justify-start'>
-              {!isLoading && (
-                <BobSuggests
-                  message={message}
-                  onSend={onSend}
-                  isLastMessage={isLastMessage}
-                />
+              {(!isLoading || !isLastMessage) && (
+                <div className='fade-in'>
+                  <BobSuggests
+                    message={message}
+                    onSend={onSend}
+                    isLastMessage={isLastMessage}
+                  />
+                  <div className='ml-[-0.3rem] flex flex-grow items-center justify-start'>
+                    <CopyButton copyText={message.content} size='small' />
+                    <FeedbackButtons message={message} />
+                  </div>
+                </div>
               )}
-              <div className='ml-[-0.3rem] flex flex-grow items-center justify-start'>
-                <CopyButton copyText={message.content} size='small' />
-                <FeedbackButtons message={message} />
-              </div>
             </div>
+
             <div ref={readMoreRef} />
             {message.citations && message.citations.length > 0 && (
               <ReadMore
                 header='Sitater fra kunnskapsbasen'
                 defaultOpen={true}
                 onOpenChange={setIsReadMoreOpen}
-                className='readmore-styling'
+                className='readmore-styling fade-in'
               >
                 <div className='flex flex-col gap-2 pt-4'>
                   {message.citations.map((citation, index) => (

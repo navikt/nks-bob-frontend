@@ -1,10 +1,11 @@
 import { Outlet } from "react-router-dom"
+import PageWrapper from "./components/content/wrappers/PageWrapper.tsx"
 
 function App() {
   return (
-    <div className='pagewrapper'>
+    <PageWrapper>
       <Outlet />
-    </div>
+    </PageWrapper>
   )
 }
 

@@ -4,8 +4,7 @@ import { NewConversation, NewMessage } from "../../types/Message.ts"
 import Header from "../header/Header.tsx"
 import InputField from "../inputfield/InputField.tsx"
 import { BobPlaceholder } from "./placeholders/Placeholders.tsx"
-import ContentWrapper from "./wrappers/ContentWrapper.tsx"
-import DialogWrapper from "./wrappers/DialogWrapper.tsx"
+import CreateConversationWrapper from "./wrappers/CreateConversationWrapper.tsx"
 
 const CreateConversationContent = () => {
   const { createConversation } = useCreateConversation()
@@ -28,15 +27,11 @@ const CreateConversationContent = () => {
   }
 
   return (
-    <ContentWrapper>
+    <CreateConversationWrapper>
       <Header conversation={undefined} />
-      <DialogWrapper>
-        <div className='mt-20 flex w-full max-w-2xl flex-col justify-center gap-20'>
-          <BobPlaceholder />
-          <InputField onSend={handleUserMessage} disabled={false} />
-        </div>
-      </DialogWrapper>
-    </ContentWrapper>
+      <BobPlaceholder />
+      <InputField onSend={handleUserMessage} disabled={false} />
+    </CreateConversationWrapper>
   )
 }
 

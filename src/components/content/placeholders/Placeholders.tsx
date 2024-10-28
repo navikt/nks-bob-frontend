@@ -2,14 +2,15 @@ import {
   BobTheWizardDark,
   BobTheWizardDefault,
 } from "../../../assets/illustrations/BobTheWizard.tsx"
+import "./Placeholders.css"
 
 export const BobPlaceholder = () => {
   return (
     <>
-      <div className='flex h-full w-full max-w-sm self-center dark:hidden'>
+      <div className='bob-styling flex dark:hidden'>
         <BobTheWizardDefault />
       </div>
-      <div className='hidden h-full w-full max-w-sm self-center dark:flex'>
+      <div className='bob-styling hidden dark:flex'>
         <BobTheWizardDark />
       </div>
     </>
