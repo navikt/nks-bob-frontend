@@ -7,9 +7,10 @@ interface ChatDialogProps {
   conversationId: string
   messages: Message[]
   onSend: (message: NewMessage) => void
+  isLoading: boolean
 }
 
-function ChatContainer({ messages, onSend }: ChatDialogProps) {
+function ChatContainer({ messages, onSend, isLoading }: ChatDialogProps) {
   const lastMessageRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
@@ -29,7 +30,12 @@ function ChatContainer({ messages, onSend }: ChatDialogProps) {
             <UserQuestionBubble userQuestion={message} />
           </Fragment>
         ) : (
-          <BobAnswerBubble key={message.id} message={message} onSend={onSend} />
+          <BobAnswerBubble
+            key={message.id}
+            message={message}
+            onSend={onSend}
+            isLoading={isLoading}
+          />
         ),
       )}
     </div>

@@ -17,9 +17,14 @@ import BobAnswerCitations from "./BobAnswerCitations.tsx"
 interface BobAnswerBubbleProps {
   message: Message
   onSend: (message: NewMessage) => void
+  isLoading: boolean
 }
 
-export const BobAnswerBubble = ({ message, onSend }: BobAnswerBubbleProps) => {
+export const BobAnswerBubble = ({
+  message,
+  onSend,
+  isLoading,
+}: BobAnswerBubbleProps) => {
   const readMoreRef = useRef<HTMLDivElement | null>(null)
   const [isReadMoreOpen, setIsReadMoreOpen] = useState<boolean | null>(false)
 
@@ -32,11 +37,11 @@ export const BobAnswerBubble = ({ message, onSend }: BobAnswerBubbleProps) => {
   }, [isReadMoreOpen])
 
   return (
-    <VStack gap='1' align='stretch'>
+    <VStack gap='1' align='stretch' className='pb-12'>
       <HStack gap='3' align='start' wrap={false} width='full'>
         <img src={Bobhead} alt='Bob' width='35px' />
-        <div className='flex w-full flex-col gap-2 pt-3'>
-          <div className='flex w-full'>
+        <div className='flex w-full flex-col pt-3'>
+          <div className='mb-2 flex w-full'>
             {message.content === "" ? (
               <div className='w-full'>
                 <Skeleton width='100%' variant='text' />
@@ -48,12 +53,14 @@ export const BobAnswerBubble = ({ message, onSend }: BobAnswerBubbleProps) => {
               </BodyLong>
             )}
           </div>
-          <div className='flex flex-col pb-12'>
-            <div className='mb-6 flex flex-grow justify-start'>
-              <CopyButton copyText={message.content} size='small' />
-              <FeedbackButtons message={message} />
+          <div className='flex flex-col'>
+            <div className='mb-6 flex flex-col justify-start'>
+              {!isLoading && <BobSuggests message={message} onSend={onSend} />}
+              <div className='ml-[-0.3rem] flex flex-grow items-center justify-start'>
+                <CopyButton copyText={message.content} size='small' />
+                <FeedbackButtons message={message} />
+              </div>
             </div>
-            <BobSuggests message={message} onSend={onSend} />
             <div ref={readMoreRef} />
             {message.citations && message.citations.length > 0 && (
               <ReadMore

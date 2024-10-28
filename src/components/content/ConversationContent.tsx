@@ -34,6 +34,7 @@ function ConversationContent() {
             onSend={handleUserMessage}
             messages={messages}
             conversationId={conversationId!}
+            isLoading={isLoading}
           />
         )}
       </div>

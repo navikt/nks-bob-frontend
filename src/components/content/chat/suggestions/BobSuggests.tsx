@@ -1,5 +1,6 @@
-import { Button, Label } from "@navikt/ds-react"
+import { Button } from "@navikt/ds-react"
 import { Message, NewMessage } from "../../../../types/Message.ts"
+import "./BobSuggests.css"
 
 interface BobSuggestsProps {
   message: Message
@@ -16,24 +17,26 @@ const BobSuggests = ({ message, onSend }: BobSuggestsProps) => {
 
   function handleBulletList() {
     const bulletList: NewMessage = {
-      content: `Lag dette svaret med punktliste:\n\n
-${message.content}`,
+      content: `Gjør om dette svaret til punktliste:\n\n${message.content}`,
     }
     onSend(bulletList)
   }
 
-  function handleEmpathic() {
-    const bulletList: NewMessage = {
-      content: `Lag dette svaret mer empatisk:\n\n
-${message.content}`,
+  function handleSimplify() {
+    const simplifyMessage: NewMessage = {
+      content: `Forenkle dette svaret:\n\n${message.content}`,
     }
-    onSend(bulletList)
+    onSend(simplifyMessage)
   }
 
   return (
-    <div className='mb-6 flex h-6 items-center'>
-      <Label size='small'>Forslag fra Bob:</Label>
-      <Button variant='tertiary-neutral' size='small' onClick={handleTranslate}>
+    <div className='mb-3 ml-[-0.7rem] flex h-fit grow flex-wrap items-center justify-start gap-3'>
+      <Button
+        variant='tertiary-neutral'
+        size='small'
+        onClick={handleTranslate}
+        className='navds-button'
+      >
         Oversett til engelsk
       </Button>
       <Button
@@ -43,8 +46,8 @@ ${message.content}`,
       >
         Lag punktliste
       </Button>
-      <Button variant='tertiary-neutral' size='small' onClick={handleEmpathic}>
-        Lag mer empatisk svar
+      <Button variant='tertiary-neutral' size='small' onClick={handleSimplify}>
+        Forenkle svaret
       </Button>
     </div>
   )
