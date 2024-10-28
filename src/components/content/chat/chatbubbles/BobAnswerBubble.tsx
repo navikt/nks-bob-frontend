@@ -18,12 +18,14 @@ interface BobAnswerBubbleProps {
   message: Message
   onSend: (message: NewMessage) => void
   isLoading: boolean
+  isLastMessage: boolean
 }
 
 export const BobAnswerBubble = ({
   message,
   onSend,
   isLoading,
+  isLastMessage,
 }: BobAnswerBubbleProps) => {
   const readMoreRef = useRef<HTMLDivElement | null>(null)
   const [isReadMoreOpen, setIsReadMoreOpen] = useState<boolean | null>(false)
@@ -55,7 +57,13 @@ export const BobAnswerBubble = ({
           </div>
           <div className='flex flex-col'>
             <div className='mb-6 flex flex-col justify-start'>
-              {!isLoading && <BobSuggests message={message} onSend={onSend} />}
+              {!isLoading && (
+                <BobSuggests
+                  message={message}
+                  onSend={onSend}
+                  isLastMessage={isLastMessage}
+                />
+              )}
               <div className='ml-[-0.3rem] flex flex-grow items-center justify-start'>
                 <CopyButton copyText={message.content} size='small' />
                 <FeedbackButtons message={message} />

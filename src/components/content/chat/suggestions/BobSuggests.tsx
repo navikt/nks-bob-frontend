@@ -5,26 +5,33 @@ import "./BobSuggests.css"
 interface BobSuggestsProps {
   message: Message
   onSend: (message: NewMessage) => void
+  isLastMessage: boolean
 }
 
-const BobSuggests = ({ message, onSend }: BobSuggestsProps) => {
+const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
   function handleTranslate() {
     const translate: NewMessage = {
-      content: `Oversett dette svaret til engelsk:\n\n${message.content}`,
+      content: isLastMessage
+        ? "Oversett svaret til engelsk."
+        : `Oversett dette svaret til engelsk:\n\n${message.content}`,
     }
     onSend(translate)
   }
 
   function handleBulletList() {
     const bulletList: NewMessage = {
-      content: `Gjør om dette svaret til punktliste:\n\n${message.content}`,
+      content: isLastMessage
+        ? "Gjør om svaret til punktliste."
+        : `Gjør om dette svaret til punktliste:\n\n${message.content}`,
     }
     onSend(bulletList)
   }
 
   function handleSimplify() {
     const simplifyMessage: NewMessage = {
-      content: `Forenkle dette svaret:\n\n${message.content}`,
+      content: isLastMessage
+        ? "Forenkle svaret."
+        : `Forenkle dette svaret:\n\n${message.content}`,
     }
     onSend(simplifyMessage)
   }

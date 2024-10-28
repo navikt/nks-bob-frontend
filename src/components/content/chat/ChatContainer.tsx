@@ -23,7 +23,7 @@ function ChatContainer({ messages, onSend, isLoading }: ChatDialogProps) {
 
   return (
     <div className='dialogcontent h-auto grow flex-col px-4 pt-4'>
-      {messages.map((message) =>
+      {messages.map((message, index) =>
         message.messageRole === "human" ? (
           <Fragment key={message.id}>
             <div ref={lastMessageRef} />
@@ -35,6 +35,7 @@ function ChatContainer({ messages, onSend, isLoading }: ChatDialogProps) {
             message={message}
             onSend={onSend}
             isLoading={isLoading}
+            isLastMessage={index === messages.length - 1}
           />
         ),
       )}
