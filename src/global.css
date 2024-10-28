@@ -81,8 +81,12 @@ ul {
     }
   }
 
-.fade-in {
-  animation: fadeIn 0.5s ease-in-out;
+.fade-in-buttons {
+  animation: fadeIn 1s ease-in-out;
+}
+
+.fade-in-citations {
+  animation: fadeIn 2s ease-in-out;
 }
 
 

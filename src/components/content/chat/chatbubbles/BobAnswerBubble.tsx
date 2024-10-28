@@ -78,7 +78,7 @@ export const BobAnswerBubble = ({
                 header='Sitater fra kunnskapsbasen'
                 defaultOpen={true}
                 onOpenChange={setIsReadMoreOpen}
-                className='readmore-styling fade-in'
+                className='readmore-styling fade-in-citations'
               >
                 <div className='flex flex-col gap-2 pt-4'>
                   {message.citations.map((citation, index) => (
