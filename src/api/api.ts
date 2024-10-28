@@ -8,6 +8,7 @@ import {
   Feedback,
   Message,
   NewConversation,
+  NewMessage,
 } from "../types/Message"
 
 const API_URL = `${import.meta.env.BASE_URL}bob-api`
@@ -80,6 +81,17 @@ export const useSendMessage = (conversationId: string) => {
   return {
     sendMessage: trigger,
     isLoading: isMutating,
+  }
+}
+
+export const useSendMessagePost = (conversationId: string) => {
+  const sendMessage = (newMessage: NewMessage) =>
+    poster(`/api/v1/conversations/${conversationId}/messages`, {
+      arg: newMessage,
+    })
+
+  return {
+    sendMessage,
   }
 }
 
@@ -176,7 +188,8 @@ export const useMessagesEventSource = (
   conversationId: string,
 ): { messages: Message[]; isLoading: boolean } => {
   const [messages, setMessages] = useState<Message[]>([])
-  const { readyState } = useEventSource(
+
+  useEventSource(
     `${API_URL}/api/v1/conversations/${conversationId}/messages/sse`,
     {
       withCredentials: true,
@@ -207,8 +220,15 @@ export const useMessagesEventSource = (
     },
   )
 
+  const compareDates = (
+    { createdAt: a }: Message,
+    { createdAt: b }: Message,
+  ) => {
+    return new Date(a).getTime() - new Date(b).getTime()
+  }
+
   return {
-    messages,
-    isLoading: readyState !== ReadyState.OPEN,
+    messages: messages.sort(compareDates),
+    isLoading: messages.some((message) => message.pending),
   }
 }

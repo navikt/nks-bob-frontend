@@ -14,9 +14,10 @@ import "./InputField.css"
 
 interface InputFieldProps {
   onSend: (message: NewMessage) => void
+  disabled: boolean
 }
 
-function InputField({ onSend }: InputFieldProps) {
+function InputField({ onSend, disabled }: InputFieldProps) {
   const placeholderText = "Spør Bob om noe"
   const [inputValue, setInputValue] = useState<string>("")
 
@@ -66,6 +67,7 @@ function InputField({ onSend }: InputFieldProps) {
           value={inputValue}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
+          disabled={disabled}
         />
         <Button
           icon={<PaperplaneIcon title='Historikk' />}

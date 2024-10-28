@@ -27,17 +27,13 @@ function ConversationContent() {
     <DialogWrapper>
       <Header conversation={conversationId} />
       <div className='chatcontainer'>
-        {isLoading || !messages || messages.length < 0 ? (
+        {!messages || messages.length < 0 ? (
           <WhitespacePlaceholder />
         ) : (
-          <ChatContainer
-            messages={messages}
-            conversationId={conversationId!}
-            onSend={handleUserMessage}
-          />
+          <ChatContainer messages={messages} conversationId={conversationId!} />
         )}
       </div>
-      <InputField onSend={handleUserMessage} />
+      <InputField onSend={handleUserMessage} disabled={isLoading} />
     </DialogWrapper>
   )
 }

@@ -20,6 +20,7 @@ export type Message = {
   createdBy: string
   citations: Citation[]
   context: Context[]
+  pending: boolean
 }
 
 export type Citation = {
