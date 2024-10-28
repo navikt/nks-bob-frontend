@@ -58,18 +58,16 @@ export const BobAnswerBubble = ({
           <div className='flex flex-col'>
             <div className='mb-6 flex flex-col justify-start'>
               {(!isLoading || !isLastMessage) && (
-                <div className='fade-in'>
-                  <BobSuggests
-                    message={message}
-                    onSend={onSend}
-                    isLastMessage={isLastMessage}
-                  />
-                  <div className='ml-[-0.3rem] flex flex-grow items-center justify-start'>
-                    <CopyButton copyText={message.content} size='small' />
-                    <FeedbackButtons message={message} />
-                  </div>
-                </div>
+                <BobSuggests
+                  message={message}
+                  onSend={onSend}
+                  isLastMessage={isLastMessage}
+                />
               )}
+              <div className='ml-[-0.3rem] flex flex-grow items-center justify-start'>
+                <CopyButton copyText={message.content} size='small' />
+                <FeedbackButtons message={message} />
+              </div>
             </div>
 
             <div ref={readMoreRef} />
