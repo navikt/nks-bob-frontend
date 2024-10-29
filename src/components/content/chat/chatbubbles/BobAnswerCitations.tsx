@@ -23,9 +23,9 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
         contextMetadata.KnowledgeArticleId === citation.article,
     )
 
-  const words = citation.text.split(" ")
-  const textStart = words.slice(0, 4).join(" ")
-  const textEnd = words.slice(-4).join(" ")
+  const words = citation.text.replace("\n", "").split(" ")
+  const textStart = words.slice(0, 3).join(" ")
+  const textEnd = words.slice(-3).join(" ")
   const textFragment = `${encodeURIComponent(textStart)},${encodeURIComponent(textEnd)}`
 
   return (

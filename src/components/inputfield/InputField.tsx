@@ -25,7 +25,11 @@ function InputField({ onSend, disabled }: InputFieldProps) {
     const message: NewMessage = {
       content: inputValue,
     }
-    onSend(message)
+    if (inputValue.trim() !== "") {
+      onSend(message)
+    } else {
+      setInputValue("")
+    }
   }
 
   function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
