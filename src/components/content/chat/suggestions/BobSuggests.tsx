@@ -42,7 +42,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
         variant='tertiary-neutral'
         size='small'
         onClick={handleTranslate}
-        className='navds-button'
+        className='text-style'
       >
         Oversett til engelsk
       </Button>
@@ -50,10 +50,16 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
         variant='tertiary-neutral'
         size='small'
         onClick={handleBulletList}
+        className='text-style'
       >
         Lag punktliste
       </Button>
-      <Button variant='tertiary-neutral' size='small' onClick={handleSimplify}>
+      <Button
+        variant='tertiary-neutral'
+        size='small'
+        onClick={handleSimplify}
+        className='text-style'
+      >
         Forenkle svaret
       </Button>
     </div>
