@@ -38,8 +38,6 @@ export const BobAnswerBubble = ({
     }
   }, [isReadMoreOpen])
 
-  const bobAnswer = message.content.replace(/\n\n/g, "<br />")
-
   return (
     <VStack gap='1' align='stretch' className='pb-12'>
       <HStack gap='3' align='start' wrap={false} width='full'>
@@ -53,7 +51,7 @@ export const BobAnswerBubble = ({
               </div>
             ) : (
               <BodyLong>
-                <Markdown className='markdown'>{bobAnswer}</Markdown>
+                <Markdown className='markdown'>{message.content}</Markdown>
               </BodyLong>
             )}
           </div>
