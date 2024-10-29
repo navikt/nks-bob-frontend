@@ -122,6 +122,10 @@ ul {
 
   /*   Read more styling   */
 
+.navds-textarea__input {
+  padding-right: 2.5rem;
+}
+
 .navds-read-more__button {
   background: rgba(241, 247, 255, 1);
   width: 100%;
