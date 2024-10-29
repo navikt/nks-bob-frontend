@@ -46,7 +46,7 @@ export const BobAnswerBubble = ({
       <HStack gap='3' align='start' wrap={false} width='full'>
         <img src={Bobhead} alt='Bob' width='35px' />
         <div className='flex w-full flex-col pt-3'>
-          <div className='mb-4 flex w-full'>
+          <div className='overflow-wrap mb-4 flex w-full'>
             {message.content === "" ? (
               <div className='w-full'>
                 <Skeleton width='100%' variant='text' />
