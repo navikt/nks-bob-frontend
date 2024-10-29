@@ -29,7 +29,7 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
   const textFragment = `${encodeURIComponent(textStart)},${encodeURIComponent(textEnd)}`
 
   return (
-    <div className='flex flex-col'>
+    <div className='fade-in-citations flex flex-col'>
       <Heading size='xsmall' spacing={true}>
         {matchingContextCitationData ? (
           <Link

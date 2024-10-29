@@ -63,6 +63,7 @@ ul {
 .chatcontainer {
   display: flex;
   overflow-y: scroll;
+  scroll-behavior: smooth;
   width: 100%;
   justify-content: center;
   height: 100%;
