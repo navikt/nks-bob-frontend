@@ -8,6 +8,7 @@ import {
 } from "@navikt/ds-react"
 import { useEffect, useRef, useState } from "react"
 import Markdown from "react-markdown"
+import rehypeRaw from "rehype-raw"
 import Bobhead from "../../../../assets/illustrations/Bob-hode-svg.svg"
 import { Message, NewMessage } from "../../../../types/Message.ts"
 import FeedbackButtons from "../feedback/FeedbackButtons.tsx"
@@ -38,6 +39,8 @@ export const BobAnswerBubble = ({
     }
   }, [isReadMoreOpen])
 
+  const bobAnswer = message.content.replace(/\n\n/g, "<br><br>")
+
   return (
     <VStack gap='1' align='stretch' className='pb-12'>
       <HStack gap='3' align='start' wrap={false} width='full'>
@@ -51,7 +54,9 @@ export const BobAnswerBubble = ({
               </div>
             ) : (
               <BodyLong>
-                <Markdown className='markdown'>{message.content}</Markdown>
+                <Markdown className='markdown' rehypePlugins={[rehypeRaw]}>
+                  {bobAnswer}
+                </Markdown>
               </BodyLong>
             )}
           </div>
