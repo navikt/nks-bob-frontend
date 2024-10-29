@@ -95,6 +95,7 @@ ul {
 
 :root,
 :host {
+  --new-text-default: rgba(32, 39, 51, 1);
   --new-bg: rgba(14, 21, 31, 1);
   --new-bg-raised: rgba(28, 35, 47, 1);
   --new-bg-sunken: rgba(7, 9, 13, 1);
@@ -110,6 +111,12 @@ ul {
   --ac-button-tertiary-hover-bg: rgba(228, 238, 255, 1);
   --ac-button-tertiary-active-bg: rgba(0, 91, 182, 1);
   --ac-button-tertiary-active-hover-bg: rgba(0, 91, 182, 1);
+
+  --ac-button-tertiary-neutral-text: rgba(73, 81, 94, 1);
+  --ac-button-tertiary-neutral-hover-text: rgba(73, 81, 94, 1);
+
+  --ac-copybutton-neutral-text: rgba(73, 81, 94, 1);
+  --ac-copybutton-neutral-hover-text: rgba(73, 81, 94, 1);
 
 }
 

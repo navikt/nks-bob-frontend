@@ -75,6 +75,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
           size='medium'
           className='input-button'
           onClick={handleButtonClick}
+          disabled={disabled}
         />
       </HStack>
       <BodyShort size='small' align='center'>

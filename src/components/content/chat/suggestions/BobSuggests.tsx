@@ -54,12 +54,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
       >
         Lag punktliste
       </Button>
-      <Button
-        variant='tertiary-neutral'
-        size='small'
-        onClick={handleSimplify}
-        className='text-style'
-      >
+      <Button variant='tertiary-neutral' size='small' onClick={handleSimplify}>
         Forenkle svaret
       </Button>
     </div>
