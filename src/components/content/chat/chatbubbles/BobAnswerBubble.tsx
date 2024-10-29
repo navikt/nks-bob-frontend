@@ -53,7 +53,7 @@ export const BobAnswerBubble = ({
                 <Skeleton width='70%' variant='text' />
               </div>
             ) : (
-              <BodyLong>
+              <BodyLong className='fade-in-buttons'>
                 <Markdown className='markdown' rehypePlugins={[rehypeRaw]}>
                   {bobAnswer}
                 </Markdown>

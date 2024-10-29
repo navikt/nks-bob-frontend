@@ -37,7 +37,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
   }
 
   return (
-    <div className='fade-in-buttons mb-3 ml-[-0.7rem] flex h-fit grow flex-wrap items-center justify-start gap-3'>
+    <div className='mb-3 ml-[-0.7rem] flex h-fit grow flex-wrap items-center justify-start gap-3'>
       <Button
         variant='tertiary-neutral'
         size='small'
