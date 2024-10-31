@@ -1,6 +1,6 @@
 import react from "@vitejs/plugin-react"
 import { config } from "dotenv"
-import express, { NextFunction } from "express"
+import express from "express"
 import { CacheContainer } from "node-ts-cache"
 import { MemoryStorage } from "node-ts-cache-storage-memory"
 import { defineConfig, PluginOption, ProxyOptions, ViteDevServer } from "vite"
@@ -47,11 +47,35 @@ async function getToken() {
 
 const app = express()
 
-app.use("/bob-api", async (_req: any, res: any, next: NextFunction) => {
-  const token = await getToken()
-  res.setHeader("Authorization", `Bearer ${token}`)
-  next()
-})
+const CALL_ID = "nav-call-id"
+
+app.use(
+  (
+    req: express.Request,
+    _res: express.Response,
+    next: express.NextFunction,
+  ) => {
+    const callId = req.headers[CALL_ID]
+    if (!callId) {
+      req.headers[CALL_ID] = "mock_call_id"
+    }
+
+    next()
+  },
+)
+
+app.use(
+  "/bob-api",
+  async (
+    _req: express.Request,
+    res: express.Response,
+    next: express.NextFunction,
+  ) => {
+    const token = await getToken()
+    res.setHeader("Authorization", `Bearer ${token}`)
+    next()
+  },
+)
 
 const proxy: Record<string, string | ProxyOptions> = {
   "/bob-api": {
