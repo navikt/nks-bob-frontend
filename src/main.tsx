@@ -7,9 +7,12 @@ import {
   RouterProvider,
 } from "react-router-dom"
 import App from "./App.tsx"
+import { preloadUserConfig } from "./api/api.ts"
 import ConversationContent from "./components/content/ConversationContent.tsx"
 import CreateConversationContent from "./components/content/CreateConversationContent.tsx"
 import "./global.css"
+
+preloadUserConfig()
 
 const router = createBrowserRouter(
   createRoutesFromElements(

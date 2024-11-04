@@ -1,7 +1,7 @@
 import { uniqBy } from "lodash"
 import { useEffect, useState } from "react"
 import useWebSocket, { ReadyState, useEventSource } from "react-use-websocket"
-import useSWR, { mutate } from "swr"
+import useSWR, { mutate, preload } from "swr"
 import useSWRMutation from "swr/mutation"
 import {
   Conversation,
@@ -10,6 +10,7 @@ import {
   NewConversation,
   NewMessage,
 } from "../types/Message"
+import { UserConfig } from "../types/User"
 
 const API_URL = `${import.meta.env.BASE_URL}bob-api`
 
@@ -36,6 +37,20 @@ async function poster<Body, Response>(
 ): Promise<Response> {
   return fetcher(url, {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify(arg),
+  })
+}
+
+async function putter<Body, Response>(
+  url: string,
+  { arg }: { arg: Body },
+): Promise<Response> {
+  return fetcher(url, {
+    method: "PUT",
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
@@ -147,6 +162,33 @@ export const useDeleteConversation = (conversation: Conversation) => {
   return {
     deleteConversation: trigger,
     isLoading: isMutating,
+  }
+}
+
+export const preloadUserConfig = () => {
+  preload("/api/v1/user/config", fetcher)
+}
+
+export const useUserConfig = () => {
+  const { data, isLoading, error } = useSWR<UserConfig>(
+    "/api/v1/user/config", fetcher, {
+    revalidateOnReconnect: false,
+  })
+
+  return {
+    userConfig: data,
+    isLoading,
+    error,
+  }
+}
+
+export const useUpdateUserConfig = () => {
+  const { trigger, isMutating, error } = useSWRMutation("/api/v1/user/config", putter)
+
+  return {
+    updateUserConfig: trigger as (userConfig: UserConfig) => Promise<UserConfig>,
+    isLoading: isMutating,
+    error,
   }
 }
 
