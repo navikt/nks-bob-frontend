@@ -171,9 +171,12 @@ export const preloadUserConfig = () => {
 
 export const useUserConfig = () => {
   const { data, isLoading, error } = useSWR<UserConfig>(
-    "/api/v1/user/config", fetcher, {
-    revalidateOnReconnect: false,
-  })
+    "/api/v1/user/config",
+    fetcher,
+    {
+      revalidateOnReconnect: false,
+    },
+  )
 
   return {
     userConfig: data,
@@ -183,10 +186,15 @@ export const useUserConfig = () => {
 }
 
 export const useUpdateUserConfig = () => {
-  const { trigger, isMutating, error } = useSWRMutation("/api/v1/user/config", putter)
+  const { trigger, isMutating, error } = useSWRMutation(
+    "/api/v1/user/config",
+    putter,
+  )
 
   return {
-    updateUserConfig: trigger as (userConfig: UserConfig) => Promise<UserConfig>,
+    updateUserConfig: trigger as (
+      userConfig: UserConfig,
+    ) => Promise<UserConfig>,
     isLoading: isMutating,
     error,
   }

@@ -1,14 +1,16 @@
 import { useNavigate } from "react-router-dom"
-import { useCreateConversation } from "../../api/api.ts"
+import { useCreateConversation, useUserConfig } from "../../api/api.ts"
 import { NewConversation, NewMessage } from "../../types/Message.ts"
 import Header from "../header/Header.tsx"
 import InputField from "../inputfield/InputField.tsx"
+import FirstTimeLoginInfo from "./information/FirstTimeLoginInfo.tsx"
 import { BobPlaceholder } from "./placeholders/Placeholders.tsx"
 import CreateConversationWrapper from "./wrappers/CreateConversationWrapper.tsx"
 
 const CreateConversationContent = () => {
-  const { createConversation } = useCreateConversation()
   const navigate = useNavigate()
+  const { createConversation } = useCreateConversation()
+  const { userConfig } = useUserConfig()
 
   function handleUserMessage(message: NewMessage) {
     const newConversation: NewConversation = {
@@ -29,6 +31,7 @@ const CreateConversationContent = () => {
   return (
     <CreateConversationWrapper>
       <Header conversation={undefined} />
+      {userConfig?.showStartInfo && <FirstTimeLoginInfo />}
       <BobPlaceholder />
       <InputField onSend={handleUserMessage} disabled={false} />
     </CreateConversationWrapper>
