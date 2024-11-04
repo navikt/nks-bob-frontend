@@ -23,19 +23,19 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
         contextMetadata.KnowledgeArticleId === citation.article,
     )
 
-  const words = citation.text.replace("\n", "").split(" ")
-  const textStart = words.slice(0, 3).join(" ")
-  const textEnd = words.slice(-3).join(" ")
-  const textFragment = `${encodeURIComponent(textStart)},${encodeURIComponent(textEnd)}`
+  const citeWords = citation.text.replace("\n", "").split(" ")
+  const numWords = Math.min(citeWords.length / 2, 6)
+  const textStart = citeWords.slice(0, numWords).join(" ")
+  const textEnd = citeWords.slice(numWords).join(" ")
+
+  const baseUrl = `${matchingContextCitationData!.KnowledgeArticle_QuartoUrl}`
+  const textFragmentUrl = `${baseUrl}#:~:text=${encodeURIComponent(textStart)},${encodeURIComponent(textEnd)}`
 
   return (
     <div className='fade-in-citations flex flex-col'>
       <Heading size='xsmall' spacing={true}>
         {matchingContextCitationData ? (
-          <Link
-            href={`${matchingContextCitationData.KnowledgeArticle_QuartoUrl}#:~:text=${textFragment}`}
-            target='_blank'
-          >
+          <Link href={numWords < 1 ? baseUrl : textFragmentUrl} target='_blank'>
             {citation.title}
             <ExternalLinkIcon title='Åpne artikkelen i ny fane' />
           </Link>
