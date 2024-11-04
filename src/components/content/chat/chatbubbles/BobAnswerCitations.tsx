@@ -28,14 +28,18 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
   const textStart = citeWords.slice(0, numWords).join(" ")
   const textEnd = citeWords.slice(numWords).join(" ")
 
-  const baseUrl = `${matchingContextCitationData!.KnowledgeArticle_QuartoUrl}`
-  const textFragmentUrl = `${baseUrl}#:~:text=${encodeURIComponent(textStart)},${encodeURIComponent(textEnd)}`
-
   return (
     <div className='fade-in-citations flex flex-col'>
       <Heading size='xsmall' spacing={true}>
         {matchingContextCitationData ? (
-          <Link href={numWords < 1 ? baseUrl : textFragmentUrl} target='_blank'>
+          <Link
+            href={
+              numWords < 1
+                ? `${matchingContextCitationData.KnowledgeArticle_QuartoUrl}`
+                : `${matchingContextCitationData.KnowledgeArticle_QuartoUrl}#:~:text=${encodeURIComponent(textStart)},${encodeURIComponent(textEnd)}`
+            }
+            target='_blank'
+          >
             {citation.title}
             <ExternalLinkIcon title='Åpne artikkelen i ny fane' />
           </Link>
