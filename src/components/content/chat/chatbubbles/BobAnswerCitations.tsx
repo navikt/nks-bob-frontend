@@ -51,7 +51,16 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
         )}
       </Heading>
       <BodyLong size='small' spacing>
-        <Markdown className='markdown italic'>{citation.text}</Markdown>
+        <Markdown
+          components={{
+            a: ({ ...props }) => (
+              <a {...props} target='_blank' rel='noopener noreferrer' />
+            ),
+          }}
+          className='markdown italic'
+        >
+          {citation.text}
+        </Markdown>
       </BodyLong>
     </div>
   )
