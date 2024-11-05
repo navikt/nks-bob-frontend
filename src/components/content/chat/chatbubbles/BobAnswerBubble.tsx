@@ -54,7 +54,15 @@ export const BobAnswerBubble = ({
               </div>
             ) : (
               <BodyLong className='fade-in-buttons'>
-                <Markdown className='markdown' rehypePlugins={[rehypeRaw]}>
+                <Markdown
+                  className='markdown'
+                  rehypePlugins={[rehypeRaw]}
+                  components={{
+                    a: ({ ...props }) => (
+                      <a {...props} target='_blank' rel='noopener noreferrer' />
+                    ),
+                  }}
+                >
                   {bobAnswer}
                 </Markdown>
               </BodyLong>
