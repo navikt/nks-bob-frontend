@@ -3,6 +3,7 @@ import { useRef } from "react"
 import Markdown from "react-markdown"
 import { useUpdateUserConfig } from "../../../api/api.ts"
 import { BobHead } from "../../../assets/icons/BobHead.tsx"
+import "./FirstTimeLoginInfo.css"
 
 const FirstTimeLoginInfo = () => {
   const modalRef = useRef<HTMLDialogElement>(null)
@@ -24,6 +25,7 @@ const FirstTimeLoginInfo = () => {
       }}
       open={true}
       onClose={() => modalRef.current?.close()}
+      className='modal-styling'
     >
       <Modal.Body>
         <BodyLong spacing>

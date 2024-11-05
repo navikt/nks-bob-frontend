@@ -170,6 +170,9 @@ body.dark .navds-read-more__button:hover {
 
   /* Action Buttons   */
 
+    --ac-button-secondary-border: var(--darkmode-actiontext);
+    --ac-button-secondary-text: var(--darkmode-actiontext);
+
   --ac-button-tertiary-text: var(--darkmode-actiontext);
   --ac-button-tertiary-hover-bg: rgba(26, 44, 65, 1);
   --ac-button-tertiary-hover-text: var(--darkmode-actiontext);
