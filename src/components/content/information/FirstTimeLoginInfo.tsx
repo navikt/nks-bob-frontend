@@ -1,5 +1,5 @@
 import { BodyLong, Button, Link, Modal } from "@navikt/ds-react"
-import { useEffect, useRef } from "react"
+import { useRef } from "react"
 import Markdown from "react-markdown"
 import { useUpdateUserConfig } from "../../../api/api.ts"
 import { BobHead } from "../../../assets/icons/BobHead.tsx"
@@ -7,10 +7,6 @@ import { BobHead } from "../../../assets/icons/BobHead.tsx"
 const FirstTimeLoginInfo = () => {
   const modalRef = useRef<HTMLDialogElement>(null)
   const { updateUserConfig } = useUpdateUserConfig()
-
-  useEffect(() => {
-    modalRef.current?.showModal()
-  }, [])
 
   function handleClose() {
     updateUserConfig({ showStartInfo: false }).then(() => {
@@ -26,6 +22,8 @@ const FirstTimeLoginInfo = () => {
         heading: "Velkommen!",
         size: "small",
       }}
+      open={true}
+      onClose={() => modalRef.current?.close()}
     >
       <Modal.Body>
         <BodyLong spacing>
@@ -47,12 +45,15 @@ const FirstTimeLoginInfo = () => {
           </Markdown>
         </BodyLong>
         <BodyLong spacing>
-          Jeg baserer svarene på informasjonen fra NAV Kontaktsenter (NKS) sitt
-          oppslagsverk:{" "}
-          <Link href='https://data.ansatt.nav.no/quarto/e7b3e02a-0c45-4b5c-92a2-a6d364120dfb/index.html'>
+          Jeg baserer svarene på informasjon hentet fra{" "}
+          <Link
+            href='https://data.ansatt.nav.no/quarto/e7b3e02a-0c45-4b5c-92a2-a6d364120dfb/index.html'
+            target='_blank'
+          >
             Kunnskapsbasen
           </Link>
-          .
+          , som er NAV Kontaktsenter (NKS) sitt eget oppslagsverk med rutiner og
+          faglig innhold.
         </BodyLong>
         <BodyLong>Og husk: ikke del personlige opplysninger med meg.</BodyLong>
       </Modal.Body>
