@@ -37,11 +37,6 @@ spec:
           - id: "dcb5ec4c-8027-428c-9dfd-15852388001c" # Administratorgruppe
           - id: "ad604335-b339-4804-82ee-fb5e2bcb87c9" # Brukergruppe
       singlePageApplication: true
-      replyURLs:
-        - https://bob.ansatt.dev.nav.no/oauth2/callback
-        - http://localhost:5173/oauth2/callback
-        - http://localhost:5173/auth/callback/microsoft-entra-id
-
     sidecar:
       enabled: true
       autoLogin: true
