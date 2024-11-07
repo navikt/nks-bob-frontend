@@ -1,16 +1,16 @@
-name: Deploy NAIS poao-frontend to DEV
+name: Deploy NAIS nks-bob-frontend-server to DEV
 on:
   workflow_dispatch:
   push:
     paths:
-      - ".github/workflows/deploy-poao-frontend-dev.yaml"
+      - ".github/workflows/deploy-nks-bob-frontend-server-dev.yaml"
       - .nais/nais-dev.yaml
     branches:
       - main
 
 jobs:
   deploy-dev:
-    name: Deploy poao-frontend to DEV
+    name: Deploy nks-bob-frontend-server to DEV
     runs-on: ubuntu-latest
 
     permissions:
