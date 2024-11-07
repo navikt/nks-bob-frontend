@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom"
-import { useMessagesEventSource, useSendMessage } from "../../api/api.ts"
+import { useMessagesEventSource, useMessagesSubscription, useSendMessage } from "../../api/api.ts"
 import { NewMessage } from "../../types/Message.ts"
 import Header from "../header/Header.tsx"
 import InputField from "../inputfield/InputField.tsx"
@@ -11,6 +11,9 @@ function ConversationContent() {
   const { conversationId } = useParams()
   const { messages, isLoading } = useMessagesEventSource(conversationId!)
   const { sendMessage } = useSendMessage(conversationId!)
+
+  const { messages: wsMessages } = useMessagesSubscription(conversationId!)
+  console.log(wsMessages)
 
   function handleUserMessage(message: NewMessage) {
     sendMessage(message, {
