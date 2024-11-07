@@ -84,7 +84,7 @@ spec:
                 "namespace": "nks-aiautomatisering",
                 "cluster": "dev-gcp"
               },
-              ws: true
+              "ws": true
             }
           ]
         }
