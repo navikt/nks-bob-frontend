@@ -7,6 +7,17 @@
     max-width: 24rem;
     flex-direction: column;
     position: relative;
+    align-items: center;
+    color: rgba(32, 39, 51, 1);
+}
+
+.bob-title {
+    position: absolute;
+    bottom: 10%;
+}
+
+.dark .bob-styling {
+    color: rgba(196, 201, 208, 1);
 }
 
 /*@media screen and (max-width: 700px) {*/
