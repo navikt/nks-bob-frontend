@@ -8,7 +8,7 @@ const TipsFromBob = () => {
   const buttonClickModal = useRef<HTMLDialogElement>(null)
 
   return (
-    <div>
+    <div className='flex self-center'>
       <Button
         variant='tertiary'
         size='small'

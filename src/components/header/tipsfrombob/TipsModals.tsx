@@ -90,15 +90,14 @@ export const ButtonClickModal = ({
     <Modal
       ref={buttonClickModal}
       header={{
+        heading: "Her har du noen tips:",
         icon: <BobHead aria-hidden />,
-        heading: "Usikker?",
         size: "small",
       }}
       onClose={() => buttonClickModal.current?.close()}
       className='modal-styling'
     >
       <Modal.Body>
-        <BodyLong spacing>Her har du noen tips fra meg:</BodyLong>
         <BodyLong spacing>
           <Markdown>- Still spørsmål, ikke bare stikkord.</Markdown>
           <Markdown>

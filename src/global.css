@@ -82,8 +82,21 @@ ul {
     }
   }
 
-.fade-in-buttons {
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.fade-in {
   animation: fadeIn 1s ease-in-out;
+}
+
+.fade-out {
+  animation: fadeOut 1s ease-in-out;
 }
 
 .fade-in-citations {
@@ -117,6 +130,10 @@ ul {
 
   --ac-copybutton-neutral-text: rgba(73, 81, 94, 1);
   --ac-copybutton-neutral-hover-text: rgba(73, 81, 94, 1);
+
+  --ac-alert-info-bg: rgba(238, 246, 252, 1);
+  --ac-alert-info-border: rgba(90, 143, 174, 1);
+  --ac-alert-icon-info-color: rgba(65, 125, 160, 1);
 
 }
 
@@ -213,8 +230,12 @@ body.dark .navds-read-more__button:hover {
     --ac-read-more-hover-text: var(--darkmode-actiontext);
     --ac-read-more-hover-bg: rgba(26, 44, 65, 1);
     --ac-read-more-content-text: var(--darkmode-text-default);
-}
 
+    --ac-alert-info-bg: rgba(7, 30, 45, 1);
+    --ac-alert-info-border: rgba(67, 113, 141, 1);
+    --ac-alert-icon-info-color: rgba(90, 131, 155, 1);
+
+}
 body.dark a {
   color: var(--darkmode-linktext-default);
 }

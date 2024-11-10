@@ -2,10 +2,10 @@
     max-width: 2000px;
     width: 100%;
     margin-inline: 1rem;
+    justify-self: center;
 }
 
 body.dark .modal-styling {
    --__ac-modal-bg: var(--new-bg);
     color: rgba(196, 201, 208, 1);
-    justify-self: center;
 }

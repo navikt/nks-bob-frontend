@@ -1,12 +1,6 @@
+import { Alert, BodyShort, Button, Link, Textarea } from "@navikt/ds-react"
+
 import { PaperplaneIcon } from "@navikt/aksel-icons"
-import {
-  BodyShort,
-  Button,
-  HStack,
-  Link,
-  Textarea,
-  VStack,
-} from "@navikt/ds-react"
 import { useState } from "react"
 
 import { NewMessage } from "../../types/Message.ts"
@@ -20,6 +14,8 @@ interface InputFieldProps {
 function InputField({ onSend, disabled }: InputFieldProps) {
   const placeholderText = "Spør Bob om noe"
   const [inputValue, setInputValue] = useState<string>("")
+  const [isSensitiveInfoAlert, setIsSensitiveInfoAlert] =
+    useState<boolean>(false)
 
   function sendMessage() {
     const message: NewMessage = {
@@ -32,8 +28,15 @@ function InputField({ onSend, disabled }: InputFieldProps) {
     }
   }
 
+  function handlePasteInfoAlert() {
+    setIsSensitiveInfoAlert(true)
+  }
+
   function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setInputValue(e.target.value)
+    if (e.target.value.trim() === "") {
+      setIsSensitiveInfoAlert(false)
+    }
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
@@ -42,6 +45,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
         e.preventDefault()
         sendMessage()
         setInputValue("")
+        setIsSensitiveInfoAlert(false)
       }
     }
   }
@@ -54,17 +58,24 @@ function InputField({ onSend, disabled }: InputFieldProps) {
   }
 
   return (
-    <VStack
-      gap='4'
-      className='dialogcontent sticky bottom-0 z-10 h-auto self-center px-4 pb-5'
-      align='stretch'
-    >
-      <HStack gap='1' align='end' className='relative'>
+    <div className='dialogcontent sticky bottom-0 z-10 h-auto flex-col gap-4 self-center px-4 pb-5'>
+      {isSensitiveInfoAlert && (
+        <Alert
+          variant='info'
+          size='small'
+          closeButton={true}
+          onClose={() => setIsSensitiveInfoAlert(false)}
+          className='fade-in'
+        >
+          Pass på å ikke dele sensitiv personinformasjon.
+        </Alert>
+      )}
+      <div className='relative flex items-center'>
         <Textarea
           size='medium'
           label=''
           hideLabel
-          className='flex-grow'
+          className='dialogcontent'
           minRows={1}
           maxRows={8}
           placeholder={placeholderText}
@@ -72,6 +83,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           disabled={disabled}
+          onPaste={handlePasteInfoAlert}
         />
         <Button
           icon={<PaperplaneIcon title='Historikk' />}
@@ -81,7 +93,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
           onClick={handleButtonClick}
           disabled={disabled}
         />
-      </HStack>
+      </div>
       <BodyShort size='small' align='center'>
         Bob baserer svarene på informasjonen fra{" "}
         <Link href='https://data.ansatt.nav.no/quarto/e7b3e02a-0c45-4b5c-92a2-a6d364120dfb/index.html'>
@@ -89,7 +101,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
         </Link>
         .
       </BodyShort>
-    </VStack>
+    </div>
   )
 }
 
