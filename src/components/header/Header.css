@@ -9,3 +9,8 @@
   padding-block: 1rem;
   margin-bottom: 4px;
 }
+
+.nav-logo {
+  display: flex;
+  max-width: 3rem;
+}

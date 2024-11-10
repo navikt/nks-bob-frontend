@@ -10,25 +10,3 @@
     align-items: center;
     color: rgba(32, 39, 51, 1);
 }
-
-.bob-title {
-    position: absolute;
-    bottom: 10%;
-}
-
-.dark .bob-styling {
-    color: rgba(196, 201, 208, 1);
-}
-
-/*@media screen and (max-width: 700px) {*/
-/*    .bob-styling {*/
-/*        max-width: 350px;*/
-/*    }*/
-/*}*/
-
-@media screen and ( max-width: 400px ) and ( max-height: 768px )
-{
-    .bob-styling {
-        max-width: 70%;
-    }
-}

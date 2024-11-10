@@ -69,6 +69,32 @@ ul {
   height: 100%;
 }
 
+.hide-on-desktop {
+  display: none;
+}
+
+@media screen and ( max-width: 400px ) and ( max-height: 750px )
+{
+  .createconversation-wrapper {
+    margin-bottom: 0;
+  }
+  .bob-styling {
+    max-width: 280px;
+  }
+  .hide-on-mobile {
+    display: none;
+  }
+  .show-on-mobile {
+    display: flex;
+  }
+  .infotext {
+    display: none;
+  }
+  .bobhead {
+    display: none;
+  }
+}
+
 .unset {
   all: unset;
 }
@@ -231,9 +257,15 @@ body.dark .navds-read-more__button:hover {
     --ac-read-more-hover-bg: rgba(26, 44, 65, 1);
     --ac-read-more-content-text: var(--darkmode-text-default);
 
+    /*    Info alert    */
     --ac-alert-info-bg: rgba(7, 30, 45, 1);
     --ac-alert-info-border: rgba(67, 113, 141, 1);
     --ac-alert-icon-info-color: rgba(90, 131, 155, 1);
+
+    --ac-button-danger-bg: rgba(65, 4, 9, 1);
+    --ac-button-danger-text: rgba(242, 142, 162, 1);
+    --ac-button-danger-hover-bg: rgba(73, 11, 16, 1);
+    --ac-button-danger-active-bg: rgba(95, 32, 33, 1);
 
 }
 body.dark a {

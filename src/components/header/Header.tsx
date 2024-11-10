@@ -11,11 +11,15 @@ interface HeaderProps {
 function Header({ conversation }: HeaderProps) {
   return (
     <div className='create-conversation max-lg:px-4'>
-      <div className='flex w-14'>
+      <div className='nav-logo'>
         <NAVLogo />
       </div>
       <div className='max-h-30 flex h-9 items-center gap-4'>
-        {conversation && <NewButton />}
+        {conversation && (
+          <div className='hide-on-mobile'>
+            <NewButton />
+          </div>
+        )}
         <TipsFromBob />
         <DarkModeToggle />
       </div>

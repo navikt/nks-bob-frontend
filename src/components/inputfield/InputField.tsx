@@ -4,14 +4,16 @@ import { PaperplaneIcon } from "@navikt/aksel-icons"
 import { useState } from "react"
 
 import { NewMessage } from "../../types/Message.ts"
+import { NewButton } from "../menu/Buttons.tsx"
 import "./InputField.css"
 
 interface InputFieldProps {
   onSend: (message: NewMessage) => void
   disabled: boolean
+  conversation: string | undefined
 }
 
-function InputField({ onSend, disabled }: InputFieldProps) {
+function InputField({ onSend, disabled, conversation }: InputFieldProps) {
   const placeholderText = "Spør Bob om noe"
   const [inputValue, setInputValue] = useState<string>("")
   const [isSensitiveInfoAlert, setIsSensitiveInfoAlert] =
@@ -58,7 +60,12 @@ function InputField({ onSend, disabled }: InputFieldProps) {
   }
 
   return (
-    <div className='dialogcontent sticky bottom-0 z-10 h-auto flex-col gap-4 self-center px-4 pb-5'>
+    <div className='dialogcontent sticky bottom-0 z-10 h-auto flex-col gap-3 self-center px-4 pb-5'>
+      {conversation && (
+        <div className='hide-on-desktop show-on-mobile ml-[-0.6rem] pt-2'>
+          <NewButton />
+        </div>
+      )}
       {isSensitiveInfoAlert && (
         <Alert
           variant='info'
@@ -94,13 +101,15 @@ function InputField({ onSend, disabled }: InputFieldProps) {
           disabled={disabled}
         />
       </div>
-      <BodyShort size='small' align='center'>
-        Bob baserer svarene på informasjonen fra{" "}
-        <Link href='https://data.ansatt.nav.no/quarto/e7b3e02a-0c45-4b5c-92a2-a6d364120dfb/index.html'>
-          Kunnskapsbasen
-        </Link>
-        .
-      </BodyShort>
+      {!conversation && (
+        <BodyShort size='small' align='center'>
+          Bob baserer svarene på informasjonen fra{" "}
+          <Link href='https://data.ansatt.nav.no/quarto/e7b3e02a-0c45-4b5c-92a2-a6d364120dfb/index.html'>
+            Kunnskapsbasen
+          </Link>
+          .
+        </BodyShort>
+      )}
     </div>
   )
 }

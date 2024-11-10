@@ -44,7 +44,7 @@ export const BobAnswerBubble = ({
   return (
     <VStack gap='1' align='stretch' className='pb-12'>
       <HStack gap='3' align='start' wrap={false} width='full'>
-        <img src={Bobhead} alt='Bob' width='35px' />
+        <img src={Bobhead} alt='Bob' width='35px' className='bobhead' />
         <div className='flex w-full flex-col pt-3'>
           <div className='overflow-wrap mb-4 flex w-full'>
             {message.content === "" ? (

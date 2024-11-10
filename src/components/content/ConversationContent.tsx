@@ -1,5 +1,9 @@
 import { useParams } from "react-router-dom"
-import { useMessagesEventSource, useMessagesSubscription, useSendMessage } from "../../api/api.ts"
+import {
+  useMessagesEventSource,
+  useMessagesSubscription,
+  useSendMessage,
+} from "../../api/api.ts"
 import { NewMessage } from "../../types/Message.ts"
 import Header from "../header/Header.tsx"
 import InputField from "../inputfield/InputField.tsx"
@@ -41,7 +45,11 @@ function ConversationContent() {
           />
         )}
       </div>
-      <InputField onSend={handleUserMessage} disabled={isLoading} />
+      <InputField
+        onSend={handleUserMessage}
+        disabled={isLoading}
+        conversation={conversationId}
+      />
     </DialogWrapper>
   )
 }
