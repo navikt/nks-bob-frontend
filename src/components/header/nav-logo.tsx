@@ -1,7 +1,7 @@
 export const NAVLogo = () => {
   return (
     <svg
-      width='auto'
+      width='54'
       height='auto'
       viewBox='0 0 64 19'
       fill='none'

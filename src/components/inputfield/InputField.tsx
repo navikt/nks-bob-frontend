@@ -62,7 +62,7 @@ function InputField({ onSend, disabled, conversation }: InputFieldProps) {
   return (
     <div className='dialogcontent sticky bottom-0 z-10 h-auto flex-col gap-3 self-center px-4 pb-5'>
       {conversation && (
-        <div className='hide-on-desktop show-on-mobile ml-[-0.6rem] pt-2'>
+        <div className='hide-on-desktop show-on-mobile ml-[-0.6rem] justify-end pt-2'>
           <NewButton />
         </div>
       )}
@@ -101,7 +101,7 @@ function InputField({ onSend, disabled, conversation }: InputFieldProps) {
           disabled={disabled}
         />
       </div>
-      <BodyShort size='small' align='center' className='hide-on-mobile'>
+      <BodyShort size='medium' align='center'>
         Bob baserer svarene på informasjonen fra{" "}
         <Link href='https://data.ansatt.nav.no/quarto/e7b3e02a-0c45-4b5c-92a2-a6d364120dfb/index.html'>
           Kunnskapsbasen

@@ -10,11 +10,11 @@ interface HeaderProps {
 
 function Header({ conversation }: HeaderProps) {
   return (
-    <div className='create-conversation max-lg:px-4'>
-      <div className='nav-logo'>
+    <div className='header max-lg:px-4'>
+      <div className='flex max-w-24'>
         <NAVLogo />
       </div>
-      <div className='max-h-30 flex h-9 items-center gap-4'>
+      <div className='max-h-30 flex h-9 flex-wrap items-center justify-end gap-4'>
         {conversation && (
           <div className='hide-on-mobile'>
             <NewButton />

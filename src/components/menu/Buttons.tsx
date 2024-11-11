@@ -5,6 +5,7 @@ import { Link } from "react-router-dom"
 
 export const NewButton = () => {
   const newConversationRef = useRef<HTMLDialogElement>(null)
+
   return (
     <>
       <Button

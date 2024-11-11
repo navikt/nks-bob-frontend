@@ -4,9 +4,9 @@
     height: 100%;
     width: 100%;
     align-self: center;
+    justify-content: center;
     max-width: 24rem;
     flex-direction: column;
     position: relative;
-    align-items: center;
     color: rgba(32, 39, 51, 1);
 }
