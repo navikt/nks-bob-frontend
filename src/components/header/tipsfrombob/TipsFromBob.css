@@ -1,6 +1,5 @@
 .modal-styling {
-    margin-inline: 1rem;
-    justify-self: center;
+    margin-inline: auto;
 }
 
 body.dark .modal-styling {
