@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - ".github/workflows/deploy-nks-bob-frontend-server-dev.yaml"
-      - .nais/nais-dev.yaml
+      - .nais/dev-gcp.yaml
     branches:
       - main
 
@@ -24,5 +24,5 @@ jobs:
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
-          RESOURCE: .nais/nais-dev.yaml
+          RESOURCE: .nais/dev-gcp.yaml
           PRINT_PAYLOAD: true
