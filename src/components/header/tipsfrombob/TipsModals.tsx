@@ -28,9 +28,10 @@ export const FirstTimeLoginModal = ({
         icon: <BobHead aria-hidden />,
         heading: "Velkommen!",
         size: "small",
+        closeButton: false,
       }}
       open={!!userConfig?.showStartInfo}
-      onClose={() => firstTimeLoginModal.current?.close()}
+      onClose={handleClose}
       className='modal-styling'
     >
       <Modal.Body>
