@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom"
 import {
   useMessagesEventSource,
+  useMessagesSubscription,
   useSendMessage,
 } from "../../api/api.ts"
 import { NewMessage } from "../../types/Message.ts"
@@ -15,8 +16,8 @@ function ConversationContent() {
   const { messages, isLoading } = useMessagesEventSource(conversationId!)
   const { sendMessage } = useSendMessage(conversationId!)
 
-  // const { messages: wsMessages } = useMessagesSubscription(conversationId!)
-  // console.log(wsMessages)
+  const { messages: wsMessages } = useMessagesSubscription(conversationId!)
+  console.log(wsMessages)
 
   function handleUserMessage(message: NewMessage) {
     sendMessage(message, {
