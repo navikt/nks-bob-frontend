@@ -1,0 +1,28 @@
+name: Deploy NAIS nks-bob-frontend-server to PROD
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/deploy-nks-bob-frontend-server-prod.yaml"
+      - .nais/prod-gcp.yaml
+    branches:
+      - main
+
+jobs:
+  deploy-prod:
+    name: Deploy nks-bob-frontend-server to PROD
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: "read"
+      id-token: "write"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Deploy application
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: prod-gcp
+          RESOURCE: .nais/prod-gcp.yaml
+          PRINT_PAYLOAD: true

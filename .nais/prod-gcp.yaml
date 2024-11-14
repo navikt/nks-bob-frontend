@@ -9,7 +9,7 @@ spec:
   image: europe-north1-docker.pkg.dev/nais-management-233d/nks-aiautomatisering/nks-bob-frontend-server:2024.11.07_10.15-8132a189ea42
   port: 8080
   ingresses:
-    - https://bob.ansatt.dev.nav.no
+    - https://bob.ansatt.nav.no
   liveness:
     path: /internal/alive
     initialDelay: 10
@@ -46,7 +46,7 @@ spec:
         - /bob-api/**
   gcp:
     buckets:
-      - name: nks-bob-frontend-dev
+      - name: nks-bob-frontend-prod
         cascadingDelete: false
   accessPolicy:
     outbound:
@@ -58,7 +58,7 @@ spec:
         {
           "fallbackStrategy": "SERVE_INDEX_HTML",
           "gcs": {
-            "bucketName": "nks-bob-frontend-dev"
+            "bucketName": "nks-bob-frontend-prod"
           },
           "auth": {
             "loginProvider": "AZURE_AD"
@@ -73,7 +73,7 @@ spec:
               "toApp": {
                 "name": "nks-bob-api",
                 "namespace": "nks-aiautomatisering",
-                "cluster": "dev-gcp"
+                "cluster": "prod-gcp"
               }
             },
             {
@@ -82,7 +82,7 @@ spec:
               "toApp": {
                 "name": "nks-bob-api",
                 "namespace": "nks-aiautomatisering",
-                "cluster": "dev-gcp"
+                "cluster": "prod-gcp"
               },
               "ws": true
             }
