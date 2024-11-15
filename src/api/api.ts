@@ -227,10 +227,16 @@ export const useMessagesSubscription = (conversationId: string) => {
     }
   }, [lastJsonMessage])
 
+  const sendMessage = (message: NewMessage) =>
+    sendJsonMessage({
+      type: "NewMessage",
+      data: message
+    })
+
   return {
-    sendMessage: sendJsonMessage,
+    sendMessage,
     messages,
-    isLoading: readyState !== ReadyState.OPEN,
+    isLoading: readyState !== ReadyState.OPEN || messages.some((message) => message.pending),
   }
 }
 

@@ -4,6 +4,8 @@ import express from "express"
 import { CacheContainer } from "node-ts-cache"
 import { MemoryStorage } from "node-ts-cache-storage-memory"
 import { defineConfig, PluginOption, ProxyOptions, ViteDevServer } from "vite"
+import { createProxyMiddleware } from "http-proxy-middleware"
+import { IncomingMessage } from "http"
 
 config()
 
@@ -77,6 +79,20 @@ app.use(
   },
 )
 
+const wsProxyMiddleware =
+  createProxyMiddleware({
+    pathFilter: "/bob-api-ws",
+    pathRewrite: (path) => path.replace(/bob-api-ws/, ""),
+    target: "ws://localhost:8080",
+    on: {
+      proxyReqWs: (proxyReq, _req, _socket, _head) => {
+        proxyReq.appendHeader(CALL_ID, "mock_call_id")
+      }
+    }
+  })
+
+app.use(wsProxyMiddleware)
+
 const proxy: Record<string, string | ProxyOptions> = {
   "/bob-api": {
     target: "http://localhost:8080",
@@ -94,6 +110,15 @@ const authMiddlewarePlugin = (): PluginOption => ({
   name: "auth-middleware-plugin",
   configureServer: (server: ViteDevServer) => {
     server.middlewares.use(app)
+
+    server.httpServer?.on('upgrade', async (
+      req: IncomingMessage, socket: any, head: Buffer
+    ) => {
+      const token = await getToken()
+      req.headers.authorization = `Bearer ${token}`
+      return wsProxyMiddleware.upgrade(req, socket, head)
+    }
+    );
   },
   config: () => ({
     server: { proxy },
