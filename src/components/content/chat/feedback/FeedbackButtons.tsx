@@ -8,6 +8,7 @@ import { Button } from "@navikt/ds-react"
 import { useState } from "react"
 import { useSendFeedback } from "../../../../api/api.ts"
 import { Feedback, Message } from "../../../../types/Message.ts"
+import { GiveUsFeedback } from "./FeedbackModal.tsx"
 
 interface FeedbackButtonsProps {
   message: Message
@@ -51,6 +52,7 @@ function FeedbackButtons({ message }: FeedbackButtonsProps) {
             icon={<ThumbUpIcon />}
             onClick={() => handleFeedback(true)}
             disabled={isLoading}
+            title='Liker svaret'
           ></Button>
           <Button
             variant='tertiary-neutral'
@@ -58,6 +60,7 @@ function FeedbackButtons({ message }: FeedbackButtonsProps) {
             icon={<ThumbDownIcon className='scale-x-[-1]' />}
             onClick={() => handleFeedback(false)}
             disabled={isLoading}
+            title='Liker ikke svaret'
           ></Button>
         </>
       )}
@@ -79,6 +82,7 @@ function FeedbackButtons({ message }: FeedbackButtonsProps) {
           className='hover:cursor-not-allowed'
         ></Button>
       )}
+      <GiveUsFeedback message={message} />
     </div>
   )
 }

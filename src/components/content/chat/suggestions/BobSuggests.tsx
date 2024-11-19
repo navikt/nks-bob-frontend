@@ -38,19 +38,13 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
 
   return (
     <div className='mb-3 ml-[-0.7rem] flex h-fit grow flex-wrap items-center justify-start gap-3'>
-      <Button
-        variant='tertiary-neutral'
-        size='small'
-        onClick={handleTranslate}
-        className='text-style'
-      >
+      <Button variant='tertiary-neutral' size='small' onClick={handleTranslate}>
         Oversett til engelsk
       </Button>
       <Button
         variant='tertiary-neutral'
         size='small'
         onClick={handleBulletList}
-        className='text-style'
       >
         Lag punktliste
       </Button>
