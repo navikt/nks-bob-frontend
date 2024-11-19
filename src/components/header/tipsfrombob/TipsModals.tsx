@@ -1,4 +1,4 @@
-import { BodyLong, Button, Link, Modal } from "@navikt/ds-react"
+import { BodyLong, Button, Heading, Link, Modal } from "@navikt/ds-react"
 import { RefObject } from "react"
 import Markdown from "react-markdown"
 import { useUpdateUserConfig, useUserConfig } from "../../../api/api.ts"
@@ -35,44 +35,54 @@ export const FirstTimeLoginModal = ({
       className='modal-styling'
     >
       <Modal.Body>
-        <BodyLong spacing>
-          Du er nok ivrig etter å begynne, men vennligst les denne
-          introduksjonen først.
+        <BodyLong spacing className='pt-2'>
+          Du er nok ivrig etter å starte. Men ta en rask titt på denne guiden
+          før du starter – det sparer tid!
         </BodyLong>
-        <BodyLong spacing>
-          Jeg er en språkmodell, som betyr at jeg er trent til å forstå og
-          generere tekst basert på mønstre i data. Her er noen tips for å sikre
-          at du får gode svar:
+        <Heading size='xsmall' spacing>
+          Om denne tjenesten
+        </Heading>
+        <BodyLong className='mb-4'>
+          Jeg er en kunstig intelligens, altså et dataprogram designet for å
+          hjelpe deg med spørsmål og informasjon spesifikt om tjenestene Nav
+          tilbyr.
         </BodyLong>
-        <BodyLong spacing>
-          <Markdown>- Still spørsmål, ikke bare stikkord.</Markdown>
-          <Markdown>
-            - Vær spesifikk: Jo mer detaljert spørsmålet , desto bedre svar.
-          </Markdown>
-          <Markdown>
-            - Gi kontekst: Fortell om situasjonen til brukeren eller hva som
-            ligger bak spørsmålet.
-          </Markdown>
-          <Markdown>
-            - Still oppfølgingsspørsmål: Hvis svaret ikke dekker alt, er det
-            bare å spørre mer spesifikt.
-          </Markdown>
-        </BodyLong>
-        <BodyLong spacing>
-          Jeg baserer svarene på informasjon hentet fra{" "}
+        <BodyLong className='mb-10'>
+          Svarene du mottar baserer seg kun på informasjonen fra{" "}
           <Link
             href='https://data.ansatt.nav.no/quarto/e7b3e02a-0c45-4b5c-92a2-a6d364120dfb/index.html'
             target='_blank'
           >
-            Kunnskapsbasen
+            NKS Kunnskapsbasen
           </Link>
-          , som er NAV Kontaktsenter (NKS) sitt eget oppslagsverk med rutiner og
-          faglig innhold.
+          . Dette er de samme artiklene du finner i Salesforce. Jeg har ikke
+          tilgang til noen annen informasjon.
         </BodyLong>
-        <BodyLong>Og husk: ikke del personlige opplysninger med meg.</BodyLong>
+        <Heading size='xsmall' spacing>
+          Få mest mulig ut av svarene
+        </Heading>
+        <BodyLong className='mb-10 gap-2'>
+          <Markdown>- Still hele spørsmål, ikke bare stikkord.</Markdown>
+          <Markdown>- Vær detaljert og tydelig.</Markdown>
+          <Markdown>- Forklar situasjonen eller gi mer kontekst.</Markdown>
+          <Markdown>- Still oppfølgingsspørsmål hvis noe mangler.</Markdown>
+        </BodyLong>
+        <Heading size='xsmall' spacing>
+          Og husk
+        </Heading>
+        <BodyLong spacing>
+          <Markdown>
+            - **Ikke del personsensitiv informasjon** når du sender meg
+            spørsmål.
+          </Markdown>
+          <Markdown>
+            - **Kontroller kilden om du er usikker på om svaret er korrekt.** Da
+            følger du bare vedlagt lenke til artikkelen jeg siterer fra.
+          </Markdown>
+        </BodyLong>
       </Modal.Body>
       <Modal.Footer className='justify-center'>
-        <Button type='button' variant='secondary' onClick={handleClose}>
+        <Button type='button' variant='primary' onClick={handleClose}>
           Takk for det, Bob!
         </Button>
       </Modal.Footer>
@@ -91,7 +101,7 @@ export const ButtonClickModal = ({
     <Modal
       ref={buttonClickModal}
       header={{
-        heading: "Her har du noen tips:",
+        heading: "Her har du noen tips",
         icon: <BobHead aria-hidden />,
         size: "small",
       }}
@@ -99,37 +109,33 @@ export const ButtonClickModal = ({
       className='modal-styling'
     >
       <Modal.Body>
+        <Heading size='xsmall' spacing className='pt-2'>
+          Få mest mulig ut av svarene
+        </Heading>
+        <BodyLong className='mb-10 gap-2'>
+          <Markdown>- Still hele spørsmål, ikke bare stikkord.</Markdown>
+          <Markdown>- Vær detaljert og tydelig.</Markdown>
+          <Markdown>- Forklar situasjonen eller gi mer kontekst.</Markdown>
+          <Markdown>- Still oppfølgingsspørsmål hvis noe mangler.</Markdown>
+        </BodyLong>
+        <Heading size='xsmall' spacing>
+          Og husk
+        </Heading>
         <BodyLong spacing>
-          <Markdown>- Still spørsmål, ikke bare stikkord.</Markdown>
           <Markdown>
-            - Vær spesifikk: Jo mer detaljert spørsmålet , desto bedre svar.
+            - **Ikke del personsensitiv informasjon** når du sender meg
+            spørsmål.
           </Markdown>
           <Markdown>
-            - Gi kontekst: Fortell om situasjonen til brukeren eller hva som
-            ligger bak spørsmålet.
-          </Markdown>
-          <Markdown>
-            - Still oppfølgingsspørsmål: Hvis svaret ikke dekker alt, er det
-            bare å spørre mer spesifikt.
+            - **Kontroller kilden om du er usikker på om svaret er korrekt.** Da
+            følger du bare vedlagt lenke til artikkelen jeg siterer fra.
           </Markdown>
         </BodyLong>
-        <BodyLong spacing>
-          Jeg baserer svarene på informasjon hentet fra{" "}
-          <Link
-            href='https://data.ansatt.nav.no/quarto/e7b3e02a-0c45-4b5c-92a2-a6d364120dfb/index.html'
-            target='_blank'
-          >
-            Kunnskapsbasen
-          </Link>
-          , som er NAV Kontaktsenter (NKS) sitt eget oppslagsverk med rutiner og
-          faglig innhold.
-        </BodyLong>
-        <BodyLong>Og husk: ikke del personlige opplysninger med meg.</BodyLong>
       </Modal.Body>
       <Modal.Footer className='justify-center'>
         <Button
           type='button'
-          variant='secondary'
+          variant='primary'
           onClick={() => buttonClickModal.current?.close()}
         >
           Takk for det, Bob!
