@@ -63,8 +63,13 @@ spec:
           "auth": {
             "loginProvider": "AZURE_AD"
           },
-          "cors": {
-            "origin": []
+          "header": {
+            "csp": {
+              "connectSrc": ["'self'", "wss:", "*.nav.no" ]
+            },
+            "corp": {
+              "policy": "cross-origin"
+            }
           },
           "proxies": [
             {
