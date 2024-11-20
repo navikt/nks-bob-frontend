@@ -1,7 +1,7 @@
 import { Alert, BodyShort, Button, Link, Textarea } from "@navikt/ds-react"
 
 import { PaperplaneIcon } from "@navikt/aksel-icons"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import { NewMessage } from "../../types/Message.ts"
 import { NewButton } from "../menu/Buttons.tsx"
@@ -18,6 +18,8 @@ function InputField({ onSend, disabled, conversation }: InputFieldProps) {
   const [inputValue, setInputValue] = useState<string>("")
   const [isSensitiveInfoAlert, setIsSensitiveInfoAlert] =
     useState<boolean>(false)
+  const [containsFnr, setContainsFnr] = useState<boolean>(false)
+  const [sendDisabled, setSendDisabled] = useState<boolean>(disabled)
 
   function sendMessage() {
     const message: NewMessage = {
@@ -41,13 +43,20 @@ function InputField({ onSend, disabled, conversation }: InputFieldProps) {
     }
   }
 
+  function checkContainsFnr(value: string) {
+    return /(\d{6}(|.)\d{5})/.test(value)
+  }
+
   function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     if (e.key === "Enter") {
       if (!e.shiftKey) {
         e.preventDefault()
-        sendMessage()
-        setInputValue("")
-        setIsSensitiveInfoAlert(false)
+
+        if (!sendDisabled) {
+          sendMessage()
+          setInputValue("")
+          setIsSensitiveInfoAlert(false)
+        }
       }
     }
   }
@@ -58,6 +67,14 @@ function InputField({ onSend, disabled, conversation }: InputFieldProps) {
       setInputValue("")
     }
   }
+
+  useEffect(() => {
+    if (inputValue) {
+      const inputContainsFnr =  checkContainsFnr(inputValue)
+      setContainsFnr(inputContainsFnr)
+      setSendDisabled(disabled || inputContainsFnr)
+    }
+  }, [inputValue])
 
   return (
     <div className='dialogcontent sticky bottom-0 z-10 h-auto flex-col gap-3 self-center px-4 pb-5'>
@@ -72,6 +89,16 @@ function InputField({ onSend, disabled, conversation }: InputFieldProps) {
           size='small'
           closeButton={true}
           onClose={() => setIsSensitiveInfoAlert(false)}
+          className='fade-in'
+        >
+          Pass på å ikke dele sensitiv personinformasjon.
+        </Alert>
+      )}
+      {containsFnr && (
+        <Alert
+          variant='error'
+          size='small'
+          onClose={() => setContainsFnr(false)}
           className='fade-in'
         >
           Pass på å ikke dele sensitiv personinformasjon.
@@ -98,7 +125,7 @@ function InputField({ onSend, disabled, conversation }: InputFieldProps) {
           size='medium'
           className='input-button'
           onClick={handleButtonClick}
-          disabled={disabled}
+          disabled={sendDisabled}
         />
       </div>
       <BodyShort size='medium' align='center'>
