@@ -69,11 +69,9 @@ function InputField({ onSend, disabled, conversation }: InputFieldProps) {
   }
 
   useEffect(() => {
-    if (inputValue) {
-      const inputContainsFnr =  checkContainsFnr(inputValue)
-      setContainsFnr(inputContainsFnr)
-      setSendDisabled(disabled || inputContainsFnr)
-    }
+    const inputContainsFnr =  checkContainsFnr(inputValue)
+    setContainsFnr(inputContainsFnr)
+    setSendDisabled(disabled || inputContainsFnr)
   }, [inputValue])
 
   return (
