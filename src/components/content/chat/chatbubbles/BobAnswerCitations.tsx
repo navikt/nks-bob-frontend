@@ -32,7 +32,7 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
 
   const numWords = Math.min(citeWords.length / 2, 6)
   const textStart = citeWords.slice(0, numWords).join(" ")
-  const textEnd = citeWords.slice(numWords).join(" ")
+  const textEnd = citeWords.slice(-numWords).join(" ")
 
   const bobCitation = citation.text.replace(/\n\n/g, "<br><br>")
 
