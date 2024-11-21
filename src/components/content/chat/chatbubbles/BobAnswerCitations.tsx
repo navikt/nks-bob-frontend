@@ -25,7 +25,7 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
     )
 
   const citeWords = citation.text
-    .split(/\n\n|\n/)[0]
+    // .split(/\n\n|\n/)[0]
     .replace(/\n\n|\n/g, " ")
     .split(" ")
     .filter((link) => !/https?/.test(link))
