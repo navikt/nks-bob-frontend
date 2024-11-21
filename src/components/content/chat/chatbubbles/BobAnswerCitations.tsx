@@ -24,7 +24,10 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
         contextMetadata.KnowledgeArticleId === citation.article,
     )
 
-  const citeWords = citation.text.replace("\n", " ").split(" ")
+  const citeWords = citation.text
+    .replace("\n", " ")
+    .split(" ")
+    .filter((link) => !/https?/.test(link))
 
   const numWords = Math.min(citeWords.length / 2, 6)
   const textStart = citeWords.slice(0, numWords).join(" ")
