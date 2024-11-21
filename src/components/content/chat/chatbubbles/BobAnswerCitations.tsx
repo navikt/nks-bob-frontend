@@ -34,7 +34,9 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
   const textStart = citeWords.slice(0, numWords).join(" ")
   const textEnd = citeWords.slice(-numWords).join(" ")
 
-  const bobCitation = citation.text.replace(/\n\n/g, "<br><br>")
+  // const bobCitation = citation.text
+  //   .replace(/\n\n/g, "<br><br>")
+  //   .replace(/\n/g, "<br>")
 
   return (
     <div className='fade-in-citations flex flex-col'>
@@ -67,7 +69,7 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
           }}
           className='markdown italic'
         >
-          {bobCitation}
+          {citation.text}
         </Markdown>
       </BodyLong>
     </div>
