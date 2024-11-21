@@ -31,13 +31,6 @@ export const GiveUsFeedback = ({ message }: GiveUsFeedbackProps) => {
         header={{ closeButton: true, heading: "" }}
       >
         <Modal.Body>
-          <iframe
-            width='720px'
-            height='480px'
-            src='https://forms.office.com/Pages/ResponsePage.aspx?id=NGU2YsMeYkmIaZtVNSedCyBQAauBOz1OlySa0dtLBP9UNUZJQkJYVzhKWTZXS0g0V0RBM0JSN1pNMC4u&embed=true'
-            className='max-h-full max-w-full border-b-2 border-border-divider'
-            allowFullScreen
-          ></iframe>
           <div className='my-4'>
             <Heading size='xsmall' spacing>
               Svaret det gjelder
