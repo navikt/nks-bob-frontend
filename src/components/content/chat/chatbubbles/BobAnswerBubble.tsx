@@ -1,4 +1,5 @@
 import {
+  BodyLong,
   CopyButton,
   HStack,
   ReadMore,
@@ -52,17 +53,19 @@ export const BobAnswerBubble = ({
                 <Skeleton width='70%' variant='text' />
               </div>
             ) : (
-              <Markdown
-                className='markdown fade-in'
-                rehypePlugins={[rehypeRaw]}
-                components={{
-                  a: ({ ...props }) => (
-                    <a {...props} target='_blank' rel='noopener noreferrer' />
-                  ),
-                }}
-              >
-                {message.content}
-              </Markdown>
+              <BodyLong className='fade-in'>
+                <Markdown
+                  className='markdown'
+                  rehypePlugins={[rehypeRaw]}
+                  components={{
+                    a: ({ ...props }) => (
+                      <a {...props} target='_blank' rel='noopener noreferrer' />
+                    ),
+                  }}
+                >
+                  {message.content}
+                </Markdown>
+              </BodyLong>
             )}
           </div>
           <div className='flex flex-col'>
