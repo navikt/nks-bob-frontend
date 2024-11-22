@@ -1,5 +1,5 @@
 import { ArrowLeftIcon, ChatExclamationmarkIcon } from "@navikt/aksel-icons"
-import { BodyLong, Button, Heading, Link, Modal } from "@navikt/ds-react"
+import { BodyLong, Button, Heading, Modal } from "@navikt/ds-react"
 import { useRef } from "react"
 import Markdown from "react-markdown"
 import { Message } from "../../../../types/Message.ts"
@@ -8,22 +8,27 @@ interface GiveUsFeedbackProps {
   message: Message
 }
 
+function handleButtonClick() {
+  window.open(
+    "https://forms.office.com/Pages/ResponsePage.aspx?id=NGU2YsMeYkmIaZtVNSedCyBQAauBOz1OlySa0dtLBP9UNUZJQkJYVzhKWTZXS0g0V0RBM0JSN1pNMC4u",
+    "_blank",
+  )
+}
+
 export const GiveUsFeedback = ({ message }: GiveUsFeedbackProps) => {
   const ref = useRef<HTMLDialogElement>(null)
 
   return (
     <div>
-      <Link
-        href='https://forms.office.com/Pages/ResponsePage.aspx?id=NGU2YsMeYkmIaZtVNSedCyBQAauBOz1OlySa0dtLBP9UNUZJQkJYVzhKWTZXS0g0V0RBM0JSN1pNMC4u'
-        target='_blank'
+      <Button
+        variant='tertiary-neutral'
+        size='small'
+        title='Meld fra om feil svar'
+        icon={<ChatExclamationmarkIcon />}
+        onClick={handleButtonClick}
       >
-        <Button
-          variant='tertiary-neutral'
-          size='small'
-          title='Meld fra om feil svar'
-          icon={<ChatExclamationmarkIcon />}
-        />
-      </Link>
+        Meld feil
+      </Button>
       <Modal
         ref={ref}
         closeOnBackdropClick={true}

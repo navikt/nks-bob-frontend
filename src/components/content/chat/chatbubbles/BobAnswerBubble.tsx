@@ -1,16 +1,8 @@
-import {
-  BodyLong,
-  CopyButton,
-  HStack,
-  ReadMore,
-  Skeleton,
-  VStack,
-} from "@navikt/ds-react"
+import { BodyLong, HStack, ReadMore, Skeleton, VStack } from "@navikt/ds-react"
 import { useEffect, useRef, useState } from "react"
 import Markdown from "react-markdown"
 import Bobhead from "../../../../assets/illustrations/Bob-hode-svg.svg"
 import { Message, NewMessage } from "../../../../types/Message.ts"
-import FeedbackButtons from "../feedback/FeedbackButtons.tsx"
 import BobSuggests from "../suggestions/BobSuggests.tsx"
 import BobAnswerCitations from "./BobAnswerCitations.tsx"
 
@@ -65,19 +57,13 @@ export const BobAnswerBubble = ({
             )}
           </div>
           <div className='flex flex-col'>
-            <div className='mb-6 flex flex-col justify-start'>
-              {(!isLoading || !isLastMessage) && (
-                <BobSuggests
-                  message={message}
-                  onSend={onSend}
-                  isLastMessage={isLastMessage}
-                />
-              )}
-              <div className='ml-[-0.3rem] flex flex-grow items-center justify-start'>
-                <CopyButton copyText={message.content} size='small' />
-                <FeedbackButtons message={message} />
-              </div>
-            </div>
+            {(!isLoading || !isLastMessage) && (
+              <BobSuggests
+                message={message}
+                onSend={onSend}
+                isLastMessage={isLastMessage}
+              />
+            )}
 
             <div ref={readMoreRef} />
             {message.citations && message.citations.length > 0 && (
