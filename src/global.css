@@ -34,6 +34,10 @@ ol li:not(:last-child) {
   margin-bottom: 1rem;
 }
 
+ol li::marker {
+  font-weight: bold;
+}
+
 .markdown {
   overflow-wrap: break-word;
 }
