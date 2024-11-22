@@ -8,15 +8,22 @@ interface GiveUsFeedbackProps {
   message: Message
 }
 
-function handleButtonClick() {
-  window.open(
-    "https://forms.office.com/Pages/ResponsePage.aspx?id=NGU2YsMeYkmIaZtVNSedCyBQAauBOz1OlySa0dtLBP9UNUZJQkJYVzhKWTZXS0g0V0RBM0JSN1pNMC4u",
-    "_blank",
-  )
-}
-
 export const GiveUsFeedback = ({ message }: GiveUsFeedbackProps) => {
   const ref = useRef<HTMLDialogElement>(null)
+
+  function encodedText(text: string) {
+    return encodeURIComponent(text).replace(
+      /[-!'()*#]/g,
+      (c) => `%${c.charCodeAt(0).toString(16).toUpperCase()}`,
+    )
+  }
+
+  function handleButtonClick() {
+    window.open(
+      `https://forms.office.com/Pages/ResponsePage.aspx?id=NGU2YsMeYkmIaZtVNSedCyBQAauBOz1OlySa0dtLBP9UNUZJQkJYVzhKWTZXS0g0V0RBM0JSN1pNMC4u&rc0fd63ffeb9146e1bec0b90cc73ca985=${encodedText(message.content)}%0A%0AMeldingsID: ${encodedText(message.id)}`,
+      "_blank",
+    )
+  }
 
   return (
     <div>

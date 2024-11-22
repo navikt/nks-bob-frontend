@@ -25,7 +25,7 @@ const toFeedbackState = (liked: boolean | null | undefined): FeedbackState => {
   return null
 }
 
-function FeedbackButtons({ message }: FeedbackButtonsProps) {
+function FeedbackThumbs({ message }: FeedbackButtonsProps) {
   const [feedback, setFeedback] = useState<FeedbackState>(
     toFeedbackState(message.feedback?.liked),
   )
@@ -85,4 +85,4 @@ function FeedbackButtons({ message }: FeedbackButtonsProps) {
   )
 }
 
-export default FeedbackButtons
+export default FeedbackThumbs

@@ -1,7 +1,7 @@
 import { ArrowsCirclepathIcon } from "@navikt/aksel-icons"
 import { Button, CopyButton, Dropdown, Label } from "@navikt/ds-react"
 import { Message, NewMessage } from "../../../../types/Message.ts"
-import { GiveUsFeedback } from "../feedback/FeedbackModal.tsx"
+import { GiveUsFeedback } from "../feedback/GiveUsFeedback.tsx"
 import "./BobSuggests.css"
 
 interface BobSuggestsProps {
