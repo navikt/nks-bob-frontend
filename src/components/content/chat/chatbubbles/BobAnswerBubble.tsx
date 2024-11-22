@@ -8,7 +8,6 @@ import {
 } from "@navikt/ds-react"
 import { useEffect, useRef, useState } from "react"
 import Markdown from "react-markdown"
-import rehypeRaw from "rehype-raw"
 import Bobhead from "../../../../assets/illustrations/Bob-hode-svg.svg"
 import { Message, NewMessage } from "../../../../types/Message.ts"
 import FeedbackButtons from "../feedback/FeedbackButtons.tsx"
@@ -56,7 +55,6 @@ export const BobAnswerBubble = ({
               <BodyLong className='fade-in'>
                 <Markdown
                   className='markdown'
-                  rehypePlugins={[rehypeRaw]}
                   components={{
                     a: ({ ...props }) => (
                       <a {...props} target='_blank' rel='noopener noreferrer' />

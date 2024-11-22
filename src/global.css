@@ -10,10 +10,34 @@
   scrollbar-color: var(--a-grayalpha-400) transparent;
 }
 
+p:not(li p) {
+  margin-bottom: 0.6rem;
+}
+
+ul li:not(:last-child) {
+  margin-bottom: 0.4rem;
+}
+
+li ul:first-of-type {
+  margin-top: 0.2rem;
+}
+
+ol li::marker {
+  font-weight: bold;
+}
+
+ol li:not(:last-child) {
+  margin-bottom: 1rem;
+}
+
+.markdown {
+  overflow-wrap: break-word;
+}
+
 .markdown > ol,
 ul {
   all: revert;
-  padding-left: 2rem;
+  padding-left: 1.5rem;
 }
 
 .pagewrapper {
