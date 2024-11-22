@@ -32,6 +32,13 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
   const textStart = citeWords.slice(0, numWords).join(" ")
   const textEnd = citeWords.slice(-numWords).join(" ")
 
+  function encodeFragment(text: string) {
+    return encodeURIComponent(text).replace(
+      /[-!'()*#]/g,
+      (c) => `%${c.charCodeAt(0).toString(16).toUpperCase()}`,
+    )
+  }
+
   return (
     <div className='fade-in-citations flex flex-col'>
       <Heading size='xsmall' spacing={true}>
@@ -40,7 +47,7 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
             href={
               numWords < 1
                 ? `${matchingContextCitationData.KnowledgeArticle_QuartoUrl}`
-                : `${matchingContextCitationData.KnowledgeArticle_QuartoUrl}#:~:text=${encodeURIComponent(textStart)},${encodeURIComponent(textEnd)}`
+                : `${matchingContextCitationData.KnowledgeArticle_QuartoUrl}#:~:text=${encodeFragment(textStart)},${encodeFragment(textEnd)}`
             }
             target='_blank'
           >
