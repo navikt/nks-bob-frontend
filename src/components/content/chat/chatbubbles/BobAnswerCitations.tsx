@@ -13,6 +13,7 @@ interface BobAnswerCitationProps {
   context: Context[]
 }
 
+// Matching citation.text against context metadata, to find correct URL //
 function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
   const matchingContextCitationData = context
     .flatMap((context) => context.metadata)
@@ -23,15 +24,18 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
         contextMetadata.KnowledgeArticleId === citation.article,
     )
 
+  // Splitting words, making it functional for textStart & textEnd //
   const citeWords = citation.text
     .replace(/\n\n|\n/g, " ")
     .split(" ")
     .filter((link) => !/https?/.test(link))
 
+  // Min- and max count of words for the 6 (max) first- and last words in the citation //
   const numWords = Math.min(citeWords.length / 2, 6)
   const textStart = citeWords.slice(0, numWords).join(" ")
   const textEnd = citeWords.slice(-numWords).join(" ")
 
+  // Encoding for RFC3986 - making text fragments to work for citations with unreserved marks //
   function encodeFragment(text: string) {
     return encodeURIComponent(text).replace(
       /[-!'()*#]/g,
