@@ -38,12 +38,10 @@ export const BobAnswerBubble = ({
     }
   }, [isReadMoreOpen])
 
-  // const bobAnswer = message.content.replace(/\n/g, "<br>")
-
   return (
     <VStack gap='1' align='stretch' className='pb-12'>
-      <HStack gap='3' align='start' wrap={false} width='full'>
-        <img src={Bobhead} alt='Bob' width='35px' className='bobhead' />
+      <HStack gap='1' align='start' wrap={false} width='full'>
+        <img src={Bobhead} alt='Bob' width='30px' className='bobhead' />
         <div className='flex w-full flex-col pt-3'>
           <div className='overflow-wrap mb-4 flex w-full'>
             {message.content === "" ? (

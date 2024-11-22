@@ -1,7 +1,6 @@
 import { ExternalLinkIcon } from "@navikt/aksel-icons"
 import { BodyLong, BodyShort, Heading, Link } from "@navikt/ds-react"
 import Markdown from "react-markdown"
-import rehypeRaw from "rehype-raw"
 import { Context } from "../../../../types/Message.ts"
 
 interface BobAnswerCitationProps {
@@ -25,7 +24,6 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
     )
 
   const citeWords = citation.text
-    // .split(/\n\n|\n/)[0]
     .replace(/\n\n|\n/g, " ")
     .split(" ")
     .filter((link) => !/https?/.test(link))
@@ -33,10 +31,6 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
   const numWords = Math.min(citeWords.length / 2, 6)
   const textStart = citeWords.slice(0, numWords).join(" ")
   const textEnd = citeWords.slice(-numWords).join(" ")
-
-  // const bobCitation = citation.text
-  //   .replace(/\n\n/g, "<br><br>")
-  //   .replace(/\n/g, "<br>")
 
   return (
     <div className='fade-in-citations flex flex-col'>
@@ -61,7 +55,6 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
       </Heading>
       <BodyLong size='small' spacing>
         <Markdown
-          rehypePlugins={[rehypeRaw]}
           components={{
             a: ({ ...props }) => (
               <a {...props} target='_blank' rel='noopener noreferrer' />

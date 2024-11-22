@@ -10,8 +10,8 @@
   scrollbar-color: var(--a-grayalpha-400) transparent;
 }
 
-p:not(li p) {
-  margin-bottom: 0.6rem;
+p:not(li p):not(:last-child) {
+  margin-bottom: 1rem;
 }
 
 ul li:not(:last-child) {
@@ -22,8 +22,12 @@ li ul:first-of-type {
   margin-top: 0.2rem;
 }
 
-ol li::marker {
-  font-weight: bold;
+li ul {
+  padding-left: 1rem;
+}
+
+ul {
+  padding-left: 0;
 }
 
 ol li:not(:last-child) {
