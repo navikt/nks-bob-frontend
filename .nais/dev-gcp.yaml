@@ -65,7 +65,7 @@ spec:
           },
           "header": {
             "csp": {
-              "connectSrc": ["'self'", "wss:", "*.nav.no" ]
+              "connectSrc": ["'self'", "wss:", "*.nav.no", "login.microsoftonline.com" ]
             },
             "corp": {
               "policy": "cross-origin"
