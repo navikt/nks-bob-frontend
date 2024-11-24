@@ -14,9 +14,18 @@ export const NewButton = () => {
         icon={<NotePencilIcon aria-hidden />}
         iconPosition='right'
         onClick={() => newConversationRef.current?.showModal()}
+        className='max-phone:hidden'
       >
         Ny samtale
       </Button>
+      <Button
+        variant='tertiary'
+        size='medium'
+        icon={<NotePencilIcon aria-hidden />}
+        iconPosition='right'
+        onClick={() => newConversationRef.current?.showModal()}
+        className='phone:hidden'
+      ></Button>
       <Modal
         ref={newConversationRef}
         header={{

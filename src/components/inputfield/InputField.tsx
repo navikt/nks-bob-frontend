@@ -1,19 +1,17 @@
-import { Alert, BodyShort, Button, Link, Textarea } from "@navikt/ds-react"
+import { Alert, BodyShort, Button, Textarea } from "@navikt/ds-react"
 
 import { PaperplaneIcon } from "@navikt/aksel-icons"
 import { useEffect, useState } from "react"
 
 import { NewMessage } from "../../types/Message.ts"
-import { NewButton } from "../menu/Buttons.tsx"
 import "./InputField.css"
 
 interface InputFieldProps {
   onSend: (message: NewMessage) => void
   disabled: boolean
-  conversation: string | undefined
 }
 
-function InputField({ onSend, disabled, conversation }: InputFieldProps) {
+function InputField({ onSend, disabled }: InputFieldProps) {
   const placeholderText = "Spør Bob om noe"
   const [inputValue, setInputValue] = useState<string>("")
   const [isSensitiveInfoAlert, setIsSensitiveInfoAlert] =
@@ -69,18 +67,13 @@ function InputField({ onSend, disabled, conversation }: InputFieldProps) {
   }
 
   useEffect(() => {
-    const inputContainsFnr =  checkContainsFnr(inputValue)
+    const inputContainsFnr = checkContainsFnr(inputValue)
     setContainsFnr(inputContainsFnr)
-    setSendDisabled(disabled || inputContainsFnr)
-  }, [inputValue])
+    setSendDisabled(disabled || inputContainsFnr)
+  }, [inputValue, disabled])
 
   return (
-    <div className='dialogcontent sticky bottom-0 z-10 h-auto flex-col gap-3 self-center px-4 pb-5'>
-      {conversation && (
-        <div className='hide-on-desktop show-on-mobile ml-[-0.6rem] justify-end pt-2'>
-          <NewButton />
-        </div>
-      )}
+    <div className='dialogcontent inputfield sticky bottom-0 z-10 h-auto flex-col gap-3 self-center px-4 pb-5'>
       {isSensitiveInfoAlert && (
         <Alert
           variant='info'
@@ -126,12 +119,9 @@ function InputField({ onSend, disabled, conversation }: InputFieldProps) {
           disabled={sendDisabled}
         />
       </div>
-      <BodyShort size='medium' align='center'>
-        Bob baserer svarene på informasjonen fra{" "}
-        <Link href='https://data.ansatt.nav.no/quarto/e7b3e02a-0c45-4b5c-92a2-a6d364120dfb/index.html'>
-          Kunnskapsbasen
-        </Link>
-        .
+      <BodyShort size='small' align='center'>
+        Bob er en kunstig intelligens og kan ta feil – sjekk kilder for å være
+        sikker.
       </BodyShort>
     </div>
   )

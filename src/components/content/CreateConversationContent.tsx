@@ -30,11 +30,7 @@ const CreateConversationContent = () => {
     <CreateConversationWrapper>
       <Header conversation={undefined} />
       <BobPlaceholder />
-      <InputField
-        onSend={handleUserMessage}
-        disabled={false}
-        conversation={undefined}
-      />
+      <InputField onSend={handleUserMessage} disabled={false} />
     </CreateConversationWrapper>
   )
 }
