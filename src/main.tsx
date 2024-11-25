@@ -5,7 +5,7 @@ import {
   createRoutesFromElements,
   Route,
   RouterProvider,
-} from "react-router-dom"
+} from "react-router"
 import App from "./App.tsx"
 import { preloadUserConfig } from "./api/api.ts"
 import ConversationContent from "./components/content/ConversationContent.tsx"

@@ -1,7 +1,7 @@
 import { NotePencilIcon } from "@navikt/aksel-icons"
 import { BodyShort, Button, Modal } from "@navikt/ds-react"
 import { useRef } from "react"
-import { Link } from "react-router-dom"
+import { Link } from "react-router"
 
 export const NewButton = () => {
   const newConversationRef = useRef<HTMLDialogElement>(null)
