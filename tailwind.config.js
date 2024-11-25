@@ -5,6 +5,9 @@ module.exports = {
   darkMode: "class",
   theme: {
     extend: {},
+    screens: {
+      phone: "450px",
+    },
   },
   plugins: [],
 }

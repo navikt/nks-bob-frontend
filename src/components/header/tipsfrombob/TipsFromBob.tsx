@@ -1,3 +1,4 @@
+import { InformationSquareIcon } from "@navikt/aksel-icons"
 import { Button } from "@navikt/ds-react"
 import { useRef } from "react"
 import "./TipsFromBob.css"
@@ -13,9 +14,20 @@ const TipsFromBob = () => {
         variant='tertiary'
         size='small'
         onClick={() => buttonClickModal.current?.showModal()}
+        icon={<InformationSquareIcon />}
+        iconPosition='right'
+        className='max-phone:hidden'
       >
-        Tips fra Bob
+        Info og tips
       </Button>
+      <Button
+        variant='tertiary'
+        size='medium'
+        onClick={() => buttonClickModal.current?.showModal()}
+        icon={<InformationSquareIcon />}
+        iconPosition='right'
+        className='phone:hidden'
+      ></Button>
       <FirstTimeLoginModal firstTimeLoginModal={firstTimeLoginModal} />
       <ButtonClickModal buttonClickModal={buttonClickModal} />
     </div>
