@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router"
-import { useCreateConversation } from "../../api/api.ts"
-import { Conversation, NewConversation, NewMessage } from "../../types/Message.ts"
+import { NewConversation, NewMessage } from "../../types/Message.ts"
 import Header from "../header/Header.tsx"
 import InputField from "../inputfield/InputField.tsx"
 import { BobPlaceholder } from "./placeholders/Placeholders.tsx"
