@@ -1,5 +1,6 @@
-import { useParams } from "react-router-dom"
+import { useParams } from "react-router"
 import { useMessagesSubscription } from "../../api/ws.ts"
+
 import { NewMessage } from "../../types/Message.ts"
 import Header from "../header/Header.tsx"
 import InputField from "../inputfield/InputField.tsx"

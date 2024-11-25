@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router"
 import { useCreateConversation } from "../../api/api.ts"
 import { NewConversation, NewMessage } from "../../types/Message.ts"
 import Header from "../header/Header.tsx"
