@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom"
+import { Outlet } from "react-router"
 import PageWrapper from "./components/content/wrappers/PageWrapper.tsx"
 
 function App() {

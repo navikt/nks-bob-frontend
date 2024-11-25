@@ -1,6 +1,6 @@
 import { TrashIcon } from "@navikt/aksel-icons"
 import { BodyShort } from "@navikt/ds-react"
-import { useLocation, useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router"
 import { useDeleteConversation } from "../../../api/api.ts"
 import { Conversation } from "../../../types/Message.ts"
 import "./ConversationLink.css"
