@@ -8,13 +8,20 @@ import InputField from "../inputfield/InputField.tsx"
 import ChatContainer from "./chat/ChatContainer.tsx"
 import { WhitespacePlaceholder } from "./placeholders/Placeholders.tsx"
 import DialogWrapper from "./wrappers/DialogWrapper.tsx"
+import { useEffect } from "react"
 
 function ConversationContent() {
   const { conversationId } = useParams()
-  const { messages, sendMessage, isLoading } = useMessagesSubscription(conversationId!)
+  const { messages, sendMessage, subscribeToConversation, isLoading } = useMessagesSubscription()
+
+  useEffect(() => {
+    if (conversationId) {
+      subscribeToConversation(conversationId)
+      }
+  }, [conversationId])
 
   function handleUserMessage(message: NewMessage) {
-    sendMessage(message)
+    sendMessage(message, conversationId!)
   }
 
   return (

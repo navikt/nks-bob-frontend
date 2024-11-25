@@ -4,7 +4,9 @@ import useWebSocket, { ReadyState } from "react-use-websocket"
 import {
   Citation,
   Context,
+  Conversation,
   Message,
+  NewConversation,
   NewMessage,
 } from "../types/Message"
 
@@ -16,6 +18,7 @@ type MessageEvent
   | CitationsUpdated
   | ContextUpdated
   | PendingUpdated
+  | ConversationCreated
 
 type NewMessageEvent = {
   type: "NewMessage",
@@ -48,6 +51,11 @@ type PendingUpdated = {
   pending: boolean
 }
 
+type ConversationCreated = {
+  type: "ConversationCreated",
+  conversation: Conversation,
+}
+
 function isMessage(event: Message | MessageEvent): event is Message {
   return (<Message>event).messageRole !== undefined
 }
@@ -76,11 +84,60 @@ function isPendingUpdated(event: MessageEvent): event is PendingUpdated {
   return (<MessageEvent>event).type === "PendingUpdated"
 }
 
-export const useMessagesSubscription = (conversationId: string) => {
+function isConversationCreated(event: MessageEvent | Message): event is ConversationCreated {
+  return (<ConversationCreated>event).type === "ConversationCreated"
+}
+
+// type ConversationAction
+//   = NewMessageAction
+//   | CreateConversationAction
+//   | SubscribeToConversationAction
+
+type NewMessageAction = {
+  type: "NewMessage",
+  data: NewMessage & { conversationId: string }
+}
+
+const newMessageAction = (newMessage: NewMessage, conversationId: string): NewMessageAction => ({
+  type: "NewMessage",
+  data: {
+    ...newMessage,
+    conversationId,
+    }
+})
+
+type CreateConversationAction = {
+  type: "CreateConversation",
+  data: NewConversation & { subscribe: boolean }
+}
+
+const createConversationAction = (newConversation: NewConversation): CreateConversationAction => ({
+  type:"CreateConversation",
+  data: {
+    ...newConversation,
+    subscribe: true,
+  }
+})
+
+type SubscribeToConversationAction = {
+  type: "SubscribeToConversation",
+  data: {
+    conversationId: string
+  }
+}
+
+const subscribeToConversationAction = (conversationId: string): SubscribeToConversationAction => ({
+  type: "SubscribeToConversation",
+  data: { conversationId },
+})
+
+export const useMessagesSubscription = () => {
   const [messages, setMessages] = useState<Message[]>([])
+  const [createdConversation, setCreatedConversation] = useState<Conversation | null>(null)
+
   const { sendJsonMessage, lastJsonMessage, readyState } =
     useWebSocket<Message | MessageEvent>(
-      `${WS_API_URL}/api/v1/conversations/${conversationId}/messages/ws`,
+      `${WS_API_URL}/api/v1/conversations/ws`,
       {
         shouldReconnect: (_closeEvent) => true,
         reconnectInterval: 5000,
@@ -103,6 +160,10 @@ export const useMessagesSubscription = (conversationId: string) => {
     }
 
     if (!isMessageEvent(received)) {
+      return undefined
+    }
+
+    if(isConversationCreated(received)) {
       return undefined
     }
 
@@ -161,17 +222,27 @@ export const useMessagesSubscription = (conversationId: string) => {
         // Reverse to add newest (last) messages to the array, then reverse again.
         return uniqBy(prev.concat(newMessage).reverse(), "id").reverse()
       })
+
+      if (isConversationCreated(lastJsonMessage)) {
+        setCreatedConversation(lastJsonMessage.conversation)
+      }
     }
   }, [lastJsonMessage])
 
-  const sendMessage = (message: NewMessage) =>
-    sendJsonMessage({
-      type: "NewMessage",
-      data: message
-    })
+  const sendMessage = (message: NewMessage, conversationId: string) =>
+    sendJsonMessage(newMessageAction(message, conversationId))
+
+  const createConversation = (conversation: NewConversation) =>
+    sendJsonMessage(createConversationAction(conversation))
+
+  const subscribeToConversation = (conversationId: string) =>
+    sendJsonMessage(subscribeToConversationAction(conversationId))
 
   return {
     sendMessage,
+    createConversation,
+    createdConversation,
+    subscribeToConversation,
     messages,
     isLoading: readyState !== ReadyState.OPEN || messages.some((message) => message.pending),
   }
