@@ -7,14 +7,10 @@ import CreateConversationWrapper from "./wrappers/CreateConversationWrapper.tsx"
 import { useEffect } from "react"
 import { useMessagesSubscription } from "../../api/ws.ts"
 
-const CreateConversationContent = (
-  // {createConversation, createdConversation }: {
-// createConversation: (conversation: NewConversation) => void
-// , createdConversation: Conversation | null}
-) => {
+const CreateConversationContent = ( ) => {
   const navigate = useNavigate()
 
-  const {createConversation, createdConversation } = useMessagesSubscription()
+  const {createConversation, createdConversation} = useMessagesSubscription()
 
   function handleUserMessage(message: NewMessage) {
     const newConversation: NewConversation = {
@@ -23,13 +19,6 @@ const CreateConversationContent = (
     }
 
     createConversation(newConversation)
-      // .then((conversation) => {
-      //   navigate(`/samtaler/${conversation.id}`, {})
-      // })
-
-      // .catch((error) => {
-      //   console.log(error)
-      // })
   }
 
   useEffect(() => {

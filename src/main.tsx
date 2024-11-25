@@ -11,23 +11,30 @@ import { preloadUserConfig } from "./api/api.ts"
 import ConversationContent from "./components/content/ConversationContent.tsx"
 import CreateConversationContent from "./components/content/CreateConversationContent.tsx"
 import "./global.css"
+import { useMessagesSubscription } from "./api/ws.ts"
 
 preloadUserConfig()
+
+const RootElement = () => {
+  const { } = useMessagesSubscription()
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
-      <Route index element={<CreateConversationContent />} />
+      <Route index element={ <CreateConversationContent /> } />
       <Route
         path='/samtaler/:conversationId'
-        element={<ConversationContent />}
+        element={ <ConversationContent /> }
       />
     </Route>,
   ),
 )
 
+return <RouterProvider router={router} />
+}
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <RootElement />
   </StrictMode>,
 )

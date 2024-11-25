@@ -131,6 +131,16 @@ const subscribeToConversationAction = (conversationId: string): SubscribeToConve
   data: { conversationId },
 })
 
+type UnsubscribeAllConversationsAction= {
+  type: "UnsubscribeAllConversations",
+  data: {},
+}
+
+const unsubscribeAllConversations = (): UnsubscribeAllConversationsAction => ({
+  type: "UnsubscribeAllConversations",
+  data: {},
+})
+
 export const useMessagesSubscription = () => {
   const [messages, setMessages] = useState<Message[]>([])
   const [createdConversation, setCreatedConversation] = useState<Conversation | null>(null)
@@ -142,6 +152,7 @@ export const useMessagesSubscription = () => {
         shouldReconnect: (_closeEvent) => true,
         reconnectInterval: 5000,
         reconnectAttempts: 10,
+        share: true,
         heartbeat: {
           message: JSON.stringify({ type: "Heartbeat", data: "ping" }),
           returnMessage: "pong",
@@ -238,11 +249,17 @@ export const useMessagesSubscription = () => {
   const subscribeToConversation = (conversationId: string) =>
     sendJsonMessage(subscribeToConversationAction(conversationId))
 
+  const resetSubscription = () => {
+    unsubscribeAllConversations()
+    setCreatedConversation(null)
+  }
+
   return {
     sendMessage,
     createConversation,
     createdConversation,
     subscribeToConversation,
+    resetSubscription,
     messages,
     isLoading: readyState !== ReadyState.OPEN || messages.some((message) => message.pending),
   }
