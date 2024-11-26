@@ -13,12 +13,14 @@ const CreateConversationContent = () => {
   function handleUserMessage(message: NewMessage) {
     const newConversation: NewConversation = {
       title: message.content,
-      initialMessage: { content: message.content },
+      initialMessage: null
     }
+
+    const initialMessage = encodeURIComponent(message.content)
 
     createConversation(newConversation)
       .then((conversation) => {
-        navigate(`/samtaler/${conversation.id}`, {})
+        navigate(`/samtaler/${conversation.id}?initialMessage=${initialMessage}`, {})
       })
 
       .catch((error) => {

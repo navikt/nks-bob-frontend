@@ -1,4 +1,4 @@
-import { useParams } from "react-router"
+import { useParams, useSearchParams } from "react-router"
 import { useMessagesSubscription } from "../../api/ws.ts"
 
 import { NewMessage } from "../../types/Message.ts"
@@ -7,9 +7,22 @@ import InputField from "../inputfield/InputField.tsx"
 import ChatContainer from "./chat/ChatContainer.tsx"
 import { WhitespacePlaceholder } from "./placeholders/Placeholders.tsx"
 import DialogWrapper from "./wrappers/DialogWrapper.tsx"
+import { useEffect } from "react"
 
 function ConversationContent() {
   const { conversationId } = useParams()
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  useEffect(() => {
+    if (searchParams.has("initialMessage")) {
+      const initialMessage = searchParams.get("initialMessage")!
+      sendMessage({ content: initialMessage })
+
+      searchParams.delete("initialMessage")
+      setSearchParams({ ...searchParams })
+    }
+  }, [searchParams])
+
   const { messages, sendMessage, isLoading } = useMessagesSubscription(
     conversationId!,
   )
