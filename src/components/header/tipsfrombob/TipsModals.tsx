@@ -101,7 +101,7 @@ export const ButtonClickModal = ({
     <Modal
       ref={buttonClickModal}
       header={{
-        heading: "Her har du noen tips",
+        heading: "Informasjon og tips",
         icon: <BobHead aria-hidden />,
         size: "small",
       }}
@@ -109,15 +109,38 @@ export const ButtonClickModal = ({
       className='modal-styling'
     >
       <Modal.Body>
-        <Heading size='xsmall' spacing className='pt-2'>
-          Få mest mulig ut av svarene
-        </Heading>
-        <BodyLong className='mb-10 gap-2'>
-          <Markdown>- Still hele spørsmål, ikke bare stikkord.</Markdown>
-          <Markdown>- Vær detaljert og tydelig.</Markdown>
-          <Markdown>- Forklar situasjonen eller gi mer kontekst.</Markdown>
-          <Markdown>- Still oppfølgingsspørsmål hvis noe mangler.</Markdown>
-        </BodyLong>
+        <div className='mb-6 mt-4'>
+          <Heading size='xsmall' spacing>
+            Om denne tjenesten
+          </Heading>
+          <BodyLong className='mb-4'>
+            Jeg er en kunstig intelligens, altså et dataprogram designet for å
+            hjelpe deg med spørsmål og informasjon spesifikt om tjenestene Nav
+            tilbyr.
+          </BodyLong>
+          <BodyLong>
+            Svarene du mottar baserer seg kun på informasjonen fra{" "}
+            <Link
+              href='https://data.ansatt.nav.no/quarto/e7b3e02a-0c45-4b5c-92a2-a6d364120dfb/index.html'
+              target='_blank'
+            >
+              NKS Kunnskapsbasen
+            </Link>
+            . Dette er de samme artiklene du finner i Salesforce. Jeg har ikke
+            tilgang til noen annen informasjon.
+          </BodyLong>
+        </div>
+        <div className='mb-8'>
+          <Heading size='xsmall' spacing className='pt-2'>
+            Få mest mulig ut av svarene
+          </Heading>
+          <BodyLong>
+            <Markdown>- Still hele spørsmål, ikke bare stikkord.</Markdown>
+            <Markdown>- Vær detaljert og tydelig.</Markdown>
+            <Markdown>- Forklar situasjonen eller gi mer kontekst.</Markdown>
+            <Markdown>- Still oppfølgingsspørsmål hvis noe mangler.</Markdown>
+          </BodyLong>
+        </div>
         <Heading size='xsmall' spacing>
           Og husk
         </Heading>
