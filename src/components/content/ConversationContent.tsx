@@ -13,19 +13,22 @@ function ConversationContent() {
   const { conversationId } = useParams()
   const [searchParams, setSearchParams] = useSearchParams()
 
+  const { messages, sendMessage, isLoading } = useMessagesSubscription(
+    conversationId!,
+  )
+
   useEffect(() => {
     if (searchParams.has("initialMessage")) {
       const initialMessage = searchParams.get("initialMessage")!
-      sendMessage({ content: initialMessage })
+
+      if (messages.length === 0) {
+        sendMessage({ content: initialMessage })
+      }
 
       searchParams.delete("initialMessage")
       setSearchParams({ ...searchParams })
     }
-  }, [searchParams])
-
-  const { messages, sendMessage, isLoading } = useMessagesSubscription(
-    conversationId!,
-  )
+  }, [searchParams, messages])
 
   function handleUserMessage(message: NewMessage) {
     sendMessage(message)
