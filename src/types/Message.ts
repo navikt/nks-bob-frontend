@@ -52,7 +52,7 @@ export type Metadata = {
 
 export type NewConversation = {
   title: string
-  initialMessage?: NewMessage
+  initialMessage: NewMessage | null
 }
 
 export type Conversation = {
