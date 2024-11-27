@@ -117,6 +117,18 @@ export const useSendFeedback = (message: Message) => {
   }
 }
 
+export const useSendConversationFeedback = (conversationId: string) => {
+  const { trigger, isMutating } = useSWRMutation(
+    `/api/v1/conversations/${conversationId}/feedback`,
+    poster,
+  )
+
+  return {
+    sendFeedback: trigger as (feedback: Feedback) => Promise<Feedback>,
+    isLoading: isMutating,
+  }
+}
+
 export const useConversations = () => {
   const {
     data: conversations,

@@ -6,11 +6,11 @@ import {
 } from "@navikt/aksel-icons"
 import { Button } from "@navikt/ds-react"
 import { useState } from "react"
-import { useSendFeedback } from "../../../../api/api.ts"
-import { Feedback, Message } from "../../../../types/Message.ts"
+import { useSendConversationFeedback } from "../../../../api/api.ts"
+import { Feedback } from "../../../../types/Message.ts"
 
 interface FeedbackButtonsProps {
-  message: Message
+  conversationId: string
 }
 
 type FeedbackState = "positive" | "negative" | null
@@ -25,11 +25,11 @@ const toFeedbackState = (liked: boolean | null | undefined): FeedbackState => {
   return null
 }
 
-function FeedbackThumbs({ message }: FeedbackButtonsProps) {
+function FeedbackThumbs({ conversationId }: FeedbackButtonsProps) {
   const [feedback, setFeedback] = useState<FeedbackState>(
-    toFeedbackState(message.feedback?.liked),
+    toFeedbackState(null),
   )
-  const { sendFeedback, isLoading } = useSendFeedback(message)
+  const { sendFeedback, isLoading } = useSendConversationFeedback(conversationId)
 
   async function handleFeedback(liked: boolean) {
     setFeedback(liked ? "positive" : "negative")
@@ -42,7 +42,7 @@ function FeedbackThumbs({ message }: FeedbackButtonsProps) {
   }
 
   return (
-    <div className='flex justify-end'>
+    <div className='flex justify-start'>
       {feedback === null && (
         <>
           <Button

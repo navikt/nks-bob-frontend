@@ -16,7 +16,7 @@ function Header({ conversation }: HeaderProps) {
       </div>
       <div className='max-h-30 flex h-9 flex-wrap items-center justify-end gap-3'>
         <div className='flex'>
-          {conversation && <NewButton />}
+          {conversation && <NewButton conversationId={conversation} />}
           <TipsFromBob />
         </div>
         <DarkModeToggle />
