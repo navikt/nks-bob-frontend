@@ -1,9 +1,10 @@
 import { NotePencilIcon } from "@navikt/aksel-icons"
-import { BodyShort, Button, Modal } from "@navikt/ds-react"
+import { BodyShort, Button, Modal, VStack } from "@navikt/ds-react"
 import { useRef } from "react"
 import { Link } from "react-router"
+import FeedbackThumbs from "../content/chat/feedback/FeedbackThumbs"
 
-export const NewButton = () => {
+export const NewButton = ({ conversationId }: { conversationId: string }) => {
   const newConversationRef = useRef<HTMLDialogElement>(null)
 
   return (
@@ -29,7 +30,7 @@ export const NewButton = () => {
       <Modal
         ref={newConversationRef}
         header={{
-          heading: "Du er på vei til å starte en ny samtale",
+          heading: "Før du starter en ny samtale",
           size: "small",
         }}
         onClose={() => newConversationRef.current?.close()}
@@ -37,9 +38,15 @@ export const NewButton = () => {
         className='modal-styling'
       >
         <Modal.Body>
-          <div className='flex flex-col gap-8 pb-2 pt-4'>
+          <VStack gap="0" className='pt-4'>
+            <BodyShort weight="semibold">
+              Fikk du svar på det du lurte på i samtalen?
+            </BodyShort>
+            <FeedbackThumbs conversationId={conversationId} />
+          </VStack>
+          <div className='flex flex-col gap-1 pt-8'>
             <BodyShort>
-              Dette vil føre til at du mister alt innholdet fra denne samtalen.
+              Når du starter en ny samtale vil du miste innholdtet fra denne.
             </BodyShort>
             <BodyShort>Ønsker du å fortsette?</BodyShort>
           </div>
