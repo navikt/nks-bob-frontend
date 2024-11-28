@@ -7,6 +7,12 @@ on:
       - .nais/dev-gcp.yaml
     branches:
       - main
+  pull_request:
+    paths:
+      - ".github/workflows/deploy-nks-bob-frontend-server-dev.yaml"
+      - .nais/dev-gcp.yaml
+    branches:
+      - main
 
 jobs:
   deploy-dev:
