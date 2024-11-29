@@ -1,28 +1,16 @@
 import { ExternalLinkIcon } from "@navikt/aksel-icons"
 import { BodyLong, BodyShort, Heading, Link } from "@navikt/ds-react"
 import Markdown from "react-markdown"
-import { Context } from "../../../../types/Message.ts"
+import { Citation, Context } from "../../../../types/Message.ts"
 
 interface BobAnswerCitationProps {
-  citation: {
-    title: string
-    text: string
-    section: string
-    article: string
-  }
+  citation: Citation
   context: Context[]
 }
 
 // Matching citation.text against context metadata, to find correct URL //
 function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
-  const matchingContextCitationData = context
-    .flatMap((context) => context.metadata)
-    .find(
-      (contextMetadata) =>
-        contextMetadata.Title === citation.title &&
-        contextMetadata.Section === citation.section &&
-        contextMetadata.KnowledgeArticleId === citation.article,
-    )
+  const matchingContextCitationData = context.at(citation.sourceId)
 
   // Splitting words, making it functional for textStart & textEnd //
   const citeWords = citation.text
@@ -50,12 +38,12 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
           <Link
             href={
               numWords < 1
-                ? `${matchingContextCitationData.KnowledgeArticle_QuartoUrl}`
-                : `${matchingContextCitationData.KnowledgeArticle_QuartoUrl}#:~:text=${encodeFragment(textStart)},${encodeFragment(textEnd)}`
+                ? `${matchingContextCitationData.url}`
+                : `${matchingContextCitationData.url}#:~:text=${encodeFragment(textStart)},${encodeFragment(textEnd)}`
             }
             target='_blank'
           >
-            {citation.title}
+            {matchingContextCitationData.title}
             <ExternalLinkIcon title='Åpne artikkelen i ny fane' />
           </Link>
         ) : (
