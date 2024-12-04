@@ -25,29 +25,20 @@ export type Message = {
 
 export type Citation = {
   text: string
-  article: string
-  title: string
-  section: string
+  sourceId: number
 }
 
 export type Context = {
   content: string
-  metadata: Metadata[]
-}
-
-export type Metadata = {
-  Tab: string
-  Score: number
-  Title: string
-  Headers: null
-  Section: string
-  Fragment: string
-  ArticleType: string
-  ContentColumn: string
-  DataCategories: [string]
-  KnowledgeArticleId: string
-  SemanticSimilarity: number
-  KnowledgeArticle_QuartoUrl: string
+  title: string
+  ingress: string
+  source: string
+  url: string
+  anchor: string | null
+  articleId: string
+  articleColumn: string | null
+  lastModified: string | null
+  semanticSimilarity: number
 }
 
 export type NewConversation = {
