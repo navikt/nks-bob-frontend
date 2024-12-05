@@ -2,6 +2,7 @@ import { ExternalLinkIcon } from "@navikt/aksel-icons"
 import { BodyLong, BodyShort, Heading, Link } from "@navikt/ds-react"
 import Markdown from "react-markdown"
 import { Citation, Context } from "../../../../types/Message.ts"
+import { createTextFragment } from "../../../../utils/text-fragment.ts"
 
 interface BobAnswerCitationProps {
   citation: Citation
@@ -11,25 +12,7 @@ interface BobAnswerCitationProps {
 // Matching citation.text against context metadata, to find correct URL //
 function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
   const matchingContextCitationData = context.at(citation.sourceId)
-
-  // Splitting words, making it functional for textStart & textEnd //
-  const citeWords = citation.text
-    .replace(/\n\n|\n/g, " ")
-    .split(" ")
-    .filter((link) => !/https?/.test(link))
-
-  // Min- and max count of words for the 6 (max) first- and last words in the citation //
-  const numWords = Math.min(citeWords.length / 2, 6)
-  const textStart = citeWords.slice(0, numWords).join(" ")
-  const textEnd = citeWords.slice(-numWords).join(" ")
-
-  // Encoding for RFC3986 - making text fragments to work for citations with unreserved marks //
-  function encodeFragment(text: string) {
-    return encodeURIComponent(text).replace(
-      /[-!'()*#]/g,
-      (c) => `%${c.charCodeAt(0).toString(16).toUpperCase()}`,
-    )
-  }
+  const textFragment = createTextFragment(citation)
 
   return (
     <div className='fade-in-citations flex flex-col'>
@@ -37,9 +20,9 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
         {matchingContextCitationData ? (
           <Link
             href={
-              numWords < 1
+              textFragment === null
                 ? `${matchingContextCitationData.url}`
-                : `${matchingContextCitationData.url}#:~:text=${encodeFragment(textStart)},${encodeFragment(textEnd)}`
+                : `${matchingContextCitationData.url}#:~:text=${textFragment}`
             }
             target='_blank'
           >
