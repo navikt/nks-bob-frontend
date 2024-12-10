@@ -3,17 +3,23 @@ import { Button } from "@navikt/ds-react"
 import { useRef } from "react"
 import "./TipsFromBob.css"
 import { ButtonClickModal, FirstTimeLoginModal } from "./TipsModals.tsx"
+import amplitude from "../../../utils/amplitude.ts"
 
 const TipsFromBob = () => {
   const firstTimeLoginModal = useRef<HTMLDialogElement>(null)
   const buttonClickModal = useRef<HTMLDialogElement>(null)
+
+  const showModal = () => {
+    amplitude.infoÅpnet()
+    buttonClickModal.current?.showModal()
+  }
 
   return (
     <div className='flex self-center'>
       <Button
         variant='tertiary'
         size='small'
-        onClick={() => buttonClickModal.current?.showModal()}
+        onClick={() => showModal()}
         icon={<InformationSquareIcon />}
         iconPosition='right'
         className='max-phone:hidden'
@@ -23,7 +29,7 @@ const TipsFromBob = () => {
       <Button
         variant='tertiary'
         size='medium'
-        onClick={() => buttonClickModal.current?.showModal()}
+        onClick={() => showModal()}
         icon={<InformationSquareIcon />}
         iconPosition='right'
         className='phone:hidden'

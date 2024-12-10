@@ -3,6 +3,7 @@ import { BodyLong, Button, Heading, Modal } from "@navikt/ds-react"
 import { useRef } from "react"
 import Markdown from "react-markdown"
 import { Message } from "../../../../types/Message.ts"
+import amplitude from "../../../../utils/amplitude.ts"
 
 interface GiveUsFeedbackProps {
   message: Message
@@ -19,6 +20,7 @@ export const GiveUsFeedback = ({ message }: GiveUsFeedbackProps) => {
   }
 
   function handleButtonClick() {
+    amplitude.feilMeldt(message.id)
     window.open(
       `https://forms.office.com/Pages/ResponsePage.aspx?id=NGU2YsMeYkmIaZtVNSedCyBQAauBOz1OlySa0dtLBP9UNUZJQkJYVzhKWTZXS0g0V0RBM0JSN1pNMC4u&rc0fd63ffeb9146e1bec0b90cc73ca985=${encodedText(message.content)}%0A%0AMeldingsID: ${encodedText(message.id)}`,
       "_blank",

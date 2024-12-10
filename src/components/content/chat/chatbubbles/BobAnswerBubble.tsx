@@ -6,6 +6,7 @@ import { Message, NewMessage } from "../../../../types/Message.ts"
 import BobSuggests from "../suggestions/BobSuggests.tsx"
 import BobAnswerCitations from "./BobAnswerCitations.tsx"
 import ToggleCitations from "./citations/ToggleCitations.tsx"
+import amplitude from "../../../../utils/amplitude.ts"
 
 interface BobAnswerBubbleProps {
   message: Message
@@ -46,6 +47,14 @@ export const BobAnswerBubble = ({
       return false;
     });
   });
+
+  const readMoreOpenOnChange = (value: boolean) => {
+    value
+      ? amplitude.kildeAccordionÅpnet()
+      : amplitude.kildeAccordionSkjult()
+
+    setIsReadMoreOpen(value)
+  }
 
   return (
     <VStack gap='1' align='stretch' className='pb-12'>

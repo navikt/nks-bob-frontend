@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 
 import { NewMessage } from "../../types/Message.ts"
 import "./InputField.css"
+import amplitude from "../../utils/amplitude.ts"
 
 interface InputFieldProps {
   onSend: (message: NewMessage) => void
@@ -31,6 +32,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
   }
 
   function handlePasteInfoAlert() {
+    amplitude.tekstInnholdLimtInn()
     setIsSensitiveInfoAlert(true)
   }
 
@@ -51,6 +53,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
         e.preventDefault()
 
         if (!sendDisabled) {
+          amplitude.meldingSendt("enter")
           sendMessage()
           setInputValue("")
           setIsSensitiveInfoAlert(false)
@@ -61,6 +64,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
 
   function handleButtonClick() {
     if (inputValue.trim() !== "") {
+      amplitude.meldingSendt("knapp")
       sendMessage()
       setInputValue("")
     }
@@ -68,6 +72,11 @@ function InputField({ onSend, disabled }: InputFieldProps) {
 
   useEffect(() => {
     const inputContainsFnr = checkContainsFnr(inputValue)
+
+    if (inputContainsFnr) {
+      amplitude.tekstInneholderFnr()
+    }
+
     setContainsFnr(inputContainsFnr)
     setSendDisabled(disabled || inputContainsFnr)
   }, [inputValue, disabled])
