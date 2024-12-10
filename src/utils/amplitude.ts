@@ -62,4 +62,48 @@ const mockedAmplitude = (): AmplitudeInstance => ({
   },
 });
 
-export default createAmpltiudeInstance()
+const instance = createAmpltiudeInstance()
+
+const svarKopiert = (meldingsId: string) =>
+  instance.logEvent("Svar kopiert", { meldingsId })
+
+const svarEndret = (endring: "oversett" | "punktliste" | "forenkle") =>
+  instance.logEvent("Svar endret", { endring })
+
+const feilMeldt = (meldingsId: string) =>
+  instance.logEvent("Feil meldt", { meldingsId })
+
+const infoÅpnet = () =>
+  instance.logEvent("Info modal åpnet")
+
+const mørkModusByttet = (modus: "lys" | "mørk") =>
+  instance.logEvent("Mørk modus byttet", { modus })
+
+const meldingSendt = (trigger: "knapp" | "enter") =>
+  instance.logEvent("Melding sendt", { trigger })
+
+const kildeAccordionÅpnet = () =>
+  instance.logEvent("Kilde accordion åpnet")
+
+const kildeAccordionSkjult = () =>
+  instance.logEvent("Kilde accordion skjult")
+
+const tekstInnholdLimtInn = () =>
+  instance.logEvent("Tekstinnhold limt inn")
+
+const tekstInneholderFnr = () =>
+  instance.logEvent("Tekst inneholder fnr")
+
+
+export default {
+  svarKopiert,
+  svarEndret,
+  feilMeldt,
+  infoÅpnet,
+  mørkModusByttet,
+  meldingSendt,
+  kildeAccordionÅpnet,
+  kildeAccordionSkjult,
+  tekstInnholdLimtInn,
+  tekstInneholderFnr,
+}
