@@ -28,6 +28,7 @@ const createAmpltiudeInstance = (): AmplitudeInstance => {
   return amplitude;
 };
 
+/*
 const mockedAmplitude = (): AmplitudeInstance => ({
   logEvent: (eventInput: Types.BaseEvent | string, eventProperties?: Record<string, any>) => {
     console.group('Mocked amplitude-event');
@@ -61,6 +62,7 @@ const mockedAmplitude = (): AmplitudeInstance => ({
     };
   },
 });
+*/
 
 const instance = createAmpltiudeInstance()
 

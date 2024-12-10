@@ -5,6 +5,7 @@ import Bobhead from "../../../../assets/illustrations/Bob-hode-svg.svg"
 import { Message, NewMessage } from "../../../../types/Message.ts"
 import BobSuggests from "../suggestions/BobSuggests.tsx"
 import BobAnswerCitations from "./BobAnswerCitations.tsx"
+import amplitude from "../../../../utils/amplitude.ts"
 
 interface BobAnswerBubbleProps {
   message: Message
@@ -29,6 +30,14 @@ export const BobAnswerBubble = ({
       })
     }
   }, [isReadMoreOpen])
+
+  const readMoreOpenOnChange = (value: boolean) => {
+    value
+      ? amplitude.kildeAccordionÅpnet()
+      : amplitude.kildeAccordionSkjult()
+
+    setIsReadMoreOpen(value)
+  }
 
   return (
     <VStack gap='1' align='stretch' className='pb-12'>
@@ -70,7 +79,7 @@ export const BobAnswerBubble = ({
               <ReadMore
                 header='Sitater fra kunnskapsbasen'
                 defaultOpen={true}
-                onOpenChange={setIsReadMoreOpen}
+                onOpenChange={readMoreOpenOnChange}
                 className='readmore-styling fade-in-citations'
               >
                 <div className='flex flex-col gap-2 pt-4'>
