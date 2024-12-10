@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import "./DarkModeToggle.css"
+import amplitude from "../../../utils/amplitude"
 
 const DarkModeToggle = () => {
   const [dark, setDark] = useState(() => {
@@ -10,8 +11,10 @@ const DarkModeToggle = () => {
   useEffect(() => {
     if (dark) {
       document.body.classList.add("dark")
+      amplitude.mørkModusByttet("mørk")
     } else {
       document.body.classList.remove("dark")
+      amplitude.mørkModusByttet("lys")
     }
   }, [dark])
 

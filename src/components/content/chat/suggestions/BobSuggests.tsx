@@ -3,6 +3,7 @@ import { Button, CopyButton, Dropdown, Label } from "@navikt/ds-react"
 import { Message, NewMessage } from "../../../../types/Message.ts"
 import { GiveUsFeedback } from "../feedback/GiveUsFeedback.tsx"
 import "./BobSuggests.css"
+import amplitude from "../../../../utils/amplitude.ts"
 
 interface BobSuggestsProps {
   message: Message
@@ -12,6 +13,7 @@ interface BobSuggestsProps {
 
 const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
   function handleTranslate() {
+    amplitude.svarEndret("oversett")
     const translate: NewMessage = {
       content: isLastMessage
         ? "Oversett svaret til engelsk"
@@ -21,6 +23,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
   }
 
   function handleBulletList() {
+    amplitude.svarEndret("punktliste")
     const bulletList: NewMessage = {
       content: isLastMessage
         ? "Gjør om svaret til punktliste"
@@ -30,6 +33,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
   }
 
   function handleSimplify() {
+    amplitude.svarEndret("forenkle")
     const simplifyMessage: NewMessage = {
       content: isLastMessage
         ? "Forenkle svaret"
@@ -45,6 +49,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
         size='small'
         text='Kopier'
         activeText='Kopiert'
+        onClick={() => amplitude.svarKopiert(message.id)}
       />
       <GiveUsFeedback message={message} />
 
