@@ -1,5 +1,5 @@
 import { ExternalLinkIcon } from "@navikt/aksel-icons"
-import { BodyLong, BodyShort, Heading, Link } from "@navikt/ds-react"
+import { BodyLong, BodyShort, Label, Link, Tag } from "@navikt/ds-react"
 import Markdown from "react-markdown"
 import { Citation, Context } from "../../../../types/Message.ts"
 
@@ -32,9 +32,10 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
   }
 
   return (
-    <div className='fade-in-citations flex flex-col'>
-      <Heading size='xsmall' spacing={true}>
+    <div className='flex flex-col mb-2'>
+      <Label size='medium' className='mb-1'>
         {matchingContextCitationData ? (
+          <div>
           <Link
             href={
               numWords < 1
@@ -46,13 +47,20 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
             {matchingContextCitationData.title}
             <ExternalLinkIcon title='Åpne artikkelen i ny fane' />
           </Link>
+            {matchingContextCitationData.source === "navno" && (
+              <Tag variant="neutral" size='xsmall' className='ml-4'>Nav.no</Tag>
+            )}
+            {matchingContextCitationData.source === "nks" && (
+              <Tag variant="neutral" size='xsmall' className='ml-4'>Kunnskapsbasen</Tag>
+            )}
+          </div>
         ) : (
           <BodyShort size='medium'>
             Kunne ikke finne lenke til artikkelen.
           </BodyShort>
         )}
-      </Heading>
-      <BodyLong size='small' spacing>
+      </Label>
+      <BodyLong size='small'>
         <Markdown
           components={{
             a: ({ ...props }) => (

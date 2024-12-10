@@ -32,7 +32,7 @@ export type Context = {
   content: string
   title: string
   ingress: string
-  source: string
+  source: "nks" | "navno"
   url: string
   anchor: string | null
   articleId: string
@@ -40,6 +40,8 @@ export type Context = {
   lastModified: string | null
   semanticSimilarity: number
 }
+
+export type SourceType = "nks" | "navno"
 
 export type NewConversation = {
   title: string
