@@ -1,5 +1,5 @@
 import { BodyLong, HStack, Skeleton, VStack } from "@navikt/ds-react"
-import { useRef, useState } from "react"
+import { useState } from "react"
 import Markdown from "react-markdown"
 import Bobhead from "../../../../assets/illustrations/Bob-hode-svg.svg"
 import { Message, NewMessage } from "../../../../types/Message.ts"
@@ -26,7 +26,6 @@ export const BobAnswerBubble = ({
   isLoading,
   isLastMessage,
 }: BobAnswerBubbleProps) => {
-  const readMoreRef = useRef<HTMLDivElement | null>(null)
   const [selectedCitations, setSelectedCitations] = useState<string[]>(options);
 
   const handleToggleCitations = (selected: string[]) => {
@@ -90,8 +89,6 @@ export const BobAnswerBubble = ({
                 isLastMessage={isLastMessage}
               />
             )}
-
-            <div ref={readMoreRef} />
             {message.citations && message.citations.length > 0 && (
               <div className='flex flex-col gap-2'>
                 <ToggleCitations onToggle={handleToggleCitations} />
