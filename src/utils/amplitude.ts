@@ -28,7 +28,6 @@ const createAmpltiudeInstance = (): AmplitudeInstance => {
   return amplitude;
 };
 
-/*
 const mockedAmplitude = (): AmplitudeInstance => ({
   logEvent: (eventInput: Types.BaseEvent | string, eventProperties?: Record<string, any>) => {
     console.group('Mocked amplitude-event');
@@ -62,9 +61,10 @@ const mockedAmplitude = (): AmplitudeInstance => ({
     };
   },
 });
-*/
 
-const instance = createAmpltiudeInstance()
+const instance = window.location.hostname === "localhost"
+  ? mockedAmplitude()
+  : createAmpltiudeInstance()
 
 const svarKopiert = (meldingsId: string) =>
   instance.logEvent("Svar kopiert", { meldingsId })
