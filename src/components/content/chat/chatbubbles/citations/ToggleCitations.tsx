@@ -28,7 +28,7 @@ const ToggleCitations = ({ onToggle, message }: ToggleCitationsProps ) => {
 
   })
 
-  const [selected, setSelected] = useState<string[]>(filteredOptions)
+  const [selected, setSelected] = useState<string[]>(citationOptions)
 
   const handleToggle = (option: string) => {
     const newSelected = selected.includes(option)
