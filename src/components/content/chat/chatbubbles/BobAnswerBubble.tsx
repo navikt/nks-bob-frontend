@@ -31,22 +31,6 @@ export const BobAnswerBubble = ({
     setSelectedCitations(selected);
   };
 
-  const hasNavnoCitations = message.citations.some(
-    (citation) => message.context[citation.sourceId].source === "navno"
-  )
-
-  const hasKunnskapsbasenCitations = message.citations.some(
-    (citation) => message.context[citation.sourceId].source === "nks"
-  )
-
-  const filteredOptions = options.filter((option) => {
-    if (option === "Sitater fra Nav.no" && !hasNavnoCitations) {
-      return false;
-    }
-    return !(option === "Sitater fra Kunnskapsbasen" && !hasKunnskapsbasenCitations);
-
-  })
-
   const filteredCitations = message.citations.filter((citation) => {
     if (selectedCitations.length === 0) {
       return false;
@@ -98,9 +82,7 @@ export const BobAnswerBubble = ({
             )}
             {message.citations && message.citations.length > 0 && (
               <div className='flex flex-col gap-2 fade-in'>
-                {filteredOptions.length > 0 && (
-                  <ToggleCitations onToggle={handleToggleCitations} options={filteredOptions} />
-                )}
+                  <ToggleCitations onToggle={handleToggleCitations} message={message} />
                 {filteredCitations.map((citation, index) => (
                   <BobAnswerCitations
                     citation={citation}
