@@ -33,7 +33,7 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
 
   return (
     <div className='flex flex-col mb-2'>
-      <Label size='medium' className='mb-1'>
+      <Label size='small' className='mb-1'>
         {matchingContextCitationData ? (
           <div className='flex flex-wrap gap-2'>
           <Link
@@ -48,10 +48,10 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
             <ExternalLinkIcon title='Åpne artikkelen i ny fane' />
           </Link>
             {matchingContextCitationData.source === "navno" && (
-              <Tag variant="neutral" size='xsmall'>Nav.no</Tag>
+              <Tag variant="neutral" size='xsmall' title='Åpne artikkel fra nav.no i ny fane'>Nav.no</Tag>
             )}
             {matchingContextCitationData.source === "nks" && (
-              <Tag variant="neutral" size='xsmall'>Kunnskapsbasen</Tag>
+              <Tag variant="neutral" size='xsmall' title='Åpne artikkel fra Kunnskapsbasen i ny fane'>Kunnskapsbasen</Tag>
             )}
           </div>
         ) : (
@@ -60,14 +60,14 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
           </BodyShort>
         )}
       </Label>
-      <BodyLong size='small' className='mt-1'>
+      <BodyLong size='small' className='mt-1 italic'>
         <Markdown
+          className='markdown'
           components={{
             a: ({ ...props }) => (
               <a {...props} target='_blank' rel='noopener noreferrer' />
             ),
           }}
-          className='markdown italic'
         >
           {citation.text}
         </Markdown>
