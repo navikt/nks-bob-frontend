@@ -14,18 +14,18 @@ interface BobAnswerBubbleProps {
   isLastMessage: boolean
 }
 
-const options = [
-  "Sitater fra Nav.no",
-  "Sitater fra Kunnskapsbasen",
-];
-
 export const BobAnswerBubble = ({
   message,
   onSend,
   isLoading,
   isLastMessage,
 }: BobAnswerBubbleProps) => {
-  const [selectedCitations, setSelectedCitations] = useState<string[]>(options);
+  const availableOptions = [
+    message.citations.some(citation => message.context[citation.sourceId].source === "navno") && "Sitater fra Nav.no",
+    message.citations.some(citation => message.context[citation.sourceId].source === "nks") && "Sitater fra Kunnskapsbasen",
+  ].filter(Boolean) as string[];
+
+  const [selectedCitations, setSelectedCitations] = useState<string[]>(availableOptions);
 
   const handleToggleCitations = (selected: string[]) => {
     setSelectedCitations(selected);
@@ -81,7 +81,7 @@ export const BobAnswerBubble = ({
               />
             )}
             {message.citations && message.citations.length > 0 && (
-              <div className='flex flex-col gap-2'>
+              <div className='flex flex-col gap-2 fade-in'>
                 <ToggleCitations onToggle={handleToggleCitations} />
                 {filteredCitations.map((citation, index) => (
                   <BobAnswerCitations
