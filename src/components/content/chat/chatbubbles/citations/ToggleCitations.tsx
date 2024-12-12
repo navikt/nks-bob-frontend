@@ -3,14 +3,10 @@ import { Chips } from "@navikt/ds-react";
 
 interface ToggleCitationsProps {
   onToggle: (selected: string[]) => void
+  options: string[]
 }
 
-const options = [
-  "Sitater fra Nav.no",
-  "Sitater fra Kunnskapsbasen",
-];
-
-const ToggleCitations = ({ onToggle }: ToggleCitationsProps ) => {
+const ToggleCitations = ({ onToggle, options }: ToggleCitationsProps ) => {
   const [selected, setSelected] = useState<string[]>(options)
 
   const handleToggle = (option: string) => {
