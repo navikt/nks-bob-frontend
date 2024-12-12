@@ -43,15 +43,16 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
                 : `${matchingContextCitationData.url}#:~:text=${encodeFragment(textStart)},${encodeFragment(textEnd)}`
             }
             target='_blank'
+            title='Åpne artikkelen i ny fane'
           >
             {matchingContextCitationData.title}
             <ExternalLinkIcon title='Åpne artikkelen i ny fane' />
           </Link>
             {matchingContextCitationData.source === "navno" && (
-              <Tag variant="neutral" size='xsmall' title='Åpne artikkel fra nav.no i ny fane'>Nav.no</Tag>
+              <Tag variant="neutral" size='xsmall' title='Sitatet er hentet fra nav.no'>Nav.no</Tag>
             )}
             {matchingContextCitationData.source === "nks" && (
-              <Tag variant="neutral" size='xsmall' title='Åpne artikkel fra Kunnskapsbasen i ny fane'>Kunnskapsbasen</Tag>
+              <Tag variant="neutral" size='xsmall' title='Sitatet er hentet fra Kunnskapsbasen'>Kunnskapsbasen</Tag>
             )}
           </div>
         ) : (
