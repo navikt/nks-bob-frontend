@@ -49,10 +49,10 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
             <ExternalLinkIcon title='Åpne artikkelen i ny fane' />
           </Link>
             {matchingContextCitationData.source === "navno" && (
-              <Tag variant="neutral" size='xsmall' title='Sitatet er hentet fra nav.no'>Nav.no</Tag>
+              <Tag variant="neutral" size='xsmall' title='Artikler fra nav.no'>Nav.no</Tag>
             )}
             {matchingContextCitationData.source === "nks" && (
-              <Tag variant="neutral" size='xsmall' title='Sitatet er hentet fra Kunnskapsbasen'>Kunnskapsbasen</Tag>
+              <Tag variant="neutral" size='xsmall' title='Artikler fra NKS sin kunnskapsbase i Salesforce'>Kunnskapsbasen</Tag>
             )}
           </div>
         ) : (
