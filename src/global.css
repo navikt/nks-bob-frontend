@@ -204,6 +204,21 @@ ul {
   --ac-dropdown-item-hover-bg: var(--a-surface-neutral-subtle-hover);
   --ac-dropdown-item-active-bg: var(--a-surface-neutral-active);
 
+  /*  Tag  */
+  --ac-tag-alt-1-bg: rgba(248, 234, 239, 1);
+  --ac-tag-alt-1-border: rgba(194, 111, 146, 1);
+
+  --ac-tag-alt-2-bg: rgba(255, 244, 238, 1);
+  --ac-tag-alt-2-border: rgba(192, 118, 93, 1);
+
+  /*  Chips */
+  --ac-chip-toggle-pressed-bg: rgba(0, 91, 182, 1);
+  --ac-chip-toggle-pressed-hover-bg: rgba(0, 99, 193, 1);
+
+  /*  Tag  */
+  --ac-tag-neutral-bg: rgba(245, 246, 247, 1);
+  --ac-tag-neutral-border: rgba(207, 211, 216, 1);
+
 }
 
   /*   Read more styling   */
@@ -316,6 +331,32 @@ body.dark .navds-read-more__button:hover {
     --ac-dropdown-item-hover-text: var(--button-neutral-hover-text);
     --ac-dropdown-item-hover-bg: var(--button-neutral-hover-bg);
     --ac-dropdown-item-active-bg: var(--a-surface-neutral-active);
+
+    /*  Tag  */
+    --ac-tag-alt-1-bg: rgba(248, 234, 239, 1);
+    --ac-tag-alt-1-border: rgba(194, 111, 146, 1);
+
+    --ac-tag-alt-2-bg: rgba(255, 244, 238, 1);
+    --ac-tag-alt-2-border: rgba(192, 118, 93, 1);
+
+    --ac-tag-neutral-bg: rgba(36, 43, 55, 1);
+    --ac-tag-neutral-border: rgba(101, 109, 123, 1);
+    --ac-tag-neutral-text: var(--darkmode-text-default);
+
+    /*  Chips */
+    --ac-chip-toggle-pressed-bg: rgba(35, 55, 79, 1);
+    --ac-chip-toggle-pressed-hover-bg: rgba(26, 44, 65, 1);
+
+    --ac-chip-toggle-bg: rgba(16, 29, 45, 1);
+    --ac-chip-toggle-border: rgba(46, 54, 65, 1);
+    --ac-chip-toggle-circle-border: rgba(46, 54, 65, 1);
+    --ac-chip-toggle-text: var(--darkmode-text-default);
+
+    --ac-chip-toggle-hover-bg: rgba(21, 36, 54, 1);
+    --ac-chip-toggle-hover-border: rgba(101, 109, 123, 1);
+
+    --ac-chip-toggle-focus: rgba(95, 148, 216, 1);
+
 }
 
 body.dark a {

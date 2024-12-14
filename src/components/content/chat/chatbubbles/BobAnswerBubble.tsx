@@ -1,11 +1,11 @@
-import { BodyLong, HStack, ReadMore, Skeleton, VStack } from "@navikt/ds-react"
-import { useEffect, useRef, useState } from "react"
+import { BodyLong, HStack, Skeleton, VStack } from "@navikt/ds-react"
+import { useState } from "react"
 import Markdown from "react-markdown"
 import Bobhead from "../../../../assets/illustrations/Bob-hode-svg.svg"
 import { Message, NewMessage } from "../../../../types/Message.ts"
 import BobSuggests from "../suggestions/BobSuggests.tsx"
 import BobAnswerCitations from "./BobAnswerCitations.tsx"
-import amplitude from "../../../../utils/amplitude.ts"
+import ToggleCitations from "./citations/ToggleCitations.tsx"
 
 interface BobAnswerBubbleProps {
   message: Message
@@ -14,30 +14,37 @@ interface BobAnswerBubbleProps {
   isLastMessage: boolean
 }
 
+const options = [
+  "Sitater fra Nav.no",
+  "Sitater fra Kunnskapsbasen",
+];
+
 export const BobAnswerBubble = ({
   message,
   onSend,
   isLoading,
   isLastMessage,
 }: BobAnswerBubbleProps) => {
-  const readMoreRef = useRef<HTMLDivElement | null>(null)
-  const [isReadMoreOpen, setIsReadMoreOpen] = useState<boolean | null>(false)
+  const [selectedCitations, setSelectedCitations] = useState<string[]>(options);
 
-  useEffect(() => {
-    if (isReadMoreOpen && readMoreRef.current) {
-      readMoreRef.current.scrollIntoView({
-        behavior: "smooth",
-      })
+  const handleToggleCitations = (selected: string[]) => {
+    setSelectedCitations(selected);
+  };
+
+  const filteredCitations = message.citations.filter((citation) => {
+    if (selectedCitations.length === 0) {
+      return false;
     }
-  }, [isReadMoreOpen])
-
-  const readMoreOpenOnChange = (value: boolean) => {
-    value
-      ? amplitude.kildeAccordionÅpnet()
-      : amplitude.kildeAccordionSkjult()
-
-    setIsReadMoreOpen(value)
-  }
+    return selectedCitations.some((selected) => {
+      if (selected === "Sitater fra Nav.no") {
+        return message.context[citation.sourceId].source === "navno"
+      }
+      if (selected === "Sitater fra Kunnskapsbasen") {
+        return message.context[citation.sourceId].source === "nks"
+      }
+      return false;
+    });
+  });
 
   return (
     <VStack gap='1' align='stretch' className='pb-12'>
@@ -73,25 +80,17 @@ export const BobAnswerBubble = ({
                 isLastMessage={isLastMessage}
               />
             )}
-
-            <div ref={readMoreRef} />
             {message.citations && message.citations.length > 0 && (
-              <ReadMore
-                header='Sitater fra kunnskapsbasen'
-                defaultOpen={true}
-                onOpenChange={readMoreOpenOnChange}
-                className='readmore-styling fade-in-citations'
-              >
-                <div className='flex flex-col gap-2 pt-4'>
-                  {message.citations.map((citation, index) => (
-                    <BobAnswerCitations
-                      citation={citation}
-                      key={`citation-${index}`}
-                      context={message.context}
-                    />
-                  ))}
-                </div>
-              </ReadMore>
+              <div className='flex flex-col gap-2 fade-in'>
+                  <ToggleCitations onToggle={handleToggleCitations} message={message} />
+                {filteredCitations.map((citation, index) => (
+                  <BobAnswerCitations
+                    citation={citation}
+                    key={`citation-${index}`}
+                    context={message.context}
+                  />
+                ))}
+              </div>
             )}
           </div>
         </div>

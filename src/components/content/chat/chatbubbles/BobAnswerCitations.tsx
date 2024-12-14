@@ -1,5 +1,5 @@
 import { ExternalLinkIcon } from "@navikt/aksel-icons"
-import { BodyLong, BodyShort, Heading, Link } from "@navikt/ds-react"
+import { BodyLong, BodyShort, Label, Link, Tag } from "@navikt/ds-react"
 import Markdown from "react-markdown"
 import { Citation, Context } from "../../../../types/Message.ts"
 
@@ -32,9 +32,10 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
   }
 
   return (
-    <div className='fade-in-citations flex flex-col'>
-      <Heading size='xsmall' spacing={true}>
+    <div className='flex flex-col mb-2'>
+      <Label size='small' className='mb-1'>
         {matchingContextCitationData ? (
+          <div className='flex flex-wrap gap-2'>
           <Link
             href={
               numWords < 1
@@ -42,24 +43,32 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
                 : `${matchingContextCitationData.url}#:~:text=${encodeFragment(textStart)},${encodeFragment(textEnd)}`
             }
             target='_blank'
+            title='Åpne artikkelen i ny fane'
           >
             {matchingContextCitationData.title}
             <ExternalLinkIcon title='Åpne artikkelen i ny fane' />
           </Link>
+            {matchingContextCitationData.source === "navno" && (
+              <Tag variant="neutral" size='xsmall' title='Artikler fra nav.no'>Nav.no</Tag>
+            )}
+            {matchingContextCitationData.source === "nks" && (
+              <Tag variant="neutral" size='xsmall' title='Artikler fra NKS sin kunnskapsbase i Salesforce'>Kunnskapsbasen</Tag>
+            )}
+          </div>
         ) : (
           <BodyShort size='medium'>
             Kunne ikke finne lenke til artikkelen.
           </BodyShort>
         )}
-      </Heading>
-      <BodyLong size='small' spacing>
+      </Label>
+      <BodyLong size='small' className='mt-1 italic'>
         <Markdown
+          className='markdown'
           components={{
             a: ({ ...props }) => (
               <a {...props} target='_blank' rel='noopener noreferrer' />
             ),
           }}
-          className='markdown italic'
         >
           {citation.text}
         </Markdown>
