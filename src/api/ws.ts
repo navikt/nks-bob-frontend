@@ -1,4 +1,3 @@
-import { uniqBy } from "lodash"
 import { useEffect, useState } from "react"
 import useWebSocket, { ReadyState } from "react-use-websocket"
 import {
@@ -76,8 +75,10 @@ function isPendingUpdated(event: MessageEvent): event is PendingUpdated {
   return (<MessageEvent>event).type === "PendingUpdated"
 }
 
+type MessageMap = { [id: string]: Message }
+
 export const useMessagesSubscription = (conversationId: string) => {
-  const [messages, setMessages] = useState<Message[]>([])
+  const [messages, setMessages] = useState<MessageMap>({})
   const { sendJsonMessage, lastJsonMessage, readyState } =
     useWebSocket<Message | MessageEvent>(
       `${WS_API_URL}/api/v1/conversations/${conversationId}/messages/ws`,
@@ -96,7 +97,7 @@ export const useMessagesSubscription = (conversationId: string) => {
 
   const getMessage = (
     received: Message | MessageEvent,
-    prev: Message[]
+    prev: MessageMap,
   ): Message | undefined => {
     if (isMessage(received)) {
       return received
@@ -110,7 +111,7 @@ export const useMessagesSubscription = (conversationId: string) => {
       return received.message
     }
 
-    const prevMessage = prev.find((message) => message.id === received.id)
+    const prevMessage = prev[received.id]
     if (!prevMessage) {
       return undefined
     }
@@ -158,8 +159,10 @@ export const useMessagesSubscription = (conversationId: string) => {
           return prev
         }
 
-        // Reverse to add newest (last) messages to the array, then reverse again.
-        return uniqBy(prev.concat(newMessage).reverse(), "id").reverse()
+        return {
+          ...prev,
+          [newMessage.id]: newMessage,
+        }
       })
     }
   }, [lastJsonMessage])
@@ -170,9 +173,14 @@ export const useMessagesSubscription = (conversationId: string) => {
       data: message
     })
 
+  const byDate: ((a: Message, b: Message) => number) | undefined =
+    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+
+  const sortedMessages = Object.values(messages).sort(byDate)
+
   return {
     sendMessage,
-    messages,
-    isLoading: readyState !== ReadyState.OPEN || messages.some((message) => message.pending),
+    messages: sortedMessages,
+    isLoading: readyState !== ReadyState.OPEN || sortedMessages.some((message) => message.pending),
   }
 }
