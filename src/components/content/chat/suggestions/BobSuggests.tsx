@@ -91,24 +91,6 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
           </Dropdown.Menu.GroupedList>
         </Dropdown.Menu>
       </Dropdown>
-      {/*<Button*/}
-      {/*  variant='tertiary-neutral'*/}
-      {/*  size='small'*/}
-      {/*  onClick={handleTranslate}*/}
-      {/*  icon={<LanguageIcon />}*/}
-      {/*>*/}
-      {/*  Engelsk*/}
-      {/*</Button>*/}
-      {/*<Button*/}
-      {/*  variant='tertiary-neutral'*/}
-      {/*  size='small'*/}
-      {/*  onClick={handleBulletList}*/}
-      {/*>*/}
-      {/*  Punktliste*/}
-      {/*</Button>*/}
-      {/*<Button variant='tertiary-neutral' size='small' onClick={handleSimplify}>*/}
-      {/*  Forenkle*/}
-      {/*</Button>*/}
     </div>
   )
 }
