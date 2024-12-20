@@ -14,10 +14,7 @@ interface BobAnswerBubbleProps {
   isLastMessage: boolean
 }
 
-const options = [
-  "Sitater fra Nav.no",
-  "Sitater fra Kunnskapsbasen",
-];
+const options = ["Sitater fra Nav.no", "Sitater fra Kunnskapsbasen"]
 
 export const BobAnswerBubble = ({
   message,
@@ -25,15 +22,15 @@ export const BobAnswerBubble = ({
   isLoading,
   isLastMessage,
 }: BobAnswerBubbleProps) => {
-  const [selectedCitations, setSelectedCitations] = useState<string[]>(options);
+  const [selectedCitations, setSelectedCitations] = useState<string[]>(options)
 
   const handleToggleCitations = (selected: string[]) => {
-    setSelectedCitations(selected);
-  };
+    setSelectedCitations(selected)
+  }
 
   const filteredCitations = message.citations.filter((citation) => {
     if (selectedCitations.length === 0) {
-      return false;
+      return false
     }
     return selectedCitations.some((selected) => {
       if (selected === "Sitater fra Nav.no") {
@@ -42,9 +39,9 @@ export const BobAnswerBubble = ({
       if (selected === "Sitater fra Kunnskapsbasen") {
         return message.context[citation.sourceId].source === "nks"
       }
-      return false;
-    });
-  });
+      return false
+    })
+  })
 
   return (
     <VStack gap='1' align='stretch' className='pb-12'>
@@ -81,8 +78,11 @@ export const BobAnswerBubble = ({
               />
             )}
             {message.citations && message.citations.length > 0 && (
-              <div className='flex flex-col gap-2 fade-in'>
-                  <ToggleCitations onToggle={handleToggleCitations} message={message} />
+              <div className='fade-in flex flex-col gap-2'>
+                <ToggleCitations
+                  onToggle={handleToggleCitations}
+                  message={message}
+                />
                 {filteredCitations.map((citation, index) => (
                   <BobAnswerCitations
                     citation={citation}

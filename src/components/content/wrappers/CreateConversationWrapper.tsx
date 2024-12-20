@@ -4,7 +4,9 @@ interface CreateConversationWrapperProps {
   children: ReactNode
 }
 
-function CreateConversationWrapper({ children }: CreateConversationWrapperProps) {
+function CreateConversationWrapper({
+  children,
+}: CreateConversationWrapperProps) {
   return <div className='createconversation-wrapper'>{children}</div>
 }
 

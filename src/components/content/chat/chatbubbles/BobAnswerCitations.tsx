@@ -32,27 +32,35 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
   }
 
   return (
-    <div className='flex flex-col mb-2'>
+    <div className='mb-2 flex flex-col'>
       <Label size='small' className='mb-1'>
         {matchingContextCitationData ? (
           <div className='flex flex-wrap gap-2'>
-          <Link
-            href={
-              numWords < 1
-                ? `${matchingContextCitationData.url}`
-                : `${matchingContextCitationData.url}#:~:text=${encodeFragment(textStart)},${encodeFragment(textEnd)}`
-            }
-            target='_blank'
-            title='Åpne artikkelen i ny fane'
-          >
-            {matchingContextCitationData.title}
-            <ExternalLinkIcon title='Åpne artikkelen i ny fane' />
-          </Link>
+            <Link
+              href={
+                numWords < 1
+                  ? `${matchingContextCitationData.url}`
+                  : `${matchingContextCitationData.url}#:~:text=${encodeFragment(textStart)},${encodeFragment(textEnd)}`
+              }
+              target='_blank'
+              title='Åpne artikkelen i ny fane'
+            >
+              {matchingContextCitationData.title}
+              <ExternalLinkIcon title='Åpne artikkelen i ny fane' />
+            </Link>
             {matchingContextCitationData.source === "navno" && (
-              <Tag variant="neutral" size='xsmall' title='Artikler fra nav.no'>Nav.no</Tag>
+              <Tag variant='neutral' size='xsmall' title='Artikler fra nav.no'>
+                Nav.no
+              </Tag>
             )}
             {matchingContextCitationData.source === "nks" && (
-              <Tag variant="neutral" size='xsmall' title='Artikler fra NKS sin kunnskapsbase i Salesforce'>Kunnskapsbasen</Tag>
+              <Tag
+                variant='neutral'
+                size='xsmall'
+                title='Artikler fra NKS sin kunnskapsbase i Salesforce'
+              >
+                Kunnskapsbasen
+              </Tag>
             )}
           </div>
         ) : (

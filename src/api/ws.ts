@@ -1,49 +1,44 @@
 import { useEffect, useState } from "react"
 import useWebSocket, { ReadyState } from "react-use-websocket"
-import {
-  Citation,
-  Context,
-  Message,
-  NewMessage,
-} from "../types/Message"
+import { Citation, Context, Message, NewMessage } from "../types/Message"
 
 const WS_API_URL = `${import.meta.env.BASE_URL}bob-api-ws`
 
-type MessageEvent
-  = NewMessageEvent
+type MessageEvent =
+  | NewMessageEvent
   | ContentUpdated
   | CitationsUpdated
   | ContextUpdated
   | PendingUpdated
 
 type NewMessageEvent = {
-  type: "NewMessage",
-  id: string,
-  message: Message,
+  type: "NewMessage"
+  id: string
+  message: Message
 }
 
 type ContentUpdated = {
   type: "ContentUpdated"
-  id: string,
+  id: string
   content: string
 }
 
 type CitationsUpdated = {
   type: "CitationsUpdated"
-  id: string,
+  id: string
   citations: Citation[]
 }
 
 type ContextUpdated = {
   type: "ContextUpdated"
-  id: string,
+  id: string
   context: Context[]
 }
 
 type PendingUpdated = {
   type: "PendingUpdated"
-  id: string,
-  message: Message,
+  id: string
+  message: Message
   pending: boolean
 }
 
@@ -79,21 +74,19 @@ type MessageMap = { [id: string]: Message }
 
 export const useMessagesSubscription = (conversationId: string) => {
   const [messages, setMessages] = useState<MessageMap>({})
-  const { sendJsonMessage, lastJsonMessage, readyState } =
-    useWebSocket<Message | MessageEvent>(
-      `${WS_API_URL}/api/v1/conversations/${conversationId}/messages/ws`,
-      {
-        shouldReconnect: (_closeEvent) => true,
-        reconnectInterval: 5000,
-        reconnectAttempts: 10,
-        heartbeat: {
-          message: JSON.stringify({ type: "Heartbeat", data: "ping" }),
-          returnMessage: "pong",
-          timeout: 60_000,
-          interval: 25_000,
-        },
-      },
-    )
+  const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket<
+    Message | MessageEvent
+  >(`${WS_API_URL}/api/v1/conversations/${conversationId}/messages/ws`, {
+    shouldReconnect: (_closeEvent) => true,
+    reconnectInterval: 5000,
+    reconnectAttempts: 10,
+    heartbeat: {
+      message: JSON.stringify({ type: "Heartbeat", data: "ping" }),
+      returnMessage: "pong",
+      timeout: 60_000,
+      interval: 25_000,
+    },
+  })
 
   const getMessage = (
     received: Message | MessageEvent,
@@ -170,17 +163,19 @@ export const useMessagesSubscription = (conversationId: string) => {
   const sendMessage = (message: NewMessage) =>
     sendJsonMessage({
       type: "NewMessage",
-      data: message
+      data: message,
     })
 
-  const byDate: ((a: Message, b: Message) => number) | undefined =
-    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+  const byDate: ((a: Message, b: Message) => number) | undefined = (a, b) =>
+    new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
 
   const sortedMessages = Object.values(messages).sort(byDate)
 
   return {
     sendMessage,
     messages: sortedMessages,
-    isLoading: readyState !== ReadyState.OPEN || sortedMessages.some((message) => message.pending),
+    isLoading:
+      readyState !== ReadyState.OPEN ||
+      sortedMessages.some((message) => message.pending),
   }
 }

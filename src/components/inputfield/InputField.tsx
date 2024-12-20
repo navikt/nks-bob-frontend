@@ -4,8 +4,8 @@ import { PaperplaneIcon } from "@navikt/aksel-icons"
 import { useEffect, useState } from "react"
 
 import { NewMessage } from "../../types/Message.ts"
-import "./InputField.css"
 import amplitude from "../../utils/amplitude.ts"
+import "./InputField.css"
 
 interface InputFieldProps {
   onSend: (message: NewMessage) => void

@@ -1,17 +1,17 @@
-import * as amplitude from '@amplitude/analytics-browser';
-import { Types } from '@amplitude/analytics-browser';
+import * as amplitude from "@amplitude/analytics-browser"
+import { Types } from "@amplitude/analytics-browser"
 
 const getApiKey = () => {
-  return window.location.hostname === 'bob.ansatt.nav.no'
-    ? '24311e1f03646352192aadd7b6fa08af'
-    : '5560833e366c2488459da9762e892aa4';
-};
+  return window.location.hostname === "bob.ansatt.nav.no"
+    ? "24311e1f03646352192aadd7b6fa08af"
+    : "5560833e366c2488459da9762e892aa4"
+}
 
-type AmplitudeInstance = Pick<Types.BrowserClient, 'logEvent' | 'identify'>;
+type AmplitudeInstance = Pick<Types.BrowserClient, "logEvent" | "identify">
 const createAmpltiudeInstance = (): AmplitudeInstance => {
   amplitude
     .init(getApiKey(), undefined, {
-      serverUrl: 'https://amplitude.nav.no/collect',
+      serverUrl: "https://amplitude.nav.no/collect",
       useBatch: false,
       autocapture: {
         attribution: true,
@@ -23,48 +23,52 @@ const createAmpltiudeInstance = (): AmplitudeInstance => {
       },
     })
     .promise.catch((error) => {
-      console.error('#MSA error initializing amplitude', error);
-    });
-  return amplitude;
-};
+      console.error("#MSA error initializing amplitude", error)
+    })
+  return amplitude
+}
 
 const mockedAmplitude = (): AmplitudeInstance => ({
-  logEvent: (eventInput: Types.BaseEvent | string, eventProperties?: Record<string, any>) => {
-    console.group('Mocked amplitude-event');
-    console.table({ eventInput, ...eventProperties });
-    console.groupEnd();
+  logEvent: (
+    eventInput: Types.BaseEvent | string,
+    eventProperties?: Record<string, any>,
+  ) => {
+    console.group("Mocked amplitude-event")
+    console.table({ eventInput, ...eventProperties })
+    console.groupEnd()
     return {
       promise: new Promise<Types.Result>((resolve) =>
         resolve({
-          event: { event_type: 'MockEvent' },
+          event: { event_type: "MockEvent" },
           code: 200,
-          message: 'Success: mocked amplitude-tracking',
-        })
+          message: "Success: mocked amplitude-tracking",
+        }),
       ),
-    };
+    }
   },
   identify(
     identify: Types.Identify,
-    _?: Types.EventOptions
+    _?: Types.EventOptions,
   ): Types.AmplitudeReturn<Types.Result> {
-    console.group('Mocked amplitude-identify');
-    console.table(identify);
-    console.groupEnd();
+    console.group("Mocked amplitude-identify")
+    console.table(identify)
+    console.groupEnd()
     return {
       promise: new Promise<Types.Result>((resolve) =>
         resolve({
-          event: { event_type: 'MockIdentify' },
+          event: { event_type: "MockIdentify" },
           code: 200,
-          message: 'Success: mocked amplitude-identify',
-        })
+          message: "Success: mocked amplitude-identify",
+        }),
       ),
-    };
+    }
   },
-});
+})
 
-const instance = window.location.hostname === "localhost"
-  ? mockedAmplitude()
-  : createAmpltiudeInstance()
+const instance =
+  window.location.hostname === "localhost"
+    ? mockedAmplitude()
+    : createAmpltiudeInstance()
 
 const svarKopiert = (meldingsId: string) =>
   instance.logEvent("Svar kopiert", { meldingsId })
@@ -75,8 +79,7 @@ const svarEndret = (endring: "oversett" | "punktliste" | "forenkle") =>
 const feilMeldt = (meldingsId: string) =>
   instance.logEvent("Feil meldt", { meldingsId })
 
-const infoÅpnet = () =>
-  instance.logEvent("Info modal åpnet")
+const infoÅpnet = () => instance.logEvent("Info modal åpnet")
 
 const mørkModusByttet = (modus: "lys" | "mørk") =>
   instance.logEvent("Mørk modus byttet", { modus })
@@ -84,18 +87,13 @@ const mørkModusByttet = (modus: "lys" | "mørk") =>
 const meldingSendt = (trigger: "knapp" | "enter") =>
   instance.logEvent("Melding sendt", { trigger })
 
-const kildeAccordionÅpnet = () =>
-  instance.logEvent("Kilde accordion åpnet")
+const kildeAccordionÅpnet = () => instance.logEvent("Kilde accordion åpnet")
 
-const kildeAccordionSkjult = () =>
-  instance.logEvent("Kilde accordion skjult")
+const kildeAccordionSkjult = () => instance.logEvent("Kilde accordion skjult")
 
-const tekstInnholdLimtInn = () =>
-  instance.logEvent("Tekstinnhold limt inn")
+const tekstInnholdLimtInn = () => instance.logEvent("Tekstinnhold limt inn")
 
-const tekstInneholderFnr = () =>
-  instance.logEvent("Tekst inneholder fnr")
-
+const tekstInneholderFnr = () => instance.logEvent("Tekst inneholder fnr")
 
 export default {
   svarKopiert,
