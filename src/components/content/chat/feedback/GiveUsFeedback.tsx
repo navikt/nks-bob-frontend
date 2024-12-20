@@ -22,7 +22,7 @@ export const GiveUsFeedback = ({ message }: GiveUsFeedbackProps) => {
   function handleButtonClick() {
     amplitude.feilMeldt(message.id)
     window.open(
-      `https://forms.office.com/Pages/ResponsePage.aspx?id=NGU2YsMeYkmIaZtVNSedCyBQAauBOz1OlySa0dtLBP9UNUZJQkJYVzhKWTZXS0g0V0RBM0JSN1pNMC4u&rc0fd63ffeb9146e1bec0b90cc73ca985=${encodedText(message.content)}%0A%0AMeldingsID: ${encodedText(message.id)}`,
+      `https://forms.office.com/Pages/ResponsePage.aspx?id=NGU2YsMeYkmIaZtVNSedC0RMRE_b5tVChsvEVOu-VahUMklHSElUVkE1Q0Q3S1RVSFNURlRERzRDNSQlQCN0PWcu&rc84a5384f81a40a8af1ad89105ae94c7=${encodedText(message.id)}&rc60f18cbf19d4053aed8e232647745b4=${encodedText(message.content)}`,
       "_blank",
     )
   }
