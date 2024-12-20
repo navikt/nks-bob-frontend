@@ -26,10 +26,9 @@ const toFeedbackState = (liked: boolean | null | undefined): FeedbackState => {
 }
 
 function FeedbackThumbs({ conversationId }: FeedbackButtonsProps) {
-  const [feedback, setFeedback] = useState<FeedbackState>(
-    toFeedbackState(null),
-  )
-  const { sendFeedback, isLoading } = useSendConversationFeedback(conversationId)
+  const [feedback, setFeedback] = useState<FeedbackState>(toFeedbackState(null))
+  const { sendFeedback, isLoading } =
+    useSendConversationFeedback(conversationId)
 
   async function handleFeedback(liked: boolean) {
     setFeedback(liked ? "positive" : "negative")

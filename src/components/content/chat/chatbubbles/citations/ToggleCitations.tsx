@@ -1,5 +1,5 @@
+import { Chips } from "@navikt/ds-react"
 import { useState } from "react"
-import { Chips } from "@navikt/ds-react";
 import { Message } from "../../../../../types/Message.ts"
 
 interface ToggleCitationsProps {
@@ -7,25 +7,23 @@ interface ToggleCitationsProps {
   message: Message
 }
 
-const citationOptions = [
-  "Sitater fra Nav.no",
-  "Sitater fra Kunnskapsbasen",
-];
+const citationOptions = ["Sitater fra Nav.no", "Sitater fra Kunnskapsbasen"]
 
-const ToggleCitations = ({ onToggle, message }: ToggleCitationsProps ) => {
+const ToggleCitations = ({ onToggle, message }: ToggleCitationsProps) => {
   const hasNavnoCitations = message.citations.some(
-    (citation) => message.context[citation.sourceId].source === "navno"
+    (citation) => message.context[citation.sourceId].source === "navno",
   )
   const hasKunnskapsbasenCitations = message.citations.some(
-    (citation) => message.context[citation.sourceId].source === "nks"
+    (citation) => message.context[citation.sourceId].source === "nks",
   )
 
   const filteredOptions = citationOptions.filter((option) => {
     if (option === "Sitater fra Nav.no" && !hasNavnoCitations) {
-      return false;
+      return false
     }
-    return !(option === "Sitater fra Kunnskapsbasen" && !hasKunnskapsbasenCitations);
-
+    return !(
+      option === "Sitater fra Kunnskapsbasen" && !hasKunnskapsbasenCitations
+    )
   })
 
   const [selected, setSelected] = useState<string[]>(citationOptions)
@@ -33,10 +31,10 @@ const ToggleCitations = ({ onToggle, message }: ToggleCitationsProps ) => {
   const handleToggle = (option: string) => {
     const newSelected = selected.includes(option)
       ? selected.filter((x) => x !== option)
-      : [...selected, option];
-    setSelected(newSelected);
-    onToggle(newSelected);
-  };
+      : [...selected, option]
+    setSelected(newSelected)
+    onToggle(newSelected)
+  }
 
   return (
     <div className='mb-3'>
@@ -52,7 +50,7 @@ const ToggleCitations = ({ onToggle, message }: ToggleCitationsProps ) => {
         ))}
       </Chips>
     </div>
-  );
-};
+  )
+}
 
 export default ToggleCitations

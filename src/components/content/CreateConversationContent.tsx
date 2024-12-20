@@ -3,7 +3,7 @@ import { useCreateConversation } from "../../api/api.ts"
 import { NewConversation, NewMessage } from "../../types/Message.ts"
 import Header from "../header/Header.tsx"
 import InputField from "../inputfield/InputField.tsx"
-import { BobPlaceholder } from "./placeholders/Placeholders.tsx"
+import { BobChristmasPlaceholder } from "./placeholders/Placeholders.tsx"
 import CreateConversationWrapper from "./wrappers/CreateConversationWrapper.tsx"
 
 const CreateConversationContent = () => {
@@ -13,14 +13,17 @@ const CreateConversationContent = () => {
   function handleUserMessage(message: NewMessage) {
     const newConversation: NewConversation = {
       title: message.content,
-      initialMessage: null
+      initialMessage: null,
     }
 
     const initialMessage = encodeURIComponent(message.content)
 
     createConversation(newConversation)
       .then((conversation) => {
-        navigate(`/samtaler/${conversation.id}?initialMessage=${initialMessage}`, {})
+        navigate(
+          `/samtaler/${conversation.id}?initialMessage=${initialMessage}`,
+          {},
+        )
       })
 
       .catch((error) => {
@@ -31,7 +34,7 @@ const CreateConversationContent = () => {
   return (
     <CreateConversationWrapper>
       <Header conversation={undefined} />
-      <BobPlaceholder />
+      <BobChristmasPlaceholder />
       <InputField onSend={handleUserMessage} disabled={false} />
     </CreateConversationWrapper>
   )

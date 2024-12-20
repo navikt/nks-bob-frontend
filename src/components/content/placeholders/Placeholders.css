@@ -1,12 +1,11 @@
-
 .bob-styling {
-    margin-top: 3rem;
-    height: 100%;
-    width: 100%;
-    align-self: center;
-    justify-content: center;
-    max-width: 24rem;
-    flex-direction: column;
-    position: relative;
-    color: rgba(32, 39, 51, 1);
+  margin-top: 3rem;
+  height: 100%;
+  width: 100%;
+  align-self: center;
+  justify-content: center;
+  max-width: 22rem;
+  flex-direction: column;
+  position: relative;
+  color: rgba(32, 39, 51, 1);
 }

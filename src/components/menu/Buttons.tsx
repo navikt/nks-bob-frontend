@@ -38,8 +38,8 @@ export const NewButton = ({ conversationId }: { conversationId: string }) => {
         className='modal-styling'
       >
         <Modal.Body>
-          <VStack gap="0" className='pt-4'>
-            <BodyShort weight="semibold">
+          <VStack gap='0' className='pt-4'>
+            <BodyShort weight='semibold'>
               Fikk du svar på det du lurte på i samtalen?
             </BodyShort>
             <FeedbackThumbs conversationId={conversationId} />

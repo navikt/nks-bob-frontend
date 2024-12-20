@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
-import "./DarkModeToggle.css"
 import amplitude from "../../../utils/amplitude"
+import "./DarkModeToggle.css"
 
 const DarkModeToggle = () => {
   const [dark, setDark] = useState(() => {
