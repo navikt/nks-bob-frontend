@@ -49,7 +49,17 @@ export const BobAnswerBubble = ({
         <img src={BobHead} alt='Bob' width='30px' className='bobhead' />
         <div className='flex w-full flex-col pt-3'>
           <div className='overflow-wrap mb-4 flex w-full'>
-            {message.content === "" ? (
+            {message.content === "" && !message.pending && message.errors.length > 0 && (
+              <BodyLong>
+                <Markdown>
+                  {message.errors
+                    .map(error => `**${error.title}:** ${error.description}`)
+                    .join("\n\n")
+                  }
+                </Markdown>
+              </BodyLong>
+            )}
+            {message.content === "" && message.pending && (
               <div className='w-full'>
                 <Skeleton width='100%' variant='text' />
                 <Skeleton width='70%' variant='text' />
