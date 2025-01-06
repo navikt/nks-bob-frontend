@@ -1,7 +1,7 @@
 import { BodyLong, HStack, Skeleton, VStack } from "@navikt/ds-react"
 import { useState } from "react"
 import Markdown from "react-markdown"
-import BobSantaHead from "../../../../assets/illustrations/BobSantaHead.svg"
+import BobHead from "../../../../assets/illustrations/BobHead.svg"
 import { Message, NewMessage } from "../../../../types/Message.ts"
 import BobSuggests from "../suggestions/BobSuggests.tsx"
 import BobAnswerCitations from "./BobAnswerCitations.tsx"
@@ -46,7 +46,7 @@ export const BobAnswerBubble = ({
   return (
     <VStack gap='1' align='stretch' className='pb-12'>
       <HStack gap='1' align='start' wrap={false} width='full'>
-        <img src={BobSantaHead} alt='Bob' width='30px' className='bobhead' />
+        <img src={BobHead} alt='Bob' width='30px' className='bobhead' />
         <div className='flex w-full flex-col pt-3'>
           <div className='overflow-wrap mb-4 flex w-full'>
             {message.content === "" ? (
