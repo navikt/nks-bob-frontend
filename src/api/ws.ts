@@ -136,7 +136,7 @@ export const useMessagesSubscription = (conversationId: string) => {
       }
 
       return {
-        ...prevMessage,
+        ...received.message,
         pending: received.pending,
       }
     }

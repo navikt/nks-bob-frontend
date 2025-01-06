@@ -21,6 +21,7 @@ export type Message = {
   citations: Citation[]
   context: Context[]
   pending: boolean
+  errors: MessageError[]
 }
 
 export type Citation = {
@@ -40,6 +41,8 @@ export type Context = {
   lastModified: string | null
   semanticSimilarity: number
 }
+
+export type MessageError = { title: string, description: string }
 
 export type SourceType = "nks" | "navno"
 
