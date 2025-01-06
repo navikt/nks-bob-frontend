@@ -3,7 +3,7 @@ import { useCreateConversation } from "../../api/api.ts"
 import { NewConversation, NewMessage } from "../../types/Message.ts"
 import Header from "../header/Header.tsx"
 import InputField from "../inputfield/InputField.tsx"
-import { BobChristmasPlaceholder } from "./placeholders/Placeholders.tsx"
+import { BobPlaceholder } from "./placeholders/Placeholders.tsx"
 import CreateConversationWrapper from "./wrappers/CreateConversationWrapper.tsx"
 
 const CreateConversationContent = () => {
@@ -34,7 +34,7 @@ const CreateConversationContent = () => {
   return (
     <CreateConversationWrapper>
       <Header conversation={undefined} />
-      <BobChristmasPlaceholder />
+      <BobPlaceholder />
       <InputField onSend={handleUserMessage} disabled={false} />
     </CreateConversationWrapper>
   )
