@@ -31,6 +31,10 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
     )
   }
 
+  const expandAll = matchingContextCitationData?.source === "navno"
+    ? "?expandall=true"
+    : ""
+
   return (
     <div className='mb-2 flex flex-col'>
       <Label size='small' className='mb-1'>
@@ -40,7 +44,7 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
               href={
                 numWords < 1
                   ? `${matchingContextCitationData.url}`
-                  : `${matchingContextCitationData.url}#:~:text=${encodeFragment(textStart)},${encodeFragment(textEnd)}`
+                  : `${matchingContextCitationData.url}${expandAll}#:~:text=${encodeFragment(textStart)},${encodeFragment(textEnd)}`
               }
               target='_blank'
               title='Åpne artikkelen i ny fane'
