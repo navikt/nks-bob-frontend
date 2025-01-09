@@ -1,5 +1,7 @@
 import { ArrowsCirclepathIcon } from "@navikt/aksel-icons"
 import { Button, CopyButton, Dropdown, Label } from "@navikt/ds-react"
+import { marked } from "marked"
+import { markdownToTxt } from "markdown-to-txt"
 import { Message, NewMessage } from "../../../../types/Message.ts"
 import amplitude from "../../../../utils/amplitude.ts"
 import { GiveUsFeedback } from "../feedback/GiveUsFeedback.tsx"
@@ -42,14 +44,39 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
     onSend(simplifyMessage)
   }
 
+  const copyMessageContent = () => {
+    const html = new Blob(
+      [marked.parse(message.content, { async: false })],
+      { type: "text/html" }
+    )
+
+    const plain = new Blob(
+      [markdownToTxt(message.content)],
+      { type: "text/plain" }
+    )
+
+    const data = new ClipboardItem({ "text/html": html, "text/plain": plain, })
+
+    return navigator.clipboard.write([data])
+  }
+
   return (
     <div className='fade-in mb-6 ml-[-0.3rem] flex h-fit grow flex-wrap items-center justify-start'>
       <CopyButton
-        copyText={message.content}
+        copyText=''
         size='small'
         text='Kopier'
         activeText='Kopiert'
-        onClick={() => amplitude.svarKopiert(message.id)}
+        onClick={() => {
+          // Wait until `CopyButton` is done before writing to clipboard.
+          // This is done in order to copy rich text to the clipboard, instead of passing
+          // a string in the `copyText` prop.
+          new Promise(resolve => setTimeout(resolve, 100))
+            .then(() => copyMessageContent())
+
+          amplitude.svarKopiert(message.id)
+        }
+        }
       />
       <GiveUsFeedback message={message} />
 
