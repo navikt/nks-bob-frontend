@@ -55,7 +55,7 @@ export const BobAnswerBubble = ({
                 <Skeleton width='70%' variant='text' />
               </div>
             ) : (
-              <BodyLong className='fade-in'>
+              <BodyLong>
                 <Markdown
                   className='markdown'
                   components={{
