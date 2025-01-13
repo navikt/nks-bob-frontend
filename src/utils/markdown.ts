@@ -9,14 +9,19 @@ const empty = () => "";
 export const plaintextRenderer: Renderer = {
   parser: new Parser(),
   // Block elements
-  list: ({ ordered, items }) =>
-    items.map((item, index) => {
-      if (ordered) {
-        return `  ${index + 1} ${item.text}\n`
-      }
+  list: ({ raw }) => {
+    return raw
 
-      return `  - ${item.text}\n`
-    }).join(""),
+    // return block({
+    //   text: items.map((item, index) => {
+    //     const bullet = ordered
+    //       ? `${index + 1}`
+    //       : "-";
+
+    //     return `  ${bullet} ${item.text}`;
+    //   }).join("\n")
+    // });
+  },
   code: block,
   blockquote: block,
   html: empty,
@@ -37,7 +42,7 @@ export const plaintextRenderer: Renderer = {
   link: ({ href }) => href,
   image: empty,
   text: inline,
-  space: () => " ",
+  space: empty,
   // etc.
   options: {},
 }
