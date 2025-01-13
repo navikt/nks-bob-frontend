@@ -1,10 +1,10 @@
 import { ArrowsCirclepathIcon } from "@navikt/aksel-icons"
 import { Button, CopyButton, Dropdown, Label } from "@navikt/ds-react"
 import { marked } from "marked"
-import { markdownToTxt } from "markdown-to-txt"
 import { Message, NewMessage } from "../../../../types/Message.ts"
 import amplitude from "../../../../utils/amplitude.ts"
 import { GiveUsFeedback } from "../feedback/GiveUsFeedback.tsx"
+import { plaintextRenderer } from "../../../../utils/markdown.ts"
 import "./BobSuggests.css"
 
 interface BobSuggestsProps {
@@ -51,7 +51,10 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
     )
 
     const plain = new Blob(
-      [markdownToTxt(message.content)],
+      [marked.parse(message.content, {
+        async: false,
+        renderer: plaintextRenderer
+      })],
       { type: "text/plain" }
     )
 
