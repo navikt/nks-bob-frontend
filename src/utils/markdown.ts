@@ -1,7 +1,7 @@
-import { marked, Renderer, Parser } from "marked"
+import { marked, Renderer, Parser, Hooks } from "marked"
 
-const block = ({ text }: { text: string }) => text + ""
-const line = ({ text }: { text: string }) => text + ""
+const block = ({ text }: { text: string }) => text
+const line = ({ text }: { text: string }) => text
 const inline = ({ text }: { text: string }) => text
 const newline = () => "\n"
 const empty = () => ""
@@ -27,10 +27,7 @@ const plaintextRenderer: Renderer = {
   codespan: inline,
   br: newline,
   del: inline,
-  link(token) {
-    console.log(token)
-    return token.href
-  },
+  link: ({ href }) => href, // Somehow not working in the version of marked...
   image: empty,
   text: inline,
   space: () => "\n\n",
@@ -38,11 +35,22 @@ const plaintextRenderer: Renderer = {
   options: {},
 }
 
-const toHtml = (markdown: string) =>
+const toHtml = (markdown: string): string =>
   marked.parse(markdown, { async: false })
 
-const toPlaintext = (markdown: string) =>
-  marked.parse(markdown, { async: false, renderer: plaintextRenderer })
+const hooks = new Hooks()
+hooks.postprocess = (html) => {
+  // Since the link renderer is not working in this version,
+  // this regex replaces all markdown links with the href.
+  return html.replace(/\[.*?\]\((.*?)\)/g, (_match, p1) => p1)
+}
+
+const toPlaintext = (markdown: string): string =>
+  marked.parse(markdown, {
+    async: false,
+    renderer: plaintextRenderer,
+    hooks
+  })
 
 const md = { toHtml, toPlaintext, }
 
