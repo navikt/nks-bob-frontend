@@ -1,27 +1,15 @@
-import { Renderer, Parser } from "marked"
+import { marked, Renderer, Parser } from "marked"
 
-const block = ({ text }: { text: string }) => text + "\n\n";
-const line = ({ text }: { text: string }) => text + "\n";
-const inline = ({ text }: { text: string }) => text;
-const newline = () => "\n";
-const empty = () => "";
+const block = ({ text }: { text: string }) => text + ""
+const line = ({ text }: { text: string }) => text + ""
+const inline = ({ text }: { text: string }) => text
+const newline = () => "\n"
+const empty = () => ""
 
-export const plaintextRenderer: Renderer = {
+const plaintextRenderer: Renderer = {
   parser: new Parser(),
   // Block elements
-  list: ({ raw }) => {
-    return raw
-
-    // return block({
-    //   text: items.map((item, index) => {
-    //     const bullet = ordered
-    //       ? `${index + 1}`
-    //       : "-";
-
-    //     return `  ${bullet} ${item.text}`;
-    //   }).join("\n")
-    // });
-  },
+  list: ({ raw }) => block({ text: raw }),
   code: block,
   blockquote: block,
   html: empty,
@@ -39,11 +27,23 @@ export const plaintextRenderer: Renderer = {
   codespan: inline,
   br: newline,
   del: inline,
-  link: ({ href }) => href,
+  link(token) {
+    console.log(token)
+    return token.href
+  },
   image: empty,
   text: inline,
-  space: empty,
+  space: () => "\n\n",
   // etc.
   options: {},
 }
 
+const toHtml = (markdown: string) =>
+  marked.parse(markdown, { async: false })
+
+const toPlaintext = (markdown: string) =>
+  marked.parse(markdown, { async: false, renderer: plaintextRenderer })
+
+const md = { toHtml, toPlaintext, }
+
+export { md }
