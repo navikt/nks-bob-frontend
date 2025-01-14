@@ -120,7 +120,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
           onPaste={handlePasteInfoAlert}
         />
         <Button
-          icon={<PaperplaneIcon title='Historikk' />}
+          icon={<PaperplaneIcon title='Send melding' />}
           variant='tertiary'
           size='medium'
           className='input-button'

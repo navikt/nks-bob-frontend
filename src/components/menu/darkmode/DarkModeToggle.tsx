@@ -26,15 +26,20 @@ const DarkModeToggle = () => {
     })
   }
 
+  const tooltip = dark
+    ? "Bytt til lys modus"
+    : "Bytt til mørk modus"
+
   return (
     <div className='darkmode-toggle'>
       <input
         type='checkbox'
         id='darkmode-checkbox'
+        title={tooltip}
         checked={dark}
         onChange={darkModeHandler}
       />
-      <label htmlFor='darkmode-checkbox' className='slider round' />
+      <label htmlFor='darkmode-checkbox' className='slider round' title={tooltip} />
     </div>
   )
 }
