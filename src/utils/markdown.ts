@@ -1,56 +1,29 @@
-import { marked, Renderer, Parser, Hooks } from "marked"
+import { remark } from "remark"
+import remarkRehype from "remark-rehype"
+import remarkStringify, { Options } from "remark-stringify"
+import rehypeStringify from "rehype-stringify"
+import stripMarkdown from "strip-markdown"
 
-const block = ({ text }: { text: string }) => text
-const line = ({ text }: { text: string }) => text
-const inline = ({ text }: { text: string }) => text
-const newline = () => "\n"
-const empty = () => ""
-
-const plaintextRenderer: Renderer = {
-  parser: new Parser(),
-  // Block elements
-  list: ({ raw }) => block({ text: raw }),
-  code: block,
-  blockquote: block,
-  html: empty,
-  heading: block,
-  hr: newline,
-  listitem: line,
-  checkbox: empty,
-  paragraph: block,
-  table: ({ header }) => line({ text: header.join(" ") }),
-  tablerow: ({ text }) => line({ text: text.trim() }),
-  tablecell: ({ text }) => text + " ",
-  // Inline elements
-  strong: inline,
-  em: inline,
-  codespan: inline,
-  br: newline,
-  del: inline,
-  link: ({ href }) => href, // Somehow not working in the version of marked...
-  image: empty,
-  text: inline,
-  space: () => "\n\n",
-  // etc.
-  options: {},
-}
+const htmlProcessor = remark()
+  .use(remarkRehype)
+  .use(rehypeStringify)
 
 const toHtml = (markdown: string): string =>
-  marked.parse(markdown, { async: false })
+  htmlProcessor.processSync(markdown).toString()
 
-const hooks = new Hooks()
-hooks.postprocess = (html) => {
-  // Since the link renderer is not working in this version,
-  // this regex replaces all markdown links with the href.
-  return html.replace(/\[.*?\]\((.*?)\)/g, (_match, p1) => p1)
-}
+// Convert markdown to plaintext, but keep formatting for lists
+// and transform links to just the url.
+const plaintextProcessor = remark()
+  .use(stripMarkdown, { keep: ["list", "listItem", "link"] })
+  .use(remarkStringify, {
+    bullet: "-",
+    handlers: {
+      link: ({ url }: { url: string }) => url,
+    }
+  } as Options)
 
-const toPlaintext = (markdown: string): string =>
-  marked.parse(markdown, {
-    async: false,
-    renderer: plaintextRenderer,
-    hooks
-  })
+const toPlaintext = (markdown: string) =>
+  plaintextProcessor.processSync(markdown).toString()
 
 const md = { toHtml, toPlaintext, }
 
