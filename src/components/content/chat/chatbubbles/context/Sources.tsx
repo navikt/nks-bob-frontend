@@ -90,6 +90,7 @@ const ArticleSummary = ({ context }: { context: Context }) => {
         aria-expanded={open}
         size="xsmall"
         variant="tertiary"
+        title="Vis utdrag fra artikkel"
       >
         <InformationSquareIcon />
       </Button>
