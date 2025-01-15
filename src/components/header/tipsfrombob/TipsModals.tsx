@@ -54,8 +54,14 @@ export const FirstTimeLoginModal = ({
             target='_blank'
           >
             NKS Kunnskapsbasen
-          </Link>
-          . Dette er de samme artiklene du finner i Salesforce. Jeg har ikke
+          </Link >
+          {" og "}
+          <Link
+            href='https://nav.no/'
+            target='_blank'
+          >
+            nav.no
+          </Link>. Dette er de samme artiklene du finner i Salesforce. Jeg har ikke
           tilgang til noen annen informasjon.
         </BodyLong>
         <Heading size='xsmall' spacing>
@@ -125,6 +131,13 @@ export const ButtonClickModal = ({
               target='_blank'
             >
               NKS Kunnskapsbasen
+            </Link >
+            {" og "}
+            <Link
+              href='https://nav.no/'
+              target='_blank'
+            >
+              nav.no
             </Link>
             . Dette er de samme artiklene du finner i Salesforce. Jeg har ikke
             tilgang til noen annen informasjon.
