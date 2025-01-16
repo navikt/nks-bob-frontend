@@ -1,5 +1,6 @@
 import { Message } from "../../../../types/Message.ts"
 
+import { memo } from "react"
 import { BodyLong } from "@navikt/ds-react"
 import Markdown from "react-markdown"
 import rehypeRaw from "rehype-raw"
@@ -9,7 +10,7 @@ interface UserChatBubbleProps {
   userQuestion?: Message
 }
 
-function UserQuestionBubble({ userQuestion }: UserChatBubbleProps) {
+const UserQuestionBubble = memo(({ userQuestion }: UserChatBubbleProps) => {
   const question = userQuestion?.content.replace(/\n/g, "<br>")
 
   return (
@@ -19,6 +20,15 @@ function UserQuestionBubble({ userQuestion }: UserChatBubbleProps) {
       </BodyLong>
     </div>
   )
-}
+}, (prevProps, nextProps) => {
+  const prevMessage = prevProps.userQuestion
+  const nextMessage = nextProps.userQuestion
+
+  if (!prevMessage?.pending) {
+    return true
+  }
+
+  return prevMessage === nextMessage
+})
 
 export default UserQuestionBubble
