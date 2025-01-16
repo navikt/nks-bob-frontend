@@ -13,9 +13,9 @@ import Markdown from "react-markdown"
 import remarkGfm from 'remark-gfm'
 import { Context } from "../../../../../types/Message"
 import { ExternalLinkIcon, InformationSquareIcon } from "@navikt/aksel-icons"
-import { useRef, useState } from "react"
+import { memo, useRef, useState } from "react"
 
-export const Sources = ({ context }: { context: Context[] }) => {
+export const Sources = memo(({ context }: { context: Context[] }) => {
   const nksContext = context.filter(({ source }) => source === "nks")
   const navContext = context.filter(({ source }) => source === "navno")
 
@@ -48,7 +48,16 @@ export const Sources = ({ context }: { context: Context[] }) => {
       </VStack>
     </ReadMore>
   )
-}
+}, (prevProps, nextProps) => {
+  const prevContext = prevProps.context
+  const nextContext = nextProps.context
+
+  if (prevContext.length === nextContext.length) {
+    return true
+  }
+
+  return prevContext === nextContext
+})
 
 const NksSource = ({ context }: { context: Context }) => {
   return (
