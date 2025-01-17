@@ -1,0 +1,16 @@
+{
+  "name": "load-test",
+  "version": "1.0.0",
+  "main": "flows.js",
+  "scripts": {
+    "loadLocal": "artillery run test.yaml",
+    "loadDev": "artillery run test.yaml -e dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "artillery": "^2.0.21"
+  }
+}
