@@ -8,13 +8,14 @@ import amplitude from "../../utils/amplitude.ts"
 import "./InputField.css"
 
 interface InputFieldProps {
+  inputState: [string, React.Dispatch<React.SetStateAction<string>>]
   onSend: (message: NewMessage) => void
   disabled: boolean
 }
 
-function InputField({ onSend, disabled }: InputFieldProps) {
+function InputField({ inputState, onSend, disabled }: InputFieldProps) {
   const placeholderText = "Spør Bob om noe"
-  const [inputValue, setInputValue] = useState<string>("")
+  const [inputValue, setInputValue] = inputState
   const [isSensitiveInfoAlert, setIsSensitiveInfoAlert] =
     useState<boolean>(false)
   const [containsFnr, setContainsFnr] = useState<boolean>(false)
