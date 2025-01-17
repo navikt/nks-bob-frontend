@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { useNavigate } from "react-router"
 import { useCreateConversation } from "../../api/api.ts"
 import { NewConversation, NewMessage } from "../../types/Message.ts"
@@ -9,6 +10,7 @@ import CreateConversationWrapper from "./wrappers/CreateConversationWrapper.tsx"
 const CreateConversationContent = () => {
   const navigate = useNavigate()
   const { createConversation } = useCreateConversation()
+  const inputState = useState<string>("")
 
   function handleUserMessage(message: NewMessage) {
     const newConversation: NewConversation = {
@@ -35,7 +37,11 @@ const CreateConversationContent = () => {
     <CreateConversationWrapper>
       <Header conversation={undefined} />
       <BobPlaceholder />
-      <InputField onSend={handleUserMessage} disabled={false} />
+      <InputField
+        inputState={inputState}
+        onSend={handleUserMessage}
+        disabled={false}
+      />
     </CreateConversationWrapper>
   )
 }
