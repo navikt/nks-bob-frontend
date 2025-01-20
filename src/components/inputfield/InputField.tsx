@@ -1,4 +1,4 @@
-import { Alert, BodyShort, Button, HStack, Textarea } from "@navikt/ds-react"
+import { Alert, BodyShort, Button, HStack, ReadMore, Textarea } from "@navikt/ds-react"
 
 import { PaperplaneIcon } from "@navikt/aksel-icons"
 import { memo, useEffect, useState } from "react"
@@ -149,17 +149,27 @@ const FollowUp = memo(({
   setInputValue: React.Dispatch<React.SetStateAction<string>>
   followUp: string[]
 }) => {
+  const [open, setOpen] = useState(true)
+
   return (
     <HStack justify="space-evenly">
-      {followUp.map((message, index) =>
-        <Button
-          variant="tertiary"
-          onClick={() => setInputValue(message)}
-          key={`follow-up-${index}`}
+      {followUp.length > 0 &&
+        <ReadMore
+          open={open}
+          onOpenChange={(isOpen) => setOpen(isOpen)}
+          header="Forslag fra Bob" className="w-full"
         >
-          {message}
-        </Button>
-      )}
+          {followUp.map((message, index) =>
+            <Button
+              variant="tertiary"
+              onClick={() => setInputValue(message)}
+              key={`follow-up-${index}`}
+            >
+              {message}
+            </Button>
+          )}
+        </ReadMore>
+      }
     </HStack>
   )
 }, (prevProps, nextProps) => {
