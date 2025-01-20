@@ -1,7 +1,7 @@
-import { Alert, BodyShort, Button, Textarea } from "@navikt/ds-react"
+import { Alert, BodyShort, Button, HStack, Textarea } from "@navikt/ds-react"
 
 import { PaperplaneIcon } from "@navikt/aksel-icons"
-import { useEffect, useState } from "react"
+import { memo, useEffect, useState } from "react"
 
 import { NewMessage } from "../../types/Message.ts"
 import amplitude from "../../utils/amplitude.ts"
@@ -11,9 +11,10 @@ interface InputFieldProps {
   inputState: [string, React.Dispatch<React.SetStateAction<string>>]
   onSend: (message: NewMessage) => void
   disabled: boolean
+  followUp: string[]
 }
 
-function InputField({ inputState, onSend, disabled }: InputFieldProps) {
+function InputField({ inputState, onSend, disabled, followUp }: InputFieldProps) {
   const placeholderText = "Spør Bob om noe"
   const [inputValue, setInputValue] = inputState
   const [isSensitiveInfoAlert, setIsSensitiveInfoAlert] =
@@ -84,6 +85,10 @@ function InputField({ inputState, onSend, disabled }: InputFieldProps) {
 
   return (
     <div className='dialogcontent inputfield sticky bottom-0 z-10 h-auto flex-col gap-3 self-center px-4 pb-5'>
+      <FollowUp
+        followUp={followUp}
+        setInputValue={setInputValue}
+      />
       {isSensitiveInfoAlert && (
         <Alert
           variant='info'
@@ -136,5 +141,29 @@ function InputField({ inputState, onSend, disabled }: InputFieldProps) {
     </div>
   )
 }
+
+const FollowUp = memo(({
+  setInputValue,
+  followUp,
+}: {
+  setInputValue: React.Dispatch<React.SetStateAction<string>>
+  followUp: string[]
+}) => {
+  return (
+    <HStack justify="space-evenly">
+      {followUp.map((message, index) =>
+        <Button
+          variant="tertiary"
+          onClick={() => setInputValue(message)}
+          key={`follow-up-${index}`}
+        >
+          {message}
+        </Button>
+      )}
+    </HStack>
+  )
+}, (prevProps, nextProps) => {
+  return prevProps.followUp === nextProps.followUp
+})
 
 export default InputField

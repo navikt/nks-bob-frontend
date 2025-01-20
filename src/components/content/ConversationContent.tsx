@@ -35,6 +35,8 @@ function ConversationContent() {
     sendMessage(message)
   }
 
+  const followUp = messages.at(-1)?.followUp ?? []
+
   return (
     <DialogWrapper>
       <Header conversation={conversationId} />
@@ -55,6 +57,7 @@ function ConversationContent() {
         inputState={inputState}
         onSend={handleUserMessage}
         disabled={isLoading}
+        followUp={followUp}
       />
     </DialogWrapper>
   )

@@ -41,6 +41,7 @@ const CreateConversationContent = () => {
         inputState={inputState}
         onSend={handleUserMessage}
         disabled={false}
+        followUp={[]}
       />
     </CreateConversationWrapper>
   )
