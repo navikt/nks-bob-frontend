@@ -64,12 +64,13 @@ spec:
             "loginProvider": "AZURE_AD"
           },
           "header": {
-            "csp": {
-              "connectSrc": ["'self'", "wss:", "*.nav.no", "login.microsoftonline.com" ]
-            },
             "corp": {
               "policy": "cross-origin"
             }
+          },
+          "cors": {
+            "origin": ["https://ansatt.dev.nav.no", "https://bob.ansatt.dev.nav.no", "https://login.microsoftonline.com"],
+            "credentials": true
           },
           "proxies": [
             {
