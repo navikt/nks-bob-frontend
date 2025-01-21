@@ -42,7 +42,7 @@ async function getToken() {
 
   console.log("Token expired. Fetching new token.")
   const newToken = fetchToken()
-  await tokenCache.setItem("token", newToken, { ttl: 55 })
+  await tokenCache.setItem("token", newToken, { ttl: 55 * 60 }) // 55 minutes
 
   return newToken
 }
