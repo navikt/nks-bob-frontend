@@ -1,15 +1,16 @@
 import react from "@vitejs/plugin-react"
 import { config } from "dotenv"
-import express from "express"
+import { defineConfig } from "vite"
+/* import express from "express"
 import { CacheContainer } from "node-ts-cache"
 import { MemoryStorage } from "node-ts-cache-storage-memory"
 import { defineConfig, PluginOption, ProxyOptions, ViteDevServer } from "vite"
 import { createProxyMiddleware } from "http-proxy-middleware"
-import { IncomingMessage } from "http"
+import { IncomingMessage } from "http" */
 
 config()
 
-const tokenCache = new CacheContainer(new MemoryStorage())
+/* const tokenCache = new CacheContainer(new MemoryStorage())
 
 async function fetchToken() {
   const url = "https://fakedings.intern.dev.nav.no/fake/custom"
@@ -124,16 +125,23 @@ const authMiddlewarePlugin = (): PluginOption => ({
     server: { proxy },
     preview: { proxy },
   }),
-})
+}) */
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), authMiddlewarePlugin()],
+  plugins: [
+    react(),
+    // authMiddlewarePlugin()
+  ],
   define: {
     "process.env": process.env,
   },
   server: {
     port: 5173,
+    proxy: {
+      "/bob-api": "http://localhost:3030",
+      "/bob-api-ws": "ws://localhost:3030"
+    }
   },
   build: {
     sourcemap: true,
