@@ -43,7 +43,7 @@ spec:
       autoLoginIgnorePaths:
         - /assets/*
         - /asset-manifest.json
-        - /bob-api/**
+        # - /bob-api/**
   gcp:
     buckets:
       - name: nks-bob-frontend-dev
