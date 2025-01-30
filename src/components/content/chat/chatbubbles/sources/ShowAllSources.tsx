@@ -54,7 +54,7 @@ export const ShowAllSources = memo(
     const nksContext = context.filter(({ source }) => source === "nks")
     const navContext = context.filter(({ source }) => source === "navno")
 
-    const { viewAllSources } = useSourcesContext()
+    const { viewAllSources, toggleViewAllSources } = useSourcesContext()
 
     return (
       viewAllSources &&
@@ -65,6 +65,7 @@ export const ShowAllSources = memo(
             variant='tertiary-neutral'
             size='small'
             icon={<XMarkIcon />}
+            onClick={() => toggleViewAllSources()}
           />
         </HStack>
         <VStack className='sourcelist pt-6'>
