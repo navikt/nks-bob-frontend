@@ -14,12 +14,36 @@ import {
   Link,
   VStack,
 } from "@navikt/ds-react"
-import { memo, useState } from "react"
+import { createContext, memo, PropsWithChildren, useContext, useState } from "react"
 import Markdown from "react-markdown"
 import { KunnskapsbasenIcon } from "../../../../../assets/icons/KunnskapsbasenIcon.tsx"
 import { NavNoIcon } from "../../../../../assets/icons/NavNoIcon.tsx"
 import { Context } from "../../../../../types/Message.ts"
 import "./ShowAllSources.css"
+
+const SourcesContext = createContext({
+  viewAllSources: false,
+  toggleViewAllSources: () => { },
+})
+
+export const useSourcesContext = () => useContext(SourcesContext)
+
+export const SourcesContextProvider = ({ children }: PropsWithChildren) => {
+  const [viewAllSources, setViewAllSources] = useState(false)
+
+  const toggleViewAllSources = () => {
+    setViewAllSources((prev) => !prev)
+  }
+
+  return (
+    <SourcesContext.Provider value={{
+      viewAllSources,
+      toggleViewAllSources,
+    }}>
+      {children}
+    </SourcesContext.Provider>
+  )
+}
 
 interface ShowAllSourcesProps {
   context: Context[]
@@ -30,7 +54,10 @@ export const ShowAllSources = memo(
     const nksContext = context.filter(({ source }) => source === "nks")
     const navContext = context.filter(({ source }) => source === "navno")
 
+    const { viewAllSources } = useSourcesContext()
+
     return (
+      viewAllSources &&
       <VStack className='all-sources-container'>
         <HStack justify='space-between' className='heading items-center'>
           <Heading size='xsmall'>Alle kilder</Heading>

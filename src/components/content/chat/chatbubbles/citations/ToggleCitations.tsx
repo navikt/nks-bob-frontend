@@ -1,6 +1,7 @@
 import { Chips } from "@navikt/ds-react"
 import { useState } from "react"
 import { Message } from "../../../../../types/Message.ts"
+import { useSourcesContext } from "../sources/ShowAllSources.tsx"
 
 interface ToggleCitationsProps {
   onToggle: (selected: string[]) => void
@@ -36,6 +37,8 @@ const ToggleCitations = ({ onToggle, message }: ToggleCitationsProps) => {
     onToggle(newSelected)
   }
 
+  const { viewAllSources, toggleViewAllSources } = useSourcesContext()
+
   return (
     <div className='mb-3'>
       <Chips size='small'>
@@ -50,8 +53,8 @@ const ToggleCitations = ({ onToggle, message }: ToggleCitationsProps) => {
         ))}
         <Chips.Toggle
           key={"Vis alle kilder"}
-          selected={true}
-          onClick={() => false}
+          selected={viewAllSources}
+          onClick={toggleViewAllSources}
         >
           Vis alle kilder
         </Chips.Toggle>
