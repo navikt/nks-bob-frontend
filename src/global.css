@@ -75,6 +75,13 @@ ul {
   width: 100%;
 }
 
+.conversation-content {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
 .dialogwrapper {
   display: flex;
   flex-direction: column;
@@ -86,12 +93,6 @@ ul {
   overflow: hidden;
 }
 
-.dialogcontent {
-  display: flex;
-  width: 100%;
-  max-width: 48rem;
-}
-
 .chatcontainer {
   display: flex;
   overflow-y: scroll;
@@ -99,6 +100,12 @@ ul {
   width: 100%;
   justify-content: center;
   height: 100%;
+}
+
+.dialogcontent {
+  display: flex;
+  width: 100%;
+  max-width: 48rem;
 }
 
 .hide-on-desktop {
@@ -213,6 +220,8 @@ ul {
   /*  Tag  */
   --ac-tag-neutral-bg: rgba(245, 246, 247, 1);
   --ac-tag-neutral-border: rgba(207, 211, 216, 1);
+
+  --ax-border-subtle: rgba(207, 211, 216, 1);
 }
 
 /*   Read more styling   */
@@ -352,6 +361,8 @@ body.dark {
   --ac-chip-toggle-hover-border: rgba(101, 109, 123, 1);
 
   --ac-chip-toggle-focus: rgba(95, 148, 216, 1);
+
+  --ax-border-subtle: rgba(46, 54, 65, 1);
 }
 
 body.dark a {

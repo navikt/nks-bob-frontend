@@ -6,7 +6,6 @@ import { Message, NewMessage } from "../../../../types/Message.ts"
 import BobSuggests from "../suggestions/BobSuggests.tsx"
 import BobAnswerCitations from "./BobAnswerCitations.tsx"
 import ToggleCitations from "./citations/ToggleCitations.tsx"
-import { Sources } from "./context/Sources.tsx"
 
 interface BobAnswerBubbleProps {
   message: Message
@@ -46,9 +45,6 @@ export const BobAnswerBubble = memo(
                 isLoading={isLoading}
                 isLastMessage={isLastMessage}
               />
-              {message.context && message.context.length > 0 && (
-                <Sources context={message.context} />
-              )}
             </div>
           </div>
         </HStack>

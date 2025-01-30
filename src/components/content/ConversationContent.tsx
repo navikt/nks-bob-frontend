@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 import { NewMessage } from "../../types/Message.ts"
 import Header from "../header/Header.tsx"
 import InputField from "../inputfield/InputField.tsx"
+import { ShowAllSources } from "./chat/chatbubbles/sources/ShowAllSources.tsx"
 import ChatContainer from "./chat/ChatContainer.tsx"
 import { WhitespacePlaceholder } from "./placeholders/Placeholders.tsx"
 import DialogWrapper from "./wrappers/DialogWrapper.tsx"
@@ -35,31 +36,38 @@ function ConversationContent() {
     sendMessage(message)
   }
 
-  const followUp = messages.at(-1)?.followUp ?? []
+  const lastMessage = messages.at(-1)
+
+  const followUp = lastMessage?.followUp ?? []
+
+  const context = lastMessage?.context ?? []
 
   return (
-    <DialogWrapper>
-      <Header conversation={conversationId} />
-      <div className='chatcontainer'>
-        {!messages || messages.length < 0 ? (
-          <WhitespacePlaceholder />
-        ) : (
-          <ChatContainer
-            onSend={handleUserMessage}
-            messages={messages}
-            conversationId={conversationId!}
-            isLoading={isLoading}
-            setInputValue={inputState[1]}
-          />
-        )}
-      </div>
-      <InputField
-        inputState={inputState}
-        onSend={handleUserMessage}
-        disabled={isLoading}
-        followUp={followUp}
-      />
-    </DialogWrapper>
+    <div className='conversation-content'>
+      <DialogWrapper>
+        <Header conversation={conversationId} />
+        <div className='chatcontainer'>
+          {!messages || messages.length < 0 ? (
+            <WhitespacePlaceholder />
+          ) : (
+            <ChatContainer
+              onSend={handleUserMessage}
+              messages={messages}
+              conversationId={conversationId!}
+              isLoading={isLoading}
+              setInputValue={inputState[1]}
+            />
+          )}
+        </div>
+        <InputField
+          inputState={inputState}
+          onSend={handleUserMessage}
+          disabled={isLoading}
+          followUp={followUp}
+        />
+      </DialogWrapper>
+      <ShowAllSources context={context} />
+    </div>
   )
 }
 
