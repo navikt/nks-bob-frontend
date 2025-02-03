@@ -5,7 +5,6 @@ import { useEffect, useState } from "react"
 
 import { NewMessage } from "../../types/Message.ts"
 import amplitude from "../../utils/amplitude.ts"
-import { FollowUpQuestions } from "../content/followupquestions/FollowUpQuestions.tsx"
 import "./InputField.css"
 
 interface InputFieldProps {
@@ -90,10 +89,10 @@ function InputField({
 
   return (
     <div className='dialogcontent inputfield sticky bottom-0 z-10 h-auto flex-col gap-3 self-center px-4 pb-5'>
-      <FollowUpQuestions
+      {/* <FollowUpQuestions
         followUp={followUp}
         onSend={(question) => sendMessage(question)}
-      />
+      /> */}
       {isSensitiveInfoAlert && (
         <Alert
           variant='info'

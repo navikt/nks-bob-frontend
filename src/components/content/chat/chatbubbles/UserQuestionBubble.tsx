@@ -1,7 +1,6 @@
 import { Message } from "../../../../types/Message.ts"
 
-import { PencilWritingIcon } from "@navikt/aksel-icons"
-import { BodyLong, Button, Tooltip } from "@navikt/ds-react"
+import { BodyLong } from "@navikt/ds-react"
 import { memo } from "react"
 import Markdown from "react-markdown"
 import rehypeRaw from "rehype-raw"
@@ -29,6 +28,7 @@ const UserQuestionBubble = memo(
             <Markdown rehypePlugins={[rehypeRaw]}>{question}</Markdown>
           </BodyLong>
         </div>
+        {/*
         <Tooltip content='Rediger spørsmålet' placement='right'>
           <Button
             variant='tertiary-neutral'
@@ -39,6 +39,7 @@ const UserQuestionBubble = memo(
             className='mb-[-0.45rem]'
           />
         </Tooltip>
+        */}
       </div>
     )
   },
