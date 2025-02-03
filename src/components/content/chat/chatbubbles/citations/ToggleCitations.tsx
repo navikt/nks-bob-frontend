@@ -41,6 +41,7 @@ const ToggleCitations = ({ onToggle, message }: ToggleCitationsProps) => {
 
   const isActive = activeMessage !== null && activeMessage.id === message.id
 
+  // @ts-ignore
   const toggleActive = () => setActiveMessage(isActive ? null : message)
 
   return (

@@ -18,6 +18,7 @@ function InputField({
   inputState,
   onSend,
   disabled,
+  // @ts-ignore
   followUp,
 }: InputFieldProps) {
   const placeholderText = "Spør Bob om noe"

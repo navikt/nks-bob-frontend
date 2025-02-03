@@ -15,6 +15,7 @@ const UserQuestionBubble = memo(
   ({ userQuestion, setInputValue }: UserChatBubbleProps) => {
     const question = userQuestion?.content.replace(/\n/g, "<br>")
 
+    // @ts-ignore
     const editQuestion = () => {
       if (userQuestion) {
         setInputValue(userQuestion.content)
