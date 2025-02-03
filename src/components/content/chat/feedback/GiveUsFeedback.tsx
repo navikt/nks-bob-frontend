@@ -1,5 +1,5 @@
 import { ArrowLeftIcon, ChatExclamationmarkIcon } from "@navikt/aksel-icons"
-import { BodyLong, Button, Heading, Modal } from "@navikt/ds-react"
+import { BodyLong, Button, Heading, Modal, Tooltip } from "@navikt/ds-react"
 import { useRef } from "react"
 import Markdown from "react-markdown"
 import { Message } from "../../../../types/Message.ts"
@@ -29,15 +29,15 @@ export const GiveUsFeedback = ({ message }: GiveUsFeedbackProps) => {
 
   return (
     <div>
-      <Button
-        variant='tertiary-neutral'
-        size='small'
-        title='Meld fra om feil svar'
-        icon={<ChatExclamationmarkIcon />}
-        onClick={handleButtonClick}
-      >
-        Meld feil
-      </Button>
+      <Tooltip content='Meld inn feil svar'>
+        <Button
+          variant='tertiary-neutral'
+          size='small'
+          aria-label='Kopier svaret'
+          icon={<ChatExclamationmarkIcon />}
+          onClick={handleButtonClick}
+        />
+      </Tooltip>
       <Modal
         ref={ref}
         closeOnBackdropClick={true}

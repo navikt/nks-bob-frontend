@@ -1,6 +1,7 @@
 import { Chips } from "@navikt/ds-react"
 import { useState } from "react"
 import { Message } from "../../../../../types/Message.ts"
+import { useSourcesContext } from "../sources/ShowAllSources.tsx"
 
 interface ToggleCitationsProps {
   onToggle: (selected: string[]) => void
@@ -36,6 +37,13 @@ const ToggleCitations = ({ onToggle, message }: ToggleCitationsProps) => {
     onToggle(newSelected)
   }
 
+  const { activeMessage, setActiveMessage } = useSourcesContext()
+
+  const isActive = activeMessage !== null && activeMessage.id === message.id
+
+  // @ts-ignore
+  const toggleActive = () => setActiveMessage(isActive ? null : message)
+
   return (
     <div className='mb-3'>
       <Chips size='small'>
@@ -48,6 +56,13 @@ const ToggleCitations = ({ onToggle, message }: ToggleCitationsProps) => {
             {option}
           </Chips.Toggle>
         ))}
+        {/* <Chips.Toggle
+          key={"Vis alle kilder"}
+          selected={isActive}
+          onClick={toggleActive}
+        >
+          Vis alle kilder
+        </Chips.Toggle> */}
       </Chips>
     </div>
   )

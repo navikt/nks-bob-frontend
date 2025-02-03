@@ -1,10 +1,14 @@
 import { useParams, useSearchParams } from "react-router"
 import { useMessagesSubscription } from "../../api/ws.ts"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { NewMessage } from "../../types/Message.ts"
 import Header from "../header/Header.tsx"
 import InputField from "../inputfield/InputField.tsx"
+import {
+  ShowAllSources,
+  SourcesContextProvider,
+} from "./chat/chatbubbles/sources/ShowAllSources.tsx"
 import ChatContainer from "./chat/ChatContainer.tsx"
 import { WhitespacePlaceholder } from "./placeholders/Placeholders.tsx"
 import DialogWrapper from "./wrappers/DialogWrapper.tsx"
@@ -12,6 +16,7 @@ import DialogWrapper from "./wrappers/DialogWrapper.tsx"
 function ConversationContent() {
   const { conversationId } = useParams()
   const [searchParams, setSearchParams] = useSearchParams()
+  const inputState = useState<string>("")
 
   const { messages, sendMessage, isLoading } = useMessagesSubscription(
     conversationId!,
@@ -34,23 +39,38 @@ function ConversationContent() {
     sendMessage(message)
   }
 
+  const lastMessage = messages.at(-1)
+
+  const followUp = lastMessage?.followUp ?? []
+
   return (
-    <DialogWrapper>
-      <Header conversation={conversationId} />
-      <div className='chatcontainer'>
-        {!messages || messages.length < 0 ? (
-          <WhitespacePlaceholder />
-        ) : (
-          <ChatContainer
+    <div className='conversation-content'>
+      <SourcesContextProvider>
+        <DialogWrapper>
+          <Header conversation={conversationId} />
+          <div className='chatcontainer'>
+            {!messages || messages.length < 0 ? (
+              <WhitespacePlaceholder />
+            ) : (
+              <ChatContainer
+                onSend={handleUserMessage}
+                messages={messages}
+                conversationId={conversationId!}
+                isLoading={isLoading}
+                setInputValue={inputState[1]}
+              />
+            )}
+          </div>
+          <InputField
+            inputState={inputState}
             onSend={handleUserMessage}
-            messages={messages}
-            conversationId={conversationId!}
-            isLoading={isLoading}
+            disabled={isLoading}
+            followUp={followUp}
           />
-        )}
-      </div>
-      <InputField onSend={handleUserMessage} disabled={isLoading} />
-    </DialogWrapper>
+        </DialogWrapper>
+        <ShowAllSources />
+      </SourcesContextProvider>
+    </div>
   )
 }
 

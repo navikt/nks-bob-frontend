@@ -31,9 +31,8 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
     )
   }
 
-  const expandAll = matchingContextCitationData?.source === "navno"
-    ? "?expandall=true"
-    : ""
+  const expandAll =
+    matchingContextCitationData?.source === "navno" ? "?expandall=true" : ""
 
   return (
     <div className='mb-2 flex flex-col'>

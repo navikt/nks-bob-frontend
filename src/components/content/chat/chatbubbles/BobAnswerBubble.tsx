@@ -1,5 +1,5 @@
 import { BodyLong, HStack, Skeleton, VStack } from "@navikt/ds-react"
-import { useState } from "react"
+import { memo, useState } from "react"
 import Markdown from "react-markdown"
 import BobHead from "../../../../assets/illustrations/BobHead.svg"
 import { Message, NewMessage } from "../../../../types/Message.ts"
@@ -16,98 +16,71 @@ interface BobAnswerBubbleProps {
 
 const options = ["Sitater fra Nav.no", "Sitater fra Kunnskapsbasen"]
 
-export const BobAnswerBubble = ({
-  message,
-  onSend,
-  isLoading,
-  isLastMessage,
-}: BobAnswerBubbleProps) => {
-  const [selectedCitations, setSelectedCitations] = useState<string[]>(options)
+export const BobAnswerBubble = memo(
+  ({ message, onSend, isLoading, isLastMessage }: BobAnswerBubbleProps) => {
+    const hasError = ({ errors, pending, content }: Message): boolean =>
+      errors.length > 0 && !pending && content === ""
 
-  const handleToggleCitations = (selected: string[]) => {
-    setSelectedCitations(selected)
-  }
+    const isPending = ({ pending, content }: Message): boolean =>
+      pending && content === ""
 
-  const filteredCitations = message.citations.filter((citation) => {
-    if (selectedCitations.length === 0) {
-      return false
-    }
-    return selectedCitations.some((selected) => {
-      if (selected === "Sitater fra Nav.no") {
-        return message.context[citation.sourceId].source === "navno"
-      }
-      if (selected === "Sitater fra Kunnskapsbasen") {
-        return message.context[citation.sourceId].source === "nks"
-      }
-      return false
-    })
-  })
-
-  const hasError = ({ errors, pending, content }: Message): boolean =>
-    errors.length > 0 && !pending && content === ""
-
-  const isPending = ({ pending, content }: Message): boolean =>
-    pending && content === ""
-
-  return (
-    <VStack gap='1' align='stretch' className='pb-12'>
-      <HStack gap='1' align='start' wrap={false} width='full'>
-        <img src={BobHead} alt='Bob' width='30px' className='bobhead' />
-        <div className='flex w-full flex-col pt-3'>
-          <div className='overflow-wrap mb-4 flex w-full'>
-            {hasError(message)
-              ? <ErrorContent message={message} />
-              : isPending(message)
-                ? <LoadingContent />
-                : <MessageContent message={message} />}
-          </div>
-          <div className='flex flex-col'>
-            {(!isLoading || !isLastMessage) && (
-              <BobSuggests
+    return (
+      <VStack gap='1' align='stretch' className='pb-12'>
+        <HStack gap='1' align='start' wrap={false} width='full'>
+          <img src={BobHead} alt='Bob' width='30px' className='bobhead' />
+          <div className='flex w-full flex-col pt-3'>
+            <div className='overflow-wrap mb-2 flex w-full'>
+              {hasError(message) ? (
+                <ErrorContent message={message} />
+              ) : isPending(message) ? (
+                <LoadingContent />
+              ) : (
+                <MessageContent message={message} />
+              )}
+            </div>
+            <div className='flex flex-col'>
+              <Citations
                 message={message}
                 onSend={onSend}
+                isLoading={isLoading}
                 isLastMessage={isLastMessage}
               />
-            )}
-            {message.citations && message.citations.length > 0 && (
-              <div className='fade-in flex flex-col gap-2'>
-                <ToggleCitations
-                  onToggle={handleToggleCitations}
-                  message={message}
-                />
-                {filteredCitations.map((citation, index) => (
-                  <BobAnswerCitations
-                    citation={citation}
-                    key={`citation-${index}`}
-                    context={message.context}
-                  />
-                ))}
-              </div>
-            )}
+            </div>
           </div>
-        </div>
-      </HStack>
-    </VStack>
-  )
-}
+        </HStack>
+      </VStack>
+    )
+  },
+  (prevProps, nextProps) => {
+    const prevMessage = prevProps.message
+    const nextMessage = nextProps.message
 
-const ErrorContent = ({ message }: { message: Message }) =>
+    if (!prevMessage.pending) {
+      return true
+    }
+
+    return prevMessage === nextMessage
+  },
+)
+
+const ErrorContent = ({ message }: { message: Message }) => (
   <BodyLong>
     <Markdown>
       {message.errors
-        .map(error => `**${error.title}:** ${error.description}`)
-        .join("\n\n")
-      }
+        .map((error) => `**${error.title}:** ${error.description}`)
+        .join("\n\n")}
     </Markdown>
   </BodyLong>
+)
 
-const LoadingContent = () =>
+const LoadingContent = () => (
   <div className='w-full'>
     <Skeleton width='100%' variant='text' />
     <Skeleton width='70%' variant='text' />
   </div>
+)
 
-const MessageContent = ({ message }: { message: Message }) =>
+const MessageContent = ({ message }: { message: Message }) => (
   <BodyLong className='fade-in'>
     <Markdown
       className='markdown'
@@ -120,4 +93,75 @@ const MessageContent = ({ message }: { message: Message }) =>
       {message.content}
     </Markdown>
   </BodyLong>
+)
 
+const Citations = memo(
+  ({ message, onSend, isLoading, isLastMessage }: BobAnswerBubbleProps) => {
+    const [selectedCitations, setSelectedCitations] =
+      useState<string[]>(options)
+
+    const handleToggleCitations = (selected: string[]) => {
+      setSelectedCitations(selected)
+    }
+
+    const filteredCitations = message.citations.filter((citation) => {
+      if (selectedCitations.length === 0) {
+        return false
+      }
+      return selectedCitations.some((selected) => {
+        if (selected === "Sitater fra Nav.no") {
+          return message.context[citation.sourceId].source === "navno"
+        }
+        if (selected === "Sitater fra Kunnskapsbasen") {
+          return message.context[citation.sourceId].source === "nks"
+        }
+        return false
+      })
+    })
+
+    return (
+      <>
+        {(!isLoading || !isLastMessage) && (
+          <BobSuggests
+            message={message}
+            onSend={onSend}
+            isLastMessage={isLastMessage}
+          />
+        )}
+        {message.citations && message.citations.length > 0 && (
+          <div className='fade-in flex flex-col gap-2'>
+            <ToggleCitations
+              onToggle={handleToggleCitations}
+              message={message}
+            />
+            {filteredCitations.map((citation, index) => (
+              <BobAnswerCitations
+                citation={citation}
+                key={`citation-${index}`}
+                context={message.context}
+              />
+            ))}
+          </div>
+        )}
+      </>
+    )
+  },
+  (prevProps, nextProps) => {
+    const prevCitations = prevProps.message.citations
+    const nextCitations = nextProps.message.citations
+
+    if (prevProps.isLoading !== nextProps.isLoading) {
+      return false
+    }
+
+    if (prevProps.isLastMessage !== nextProps.isLastMessage) {
+      return false
+    }
+
+    if (prevCitations.length === nextCitations.length) {
+      return true
+    }
+
+    return prevCitations === nextCitations
+  },
+)

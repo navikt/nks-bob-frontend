@@ -8,27 +8,34 @@ import amplitude from "../../utils/amplitude.ts"
 import "./InputField.css"
 
 interface InputFieldProps {
+  inputState: [string, React.Dispatch<React.SetStateAction<string>>]
   onSend: (message: NewMessage) => void
   disabled: boolean
+  followUp: string[]
 }
 
-function InputField({ onSend, disabled }: InputFieldProps) {
+function InputField({
+  inputState,
+  onSend,
+  disabled,
+  // @ts-ignore
+  followUp,
+}: InputFieldProps) {
   const placeholderText = "Spør Bob om noe"
-  const [inputValue, setInputValue] = useState<string>("")
+  const [inputValue, setInputValue] = inputState
   const [isSensitiveInfoAlert, setIsSensitiveInfoAlert] =
     useState<boolean>(false)
   const [containsFnr, setContainsFnr] = useState<boolean>(false)
   const [sendDisabled, setSendDisabled] = useState<boolean>(disabled)
 
-  function sendMessage() {
+  function sendMessage(messageContent?: string) {
     const message: NewMessage = {
-      content: inputValue,
+      content: messageContent ?? inputValue,
     }
-    if (inputValue.trim() !== "") {
+    if (message.content.trim() !== "") {
       onSend(message)
-    } else {
-      setInputValue("")
     }
+    setInputValue("")
   }
 
   function handlePasteInfoAlert() {
@@ -83,6 +90,10 @@ function InputField({ onSend, disabled }: InputFieldProps) {
 
   return (
     <div className='dialogcontent inputfield sticky bottom-0 z-10 h-auto flex-col gap-3 self-center px-4 pb-5'>
+      {/* <FollowUpQuestions
+        followUp={followUp}
+        onSend={(question) => sendMessage(question)}
+      /> */}
       {isSensitiveInfoAlert && (
         <Alert
           variant='info'

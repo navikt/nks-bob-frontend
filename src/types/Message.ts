@@ -22,6 +22,7 @@ export type Message = {
   context: Context[]
   pending: boolean
   errors: MessageError[]
+  followUp: string[]
 }
 
 export type Citation = {
