@@ -37,7 +37,11 @@ const ToggleCitations = ({ onToggle, message }: ToggleCitationsProps) => {
     onToggle(newSelected)
   }
 
-  const { viewAllSources, toggleViewAllSources } = useSourcesContext()
+  const { activeMessage, setActiveMessage } = useSourcesContext()
+
+  const isActive = activeMessage !== null && activeMessage.id === message.id
+
+  const toggleActive = () => setActiveMessage(isActive ? null : message)
 
   return (
     <div className='mb-3'>
@@ -53,8 +57,8 @@ const ToggleCitations = ({ onToggle, message }: ToggleCitationsProps) => {
         ))}
         <Chips.Toggle
           key={"Vis alle kilder"}
-          selected={viewAllSources}
-          onClick={toggleViewAllSources}
+          selected={isActive}
+          onClick={toggleActive}
         >
           Vis alle kilder
         </Chips.Toggle>

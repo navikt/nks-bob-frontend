@@ -1,17 +1,17 @@
 .all-sources-container {
-    position: sticky;
-    right: 25rem;
-    top: 0;
-    width: 25rem;
-    min-width: 25rem;
+    transform: translateX(25rem);
+    min-width: 0;
+    max-width: 0;
+    
     padding-top: 0.5rem;
     border-left: 1px solid var(--ax-border-subtle);
-    transition: 0.2s;
+    transition: .3s ease-in-out;
 }
 
 .all-sources-container.active {
-  /* transform: translateX(25rem); */
-  right: -25rem;
+    width: 25rem;
+    min-width: 25rem;
+    transform: translateX(0);
 }
 
 .heading {

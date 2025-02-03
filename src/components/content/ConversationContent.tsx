@@ -5,7 +5,10 @@ import { useEffect, useState } from "react"
 import { NewMessage } from "../../types/Message.ts"
 import Header from "../header/Header.tsx"
 import InputField from "../inputfield/InputField.tsx"
-import { ShowAllSources, SourcesContextProvider } from "./chat/chatbubbles/sources/ShowAllSources.tsx"
+import {
+  ShowAllSources,
+  SourcesContextProvider,
+} from "./chat/chatbubbles/sources/ShowAllSources.tsx"
 import ChatContainer from "./chat/ChatContainer.tsx"
 import { WhitespacePlaceholder } from "./placeholders/Placeholders.tsx"
 import DialogWrapper from "./wrappers/DialogWrapper.tsx"
@@ -40,8 +43,6 @@ function ConversationContent() {
 
   const followUp = lastMessage?.followUp ?? []
 
-  const context = lastMessage?.context ?? []
-
   return (
     <div className='conversation-content'>
       <SourcesContextProvider>
@@ -67,7 +68,7 @@ function ConversationContent() {
             followUp={followUp}
           />
         </DialogWrapper>
-        <ShowAllSources context={context} />
+        <ShowAllSources />
       </SourcesContextProvider>
     </div>
   )
