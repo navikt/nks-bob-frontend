@@ -11,6 +11,12 @@ import { UserConfig } from "../types/User"
 
 const API_URL = `${import.meta.env.BASE_URL}bob-api`
 
+type ApiError = {
+  status: number,
+  message: string,
+  data: any
+}
+
 async function fetcher<T>(input: RequestInfo, init?: RequestInit): Promise<T> {
   const res = await fetch(`${API_URL}${input}`, {
     ...init,
@@ -21,6 +27,14 @@ async function fetcher<T>(input: RequestInfo, init?: RequestInit): Promise<T> {
   })
   if (res.status === 204) {
     return {} as T
+  }
+
+  if (res.status >= 400) {
+    throw {
+      status: res.status,
+      message: res.statusText,
+      data: await res.json(),
+    } as ApiError
   }
 
   return res.json() as Promise<T>
@@ -177,7 +191,7 @@ export const preloadUserConfig = () => {
 }
 
 export const useUserConfig = () => {
-  const { data, isLoading, error } = useSWR<UserConfig>(
+  const { data, isLoading, error } = useSWR<UserConfig, ApiError>(
     "/api/v1/user/config",
     fetcher,
     {

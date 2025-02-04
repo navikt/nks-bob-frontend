@@ -1,5 +1,5 @@
-import { Button, HStack, ReadMore } from "@navikt/ds-react"
-import { memo, useState } from "react"
+import { Label, VStack } from "@navikt/ds-react"
+import { memo } from "react"
 
 interface FollowUpQuestionsProps {
   followUp: string[]
@@ -8,41 +8,23 @@ interface FollowUpQuestionsProps {
 
 export const FollowUpQuestions = memo(
   ({ followUp, onSend }: FollowUpQuestionsProps) => {
-    const [open, setOpen] = useState(true)
-
-    const localQuestions = [
-      "Hva er åpningstidene på lokalkontorene deres??",
-      "Hvordan søker jeg om sykepenger?",
-      "Hva må man gjøre for å gå fra sykepenger til AAP??",
-    ]
-
-    const questionsToShow =
-      process.env.NODE_ENV === "development"
-        ? followUp.concat(localQuestions)
-        : followUp
-
     return (
-      <HStack justify='space-evenly'>
-        {questionsToShow.length > 0 && (
-          <ReadMore
-            open={open}
-            onOpenChange={(isOpen) => setOpen(isOpen)}
-            header='Forslag fra Bob'
-            className='w-full'
-          >
-            {questionsToShow.map((question, index) => (
-              <Button
-                variant='tertiary'
-                size='small'
+      followUp.length > 0 && (
+        <VStack gap='2'>
+          <Label textColor='subtle'>Forslag fra Bob</Label>
+          <div className='flex w-full flex-row gap-2'>
+            {followUp.map((question, index) => (
+              <button
                 onClick={() => onSend(question)}
                 key={`question-${index}`}
+                className='navds-chips__chip navds-chips__toggle navds-chips__toggle--action basis-1/3 truncate transition-all hover:basis-full'
               >
-                {question}
-              </Button>
+                <span className='truncate'>{question}</span>
+              </button>
             ))}
-          </ReadMore>
-        )}
-      </HStack>
+          </div>
+        </VStack>
+      )
     )
   },
   (prevProps, nextProps) => {
