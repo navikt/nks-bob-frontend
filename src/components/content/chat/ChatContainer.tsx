@@ -8,10 +8,9 @@ interface ChatDialogProps {
   messages: Message[]
   onSend: (message: NewMessage) => void
   isLoading: boolean
-  setInputValue: React.Dispatch<React.SetStateAction<string>>
 }
 
-function ChatContainer({ messages, onSend, isLoading, setInputValue }: ChatDialogProps) {
+function ChatContainer({ messages, onSend, isLoading }: ChatDialogProps) {
   const lastMessageRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
@@ -28,10 +27,7 @@ function ChatContainer({ messages, onSend, isLoading, setInputValue }: ChatDialo
         message.messageRole === "human" ? (
           <Fragment key={message.id}>
             <div ref={lastMessageRef} />
-            <UserQuestionBubble
-              userQuestion={message}
-              setInputValue={setInputValue}
-            />
+            <UserQuestionBubble userQuestion={message} />
           </Fragment>
         ) : (
           <BobAnswerBubble

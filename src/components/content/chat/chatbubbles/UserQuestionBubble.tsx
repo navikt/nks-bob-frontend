@@ -1,21 +1,23 @@
 import { Message } from "../../../../types/Message.ts"
 
-import { BodyLong } from "@navikt/ds-react"
+import { PencilWritingIcon } from "@navikt/aksel-icons"
+import { BodyLong, Button, Tooltip } from "@navikt/ds-react"
 import { memo } from "react"
 import Markdown from "react-markdown"
 import rehypeRaw from "rehype-raw"
+import { useInputFieldContext } from "../../../inputfield/InputField.tsx"
 import "./ChatBubbles.css"
 
 interface UserChatBubbleProps {
   userQuestion?: Message
-  setInputValue: React.Dispatch<React.SetStateAction<string>>
 }
 
 const UserQuestionBubble = memo(
-  ({ userQuestion, setInputValue }: UserChatBubbleProps) => {
+  ({ userQuestion }: UserChatBubbleProps) => {
     const question = userQuestion?.content.replace(/\n/g, "<br>")
 
-    // @ts-ignore
+    const { setInputValue } = useInputFieldContext()
+
     const editQuestion = () => {
       if (userQuestion) {
         setInputValue(userQuestion.content)
@@ -29,7 +31,6 @@ const UserQuestionBubble = memo(
             <Markdown rehypePlugins={[rehypeRaw]}>{question}</Markdown>
           </BodyLong>
         </div>
-        {/*
         <Tooltip content='Rediger spørsmålet' placement='right'>
           <Button
             variant='tertiary-neutral'
@@ -40,7 +41,6 @@ const UserQuestionBubble = memo(
             className='mb-[-0.45rem]'
           />
         </Tooltip>
-        */}
       </div>
     )
   },
