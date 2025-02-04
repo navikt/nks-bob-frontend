@@ -13,6 +13,10 @@
     border-left: 1px solid var(--ax-border-subtle);
     transition: right .3s ease-in-out;
 
+    background: white;
+}
+
+body.dark .all-sources-container {
     background: var(--new-bg);
 }
 
@@ -94,7 +98,7 @@ body.dark .sourcepanel:hover {
     text-decoration: underline;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 800px) {
     .all-sources-container {
         width: 20rem;
     }
