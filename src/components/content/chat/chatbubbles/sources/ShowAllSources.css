@@ -1,17 +1,28 @@
 .all-sources-container {
-    transform: translateX(25rem);
-    min-width: 0;
-    max-width: 0;
+    position: fixed;
+    right: -25rem;
+
+    width: 25rem;
+    min-width: 25rem;
+    overflow-x: hidden;
     
     padding-top: 0.5rem;
     border-left: 1px solid var(--ax-border-subtle);
-    transition: .3s ease-in-out;
+    transition: right .3s ease-in-out;
 }
 
 .all-sources-container.active {
-    width: 25rem;
-    min-width: 25rem;
-    transform: translateX(0);
+    right: 0;
+}
+
+.pagewrapper:has(.all-sources-container.inactive) {
+    transition: padding-right .3s ease-in-out;
+    padding-right: 0;
+}
+
+.pagewrapper:has(.all-sources-container.active) {
+    transition: padding-right .3s ease-in-out;
+    padding-right: 25rem;
 }
 
 .heading {
