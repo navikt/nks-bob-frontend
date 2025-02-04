@@ -1,6 +1,6 @@
 .questionbubble {
   display: flex;
-  padding: 16px;
+  padding: 12px;
   flex-direction: column;
   gap: 8px;
   align-self: flex-end;
@@ -17,4 +17,8 @@
 body.dark .questionbubble {
   background: rgba(66, 32, 46, 1);
   color: #ffffff;
+}
+
+.questionhover:hover .hide-show-edit {
+  display: flex;
 }

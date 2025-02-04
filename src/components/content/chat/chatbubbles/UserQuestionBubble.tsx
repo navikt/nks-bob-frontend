@@ -25,22 +25,23 @@ const UserQuestionBubble = memo(
     }
 
     return (
-      <div className='mb-[20px] flex w-fit flex-row items-end gap-2 self-end'>
+      <div className='questionhover mb-[20px] flex w-fit flex-row items-end gap-1 self-end'>
+        <div className='hide-show-edit fade-in hidden'>
+          <Tooltip content='Rediger spørsmålet' placement='right'>
+            <Button
+              variant='tertiary-neutral'
+              size='small'
+              aria-label='Rediger spørsmålet'
+              onClick={editQuestion}
+              icon={<PencilWritingIcon />}
+            />
+          </Tooltip>
+        </div>
         <div className='questionbubble max-w-prose'>
           <BodyLong>
             <Markdown rehypePlugins={[rehypeRaw]}>{question}</Markdown>
           </BodyLong>
         </div>
-        <Tooltip content='Rediger spørsmålet' placement='right'>
-          <Button
-            variant='tertiary-neutral'
-            size='small'
-            aria-label='Rediger spørsmålet'
-            onClick={editQuestion}
-            icon={<PencilWritingIcon />}
-            className='mb-[-0.45rem]'
-          />
-        </Tooltip>
       </div>
     )
   },
