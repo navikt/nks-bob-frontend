@@ -1,32 +1,72 @@
 import { Alert, BodyShort, Button, Textarea } from "@navikt/ds-react"
 
 import { PaperplaneIcon } from "@navikt/aksel-icons"
-import { useEffect, useState } from "react"
+import {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useState,
+} from "react"
 
 import { NewMessage } from "../../types/Message.ts"
 import amplitude from "../../utils/amplitude.ts"
+import { FollowUpQuestions } from "../content/followupquestions/FollowUpQuestions.tsx"
 import "./InputField.css"
 
-interface InputFieldProps {
-  inputState: [string, React.Dispatch<React.SetStateAction<string>>]
-  onSend: (message: NewMessage) => void
-  disabled: boolean
+type InputFieldContextType = {
+  inputValue: string
+  setInputValue: React.Dispatch<React.SetStateAction<string>>
   followUp: string[]
+  setFollowUp: React.Dispatch<React.SetStateAction<string[]>>
 }
 
-function InputField({
-  inputState,
-  onSend,
-  disabled,
-  // @ts-ignore
-  followUp,
-}: InputFieldProps) {
+const InputFieldContext = createContext<InputFieldContextType | undefined>(
+  undefined,
+)
+
+export const useInputFieldContext = () => {
+  const context = useContext(InputFieldContext)
+  if (context === undefined) {
+    throw new Error(
+      "useInputFieldContext must be used within InputFieldContextProvider",
+    )
+  }
+
+  return context
+}
+
+export const InputFieldContextProvider = ({ children }: PropsWithChildren) => {
+  const [inputValue, setInputValue] = useState<string>("")
+  const [followUp, setFollowUp] = useState<string[]>([])
+
+  return (
+    <InputFieldContext.Provider
+      value={{
+        inputValue,
+        setInputValue,
+        followUp,
+        setFollowUp,
+      }}
+    >
+      {children}
+    </InputFieldContext.Provider>
+  )
+}
+
+interface InputFieldProps {
+  onSend: (message: NewMessage) => void
+  disabled: boolean
+}
+
+function InputField({ onSend, disabled }: InputFieldProps) {
   const placeholderText = "Spør Bob om noe"
-  const [inputValue, setInputValue] = inputState
   const [isSensitiveInfoAlert, setIsSensitiveInfoAlert] =
     useState<boolean>(false)
   const [containsFnr, setContainsFnr] = useState<boolean>(false)
   const [sendDisabled, setSendDisabled] = useState<boolean>(disabled)
+
+  const { inputValue, setInputValue, followUp } = useInputFieldContext()
 
   function sendMessage(messageContent?: string) {
     const message: NewMessage = {
@@ -90,10 +130,10 @@ function InputField({
 
   return (
     <div className='dialogcontent inputfield sticky bottom-0 z-10 h-auto flex-col gap-3 self-center px-4 pb-5'>
-      {/* <FollowUpQuestions
+      <FollowUpQuestions
         followUp={followUp}
         onSend={(question) => sendMessage(question)}
-      /> */}
+      />
       {isSensitiveInfoAlert && (
         <Alert
           variant='info'
