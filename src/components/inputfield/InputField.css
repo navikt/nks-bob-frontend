@@ -21,3 +21,7 @@ body.dark .inputfield {
   width: 100%;
   flex-grow: 1;
 }
+
+.textarea-transition {
+  transition: height 0.3s ease;
+}

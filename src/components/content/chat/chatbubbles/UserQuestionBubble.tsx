@@ -16,10 +16,11 @@ const UserQuestionBubble = memo(
   ({ userQuestion }: UserChatBubbleProps) => {
     const question = userQuestion?.content.replace(/\n/g, "<br>")
 
-    const { setInputValue } = useInputFieldContext()
+    const { setInputValue, focusTextarea } = useInputFieldContext()
 
     const editQuestion = () => {
       if (userQuestion) {
+        focusTextarea()
         setInputValue(userQuestion.content)
       }
     }
@@ -27,7 +28,7 @@ const UserQuestionBubble = memo(
     return (
       <div className='questionhover mb-[20px] flex w-fit flex-row items-end gap-1 self-end'>
         <div className='hide-show-edit fade-in hidden'>
-          <Tooltip content='Rediger spørsmålet' placement='right'>
+          <Tooltip content='Rediger spørsmålet' placement='bottom'>
             <Button
               variant='tertiary-neutral'
               size='small'

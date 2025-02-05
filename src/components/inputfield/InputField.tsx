@@ -6,9 +6,11 @@ import {
   PropsWithChildren,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react"
 
+import * as React from "react"
 import { NewMessage } from "../../types/Message.ts"
 import amplitude from "../../utils/amplitude.ts"
 import { FollowUpQuestions } from "../content/followupquestions/FollowUpQuestions.tsx"
@@ -19,6 +21,8 @@ type InputFieldContextType = {
   setInputValue: React.Dispatch<React.SetStateAction<string>>
   followUp: string[]
   setFollowUp: React.Dispatch<React.SetStateAction<string[]>>
+  focusTextarea: () => void
+  textareaRef: React.RefObject<HTMLTextAreaElement>
 }
 
 const InputFieldContext = createContext<InputFieldContextType | undefined>(
@@ -39,6 +43,11 @@ export const useInputFieldContext = () => {
 export const InputFieldContextProvider = ({ children }: PropsWithChildren) => {
   const [inputValue, setInputValue] = useState<string>("")
   const [followUp, setFollowUp] = useState<string[]>([])
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
+
+  const focusTextarea = () => {
+    textareaRef.current?.focus()
+  }
 
   return (
     <InputFieldContext.Provider
@@ -47,6 +56,8 @@ export const InputFieldContextProvider = ({ children }: PropsWithChildren) => {
         setInputValue,
         followUp,
         setFollowUp,
+        focusTextarea,
+        textareaRef,
       }}
     >
       {children}
@@ -66,7 +77,8 @@ function InputField({ onSend, disabled }: InputFieldProps) {
   const [containsFnr, setContainsFnr] = useState<boolean>(false)
   const [sendDisabled, setSendDisabled] = useState<boolean>(disabled)
 
-  const { inputValue, setInputValue, followUp } = useInputFieldContext()
+  const { inputValue, setInputValue, followUp, textareaRef } =
+    useInputFieldContext()
 
   function sendMessage(messageContent?: string) {
     const message: NewMessage = {
@@ -76,6 +88,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
       onSend(message)
     }
     setInputValue("")
+    textareaRef.current?.blur()
   }
 
   function handlePasteInfoAlert() {
@@ -129,7 +142,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
   }, [inputValue, disabled])
 
   return (
-    <div className='dialogcontent inputfield sticky bottom-0 z-10 h-auto flex-col gap-3 self-center px-4 pb-5'>
+    <div className='dialogcontent inputfield sticky bottom-0 z-10 h-auto flex-col gap-3 self-center px-4 py-2'>
       <FollowUpQuestions
         followUp={followUp}
         onSend={(question) => sendMessage(question)}
@@ -157,6 +170,8 @@ function InputField({ onSend, disabled }: InputFieldProps) {
       )}
       <div className='relative flex items-center'>
         <Textarea
+          autoFocus
+          ref={textareaRef}
           size='medium'
           label=''
           hideLabel
@@ -169,6 +184,14 @@ function InputField({ onSend, disabled }: InputFieldProps) {
           onKeyDown={handleKeyDown}
           disabled={disabled}
           onPaste={handlePasteInfoAlert}
+          onFocus={(e) => {
+            e.target.style.height = "120px"
+            e.target.classList.add("textarea-transition")
+          }}
+          onBlur={(e) => {
+            e.target.style.height = "45px"
+            e.target.classList.remove("textarea-transition")
+          }}
         />
         <Button
           icon={<PaperplaneIcon title='Send melding' />}
@@ -179,7 +202,11 @@ function InputField({ onSend, disabled }: InputFieldProps) {
           disabled={sendDisabled}
         />
       </div>
-      <BodyShort size='small' align='center'>
+      <BodyShort
+        size='small'
+        align='center'
+        className='navds-typo--color-subtle'
+      >
         Bob er en kunstig intelligens og kan ta feil – sjekk kilder for å være
         sikker.
       </BodyShort>

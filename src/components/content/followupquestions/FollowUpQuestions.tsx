@@ -11,7 +11,9 @@ export const FollowUpQuestions = memo(
     return (
       followUp.length > 0 && (
         <VStack gap='2'>
-          <Label textColor='subtle'>Forslag fra Bob</Label>
+          <Label textColor='subtle' size='small'>
+            Forslag fra Bob
+          </Label>
           <div className='flex w-full flex-row gap-2'>
             {followUp.map((question, index) => (
               <button
