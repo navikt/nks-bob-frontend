@@ -44,15 +44,11 @@ export async function getToken(): Promise<TokenResult> {
 
 export const entraHandler =
   (_audience: string, _log: Logger) =>
-    async (
-      _req: Request,
-      res: Response,
-      next: NextFunction
-    ) => {
-      const result = await getToken()
-      if (result.ok) {
-        res.setHeader("Authorization", `Bearer ${result.data}`)
-      }
-
-      next()
+  async (_req: Request, res: Response, next: NextFunction) => {
+    const result = await getToken()
+    if (result.ok) {
+      res.setHeader("Authorization", `Bearer ${result.data}`)
     }
+
+    next()
+  }
