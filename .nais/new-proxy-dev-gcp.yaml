@@ -40,7 +40,7 @@ spec:
           - id: "ad604335-b339-4804-82ee-fb5e2bcb87c9" # Brukergruppe
     sidecar:
       enabled: true
-      autoLogin: false
+      autoLogin: true
   accessPolicy:
     outbound:
       rules:

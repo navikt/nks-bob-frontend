@@ -238,12 +238,12 @@ const main = async () => {
    */
   app.get("/login", (req, res) => {
     const target = new URL(LOGIN_URL)
-    const referer = req.get("referer")
+    const referer = (req.query.referer as string | undefined) ?? "/"
     log.info(`redirecting to login with referer ${referer}`)
 
     target.searchParams.set("redirect", referer!)
+    res.setHeader("Referer", referer!)
 
-    // `${req.protocol}://${req.hostname}/`)
     res.redirect(target.href)
   })
 
