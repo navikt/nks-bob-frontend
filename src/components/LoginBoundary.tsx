@@ -25,7 +25,7 @@ export const LoginBoundary = (props: PropsWithChildren) => {
       </>
     )
   } else if (isLoading) {
-    return "loading"
+    return <>{props.children}</>
   }
 
   return "unknown"
