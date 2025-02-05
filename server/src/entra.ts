@@ -55,4 +55,4 @@ export const getToken = (
   req: IncomingMessage,
   audience: string,
 ): Promise<TokenResult> =>
-  MILJO === "local" ? mock.getToken() : texas.getOboToken(log, req, audience)
+  MILJO === "local" ? mock.getToken(log) : texas.getOboToken(log, req, audience)

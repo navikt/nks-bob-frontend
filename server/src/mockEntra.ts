@@ -29,13 +29,13 @@ async function fetchToken() {
   return token
 }
 
-export async function getToken(): Promise<TokenResult> {
+export async function getToken(log: Logger): Promise<TokenResult> {
   const cachedToken = await tokenCache.getItem<string>("token")
   if (cachedToken) {
     return result.ok(cachedToken)
   }
 
-  console.log("Token expired. Fetching new token.")
+  log.info("Token expired. Fetching new token.")
   const newToken = await fetchToken()
   await tokenCache.setItem("token", newToken, { ttl: 55 * 60 }) // 55 minutes
 
@@ -43,9 +43,9 @@ export async function getToken(): Promise<TokenResult> {
 }
 
 export const entraHandler =
-  (_audience: string, _log: Logger) =>
+  (_audience: string, log: Logger) =>
   async (_req: Request, res: Response, next: NextFunction) => {
-    const result = await getToken()
+    const result = await getToken(log)
     if (result.ok) {
       res.setHeader("Authorization", `Bearer ${result.data}`)
     }
