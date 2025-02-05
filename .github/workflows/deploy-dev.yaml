@@ -1,6 +1,9 @@
-name: Deploy Bob frontend and new proxy to dev
+name: Deploy Bob frontend to dev
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
     branches:
       - main
@@ -96,7 +99,6 @@ jobs:
   deploy-dev-gcp:
     needs: [ build ]
     runs-on: ubuntu-latest
-    # if: github.ref == 'refs/heads/main'
     permissions:
       id-token: write
     steps:
@@ -105,6 +107,6 @@ jobs:
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
-          RESOURCE: .nais/new-proxy-dev-gcp.yaml
+          RESOURCE: .nais/dev-gcp.yaml
           PRINT_PAYLOAD: true
           VAR: commit=${{ github.sha }},image=${{ needs.build.outputs.image }}

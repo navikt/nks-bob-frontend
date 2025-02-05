@@ -8,7 +8,7 @@ export const LoginBoundary = (props: PropsWithChildren) => {
 
   if (error?.status === 401) {
     const currentHref = window.location.href
-    window.location.href = `/login?referer=${currentHref}`
+    window.location.href = `/login?referer=${encodeURIComponent(currentHref)}`
     return <></>
   } else if (userConfig !== undefined) {
     return <>{props.children}</>
@@ -25,7 +25,7 @@ export const LoginBoundary = (props: PropsWithChildren) => {
       </>
     )
   } else if (isLoading) {
-    return "loading"
+    return <>{props.children}</>
   }
 
   return "unknown"
