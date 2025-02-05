@@ -289,8 +289,8 @@ body.dark {
   /*  Inputfield  */
   --ac-textarea-bg: var(--new-bg);
   --ac-textarea-text: var(--darkmode-text-default);
-  --ac-textarea-placeholder: rgba(73, 81, 94, 1);
-  --ac-textarea-border: rgba(101, 109, 123, 1);
+  --ac-textarea-placeholder: rgba(165, 172, 182, 1);
+  --ac-textarea-border: rgba(165, 172, 182, 1);
   --ac-textarea-hover-border: rgba(66, 138, 227, 1);
   --ac-textarea-active-border: rgba(66, 138, 227, 1);
 

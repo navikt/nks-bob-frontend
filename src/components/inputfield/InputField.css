@@ -25,3 +25,11 @@ body.dark .inputfield {
 .textarea-transition {
   transition: height 0.3s ease;
 }
+
+.detailcolor {
+  color: var(--a-text-subtle)
+}
+
+body.dark .detailcolor {
+  color: rgba(118, 126, 140, 1);
+}

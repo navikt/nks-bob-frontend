@@ -71,7 +71,7 @@ interface InputFieldProps {
 }
 
 function InputField({ onSend, disabled }: InputFieldProps) {
-  const placeholderText = "Spør Bob om noe"
+  const placeholderText = "Spør Bob om noe Nav-relatert"
   const [isSensitiveInfoAlert, setIsSensitiveInfoAlert] =
     useState<boolean>(false)
   const [containsFnr, setContainsFnr] = useState<boolean>(false)
@@ -202,11 +202,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
           disabled={sendDisabled}
         />
       </div>
-      <BodyShort
-        size='small'
-        align='center'
-        className='navds-typo--color-subtle'
-      >
+      <BodyShort size='small' align='center' className='detailcolor'>
         Bob er en kunstig intelligens og kan ta feil – sjekk kilder for å være
         sikker.
       </BodyShort>
