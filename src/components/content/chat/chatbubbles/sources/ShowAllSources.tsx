@@ -74,28 +74,32 @@ export const ShowAllSources = () => {
           spørsmålet. Merk at for hver artikkel listet opp her så har ikke Bob
           tilgang til hele artikkelen, men kun et utdrag av den.
         </BodyLong>
-        <VStack>
-          <HStack className='sourceheading gap-2'>
-            <KunnskapsbasenIcon />
-            <BodyShort size='small'>Kunnskapsbasen</BodyShort>
-          </HStack>
-          <VStack className='my-1'>
-            {nksContext.map((ctx) => (
-              <NksSource context={ctx} />
-            ))}
+        {nksContext.length > 0 && (
+          <VStack>
+            <HStack className='sourceheading gap-2'>
+              <KunnskapsbasenIcon />
+              <BodyShort size='small'>Kunnskapsbasen</BodyShort>
+            </HStack>
+            <VStack className='my-1'>
+              {nksContext.map((ctx) => (
+                <NksSource context={ctx} />
+              ))}
+            </VStack>
           </VStack>
-        </VStack>
-        <VStack className='sourcepanel-list'>
-          <HStack className='sourceheading gap-2'>
-            <NavNoIcon />
-            <BodyShort size='small'>Nav.no</BodyShort>
-          </HStack>
-          <VStack className='my-1'>
-            {navContext.map((ctx) => (
-              <NavSource context={ctx} />
-            ))}
+        )}
+        {navContext.length > 0 && (
+          <VStack className='sourcepanel-list'>
+            <HStack className='sourceheading gap-2'>
+              <NavNoIcon />
+              <BodyShort size='small'>Nav.no</BodyShort>
+            </HStack>
+            <VStack className='my-1'>
+              {navContext.map((ctx) => (
+                <NavSource context={ctx} />
+              ))}
+            </VStack>
           </VStack>
-        </VStack>
+        )}
       </VStack>
     </VStack>
   )
