@@ -1,7 +1,9 @@
 import { ExternalLinkIcon } from "@navikt/aksel-icons"
-import { BodyLong, BodyShort, Label, Link, Tag } from "@navikt/ds-react"
+import { BodyLong, BodyShort, Detail, Label, Link } from "@navikt/ds-react"
 import Markdown from "react-markdown"
 import { Citation, Context } from "../../../../types/Message.ts"
+import { KunnskapsbasenIcon } from "../../../../assets/icons/KunnskapsbasenIcon.tsx"
+import { NavNoIcon } from "../../../../assets/icons/NavNoIcon.tsx"
 
 interface BobAnswerCitationProps {
   citation: Citation
@@ -52,18 +54,28 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
               <ExternalLinkIcon title='Åpne artikkelen i ny fane' />
             </Link>
             {matchingContextCitationData.source === "navno" && (
-              <Tag variant='neutral' size='xsmall' title='Artikler fra nav.no'>
-                Nav.no
-              </Tag>
+              <Detail
+                title='Artikler fra nav.no'
+                textColor="subtle"
+                className="font-normal"
+              >
+                <div className="flex gap-1.5">
+                  <NavNoIcon />
+                  Nav.no
+                </div>
+              </Detail>
             )}
             {matchingContextCitationData.source === "nks" && (
-              <Tag
-                variant='neutral'
-                size='xsmall'
+              <Detail
                 title='Artikler fra NKS sin kunnskapsbase i Salesforce'
+                textColor="subtle"
+                className="font-normal"
               >
-                Kunnskapsbasen
-              </Tag>
+                <div className="flex gap-1.5">
+                  <KunnskapsbasenIcon />
+                  Kunnskapsbasen
+                </div>
+                </Detail>
             )}
           </div>
         ) : (
