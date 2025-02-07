@@ -22,7 +22,7 @@ export const FollowUpQuestions = memo(
                 key={`question-${index}`}
                 className='navds-chips__chip navds-chips__toggle navds-chips__toggle--action basis-1/3 truncate transition-all hover:basis-full'
               >
-                <span className='navds-body-short--small truncate'>
+                <span className='navds-body-short--small hover:truncate-none truncate'>
                   {question}
                 </span>
               </button>
