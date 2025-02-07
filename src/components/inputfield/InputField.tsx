@@ -185,7 +185,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
           onBlur={() => setIsFocused(false)}
         />
         <div
-          className={`pointer-events-none transition-all delay-150 duration-300 ease-in ${isFocused ? "bottom-[-1px]" : "bottom-[-70px]"} absolute right-[-1px] flex w-full items-end justify-end gap-2 p-2`}
+          className={`pointer-events-none transition-[bottom] delay-150 duration-300 ease-in ${isFocused ? "bottom-[-1px]" : "bottom-[-70px]"} absolute right-[-1px] flex w-full items-end justify-end gap-2 p-2`}
         >
           <FollowUpQuestions
             followUp={followUp}
@@ -196,7 +196,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
             icon={<PaperplaneIcon title='Send melding' />}
             variant='tertiary'
             size='medium'
-            className={`input-button pointer-events-auto transition-all delay-150 duration-300 ease-in ${isFocused ? "mb-[1px]" : "mb-[70px]"}`}
+            className={`input-button pointer-events-auto transition-[margin-bottom] delay-150 duration-300 ease-in ${isFocused ? "mb-[1px]" : "mb-[70px]"}`}
             onClick={handleButtonClick}
             disabled={sendDisabled}
           />
