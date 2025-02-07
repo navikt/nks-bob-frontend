@@ -7,12 +7,9 @@ body.dark .inputfield {
 }
 
 .input-button {
-  position: absolute;
-  bottom: 1px;
-  right: 1px;
-  max-height: 2.5rem;
+  max-height: 2rem;
   height: 100%;
-  max-width: 2.5rem;
+  max-width: 2rem;
   width: 100%;
 }
 

@@ -1,20 +1,21 @@
-import { Label, VStack } from "@navikt/ds-react"
+import { Label } from "@navikt/ds-react"
 import { memo } from "react"
 
 interface FollowUpQuestionsProps {
   followUp: string[]
   onSend: (question: string) => void
+  className?: string
 }
 
 export const FollowUpQuestions = memo(
-  ({ followUp, onSend }: FollowUpQuestionsProps) => {
+  ({ followUp, onSend, className }: FollowUpQuestionsProps) => {
     return (
       followUp.length > 0 && (
-        <VStack gap='2'>
+        <div className={`flex flex-col gap-2 overflow-auto ${className}`}>
           <Label textColor='subtle' size='small'>
             Forslag fra Bob
           </Label>
-          <div className='flex w-full flex-row gap-2'>
+          <div className='flex flex-row gap-2'>
             {followUp.map((question, index) => (
               <button
                 onClick={() => onSend(question)}
@@ -25,7 +26,7 @@ export const FollowUpQuestions = memo(
               </button>
             ))}
           </div>
-        </VStack>
+        </div>
       )
     )
   },

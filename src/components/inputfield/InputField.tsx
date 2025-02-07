@@ -76,6 +76,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
     useState<boolean>(false)
   const [containsFnr, setContainsFnr] = useState<boolean>(false)
   const [sendDisabled, setSendDisabled] = useState<boolean>(disabled)
+  const [isFocused, setIsFocused] = useState<boolean>(false)
 
   const { inputValue, setInputValue, followUp, textareaRef } =
     useInputFieldContext()
@@ -143,10 +144,6 @@ function InputField({ onSend, disabled }: InputFieldProps) {
 
   return (
     <div className='dialogcontent inputfield sticky bottom-0 z-10 h-auto flex-col gap-3 self-center px-4 py-2'>
-      <FollowUpQuestions
-        followUp={followUp}
-        onSend={(question) => sendMessage(question)}
-      />
       {isSensitiveInfoAlert && (
         <Alert
           variant='info'
@@ -168,14 +165,14 @@ function InputField({ onSend, disabled }: InputFieldProps) {
           Pass på å ikke dele sensitiv personinformasjon.
         </Alert>
       )}
-      <div className='relative flex items-center'>
+      <div className='relative flex max-w-[48rem] flex-col items-center justify-end overflow-hidden'>
         <Textarea
           autoFocus
           ref={textareaRef}
           size='medium'
           label=''
           hideLabel
-          className='dialogcontent'
+          className='dialogcontent *:h-[45px] *:transition-[height] *:delay-150 *:duration-300 *:ease-in focus:*:h-[120px]'
           minRows={1}
           maxRows={8}
           placeholder={placeholderText}
@@ -184,23 +181,26 @@ function InputField({ onSend, disabled }: InputFieldProps) {
           onKeyDown={handleKeyDown}
           disabled={disabled}
           onPaste={handlePasteInfoAlert}
-          onFocus={(e) => {
-            e.target.style.height = "120px"
-            e.target.classList.add("textarea-transition")
-          }}
-          onBlur={(e) => {
-            e.target.style.height = "45px"
-            e.target.classList.remove("textarea-transition")
-          }}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
         />
-        <Button
-          icon={<PaperplaneIcon title='Send melding' />}
-          variant='tertiary'
-          size='medium'
-          className='input-button'
-          onClick={handleButtonClick}
-          disabled={sendDisabled}
-        />
+        <div
+          className={`pointer-events-none transition-all delay-150 duration-300 ease-in ${isFocused ? "bottom-[-1px]" : "bottom-[-70px]"} absolute right-[-1px] flex w-full items-end justify-end gap-2 p-2`}
+        >
+          <FollowUpQuestions
+            followUp={followUp}
+            onSend={(question) => sendMessage(question)}
+            className='pointer-events-auto'
+          />
+          <Button
+            icon={<PaperplaneIcon title='Send melding' />}
+            variant='tertiary'
+            size='medium'
+            className={`input-button pointer-events-auto transition-all delay-150 duration-300 ease-in ${isFocused ? "mb-[1px]" : "mb-[70px]"}`}
+            onClick={handleButtonClick}
+            disabled={sendDisabled}
+          />
+        </div>
       </div>
       <BodyShort size='small' align='center' className='detailcolor'>
         Bob er en kunstig intelligens og kan ta feil – sjekk kilder for å være
