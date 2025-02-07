@@ -75,7 +75,7 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
                   <KunnskapsbasenIcon />
                   Kunnskapsbasen
                 </div>
-                </Detail>
+              </Detail>
             )}
           </div>
         ) : (
