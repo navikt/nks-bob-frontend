@@ -28,9 +28,7 @@ export const FollowUpQuestions = memo(
     return (
       followUp.length > 0 && (
         <div className={`flex flex-col gap-2 overflow-auto ${className}`}>
-          <Label textColor='subtle' size='small'>
-            Forslag fra Bob
-          </Label>
+          <Label size='small'>Forslag fra Bob</Label>
           <div className='flex flex-row gap-2'>
             {followUp.map((question, index) => (
               <button
