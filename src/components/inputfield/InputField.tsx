@@ -143,7 +143,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
   }, [inputValue, disabled])
 
   return (
-    <div className='dialogcontent inputfield sticky bottom-0 z-10 h-auto flex-col gap-3 self-center px-4 py-2'>
+    <div className='dialogcontent inputfield sticky bottom-0 z-10 h-auto flex-col gap-3 self-center px-4 pb-2'>
       {isSensitiveInfoAlert && (
         <Alert
           variant='info'
@@ -165,6 +165,17 @@ function InputField({ onSend, disabled }: InputFieldProps) {
           Pass på å ikke dele sensitiv personinformasjon.
         </Alert>
       )}
+      <div
+        className={`${
+          isFocused ? "max-h-[200px] pt-2" : "max-h-0"
+        } overflow-hidden transition-[max-height] duration-1000 ease-in-out ${disabled ? "hidden" : "visible"}`}
+      >
+        <FollowUpQuestions
+          followUp={followUp}
+          onSend={(question) => sendMessage(question)}
+          className='pointer-events-auto'
+        />
+      </div>
       <div className='relative flex max-w-[48rem] flex-col items-center justify-end overflow-hidden'>
         <Textarea
           autoFocus
@@ -172,7 +183,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
           size='medium'
           label=''
           hideLabel
-          className='dialogcontent *:h-[45px] *:transition-[height] *:delay-150 *:duration-300 *:ease-in focus:*:h-[120px]'
+          className='dialogcontent overflow-hidden truncate p-1 *:h-[45px] *:transition-[height] *:delay-150 *:duration-300 *:ease-in focus:*:h-[100px]'
           minRows={1}
           maxRows={8}
           placeholder={placeholderText}
@@ -183,15 +194,11 @@ function InputField({ onSend, disabled }: InputFieldProps) {
           onPaste={handlePasteInfoAlert}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
+          tabIndex={0}
         />
         <div
-          className={`pointer-events-none transition-[bottom] delay-150 duration-300 ease-in ${isFocused ? "bottom-[-1px]" : "bottom-[-70px]"} absolute right-[-1px] flex w-full items-end justify-end gap-2 p-2`}
+          className={`pointer-events-none transition-[bottom] delay-150 duration-300 ease-in ${isFocused ? "bottom-[0px]" : "bottom-[-70px]"} absolute right-[-1px] flex w-full items-end justify-end gap-2 p-2`}
         >
-          <FollowUpQuestions
-            followUp={followUp}
-            onSend={(question) => sendMessage(question)}
-            className='pointer-events-auto'
-          />
           <Button
             icon={<PaperplaneIcon title='Send melding' />}
             variant='tertiary'
