@@ -16,7 +16,7 @@ export const FollowUpQuestions = memo(
           className={`flex flex-col gap-2 overflow-hidden pt-2 ${className}`}
         >
           <Label size='small'>Forslag fra Bob</Label>
-          <div className='questionscontainer relative flex flex-col gap-1'>
+          <div className='questionscontainer relative flex flex-col gap-2'>
             {followUp.map((question, index) => (
               <button
                 onClick={() => onSend(question)}
