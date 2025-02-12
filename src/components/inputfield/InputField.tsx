@@ -176,7 +176,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
           className='pointer-events-auto'
         />
       </div>
-      <div className='relative flex max-w-[48rem] flex-col items-center justify-end overflow-hidden'>
+      <div className='relative flex max-w-[48rem] flex-col items-center justify-end'>
         <Textarea
           autoFocus
           ref={textareaRef}

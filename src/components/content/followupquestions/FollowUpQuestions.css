@@ -20,8 +20,7 @@
 }
 
 body.dark .followupchip {
-    background: rgba(16, 29, 45, 1);
-    border-color: rgba(46, 54, 65, 1);
+    background-color: rgba(66, 32, 46, 1);
 }
 
 .question-text {

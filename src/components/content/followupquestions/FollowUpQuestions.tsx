@@ -12,7 +12,9 @@ export const FollowUpQuestions = memo(
   ({ followUp, onSend, className }: FollowUpQuestionsProps) => {
     return (
       followUp.length > 0 && (
-        <div className={`flex flex-col gap-2 pt-2 ${className}`}>
+        <div
+          className={`flex flex-col gap-2 overflow-hidden pt-2 ${className}`}
+        >
           <Label size='small'>Forslag fra Bob</Label>
           <div className='questionscontainer relative flex flex-row gap-2'>
             {followUp.map((question, index) => (
