@@ -1,6 +1,7 @@
 import { Label } from "@navikt/ds-react"
 import { memo, useRef, useState } from "react"
 import { useInputFieldContext } from "../../inputfield/InputField.tsx"
+import "./FollowUpQuestions.css"
 
 interface FollowUpQuestionsProps {
   followUp: string[]
@@ -39,7 +40,7 @@ export const FollowUpQuestions = memo(
               <button
                 onClick={() => handleClick(question)}
                 key={`question-${index}`}
-                className='navds-chips__chip navds-chips__toggle navds-chips__toggle--action basis-1/3 truncate transition-all'
+                className='followup-button basis-1/3 truncate transition-all'
                 onMouseEnter={() => handleMouseEnter(question)}
                 onMouseLeave={handleMouseLeave}
                 disabled={hoveredButton !== null && hoveredButton !== question}

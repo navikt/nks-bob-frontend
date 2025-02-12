@@ -1,0 +1,10 @@
+.followup-button {
+    padding: 3px 10px;
+    border-radius: 4px;
+    border: 1px solid rgba(7, 26, 54, 0.21);
+    background: rgba(241, 247, 255, 1);
+}
+
+.followup-button:hover {
+    background: rgba(212, 229, 253, 1);
+}
