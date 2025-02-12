@@ -15,7 +15,6 @@ export const NewButton = ({ conversationId }: { conversationId: string }) => {
         icon={<NotePencilIcon aria-hidden />}
         iconPosition='right'
         onClick={() => newConversationRef.current?.showModal()}
-        className='max-phone:hidden'
       >
         Ny samtale
       </Button>

@@ -51,7 +51,7 @@ function ConversationContent() {
     <div className='conversation-content'>
       <SourcesContextProvider>
         <DialogWrapper>
-          <Header conversation={conversationId} />
+          <Header />
           <div className='chatcontainer'>
             {!messages || messages.length < 0 ? (
               <WhitespacePlaceholder />
@@ -64,7 +64,11 @@ function ConversationContent() {
               />
             )}
           </div>
-          <InputField onSend={handleUserMessage} disabled={isLoading} />
+          <InputField
+            onSend={handleUserMessage}
+            disabled={isLoading}
+            newConversation={conversationId}
+          />
         </DialogWrapper>
         <ShowAllSources />
       </SourcesContextProvider>

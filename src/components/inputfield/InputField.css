@@ -1,16 +1,18 @@
-.inputfield {
+.inputfield-background {
   background: var(--a-bg-default);
 }
 
-body.dark .inputfield {
+body.dark .inputfield-background {
   background: var(--new-bg);
 }
 
 .input-button {
-  max-height: 2rem;
+  max-height: 2.4rem;
   height: 100%;
-  max-width: 2rem;
+  max-width: 2.4rem;
   width: 100%;
+  top: 10.5%;
+  right: 1%;
 }
 
 .text-area {

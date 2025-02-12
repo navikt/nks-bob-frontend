@@ -14,6 +14,7 @@ import * as React from "react"
 import { NewMessage } from "../../types/Message.ts"
 import amplitude from "../../utils/amplitude.ts"
 import { FollowUpQuestions } from "../content/followupquestions/FollowUpQuestions.tsx"
+import { NewButton } from "../menu/Buttons.tsx"
 import "./InputField.css"
 
 type InputFieldContextType = {
@@ -68,9 +69,10 @@ export const InputFieldContextProvider = ({ children }: PropsWithChildren) => {
 interface InputFieldProps {
   onSend: (message: NewMessage) => void
   disabled: boolean
+  newConversation: string | undefined
 }
 
-function InputField({ onSend, disabled }: InputFieldProps) {
+function InputField({ onSend, disabled, newConversation }: InputFieldProps) {
   const placeholderText = "Spør Bob om noe Nav-relatert"
   const [isSensitiveInfoAlert, setIsSensitiveInfoAlert] =
     useState<boolean>(false)
@@ -143,7 +145,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
   }, [inputValue, disabled])
 
   return (
-    <div className='dialogcontent inputfield sticky bottom-0 z-10 h-auto flex-col gap-3 self-center px-4 pb-2'>
+    <div className='dialogcontent inputfield fixed bottom-0 z-10 h-auto flex-col self-center px-4'>
       {isSensitiveInfoAlert && (
         <Alert
           variant='info'
@@ -165,54 +167,57 @@ function InputField({ onSend, disabled }: InputFieldProps) {
           Pass på å ikke dele sensitiv personinformasjon.
         </Alert>
       )}
-      <div
-        className={`${
-          isFocused ? "max-h-[200px] pt-2" : "max-h-0"
-        } overflow-hidden transition-[max-height] duration-1000 ease-in-out ${disabled ? "hidden" : "visible"}`}
-      >
-        <FollowUpQuestions
-          followUp={followUp}
-          onSend={(question) => sendMessage(question)}
-          className='pointer-events-auto'
-        />
-      </div>
-      <div className='relative flex max-w-[48rem] flex-col items-center justify-end overflow-hidden'>
-        <Textarea
-          autoFocus
-          ref={textareaRef}
-          size='medium'
-          label=''
-          hideLabel
-          className='dialogcontent truncate p-1 *:h-[45px] *:transition-[height] *:delay-150 *:duration-300 *:ease-in focus:*:h-[100px]'
-          minRows={1}
-          maxRows={8}
-          placeholder={placeholderText}
-          value={inputValue}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyDown}
-          disabled={disabled}
-          onPaste={handlePasteInfoAlert}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-          tabIndex={0}
-        />
+      {newConversation && (
+        <div className='inputfield-background self-end rounded-b'>
+          <NewButton conversationId={newConversation} />
+        </div>
+      )}
+      <div className='inputfield-background'>
         <div
-          className={`pointer-events-none transition-[bottom] delay-150 duration-300 ease-in ${isFocused ? "bottom-[0px]" : "bottom-[-70px]"} absolute right-[-1px] flex w-full items-end justify-end gap-2 p-2`}
+          className={`${
+            isFocused ? "max-h-[200px] pt-2" : "max-h-0"
+          } overflow-hidden transition-[max-height] duration-1000 ease-in-out ${disabled ? "hidden" : "visible"} pb-2`}
         >
+          <FollowUpQuestions
+            followUp={followUp}
+            onSend={(question) => sendMessage(question)}
+            className='pointer-events-auto'
+          />
+        </div>
+        <div className='relative flex max-w-[48rem] flex-col items-center justify-end overflow-hidden pb-2'>
+          <Textarea
+            autoFocus
+            ref={textareaRef}
+            size='medium'
+            label=''
+            hideLabel
+            className='dialogcontent truncate p-1 *:h-[43px] *:transition-[height] *:delay-150 *:duration-300 *:ease-in focus:*:h-[100px]'
+            minRows={1}
+            maxRows={8}
+            placeholder={placeholderText}
+            value={inputValue}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
+            disabled={disabled}
+            onPaste={handlePasteInfoAlert}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            tabIndex={0}
+          />
           <Button
             icon={<PaperplaneIcon title='Send melding' />}
             variant='tertiary'
             size='medium'
-            className={`input-button pointer-events-auto transition-[margin-bottom] delay-150 duration-300 ease-in ${isFocused ? "mb-[1px]" : "mb-[70px]"}`}
+            className='input-button absolute'
             onClick={handleButtonClick}
             disabled={sendDisabled}
           />
         </div>
+        <BodyShort size='small' align='center' className='detailcolor pb-2'>
+          Bob er en kunstig intelligens og kan ta feil – sjekk kilder for å være
+          sikker.
+        </BodyShort>
       </div>
-      <BodyShort size='small' align='center' className='detailcolor'>
-        Bob er en kunstig intelligens og kan ta feil – sjekk kilder for å være
-        sikker.
-      </BodyShort>
     </div>
   )
 }
