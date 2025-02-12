@@ -8,3 +8,13 @@
 .followup-button:hover {
     background: rgba(212, 229, 253, 1);
 }
+
+body.dark .followup-button {
+    background: rgba(16, 29, 45, 1);
+    border: 1px solid rgba(46, 54, 65, 1);
+}
+
+body.dark .followup-button:hover {
+    background: rgba(26, 44, 65, 1);
+    border: 1px solid rgba(35, 55, 79, 1);
+}
