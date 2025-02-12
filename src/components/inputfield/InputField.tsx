@@ -176,14 +176,14 @@ function InputField({ onSend, disabled }: InputFieldProps) {
           className='pointer-events-auto'
         />
       </div>
-      <div className='relative flex max-w-[48rem] flex-col items-center justify-end'>
+      <div className='relative flex max-w-[48rem] flex-col items-center justify-end overflow-hidden'>
         <Textarea
           autoFocus
           ref={textareaRef}
           size='medium'
           label=''
           hideLabel
-          className='dialogcontent truncate *:h-[45px] *:transition-[height] *:delay-150 *:duration-300 *:ease-in focus:*:h-[100px]'
+          className='dialogcontent truncate p-1 *:h-[45px] *:transition-[height] *:delay-150 *:duration-300 *:ease-in focus:*:h-[100px]'
           minRows={1}
           maxRows={8}
           placeholder={placeholderText}
