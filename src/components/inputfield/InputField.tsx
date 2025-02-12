@@ -172,7 +172,6 @@ function InputField({ onSend, disabled }: InputFieldProps) {
       >
         <FollowUpQuestions
           followUp={followUp}
-          onSend={(question) => sendMessage(question)}
           className='pointer-events-auto'
         />
       </div>
