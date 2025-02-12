@@ -183,7 +183,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
           size='medium'
           label=''
           hideLabel
-          className='dialogcontent overflow-hidden truncate p-1 *:h-[45px] *:transition-[height] *:delay-150 *:duration-300 *:ease-in focus:*:h-[100px]'
+          className='dialogcontent truncate *:h-[45px] *:transition-[height] *:delay-150 *:duration-300 *:ease-in focus:*:h-[100px]'
           minRows={1}
           maxRows={8}
           placeholder={placeholderText}

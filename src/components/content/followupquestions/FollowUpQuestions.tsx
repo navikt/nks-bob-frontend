@@ -1,6 +1,6 @@
-import { Label } from "@navikt/ds-react"
-import { memo, useRef, useState } from "react"
-import { useInputFieldContext } from "../../inputfield/InputField.tsx"
+import { BodyShort, Label } from "@navikt/ds-react"
+import { memo } from "react"
+import "./FollowUpQuestions.css"
 
 interface FollowUpQuestionsProps {
   followUp: string[]
@@ -10,38 +10,20 @@ interface FollowUpQuestionsProps {
 
 export const FollowUpQuestions = memo(
   ({ followUp, onSend, className }: FollowUpQuestionsProps) => {
-    const { inputValue, setInputValue } = useInputFieldContext()
-    const originalInputValueRef = useRef(inputValue)
-    const [hoveredButton, setHoveredButton] = useState<string | null>(null)
-
-    const handleMouseEnter = (question: string) => {
-      originalInputValueRef.current = inputValue
-      setInputValue(question)
-      setHoveredButton(question)
-    }
-
-    const handleMouseLeave = () => {
-      setInputValue(originalInputValueRef.current)
-      setHoveredButton(null)
-    }
-
     return (
       followUp.length > 0 && (
-        <div className={`flex flex-col gap-2 overflow-auto ${className}`}>
+        <div className={`flex flex-col gap-2 pt-2 ${className}`}>
           <Label size='small'>Forslag fra Bob</Label>
-          <div className='flex flex-row gap-2'>
+          <div className='questionscontainer relative flex flex-row gap-2'>
             {followUp.map((question, index) => (
               <button
                 onClick={() => onSend(question)}
                 key={`question-${index}`}
-                className='navds-chips__chip navds-chips__toggle navds-chips__toggle--action basis-1/3 truncate transition-all'
-                onMouseEnter={() => handleMouseEnter(question)}
-                onMouseLeave={handleMouseLeave}
-                disabled={hoveredButton !== null && hoveredButton !== question}
+                className={`followupchip truncate transition-all question-${index}`}
               >
-                <span className='navds-body-short--small truncate'>
+                <BodyShort size='small' className='question-text truncate'>
                   {question}
-                </span>
+                </BodyShort>
               </button>
             ))}
           </div>

@@ -1,0 +1,42 @@
+.followupchip {
+    display: flex;
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(7, 26, 54, 0.21);
+    background: rgba(241, 247, 255, 1);
+    overflow: hidden;
+    flex-basis: 33.33%;
+    max-height: 30px;
+    transition: flex-basis 0s ease-in-out, max-height 0.3s ease, padding 0.3s ease, opacity 0.3s ease !important;
+}
+
+.followupchip:hover {
+    background: rgba(212, 229, 253, 1);
+    white-space: normal !important;
+    flex-basis: 100%;
+    max-height: 50px;
+}
+
+.question-text {
+    white-space: inherit !important;
+}
+
+.questionscontainer:has(.question-0:hover) .question-1,
+.questionscontainer:has(.question-0:hover) .question-2,
+.questionscontainer:has(.question-1:hover) .question-0,
+.questionscontainer:has(.question-1:hover) .question-2,
+.questionscontainer:has(.question-2:hover) .question-0,
+.questionscontainer:has(.question-2:hover) .question-1 {
+    opacity: 0;
+    pointer-events: none;
+    flex-basis: 0;
+}
+
+.questionscontainer:has(.followupchip:hover) .followupchip:not(:hover) {
+    padding: 0;
+    border: 0;
+}
+
+.questionscontainer:has(.followupchip:hover) {
+    gap: 0 !important;
+}
