@@ -3,8 +3,8 @@
     padding: 6px 10px;
     border: 1px solid transparent;
     color: #ffffff;
-    border-radius: 12px 12px 2px 12px;
-    background-color: rgba(211, 155, 180, 1);
+    border-radius: 12px;
+    background-color: rgba(182, 87, 129, 1);
     overflow: hidden;
     flex-basis: 33.33%;
     max-height: 40px;
@@ -12,6 +12,7 @@
 }
 
 .followupchip:hover {
+    border-radius: 12px 12px 2px 12px;
     background: rgba(182, 87, 129, 1);
     white-space: normal !important;
     flex-basis: 100%;
