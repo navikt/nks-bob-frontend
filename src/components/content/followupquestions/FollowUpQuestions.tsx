@@ -21,7 +21,11 @@ export const FollowUpQuestions = memo(
                 key={`question-${index}`}
                 className={`followupchip truncate transition-all question-${index}`}
               >
-                <BodyShort size='small' className='question-text truncate'>
+                <BodyShort
+                  size='small'
+                  align='start'
+                  className='question-text truncate'
+                >
                   {question}
                 </BodyShort>
               </button>
