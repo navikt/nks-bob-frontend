@@ -9,3 +9,15 @@
   position: relative;
   color: rgba(32, 39, 51, 1);
 }
+
+.bob-illustration {
+  width: 100%;
+}
+
+.placeholder-text {
+  color: var(--a-text-subtle)
+}
+
+body.dark .placeholder-text {
+  color: rgba(223, 225, 229, 1);
+}

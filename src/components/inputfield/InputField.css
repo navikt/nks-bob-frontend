@@ -7,12 +7,9 @@ body.dark .inputfield {
 }
 
 .input-button {
-  position: absolute;
-  bottom: 1px;
-  right: 1px;
-  max-height: 2.5rem;
+  max-height: 2rem;
   height: 100%;
-  max-width: 2.5rem;
+  max-width: 2rem;
   width: 100%;
 }
 
@@ -20,4 +17,16 @@ body.dark .inputfield {
   display: flex;
   width: 100%;
   flex-grow: 1;
+}
+
+.textarea-transition {
+  transition: height 0.3s ease;
+}
+
+.detailcolor {
+  color: var(--a-text-subtle)
+}
+
+body.dark .detailcolor {
+  color: rgba(118, 126, 140, 1);
 }
