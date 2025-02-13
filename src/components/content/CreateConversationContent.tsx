@@ -41,9 +41,13 @@ const CreateConversationContent = () => {
 
   return (
     <CreateConversationWrapper>
-      <Header conversation={undefined} />
+      <Header />
       <BobPlaceholder />
-      <InputField onSend={handleUserMessage} disabled={false} />
+      <InputField
+        onSend={handleUserMessage}
+        disabled={false}
+        newConversation={undefined}
+      />
     </CreateConversationWrapper>
   )
 }

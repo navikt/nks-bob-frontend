@@ -16,7 +16,7 @@ export const LoginBoundary = (props: PropsWithChildren) => {
     console.error({ error })
     return (
       <>
-        <Header conversation={undefined} />
+        <Header />
         <div style={{ width: "60rem", margin: "32px auto" }}>
           <Alert variant='error'>
             Uventet feil. Prøv å last siden på nytt.

@@ -30,7 +30,7 @@ export default function ConversationAdminContent() {
     <div className='conversation-content'>
       <SourcesContextProvider>
         <DialogWrapper>
-          <Header conversation={conversationId} />
+          <Header />
           <div className='chatcontainer'>
             {!messages || messages.length < 0 ? (
               <WhitespacePlaceholder />
@@ -43,7 +43,11 @@ export default function ConversationAdminContent() {
               />
             )}
           </div>
-          <InputField onSend={handleUserMessage} disabled={true} />
+          <InputField
+            onSend={handleUserMessage}
+            disabled={true}
+            newConversation={conversationId}
+          />
         </DialogWrapper>
         <ShowAllSources />
       </SourcesContextProvider>
