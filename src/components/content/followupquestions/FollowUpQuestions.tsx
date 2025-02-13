@@ -1,48 +1,40 @@
-import { Button, HStack, ReadMore } from "@navikt/ds-react"
-import { memo, useState } from "react"
+import { BodyShort, Label } from "@navikt/ds-react"
+import { memo } from "react"
+import "./FollowUpQuestions.css"
 
 interface FollowUpQuestionsProps {
   followUp: string[]
   onSend: (question: string) => void
+  className?: string
 }
 
 export const FollowUpQuestions = memo(
-  ({ followUp, onSend }: FollowUpQuestionsProps) => {
-    const [open, setOpen] = useState(true)
-
-    const localQuestions = [
-      "Hva er åpningstidene på lokalkontorene deres??",
-      "Hvordan søker jeg om sykepenger?",
-      "Hva må man gjøre for å gå fra sykepenger til AAP??",
-    ]
-
-    const questionsToShow =
-      process.env.NODE_ENV === "development"
-        ? followUp.concat(localQuestions)
-        : followUp
-
+  ({ followUp, onSend, className }: FollowUpQuestionsProps) => {
     return (
-      <HStack justify='space-evenly'>
-        {questionsToShow.length > 0 && (
-          <ReadMore
-            open={open}
-            onOpenChange={(isOpen) => setOpen(isOpen)}
-            header='Forslag fra Bob'
-            className='w-full'
-          >
-            {questionsToShow.map((question, index) => (
-              <Button
-                variant='tertiary'
-                size='small'
+      followUp.length > 0 && (
+        <div
+          className={`flex flex-col gap-2 overflow-hidden pt-2 ${className}`}
+        >
+          <Label size='small'>Forslag fra Bob</Label>
+          <div className='questionscontainer relative flex flex-col gap-2'>
+            {followUp.map((question, index) => (
+              <button
                 onClick={() => onSend(question)}
                 key={`question-${index}`}
+                className={`followupchip truncate transition-all question-${index}`}
               >
-                {question}
-              </Button>
+                <BodyShort
+                  size='small'
+                  align='start'
+                  className='question-text truncate'
+                >
+                  {question}
+                </BodyShort>
+              </button>
             ))}
-          </ReadMore>
-        )}
-      </HStack>
+          </div>
+        </div>
+      )
     )
   },
   (prevProps, nextProps) => {

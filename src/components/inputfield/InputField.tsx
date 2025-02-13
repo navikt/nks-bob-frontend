@@ -1,32 +1,87 @@
 import { Alert, BodyShort, Button, Textarea } from "@navikt/ds-react"
 
 import { PaperplaneIcon } from "@navikt/aksel-icons"
-import { useEffect, useState } from "react"
+import {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react"
 
+import * as React from "react"
 import { NewMessage } from "../../types/Message.ts"
 import amplitude from "../../utils/amplitude.ts"
+import { FollowUpQuestions } from "../content/followupquestions/FollowUpQuestions.tsx"
+import { NewButton } from "../menu/Buttons.tsx"
 import "./InputField.css"
 
-interface InputFieldProps {
-  inputState: [string, React.Dispatch<React.SetStateAction<string>>]
-  onSend: (message: NewMessage) => void
-  disabled: boolean
+type InputFieldContextType = {
+  inputValue: string
+  setInputValue: React.Dispatch<React.SetStateAction<string>>
   followUp: string[]
+  setFollowUp: React.Dispatch<React.SetStateAction<string[]>>
+  focusTextarea: () => void
+  textareaRef: React.RefObject<HTMLTextAreaElement>
 }
 
-function InputField({
-  inputState,
-  onSend,
-  disabled,
-  // @ts-ignore
-  followUp,
-}: InputFieldProps) {
-  const placeholderText = "Spør Bob om noe"
-  const [inputValue, setInputValue] = inputState
+const InputFieldContext = createContext<InputFieldContextType | undefined>(
+  undefined,
+)
+
+export const useInputFieldContext = () => {
+  const context = useContext(InputFieldContext)
+  if (context === undefined) {
+    throw new Error(
+      "useInputFieldContext must be used within InputFieldContextProvider",
+    )
+  }
+
+  return context
+}
+
+export const InputFieldContextProvider = ({ children }: PropsWithChildren) => {
+  const [inputValue, setInputValue] = useState<string>("")
+  const [followUp, setFollowUp] = useState<string[]>([])
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
+
+  const focusTextarea = () => {
+    textareaRef.current?.focus()
+  }
+
+  return (
+    <InputFieldContext.Provider
+      value={{
+        inputValue,
+        setInputValue,
+        followUp,
+        setFollowUp,
+        focusTextarea,
+        textareaRef,
+      }}
+    >
+      {children}
+    </InputFieldContext.Provider>
+  )
+}
+
+interface InputFieldProps {
+  onSend: (message: NewMessage) => void
+  disabled: boolean
+  newConversation: string | undefined
+}
+
+function InputField({ onSend, disabled, newConversation }: InputFieldProps) {
+  const placeholderText = "Spør Bob om noe Nav-relatert"
   const [isSensitiveInfoAlert, setIsSensitiveInfoAlert] =
     useState<boolean>(false)
   const [containsFnr, setContainsFnr] = useState<boolean>(false)
   const [sendDisabled, setSendDisabled] = useState<boolean>(disabled)
+  const [isFocused, setIsFocused] = useState<boolean>(false)
+
+  const { inputValue, setInputValue, followUp, textareaRef } =
+    useInputFieldContext()
 
   function sendMessage(messageContent?: string) {
     const message: NewMessage = {
@@ -36,6 +91,7 @@ function InputField({
       onSend(message)
     }
     setInputValue("")
+    textareaRef.current?.blur()
   }
 
   function handlePasteInfoAlert() {
@@ -89,11 +145,7 @@ function InputField({
   }, [inputValue, disabled])
 
   return (
-    <div className='dialogcontent inputfield sticky bottom-0 z-10 h-auto flex-col gap-3 self-center px-4 pb-5'>
-      {/* <FollowUpQuestions
-        followUp={followUp}
-        onSend={(question) => sendMessage(question)}
-      /> */}
+    <div className='dialogcontent inputfield fixed bottom-0 z-10 h-auto flex-col self-center px-4'>
       {isSensitiveInfoAlert && (
         <Alert
           variant='info'
@@ -115,34 +167,57 @@ function InputField({
           Pass på å ikke dele sensitiv personinformasjon.
         </Alert>
       )}
-      <div className='relative flex items-center'>
-        <Textarea
-          size='medium'
-          label=''
-          hideLabel
-          className='dialogcontent'
-          minRows={1}
-          maxRows={8}
-          placeholder={placeholderText}
-          value={inputValue}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyDown}
-          disabled={disabled}
-          onPaste={handlePasteInfoAlert}
-        />
-        <Button
-          icon={<PaperplaneIcon title='Send melding' />}
-          variant='tertiary'
-          size='medium'
-          className='input-button'
-          onClick={handleButtonClick}
-          disabled={sendDisabled}
-        />
+      {newConversation && (
+        <div className='inputfield-background self-end rounded-b'>
+          <NewButton conversationId={newConversation} />
+        </div>
+      )}
+      <div className='inputfield-background'>
+        <div
+          className={`${
+            isFocused ? "max-h-[200px] pt-2" : "max-h-0"
+          } overflow-hidden transition-[max-height] duration-1000 ease-in-out ${disabled ? "hidden" : "visible"} pb-2`}
+        >
+          <FollowUpQuestions
+            followUp={followUp}
+            onSend={(question) => sendMessage(question)}
+            className='pointer-events-auto'
+          />
+        </div>
+        <div className='relative flex max-w-[48rem] flex-col items-center justify-end overflow-hidden pb-2'>
+          <Textarea
+            autoFocus
+            ref={textareaRef}
+            size='medium'
+            label=''
+            hideLabel
+            className='dialogcontent truncate p-1 *:h-[43px] *:transition-[height] *:delay-150 *:duration-300 *:ease-in focus:*:h-[100px]'
+            minRows={1}
+            maxRows={8}
+            placeholder={placeholderText}
+            value={inputValue}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
+            disabled={disabled}
+            onPaste={handlePasteInfoAlert}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            tabIndex={0}
+          />
+          <Button
+            icon={<PaperplaneIcon title='Send melding' />}
+            variant='tertiary'
+            size='medium'
+            className='input-button absolute'
+            onClick={handleButtonClick}
+            disabled={sendDisabled}
+          />
+        </div>
+        <BodyShort size='small' align='center' className='detailcolor pb-2'>
+          Bob er en kunstig intelligens og kan ta feil – sjekk kilder for å være
+          sikker.
+        </BodyShort>
       </div>
-      <BodyShort size='small' align='center'>
-        Bob er en kunstig intelligens og kan ta feil – sjekk kilder for å være
-        sikker.
-      </BodyShort>
     </div>
   )
 }

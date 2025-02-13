@@ -8,6 +8,7 @@ import {
 } from "react-router"
 import App from "./App.tsx"
 import { preloadUserConfig } from "./api/api.ts"
+import ConversationAdminContent from "./components/content/ConversationAdminContent.tsx"
 import ConversationContent from "./components/content/ConversationContent.tsx"
 import CreateConversationContent from "./components/content/CreateConversationContent.tsx"
 import "./global.css"
@@ -21,6 +22,10 @@ const router = createBrowserRouter(
       <Route
         path='/samtaler/:conversationId'
         element={<ConversationContent />}
+      />
+      <Route
+        path='/admin/:conversationId'
+        element={<ConversationAdminContent />}
       />
     </Route>,
   ),

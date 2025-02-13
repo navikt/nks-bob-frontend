@@ -1,10 +1,8 @@
-import { useParams, useSearchParams } from "react-router"
-import { useMessagesSubscription } from "../../api/ws.ts"
-
 import { useEffect } from "react"
-import { NewMessage } from "../../types/Message.ts"
+import { useNavigate, useParams } from "react-router"
+import { useAdminMessages } from "../../api/api.ts"
 import Header from "../header/Header.tsx"
-import InputField, { useInputFieldContext } from "../inputfield/InputField.tsx"
+import InputField from "../inputfield/InputField.tsx"
 import {
   ShowAllSources,
   SourcesContextProvider,
@@ -13,39 +11,20 @@ import ChatContainer from "./chat/ChatContainer.tsx"
 import { WhitespacePlaceholder } from "./placeholders/Placeholders.tsx"
 import DialogWrapper from "./wrappers/DialogWrapper.tsx"
 
-function ConversationContent() {
+export default function ConversationAdminContent() {
   const { conversationId } = useParams()
-  const [searchParams, setSearchParams] = useSearchParams()
+  const { messages, isLoading, error } = useAdminMessages(conversationId!)
+  const navigate = useNavigate()
 
-  const { messages, sendMessage, isLoading } = useMessagesSubscription(
-    conversationId!,
-  )
+  const handleUserMessage = () => {}
 
   useEffect(() => {
-    if (searchParams.has("initialMessage")) {
-      const initialMessage = searchParams.get("initialMessage")!
-
-      if (messages.length === 0) {
-        sendMessage({ content: initialMessage })
-      }
-
-      searchParams.delete("initialMessage")
-      setSearchParams({ ...searchParams })
+    console.error(error)
+    if (error?.status === 401) {
+      console.warn("This user does not have access to the admin endpoint.")
+      navigate("/")
     }
-  }, [searchParams, messages])
-
-  function handleUserMessage(message: NewMessage) {
-    sendMessage(message)
-  }
-
-  const { setFollowUp } = useInputFieldContext()
-
-  const lastMessage = messages.at(-1)
-
-  useEffect(() => {
-    const followUp = lastMessage?.followUp ?? []
-    setFollowUp(followUp)
-  }, [lastMessage])
+  }, [error])
 
   return (
     <div className='conversation-content'>
@@ -66,7 +45,7 @@ function ConversationContent() {
           </div>
           <InputField
             onSend={handleUserMessage}
-            disabled={isLoading}
+            disabled={true}
             newConversation={conversationId}
           />
         </DialogWrapper>
@@ -75,5 +54,3 @@ function ConversationContent() {
     </div>
   )
 }
-
-export default ConversationContent
