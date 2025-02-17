@@ -56,13 +56,6 @@ const ToggleCitations = ({ onToggle, message }: ToggleCitationsProps) => {
             {option}
           </Chips.Toggle>
         ))}
-        {/* <Chips.Toggle
-          key={"Vis alle kilder"}
-          selected={isActive}
-          onClick={toggleActive}
-        >
-          Vis alle kilder
-        </Chips.Toggle> */}
       </Chips>
     </div>
   )

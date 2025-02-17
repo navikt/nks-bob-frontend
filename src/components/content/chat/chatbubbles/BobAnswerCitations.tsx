@@ -31,8 +31,13 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
     )
   }
 
+  // Expands all panels on the nav.no-page //
   const expandAll =
     matchingContextCitationData?.source === "navno" ? "?expandall=true" : ""
+
+  const useAnchor = matchingContextCitationData?.url.includes(
+    "/saksbehandlingstider",
+  )
 
   return (
     <div className='mb-2 flex flex-col'>
@@ -41,9 +46,11 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
           <div className='flex flex-wrap gap-2'>
             <Link
               href={
-                numWords < 1
-                  ? `${matchingContextCitationData.url}`
-                  : `${matchingContextCitationData.url}${expandAll}#:~:text=${encodeFragment(textStart)},${encodeFragment(textEnd)}`
+                useAnchor
+                  ? `${matchingContextCitationData.url}${expandAll}#${matchingContextCitationData.anchor}`
+                  : numWords < 1
+                    ? `${matchingContextCitationData.url}`
+                    : `${matchingContextCitationData.url}${expandAll}#:~:text=${encodeFragment(textStart)},${encodeFragment(textEnd)}`
               }
               target='_blank'
               title='Åpne artikkelen i ny fane'
