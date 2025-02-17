@@ -68,6 +68,7 @@ export const InputFieldContextProvider = ({ children }: PropsWithChildren) => {
 interface InputFieldProps {
   onSend: (message: NewMessage) => void
   disabled: boolean
+  newConversation: string | undefined
 }
 
 function InputField({ onSend, disabled }: InputFieldProps) {
@@ -76,7 +77,6 @@ function InputField({ onSend, disabled }: InputFieldProps) {
     useState<boolean>(false)
   const [containsFnr, setContainsFnr] = useState<boolean>(false)
   const [sendDisabled, setSendDisabled] = useState<boolean>(disabled)
-  const [isFocused, setIsFocused] = useState<boolean>(false)
 
   const { inputValue, setInputValue, followUp, textareaRef } =
     useInputFieldContext()
@@ -143,7 +143,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
   }, [inputValue, disabled])
 
   return (
-    <div className='dialogcontent inputfield sticky bottom-0 z-10 h-auto flex-col gap-3 self-center px-4 pb-2'>
+    <div className='dialogcontent inputfield fixed bottom-0 z-10 h-auto flex-col self-center px-4'>
       {isSensitiveInfoAlert && (
         <Alert
           variant='info'
@@ -165,15 +165,19 @@ function InputField({ onSend, disabled }: InputFieldProps) {
           Pass på å ikke dele sensitiv personinformasjon.
         </Alert>
       )}
-      <FollowUpQuestions followUp={followUp} className='pointer-events-auto' />
-      <div className='relative flex max-w-[48rem] flex-col items-center justify-end overflow-hidden'>
+      <FollowUpQuestions
+        followUp={followUp}
+        onSend={(question) => sendMessage(question)}
+        className='pointer-events-auto'
+      />
+      <div className='relative flex max-w-[48rem] flex-col items-center justify-end pb-2'>
         <Textarea
           autoFocus
           ref={textareaRef}
           size='medium'
           label=''
           hideLabel
-          className='dialogcontent overflow-hidden truncate p-1 *:h-[45px] *:transition-[height] *:delay-150 *:duration-300 *:ease-in focus:*:h-[100px]'
+          className='dialogcontent truncate *:h-[43px] *:transition-[height] *:delay-150 *:duration-300 *:ease-in focus:*:h-[100px]'
           minRows={1}
           maxRows={8}
           placeholder={placeholderText}
@@ -182,24 +186,18 @@ function InputField({ onSend, disabled }: InputFieldProps) {
           onKeyDown={handleKeyDown}
           disabled={disabled}
           onPaste={handlePasteInfoAlert}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
           tabIndex={0}
         />
-        <div
-          className={`pointer-events-none transition-[bottom] delay-150 duration-300 ease-in ${isFocused ? "bottom-[0px]" : "bottom-[-70px]"} absolute right-[-1px] flex w-full items-end justify-end gap-2 p-2`}
-        >
-          <Button
-            icon={<PaperplaneIcon title='Send melding' />}
-            variant='tertiary'
-            size='medium'
-            className={`input-button pointer-events-auto transition-[margin-bottom] delay-150 duration-300 ease-in ${isFocused ? "mb-[1px]" : "mb-[70px]"}`}
-            onClick={handleButtonClick}
-            disabled={sendDisabled}
-          />
-        </div>
+        <Button
+          icon={<PaperplaneIcon title='Send melding' />}
+          variant='tertiary'
+          size='medium'
+          className='input-button absolute'
+          onClick={handleButtonClick}
+          disabled={sendDisabled}
+        />
       </div>
-      <BodyShort size='small' align='center' className='detailcolor'>
+      <BodyShort size='small' align='center' className='detailcolor pb-2'>
         Bob er en kunstig intelligens og kan ta feil – sjekk kilder for å være
         sikker.
       </BodyShort>
