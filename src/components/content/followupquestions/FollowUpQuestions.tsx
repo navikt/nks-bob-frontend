@@ -1,5 +1,6 @@
-import { BodyShort, Label } from "@navikt/ds-react"
-import { memo } from "react"
+import { ChevronDownIcon, ChevronUpIcon } from "@navikt/aksel-icons"
+import { BodyShort, HStack, Label } from "@navikt/ds-react"
+import { memo, useState } from "react"
 import "./FollowUpQuestions.css"
 
 interface FollowUpQuestionsProps {
@@ -10,6 +11,12 @@ interface FollowUpQuestionsProps {
 
 export const FollowUpQuestions = memo(
   ({ followUp, onSend, className }: FollowUpQuestionsProps) => {
+    const [isOpen, setIsOpen] = useState(false)
+
+    const toggleOpen = () => {
+      setIsOpen(!isOpen)
+    }
+
     const includesDu = followUp.some((question) => question.includes("du"))
 
     return (
@@ -18,24 +25,37 @@ export const FollowUpQuestions = memo(
         <div
           className={`fade-in flex flex-col gap-2 overflow-hidden py-2 ${className}`}
         >
-          <Label size='small'>Forslag fra Bob</Label>
-          <div className='flex flex-col gap-1'>
-            {followUp.map((question, index) => (
-              <button
-                onClick={() => onSend(question)}
-                key={`question-${index}`}
-                className={`followupchip truncate transition-all question-${index} w-fit`}
-              >
-                <BodyShort
-                  size='small'
-                  align='start'
-                  className='question-text truncate'
+          <HStack
+            onClick={toggleOpen}
+            className='utdrag-dropdown gap-x-0.5'
+            align='stretch'
+          >
+            <Label size='small'>Forslag fra Bob</Label>
+            {isOpen ? (
+              <ChevronUpIcon className='dropdownchevronup' />
+            ) : (
+              <ChevronDownIcon className='dropdownchevrondown' />
+            )}
+          </HStack>
+          {!isOpen && (
+            <div className='flex flex-col gap-1'>
+              {followUp.map((question, index) => (
+                <button
+                  onClick={() => onSend(question)}
+                  key={`question-${index}`}
+                  className={`followupchip truncate transition-all question-${index} w-fit`}
                 >
-                  {question}
-                </BodyShort>
-              </button>
-            ))}
-          </div>
+                  <BodyShort
+                    size='small'
+                    align='start'
+                    className='question-text truncate'
+                  >
+                    {question}
+                  </BodyShort>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       )
     )
