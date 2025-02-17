@@ -41,7 +41,6 @@ const ToggleCitations = ({ onToggle, message }: ToggleCitationsProps) => {
 
   const isActive = activeMessage !== null && activeMessage.id === message.id
 
-  // @ts-ignore
   const toggleActive = () => setActiveMessage(isActive ? null : message)
 
   return (
@@ -56,6 +55,13 @@ const ToggleCitations = ({ onToggle, message }: ToggleCitationsProps) => {
             {option}
           </Chips.Toggle>
         ))}
+        <Chips.Toggle
+          key={"Vis alle kilder"}
+          selected={isActive}
+          onClick={toggleActive}
+        >
+          Vis alle kilder
+        </Chips.Toggle>
       </Chips>
     </div>
   )

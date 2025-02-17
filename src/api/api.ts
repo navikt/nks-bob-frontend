@@ -12,8 +12,8 @@ import { UserConfig } from "../types/User"
 const API_URL = `${import.meta.env.BASE_URL}bob-api`
 
 type ApiError = {
-  status: number,
-  message: string,
+  status: number
+  message: string
   data: any
 }
 
@@ -78,19 +78,14 @@ async function deleter<Response>(url: string): Promise<Response> {
   })
 }
 
-export const useMessages = (conversationId: string) => {
-  const {
-    data: messages,
-    isLoading,
-    error,
-  } = useSWR<Message[]>(
-    `/api/v1/conversations/${conversationId}/messages`,
+export const useAdminMessages = (conversationId: string) => {
+  const { data, isLoading, error } = useSWR<Message[], ApiError>(
+    `/api/v1/admin/conversations/${conversationId}/messages`,
     fetcher,
-    { refreshInterval: 1000 },
   )
 
   return {
-    messages,
+    messages: data ?? [],
     isLoading,
     error,
   }
@@ -194,9 +189,6 @@ export const useUserConfig = () => {
   const { data, isLoading, error } = useSWR<UserConfig, ApiError>(
     "/api/v1/user/config",
     fetcher,
-    {
-      revalidateOnReconnect: false,
-    },
   )
 
   return {

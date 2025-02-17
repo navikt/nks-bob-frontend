@@ -1,48 +1,63 @@
-import { Button, HStack, ReadMore } from "@navikt/ds-react"
+import { ChevronDownIcon, ChevronUpIcon } from "@navikt/aksel-icons"
+import { BodyShort, HStack, Label } from "@navikt/ds-react"
 import { memo, useState } from "react"
+import "./FollowUpQuestions.css"
 
 interface FollowUpQuestionsProps {
   followUp: string[]
   onSend: (question: string) => void
+  className?: string
 }
 
 export const FollowUpQuestions = memo(
-  ({ followUp, onSend }: FollowUpQuestionsProps) => {
-    const [open, setOpen] = useState(true)
+  ({ followUp, onSend, className }: FollowUpQuestionsProps) => {
+    const [isOpen, setIsOpen] = useState(false)
 
-    const localQuestions = [
-      "Hva er åpningstidene på lokalkontorene deres??",
-      "Hvordan søker jeg om sykepenger?",
-      "Hva må man gjøre for å gå fra sykepenger til AAP??",
-    ]
+    const toggleOpen = () => {
+      setIsOpen(!isOpen)
+    }
 
-    const questionsToShow =
-      process.env.NODE_ENV === "development"
-        ? followUp.concat(localQuestions)
-        : followUp
+    const includesDu = followUp.some((question) => question.includes("du"))
 
     return (
-      <HStack justify='space-evenly'>
-        {questionsToShow.length > 0 && (
-          <ReadMore
-            open={open}
-            onOpenChange={(isOpen) => setOpen(isOpen)}
-            header='Forslag fra Bob'
-            className='w-full'
+      followUp.length > 0 &&
+      !includesDu && (
+        <div
+          className={`fade-in flex flex-col gap-2 overflow-hidden py-2 ${className}`}
+        >
+          <HStack
+            onClick={toggleOpen}
+            className='utdrag-dropdown gap-x-0.5'
+            align='stretch'
           >
-            {questionsToShow.map((question, index) => (
-              <Button
-                variant='tertiary'
-                size='small'
-                onClick={() => onSend(question)}
-                key={`question-${index}`}
-              >
-                {question}
-              </Button>
-            ))}
-          </ReadMore>
-        )}
-      </HStack>
+            <Label size='small'>Forslag fra Bob</Label>
+            {isOpen ? (
+              <ChevronUpIcon className='dropdownchevronup' />
+            ) : (
+              <ChevronDownIcon className='dropdownchevrondown' />
+            )}
+          </HStack>
+          {!isOpen && (
+            <div className='flex flex-row flex-wrap gap-1'>
+              {followUp.map((question, index) => (
+                <button
+                  onClick={() => onSend(question)}
+                  key={`question-${index}`}
+                  className={`followupchip truncate transition-all question-${index} `}
+                >
+                  <BodyShort
+                    size='small'
+                    align='start'
+                    className='question-text truncate'
+                  >
+                    {question}
+                  </BodyShort>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )
     )
   },
   (prevProps, nextProps) => {

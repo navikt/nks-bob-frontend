@@ -1,23 +1,35 @@
-.inputfield {
+.inputfield-background {
   background: var(--a-bg-default);
 }
 
-body.dark .inputfield {
+body.dark .inputfield-background {
   background: var(--new-bg);
 }
 
+
 .input-button {
-  position: absolute;
-  bottom: 1px;
-  right: 1px;
   max-height: 2.5rem;
   height: 100%;
-  max-width: 2.5rem;
+  max-width: 2.3rem;
   width: 100%;
+  right: 0.2%;
+  top: 2%;
 }
 
 .text-area {
   display: flex;
   width: 100%;
   flex-grow: 1;
+}
+
+.textarea-transition {
+  transition: height 0.3s ease;
+}
+
+.detailcolor {
+  color: var(--a-text-subtle)
+}
+
+body.dark .detailcolor {
+  color: rgba(118, 126, 140, 1);
 }

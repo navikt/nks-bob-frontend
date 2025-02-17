@@ -70,32 +70,36 @@ export const ShowAllSources = () => {
       </HStack>
       <VStack className='sourcelist pt-6'>
         <BodyLong size='small' className='px-4' spacing>
-          Her finner du alle kildene Bob hadde tilgang til for å besvare
-          spørsmålet. Merk at for hver artikkel listet opp her så har ikke Bob
-          tilgang til hele artikkelen, men kun et utdrag av den.
+          Her finner du alle kildene Bob har brukt for å generere svaret. Merk
+          at for hver oppført artikkel har Bob kun lest et utdrag, ikke hele
+          artikkelen. Du kan se utdraget under lenken til artikkelen.
         </BodyLong>
-        <VStack>
-          <HStack className='sourceheading gap-2'>
-            <KunnskapsbasenIcon />
-            <BodyShort size='small'>Kunnskapsbasen</BodyShort>
-          </HStack>
-          <VStack className='my-1'>
-            {nksContext.map((ctx) => (
-              <NksSource context={ctx} />
-            ))}
+        {nksContext.length > 0 && (
+          <VStack>
+            <HStack className='sourceheading gap-2'>
+              <KunnskapsbasenIcon />
+              <BodyShort size='small'>Kunnskapsbasen</BodyShort>
+            </HStack>
+            <VStack className='my-1'>
+              {nksContext.map((ctx) => (
+                <NksSource context={ctx} />
+              ))}
+            </VStack>
           </VStack>
-        </VStack>
-        <VStack className='sourcepanel-list'>
-          <HStack className='sourceheading gap-2'>
-            <NavNoIcon />
-            <BodyShort size='small'>Nav.no</BodyShort>
-          </HStack>
-          <VStack className='my-1'>
-            {navContext.map((ctx) => (
-              <NavSource context={ctx} />
-            ))}
+        )}
+        {navContext.length > 0 && (
+          <VStack className='sourcepanel-list'>
+            <HStack className='sourceheading gap-2'>
+              <NavNoIcon />
+              <BodyShort size='small'>Nav.no</BodyShort>
+            </HStack>
+            <VStack className='my-1'>
+              {navContext.map((ctx) => (
+                <NavSource context={ctx} />
+              ))}
+            </VStack>
           </VStack>
-        </VStack>
+        )}
       </VStack>
     </VStack>
   )
