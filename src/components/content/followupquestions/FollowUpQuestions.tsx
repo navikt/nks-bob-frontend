@@ -10,8 +10,11 @@ interface FollowUpQuestionsProps {
 
 export const FollowUpQuestions = memo(
   ({ followUp, onSend, className }: FollowUpQuestionsProps) => {
+    const includesDu = followUp.some((question) => question.includes("du"))
+
     return (
-      followUp.length > 0 && (
+      followUp.length > 0 &&
+      !includesDu && (
         <div
           className={`flex flex-col gap-2 overflow-hidden py-2 ${className}`}
         >
