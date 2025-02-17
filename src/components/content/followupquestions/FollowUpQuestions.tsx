@@ -43,7 +43,7 @@ export const FollowUpQuestions = memo(
                 <button
                   onClick={() => onSend(question)}
                   key={`question-${index}`}
-                  className={`followupchip truncate transition-all question-${index} grow`}
+                  className={`followupchip truncate transition-all question-${index} `}
                 >
                   <BodyShort
                     size='small'
