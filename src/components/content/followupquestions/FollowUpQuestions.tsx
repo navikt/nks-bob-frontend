@@ -16,7 +16,7 @@ export const FollowUpQuestions = memo(
       followUp.length > 0 &&
       !includesDu && (
         <div
-          className={`flex flex-col gap-2 overflow-hidden py-2 ${className}`}
+          className={`fade-in flex flex-col gap-2 overflow-hidden py-2 ${className}`}
         >
           <Label size='small'>Forslag fra Bob</Label>
           <div className='flex flex-col gap-1'>
