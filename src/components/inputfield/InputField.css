@@ -6,9 +6,6 @@ body.dark .inputfield-background {
   background: var(--new-bg);
 }
 
-.inputfield {
-  overflow: visible;
-}
 
 .input-button {
   max-height: 2.5rem;

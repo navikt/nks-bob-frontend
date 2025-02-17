@@ -142,7 +142,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
   }, [inputValue, disabled])
 
   return (
-    <div className='dialogcontent inputfield inputfield-background fixed bottom-0 z-10 h-auto flex-col self-center px-4'>
+    <div className='dialogcontent inputfield-background fixed sticky bottom-0 z-10 h-auto flex-col self-center px-4'>
       {isSensitiveInfoAlert && (
         <Alert
           variant='info'
