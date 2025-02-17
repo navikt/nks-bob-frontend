@@ -171,12 +171,11 @@ function InputField({ onSend, disabled }: InputFieldProps) {
       />
       <div className='inputfield relative flex max-w-[48rem] flex-col items-center justify-end'>
         <Textarea
-          autoFocus
           ref={textareaRef}
           size='medium'
           label=''
           hideLabel
-          className='dialogcontent truncate *:h-[43px] *:transition-[height] *:delay-150 *:duration-300 *:ease-in focus:*:h-[100px]'
+          className='dialogcontent mb-3 truncate *:h-[43px] *:transition-[height] *:delay-150 *:duration-300 *:ease-in focus:*:h-[100px]'
           minRows={1}
           maxRows={8}
           placeholder={placeholderText}
