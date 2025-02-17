@@ -165,16 +165,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
           Pass på å ikke dele sensitiv personinformasjon.
         </Alert>
       )}
-      <div
-        className={`${
-          isFocused ? "max-h-[200px] pt-2" : "max-h-0"
-        } overflow-hidden transition-[max-height] duration-1000 ease-in-out ${disabled ? "hidden" : "visible"}`}
-      >
-        <FollowUpQuestions
-          followUp={followUp}
-          className='pointer-events-auto'
-        />
-      </div>
+      <FollowUpQuestions followUp={followUp} className='pointer-events-auto' />
       <div className='relative flex max-w-[48rem] flex-col items-center justify-end overflow-hidden'>
         <Textarea
           autoFocus

@@ -1,5 +1,5 @@
 import { Label } from "@navikt/ds-react"
-import { memo, useRef, useState } from "react"
+import { memo, useRef } from "react"
 import { useInputFieldContext } from "../../inputfield/InputField.tsx"
 import "./FollowUpQuestions.css"
 
@@ -12,18 +12,6 @@ export const FollowUpQuestions = memo(
   ({ followUp, className }: FollowUpQuestionsProps) => {
     const { inputValue, setInputValue, focusTextarea } = useInputFieldContext()
     const originalInputValueRef = useRef(inputValue)
-    const [hoveredButton, setHoveredButton] = useState<string | null>(null)
-
-    const handleMouseEnter = (question: string) => {
-      originalInputValueRef.current = inputValue
-      setInputValue(question)
-      setHoveredButton(question)
-    }
-
-    const handleMouseLeave = () => {
-      setInputValue(originalInputValueRef.current)
-      setHoveredButton(null)
-    }
 
     const handleClick = (question: string) => {
       setInputValue(question)
@@ -41,9 +29,6 @@ export const FollowUpQuestions = memo(
                 onClick={() => handleClick(question)}
                 key={`question-${index}`}
                 className='followup-button basis-1/3 truncate transition-all'
-                onMouseEnter={() => handleMouseEnter(question)}
-                onMouseLeave={handleMouseLeave}
-                disabled={hoveredButton !== null && hoveredButton !== question}
               >
                 <span className='navds-body-short--small truncate'>
                   {question}

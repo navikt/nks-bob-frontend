@@ -70,9 +70,9 @@ export const ShowAllSources = () => {
       </HStack>
       <VStack className='sourcelist pt-6'>
         <BodyLong size='small' className='px-4' spacing>
-          Her finner du alle kildene Bob hadde tilgang til for å besvare
-          spørsmålet. Merk at for hver artikkel listet opp her så har ikke Bob
-          tilgang til hele artikkelen, men kun et utdrag av den.
+          Her finner du alle kildene Bob har brukt for å generere svaret. Merk
+          at for hver oppført artikkel har Bob kun lest et utdrag, ikke hele
+          artikkelen. Du kan se utdraget under lenken til artikkelen.
         </BodyLong>
         {nksContext.length > 0 && (
           <VStack>
