@@ -38,12 +38,12 @@ export const FollowUpQuestions = memo(
             )}
           </HStack>
           {!isOpen && (
-            <div className='flex flex-col gap-1'>
+            <div className='flex flex-row flex-wrap gap-1'>
               {followUp.map((question, index) => (
                 <button
                   onClick={() => onSend(question)}
                   key={`question-${index}`}
-                  className={`followupchip truncate transition-all question-${index} w-fit`}
+                  className={`followupchip truncate transition-all question-${index} grow`}
                 >
                   <BodyShort
                     size='small'

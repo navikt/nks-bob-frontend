@@ -142,7 +142,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
   }, [inputValue, disabled])
 
   return (
-    <div className='dialogcontent inputfield-background fixed sticky bottom-0 z-10 h-auto flex-col self-center px-4'>
+    <div className='dialogcontent inputfield-background sticky bottom-0 z-10 h-auto flex-col self-center px-4'>
       {isSensitiveInfoAlert && (
         <Alert
           variant='info'
@@ -175,7 +175,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
           size='medium'
           label=''
           hideLabel
-          className='dialogcontent mb-3 truncate *:h-[43px] *:transition-[height] *:delay-150 *:duration-300 *:ease-in focus:*:h-[100px]'
+          className='dialogcontent mb-3 truncate *:h-[43px] *:transition-[height] *:delay-150 *:duration-300 *:ease-in focus:*:h-[80px]'
           minRows={1}
           maxRows={8}
           placeholder={placeholderText}
