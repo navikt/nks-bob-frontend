@@ -13,15 +13,15 @@ export const FollowUpQuestions = memo(
     return (
       followUp.length > 0 && (
         <div
-          className={`flex flex-col gap-2 overflow-hidden py-4 ${className}`}
+          className={`flex flex-col gap-2 overflow-hidden py-2 ${className}`}
         >
           <Label size='small'>Forslag fra Bob</Label>
-          <div className='questionscontainer relative flex flex-col gap-2'>
+          <div className='flex flex-col gap-1'>
             {followUp.map((question, index) => (
               <button
                 onClick={() => onSend(question)}
                 key={`question-${index}`}
-                className={`followupchip truncate transition-all question-${index}`}
+                className={`followupchip truncate transition-all question-${index} w-fit`}
               >
                 <BodyShort
                   size='small'
