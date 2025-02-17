@@ -68,7 +68,6 @@ export const InputFieldContextProvider = ({ children }: PropsWithChildren) => {
 interface InputFieldProps {
   onSend: (message: NewMessage) => void
   disabled: boolean
-  newConversation: string | undefined
 }
 
 function InputField({ onSend, disabled }: InputFieldProps) {
@@ -143,7 +142,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
   }, [inputValue, disabled])
 
   return (
-    <div className='dialogcontent inputfield fixed bottom-0 z-10 h-auto flex-col self-center px-4'>
+    <div className='dialogcontent inputfield inputfield-background fixed bottom-0 z-10 h-auto flex-col self-center px-4'>
       {isSensitiveInfoAlert && (
         <Alert
           variant='info'
@@ -170,7 +169,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
         onSend={(question) => sendMessage(question)}
         className='pointer-events-auto'
       />
-      <div className='relative flex max-w-[48rem] flex-col items-center justify-end pb-2'>
+      <div className='inputfield relative flex max-w-[48rem] flex-col items-center justify-end'>
         <Textarea
           autoFocus
           ref={textareaRef}

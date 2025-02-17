@@ -13,7 +13,7 @@ export const FollowUpQuestions = memo(
     return (
       followUp.length > 0 && (
         <div
-          className={`flex flex-col gap-2 overflow-hidden py-2 ${className}`}
+          className={`flex flex-col gap-2 overflow-hidden py-4 ${className}`}
         >
           <Label size='small'>Forslag fra Bob</Label>
           <div className='questionscontainer relative flex flex-col gap-2'>
