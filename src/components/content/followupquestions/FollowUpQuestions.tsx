@@ -38,7 +38,7 @@ export const FollowUpQuestions = memo(
             )}
           </HStack>
           {!isOpen && (
-            <div className='flex flex-row flex-wrap gap-1'>
+            <div className='flex grow flex-col gap-1'>
               {followUp.map((question, index) => (
                 <button
                   onClick={() => onSend(question)}
