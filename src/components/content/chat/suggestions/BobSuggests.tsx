@@ -2,8 +2,12 @@ import {
   BulletListIcon,
   HandHeartIcon,
   LanguageIcon,
+  StarFillIcon,
+  StarIcon,
 } from "@navikt/aksel-icons"
 import { Button, CopyButton, Tooltip } from "@navikt/ds-react"
+import { useState } from "react"
+import { useStarMessage } from "../../../../api/api.ts"
 import { Message, NewMessage } from "../../../../types/Message.ts"
 import amplitude from "../../../../utils/amplitude.ts"
 import { md } from "../../../../utils/markdown.ts"
@@ -106,6 +110,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
           onClick={handleEmpathetic}
         />
       </Tooltip>
+      <MessageStar message={message} />
 
       {/*Funksjon vi ikke skal bruke lengre:*/}
 
@@ -148,6 +153,31 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
       {/*  </Dropdown.Menu>*/}
       {/*</Dropdown>*/}
     </div>
+  )
+}
+
+const MessageStar = ({ message }: { message: Message }) => {
+  const [starred, setStarred] = useState(message.starred ?? false)
+  const { trigger: starMessage, isMutating: isLoading } = useStarMessage(
+    message.id,
+  )
+
+  const handleStarMessage = () => {
+    starMessage()
+    setStarred(true)
+  }
+
+  return (
+    <Tooltip content='Stjernemarker svaret'>
+      <Button
+        disabled={isLoading || starred}
+        variant='tertiary-neutral'
+        size='small'
+        aria-label='Stjernemarker svaret'
+        icon={starred ? <StarFillIcon /> : <StarIcon />}
+        onClick={handleStarMessage}
+      />
+    </Tooltip>
   )
 }
 
