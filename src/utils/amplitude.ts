@@ -95,6 +95,12 @@ const tekstInnholdLimtInn = () => instance.logEvent("Tekstinnhold limt inn")
 
 const tekstInneholderFnr = () => instance.logEvent("Tekst inneholder fnr")
 
+const forslagTrykket = () => instance.logEvent("Forslag trykket")
+
+const visAlleKilderÅpnet = () => instance.logEvent("Vis alle kilder åpnet")
+
+const spørsmålRedigert = () => instance.logEvent("Rediger spørsmål trykket")
+
 export default {
   svarKopiert,
   svarEndret,
@@ -106,4 +112,7 @@ export default {
   kildeAccordionSkjult,
   tekstInnholdLimtInn,
   tekstInneholderFnr,
+  forslagTrykket,
+  visAlleKilderÅpnet,
+  spørsmålRedigert,
 }
