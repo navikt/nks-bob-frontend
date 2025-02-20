@@ -14,11 +14,18 @@ import {
   Link,
   VStack,
 } from "@navikt/ds-react"
-import { createContext, PropsWithChildren, useContext, useState } from "react"
+import {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useState,
+} from "react"
 import Markdown from "react-markdown"
 import { KunnskapsbasenIcon } from "../../../../../assets/icons/KunnskapsbasenIcon.tsx"
 import { NavNoIcon } from "../../../../../assets/icons/NavNoIcon.tsx"
 import { Context, Message } from "../../../../../types/Message.ts"
+import amplitude from "../../../../../utils/amplitude.ts"
 import "./ShowAllSources.css"
 
 type SourcesContextType = {
@@ -35,6 +42,12 @@ export const useSourcesContext = () => useContext(SourcesContext)
 
 export const SourcesContextProvider = ({ children }: PropsWithChildren) => {
   const [activeMessage, setActiveMessage] = useState<Message | null>(null)
+
+  useEffect(() => {
+    if (activeMessage !== null) {
+      amplitude.visAlleKilderÅpnet()
+    }
+  }, [activeMessage])
 
   return (
     <SourcesContext.Provider

@@ -7,6 +7,7 @@ import Markdown from "react-markdown"
 import rehypeRaw from "rehype-raw"
 import { useInputFieldContext } from "../../../inputfield/InputField.tsx"
 import "./ChatBubbles.css"
+import amplitude from "../../../../utils/amplitude.ts"
 
 interface UserChatBubbleProps {
   userQuestion?: Message
@@ -22,6 +23,7 @@ const UserQuestionBubble = memo(
       if (userQuestion) {
         focusTextarea()
         setInputValue(userQuestion.content)
+        amplitude.spørsmålRedigert()
       }
     }
 

@@ -2,6 +2,7 @@ import { ChevronDownIcon, ChevronUpIcon } from "@navikt/aksel-icons"
 import { BodyShort, HStack, Label } from "@navikt/ds-react"
 import { memo, useState } from "react"
 import "./FollowUpQuestions.css"
+import amplitude from "../../../utils/amplitude"
 
 interface FollowUpQuestionsProps {
   followUp: string[]
@@ -41,7 +42,10 @@ export const FollowUpQuestions = memo(
             <div className='flex grow flex-col gap-1'>
               {followUp.map((question, index) => (
                 <button
-                  onClick={() => onSend(question)}
+                  onClick={() => {
+                    amplitude.forslagTrykket()
+                    onSend(question)
+                  }}
                   key={`question-${index}`}
                   className={`followupchip truncate transition-all question-${index} `}
                 >
