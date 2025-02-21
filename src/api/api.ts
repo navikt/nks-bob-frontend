@@ -212,3 +212,12 @@ export const useUpdateUserConfig = () => {
     error,
   }
 }
+
+export const useStarMessage = (messageId: string) => {
+  const { trigger, isMutating } = useSWRMutation(
+    `/api/v1/messages/${messageId}/star`,
+    poster,
+  )
+
+  return { trigger, isMutating }
+}

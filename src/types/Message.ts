@@ -23,6 +23,7 @@ export type Message = {
   pending: boolean
   errors: MessageError[]
   followUp: string[]
+  starred?: boolean
 }
 
 export type Citation = {
@@ -43,7 +44,7 @@ export type Context = {
   semanticSimilarity: number
 }
 
-export type MessageError = { title: string, description: string }
+export type MessageError = { title: string; description: string }
 
 export type SourceType = "nks" | "navno"
 
