@@ -83,6 +83,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
         />
       </Tooltip>
       <GiveUsFeedback message={message} />
+      <MessageStar message={message} />
       <Tooltip content='Oversett svaret til engelsk'>
         <Button
           variant='tertiary-neutral'
@@ -110,48 +111,6 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
           onClick={handleEmpathetic}
         />
       </Tooltip>
-      <MessageStar message={message} />
-
-      {/*Funksjon vi ikke skal bruke lengre:*/}
-
-      {/*<Dropdown>*/}
-      {/*  <Button*/}
-      {/*    variant='tertiary-neutral'*/}
-      {/*    size='small'*/}
-      {/*    icon={<ArrowsCirclepathIcon />}*/}
-      {/*    as={Dropdown.Toggle}*/}
-      {/*  >*/}
-      {/*    Endre svaret*/}
-      {/*  </Button>*/}
-      {/*  <Dropdown.Menu>*/}
-      {/*    <Dropdown.Menu.GroupedList>*/}
-      {/*      <Dropdown.Menu.GroupedList.Item*/}
-      {/*        as='button'*/}
-      {/*        onClick={handleTranslate}*/}
-      {/*      >*/}
-      {/*        <Label as='button' size='small'>*/}
-      {/*          Oversett til engelsk*/}
-      {/*        </Label>*/}
-      {/*      </Dropdown.Menu.GroupedList.Item>*/}
-      {/*      <Dropdown.Menu.GroupedList.Item*/}
-      {/*        as='button'*/}
-      {/*        onClick={handleBulletList}*/}
-      {/*      >*/}
-      {/*        <Label as='button' size='small'>*/}
-      {/*          Lag punktliste*/}
-      {/*        </Label>*/}
-      {/*      </Dropdown.Menu.GroupedList.Item>*/}
-      {/*      <Dropdown.Menu.GroupedList.Item*/}
-      {/*        as='button'*/}
-      {/*        onClick={handleSimplify}*/}
-      {/*      >*/}
-      {/*        <Label as='button' size='small' className='hover:cursor-pointer'>*/}
-      {/*          Forenkle svaret*/}
-      {/*        </Label>*/}
-      {/*      </Dropdown.Menu.GroupedList.Item>*/}
-      {/*    </Dropdown.Menu.GroupedList>*/}
-      {/*  </Dropdown.Menu>*/}
-      {/*</Dropdown>*/}
     </div>
   )
 }
@@ -168,14 +127,16 @@ const MessageStar = ({ message }: { message: Message }) => {
   }
 
   return (
-    <Tooltip content='Stjernemarker svaret'>
+    <Tooltip content='Marker som bra svar'>
       <Button
         disabled={isLoading || starred}
         variant='tertiary-neutral'
         size='small'
-        aria-label='Stjernemarker svaret'
+        aria-label='Marker som bra svar'
         icon={starred ? <StarFillIcon /> : <StarIcon />}
-        onClick={handleStarMessage}
+        onClick={() => {
+          handleStarMessage()
+        }}
       />
     </Tooltip>
   )
