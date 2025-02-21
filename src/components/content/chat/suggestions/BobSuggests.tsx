@@ -133,7 +133,9 @@ const MessageStar = ({ message }: { message: Message }) => {
         variant='tertiary-neutral'
         size='small'
         aria-label='Marker som bra svar'
-        icon={starred ? <StarFillIcon /> : <StarIcon />}
+        icon={
+          starred ? <StarFillIcon className='text-orange-500' /> : <StarIcon />
+        }
         onClick={() => {
           handleStarMessage()
         }}
