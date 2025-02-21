@@ -1,7 +1,7 @@
-import { BodyLong, HStack, Skeleton, VStack } from "@navikt/ds-react"
+import { BodyLong, Skeleton, VStack } from "@navikt/ds-react"
 import { memo, useState } from "react"
 import Markdown from "react-markdown"
-import BobHead from "../../../../assets/illustrations/BobHead.svg"
+import { BobRoboHead } from "../../../../assets/illustrations/BobHeadV2.tsx"
 import { Message, NewMessage } from "../../../../types/Message.ts"
 import BobSuggests from "../suggestions/BobSuggests.tsx"
 import BobAnswerCitations from "./BobAnswerCitations.tsx"
@@ -26,8 +26,10 @@ export const BobAnswerBubble = memo(
 
     return (
       <VStack gap='1' align='stretch' className='pb-12'>
-        <HStack gap='1' align='start' wrap={false} width='full'>
-          <img src={BobHead} alt='Bob' width='30px' className='bobhead' />
+        <VStack align='start' width='full'>
+          <div className='pt-1'>
+            <BobRoboHead />
+          </div>
           <div className='flex w-full flex-col pt-3'>
             <div className='overflow-wrap mb-2 flex w-full'>
               {hasError(message) ? (
@@ -47,7 +49,7 @@ export const BobAnswerBubble = memo(
               />
             </div>
           </div>
-        </HStack>
+        </VStack>
       </VStack>
     )
   },
