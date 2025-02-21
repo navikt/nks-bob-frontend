@@ -4,19 +4,29 @@ import {
   BobTheDarkChristmasWizard,
 } from "../../../assets/illustrations/BobTheChristmasWizard.tsx"
 import {
-  BobTheWizardDark,
-  BobTheWizardDefault,
-} from "../../../assets/illustrations/BobTheWizard.tsx"
+  BobTheRobot,
+  BobTheRobotDark,
+} from "../../../assets/illustrations/BobTheRobot.tsx"
 import "./Placeholders.css"
 
 export const BobPlaceholder = () => {
   return (
     <>
       <div className='bob-styling flex dark:hidden'>
-        <BobTheWizardDefault />
+        <div>
+          <BobTheRobot />
+        </div>
+        <BodyShort size='medium' className='self-center text-text-subtle'>
+          Hei! Hva kan jeg hjelpe deg med?
+        </BodyShort>
       </div>
       <div className='bob-styling hidden dark:flex'>
-        <BobTheWizardDark />
+        <div>
+          <BobTheRobotDark />
+        </div>
+        <BodyShort size='medium' className='self-center text-text-subtle'>
+          Hei! Hva kan jeg hjelpe deg med?
+        </BodyShort>
       </div>
     </>
   )
