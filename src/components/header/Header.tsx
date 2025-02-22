@@ -1,4 +1,4 @@
-import { NewButton } from "../menu/Buttons.tsx"
+import { NewButton } from "../menu/NewButton.tsx"
 import DarkModeToggle from "../menu/darkmode/DarkModeToggle.tsx"
 import "./Header.css"
 import { NAVLogo } from "./nav-logo.tsx"
@@ -14,7 +14,7 @@ function Header({ conversation }: HeaderProps) {
       <div className='flex max-w-24'>
         <NAVLogo />
       </div>
-      <div className='max-h-30 flex h-9 flex-wrap items-center justify-end gap-3'>
+      <div className='max-h-30 flex h-full gap-3'>
         <div className='flex'>
           {conversation && <NewButton conversationId={conversation} />}
           <TipsFromBob />
