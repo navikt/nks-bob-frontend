@@ -1,4 +1,4 @@
-import { Alert, BodyShort, Button, Textarea } from "@navikt/ds-react"
+import { Alert, Button, Detail, Textarea } from "@navikt/ds-react"
 
 import { PaperplaneIcon } from "@navikt/aksel-icons"
 import {
@@ -195,10 +195,10 @@ function InputField({ onSend, disabled }: InputFieldProps) {
           disabled={sendDisabled}
         />
       </div>
-      <BodyShort size='small' align='center' className='detailcolor pb-2'>
-        Bob er en kunstig intelligens og kan ta feil – sjekk kilder for å være
-        sikker.
-      </BodyShort>
+      <Detail align='center' className='detailcolor pb-2'>
+        Bob er en kunstig intelligens og kan ta feil – sjekk kilder om du er
+        usikker.
+      </Detail>
     </div>
   )
 }

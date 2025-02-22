@@ -1,5 +1,5 @@
 import { InformationSquareIcon } from "@navikt/aksel-icons"
-import { Button } from "@navikt/ds-react"
+import { Button, Tooltip } from "@navikt/ds-react"
 import { useRef } from "react"
 import amplitude from "../../../utils/amplitude.ts"
 import "./TipsFromBob.css"
@@ -16,24 +16,14 @@ const TipsFromBob = () => {
 
   return (
     <div className='flex self-center'>
-      <Button
-        variant='tertiary'
-        size='small'
-        onClick={() => showModal()}
-        icon={<InformationSquareIcon />}
-        iconPosition='right'
-        className='max-phone:hidden'
-      >
-        Info og tips
-      </Button>
-      <Button
-        variant='tertiary'
-        size='medium'
-        onClick={() => showModal()}
-        icon={<InformationSquareIcon />}
-        iconPosition='right'
-        className='phone:hidden'
-      ></Button>
+      <Tooltip content='Informasjon og tips'>
+        <Button
+          variant='tertiary'
+          size='medium'
+          onClick={() => showModal()}
+          icon={<InformationSquareIcon aria-hidden />}
+        />
+      </Tooltip>
       <FirstTimeLoginModal firstTimeLoginModal={firstTimeLoginModal} />
       <ButtonClickModal buttonClickModal={buttonClickModal} />
     </div>

@@ -1,10 +1,5 @@
-import {
-  ThumbDownFillIcon,
-  ThumbDownIcon,
-  ThumbUpFillIcon,
-  ThumbUpIcon,
-} from "@navikt/aksel-icons"
-import { Button } from "@navikt/ds-react"
+import { ThumbDownFillIcon, ThumbUpFillIcon } from "@navikt/aksel-icons"
+import { BodyShort, Button } from "@navikt/ds-react"
 import { useState } from "react"
 import { useSendConversationFeedback } from "../../../../api/api.ts"
 import { Feedback } from "../../../../types/Message.ts"
@@ -47,7 +42,7 @@ function FeedbackThumbs({ conversationId }: FeedbackButtonsProps) {
           <Button
             variant='tertiary-neutral'
             size='small'
-            icon={<ThumbUpIcon />}
+            icon={<ThumbUpFillIcon />}
             onClick={() => handleFeedback(true)}
             disabled={isLoading}
             title='Liker svaret'
@@ -55,7 +50,7 @@ function FeedbackThumbs({ conversationId }: FeedbackButtonsProps) {
           <Button
             variant='tertiary-neutral'
             size='small'
-            icon={<ThumbDownIcon className='scale-x-[-1]' />}
+            icon={<ThumbDownFillIcon className='scale-x-[-1]' />}
             onClick={() => handleFeedback(false)}
             disabled={isLoading}
             title='Liker ikke svaret'
@@ -63,22 +58,10 @@ function FeedbackThumbs({ conversationId }: FeedbackButtonsProps) {
         </>
       )}
       {feedback === "positive" && (
-        <Button
-          variant='tertiary-neutral'
-          size='small'
-          icon={<ThumbUpFillIcon />}
-          disabled={true}
-          className='hover:cursor-not-allowed'
-        ></Button>
+        <BodyShort className='fade-in'> Takk for tilbakemeldingen!</BodyShort>
       )}
       {feedback === "negative" && (
-        <Button
-          variant='tertiary-neutral'
-          size='small'
-          icon={<ThumbDownFillIcon className='scale-x-[-1]' />}
-          disabled={true}
-          className='hover:cursor-not-allowed'
-        ></Button>
+        <BodyShort className='fade-in'> Takk for tilbakemeldingen!</BodyShort>
       )}
     </div>
   )
