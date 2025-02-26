@@ -215,9 +215,15 @@ export const useUpdateUserConfig = () => {
 
 export const useStarMessage = (messageId: string) => {
   const { trigger, isMutating } = useSWRMutation(
-    `/api/v1/messages/${messageId}/star`,
-    poster,
+    `/api/v1/messages/${messageId}`,
+    putter,
   )
 
-  return { trigger, isMutating }
+  const starMessage = (starred: boolean) =>
+    trigger({
+      id: messageId,
+      starred,
+    })
+
+  return { starMessage, isMutating }
 }
