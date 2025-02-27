@@ -117,19 +117,19 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
 
 const MessageStar = ({ message }: { message: Message }) => {
   const [starred, setStarred] = useState(message.starred ?? false)
-  const { trigger: starMessage, isMutating: isLoading } = useStarMessage(
+  const { starMessage, isMutating: isLoading } = useStarMessage(
     message.id,
   )
 
   const handleStarMessage = () => {
-    starMessage()
-    setStarred(true)
+    starMessage(!starred)
+    setStarred(!starred)
   }
 
   return (
     <Tooltip content='Marker som bra svar'>
       <Button
-        disabled={isLoading || starred}
+        disabled={isLoading}
         variant='tertiary-neutral'
         size='small'
         aria-label='Marker som bra svar'
