@@ -4,6 +4,7 @@ import Markdown from "react-markdown"
 import { Citation, Context } from "../../../../types/Message.ts"
 import { KunnskapsbasenIcon } from "../../../../assets/icons/KunnskapsbasenIcon.tsx"
 import { NavNoIcon } from "../../../../assets/icons/NavNoIcon.tsx"
+import remarkGfm from "remark-gfm"
 
 interface BobAnswerCitationProps {
   citation: Citation
@@ -94,6 +95,7 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
       <BodyLong size='small' className='mt-1 italic'>
         <Markdown
           className='markdown'
+          remarkPlugins={[remarkGfm]}
           components={{
             a: ({ ...props }) => (
               <a {...props} target='_blank' rel='noopener noreferrer' />
