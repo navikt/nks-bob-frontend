@@ -59,7 +59,6 @@ function ConversationContent() {
               <ChatContainer
                 onSend={handleUserMessage}
                 messages={messages}
-                conversationId={conversationId!}
                 isLoading={isLoading}
               />
             )}

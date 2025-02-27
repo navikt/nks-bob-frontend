@@ -4,6 +4,7 @@ import { useCreateConversation } from "../../api/api.ts"
 import { NewConversation, NewMessage } from "../../types/Message.ts"
 import Header from "../header/Header.tsx"
 import InputField, { useInputFieldContext } from "../inputfield/InputField.tsx"
+import { GuideModals } from "./guide/GuideModals.tsx"
 import { BobPlaceholder } from "./placeholders/Placeholders.tsx"
 import CreateConversationWrapper from "./wrappers/CreateConversationWrapper.tsx"
 
@@ -43,6 +44,7 @@ const CreateConversationContent = () => {
     <CreateConversationWrapper>
       <Header conversation={undefined} />
       <BobPlaceholder />
+      <GuideModals />
       <InputField onSend={handleUserMessage} disabled={false} />
     </CreateConversationWrapper>
   )

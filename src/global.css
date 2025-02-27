@@ -10,10 +10,6 @@
   scrollbar-color: var(--a-grayalpha-400) transparent;
 }
 
-p:not(li p):not(:last-child) {
-  margin-bottom: 1rem;
-}
-
 ul li:not(:last-child) {
   margin-bottom: 0.4rem;
 }
@@ -46,6 +42,10 @@ ol li::marker {
 ul {
   all: revert;
   padding-left: 1.5rem;
+}
+
+.markdown > p:not(li p):not(:last-child) {
+  margin-bottom: 1rem;
 }
 
 .pagewrapper {
@@ -365,6 +365,18 @@ body.dark {
   --ac-chip-toggle-focus: rgba(95, 148, 216, 1);
 
   --ax-border-subtle: rgba(46, 54, 65, 1);
+
+  /*  Select  */
+  --ac-select-bg: var(--new-bg-raised);
+  --ac-select-text: rgba(223, 225, 229, 1);
+  --ac-select-border: rgba(118, 126, 140, 1);
+  --ac-select-hover-border: var(--new-link-text);
+  --ac-select-active-border: var(--new-link-text);
+
+
+
+
+
 }
 
 body.dark a {

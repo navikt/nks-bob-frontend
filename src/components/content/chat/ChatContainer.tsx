@@ -4,7 +4,6 @@ import { BobAnswerBubble } from "./chatbubbles/BobAnswerBubble.tsx"
 import UserQuestionBubble from "./chatbubbles/UserQuestionBubble.tsx"
 
 interface ChatDialogProps {
-  conversationId: string
   messages: Message[]
   onSend: (message: NewMessage) => void
   isLoading: boolean

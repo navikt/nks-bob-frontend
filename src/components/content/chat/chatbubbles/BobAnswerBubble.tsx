@@ -1,7 +1,7 @@
 import { BodyLong, Skeleton, VStack } from "@navikt/ds-react"
 import { memo, useState } from "react"
 import Markdown from "react-markdown"
-import { BobRoboHead } from "../../../../assets/illustrations/BobHeadV2.tsx"
+import { BobRoboHead } from "../../../../assets/illustrations/BobRoboHead.tsx"
 import { Message, NewMessage } from "../../../../types/Message.ts"
 import BobSuggests from "../suggestions/BobSuggests.tsx"
 import BobAnswerCitations from "./BobAnswerCitations.tsx"
