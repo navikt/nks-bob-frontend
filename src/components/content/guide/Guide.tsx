@@ -29,7 +29,10 @@ const Guide = ({
     setStep(Number(e.target.value))
 
   function handleClose() {
-    updateUserConfig({ showStartInfo: false, showTutorial: false }).then(() => {
+    updateUserConfig({
+      showStartInfo: false,
+      showTutorial: userConfig?.showTutorial ?? true,
+    }).then(() => {
       setIsModalOpen(false)
       setStartGuide(false)
     })
