@@ -29,10 +29,14 @@ const Guide = ({
     setStep(Number(e.target.value))
 
   function handleClose() {
-    updateUserConfig({ showStartInfo: false }).then(() => {
-      setIsModalOpen(false)
-      setStartGuide(false)
-    })
+    updateUserConfig({ showStartInfo: false })
+      .then(() => {
+        setIsModalOpen(false)
+        setStartGuide(false)
+      })
+      .catch((error) => {
+        console.error("Failed to update user config:", error)
+      })
   }
 
   useEffect(() => {
