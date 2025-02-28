@@ -1,8 +1,0 @@
-.modal-styling {
-  margin-inline: auto;
-}
-
-body.dark .modal-styling {
-  --__ac-modal-bg: var(--new-bg);
-  color: rgba(196, 201, 208, 1);
-}

@@ -31,7 +31,7 @@ const Guide = ({
   function handleClose() {
     updateUserConfig({
       showStartInfo: false,
-      showTutorial: userConfig?.showTutorial ?? true,
+      showTutorial: false,
     }).then(() => {
       setIsModalOpen(false)
       setStartGuide(false)
