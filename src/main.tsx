@@ -10,7 +10,6 @@ import App from "./App.tsx"
 import { preloadUserConfig } from "./api/api.ts"
 import ConversationAdminContent from "./components/content/ConversationAdminContent.tsx"
 import ConversationContent from "./components/content/ConversationContent.tsx"
-import ConversationGuideContent from "./components/content/ConversationGuideContent.tsx"
 import CreateConversationContent from "./components/content/CreateConversationContent.tsx"
 import "./global.css"
 
@@ -28,7 +27,6 @@ const router = createBrowserRouter(
         path='/admin/:conversationId'
         element={<ConversationAdminContent />}
       />
-      <Route path='/guide' element={<ConversationGuideContent />} />
     </Route>,
   ),
 )

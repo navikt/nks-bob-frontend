@@ -1,6 +1,6 @@
-import { Message } from "../../../../types/Message.ts"
+import { Message } from "../../types/Message.ts"
 
-export const guideMessages: Message[] = [
+export const mockMessages: Message[] = [
   {
     id: "a6447e7d-5672-4bc7-92fe-fce1445146bc",
     content: "Hva er dagpenger?",

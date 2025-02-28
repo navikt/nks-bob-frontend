@@ -1,0 +1,37 @@
+// import { InformationSquareIcon } from "@navikt/aksel-icons"
+// import { Button, Tooltip } from "@navikt/ds-react"
+// import { useRef, useState } from "react"
+// import { useUserConfig } from "../../../api/api.ts"
+// import amplitude from "../../../utils/amplitude.ts"
+// import "./TipsFromBob.css"
+// import { ButtonClickModal } from "./TipsModals.tsx"
+//
+// const TipsFromBob = () => {
+//   const { userConfig } = useUserConfig()
+//   const buttonClickModal = useRef<HTMLDialogElement>(null)
+//   const [modalIsOpen, setModalIsOpen] = useState(false)
+//   const [showWelcomeMessage, setShowWelcomeMessage] = useState(false)
+//
+//   const showModal = (showWelcome: boolean) => {
+//     amplitude.infoÅpnet()
+//     setShowWelcomeMessage(showWelcome)
+//     setModalIsOpen(true)
+//   }
+//
+//   return (
+//     <div className='flex self-center'>
+//       <Tooltip content='Informasjon og tips'>
+//         <Button
+//           variant='tertiary'
+//           size='medium'
+//           onClick={() => showModal(false)}
+//           icon={<InformationSquareIcon aria-hidden />}
+//         />
+//       </Tooltip>
+//
+//       <ButtonClickModal buttonClickModal={buttonClickModal} />
+//     </div>
+//   )
+// }
+//
+// export default TipsFromBob

@@ -8,7 +8,6 @@ import {
   Link,
   VStack,
 } from "@navikt/ds-react"
-import { useState } from "react"
 import {
   BobTheGuide1,
   BobTheGuide2,
@@ -19,10 +18,9 @@ import {
   SitaterFraNavno,
   VisAlleKilder,
 } from "../../../assets/illustrations/ChipsIllustrations.tsx"
-import "./GuideModals.css"
 import { StepSelect } from "./StepSelect.tsx"
 
-const WelcomeMessage = ({
+export const WelcomeMessage = ({
   onNext,
   onClose,
 }: {
@@ -61,7 +59,7 @@ const WelcomeMessage = ({
   </div>
 )
 
-const Step1 = ({
+export const Step1 = ({
   onNext,
   handleSelectChange,
   onClose,
@@ -122,7 +120,7 @@ const Step1 = ({
   </div>
 )
 
-const Step2 = ({
+export const Step2 = ({
   step,
   handleSelectChange,
   onNext,
@@ -187,7 +185,7 @@ const Step2 = ({
   </div>
 )
 
-const Step3 = ({
+export const Step3 = ({
   step,
   handleSelectChange,
   onNext,
@@ -256,7 +254,7 @@ const Step3 = ({
   </div>
 )
 
-const Step4 = ({
+export const Step4 = ({
   step,
   handleSelectChange,
   onClose,
@@ -315,62 +313,3 @@ const Step4 = ({
     </VStack>
   </div>
 )
-
-export const GuideModals = () => {
-  const [step, setStep] = useState(1)
-  const [isModalOpen, setIsModalOpen] = useState(true)
-  const [isWelcomeShown, setIsWelcomeShown] = useState(false)
-
-  const handleNext = () => {
-    if (!isWelcomeShown) {
-      setIsWelcomeShown(true)
-    } else {
-      setStep((prevStep) => prevStep + 1)
-    }
-  }
-  const handlePrevious = () => setStep((prevStep) => prevStep - 1)
-  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
-    setStep(Number(e.target.value))
-  const handleClose = () => setIsModalOpen(false)
-
-  if (!isModalOpen) return null
-
-  return (
-    <div>
-      <div className='modal-overlay' />
-      {!isWelcomeShown ? (
-        <WelcomeMessage onNext={handleNext} onClose={handleClose} />
-      ) : step === 1 ? (
-        <Step1
-          onNext={handleNext}
-          onClose={handleClose}
-          step={step}
-          handleSelectChange={handleSelectChange}
-        />
-      ) : step === 2 ? (
-        <Step2
-          onPrevious={handlePrevious}
-          step={step}
-          handleSelectChange={handleSelectChange}
-          onClose={handleClose}
-          onNext={handleNext}
-        />
-      ) : step === 3 ? (
-        <Step3
-          onPrevious={handlePrevious}
-          step={step}
-          handleSelectChange={handleSelectChange}
-          onClose={handleClose}
-          onNext={handleNext}
-        />
-      ) : step === 4 ? (
-        <Step4
-          onPrevious={handlePrevious}
-          step={step}
-          handleSelectChange={handleSelectChange}
-          onClose={handleClose}
-        />
-      ) : null}
-    </div>
-  )
-}
