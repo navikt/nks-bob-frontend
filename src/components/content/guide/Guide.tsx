@@ -11,7 +11,7 @@ const Guide = ({
   setStartGuide: (value: boolean) => void
 }) => {
   const [step, setStep] = useState(1)
-  const [isModalOpen, setIsModalOpen] = useState(true)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const [isWelcomeShown, setIsWelcomeShown] = useState(false)
   const { updateUserConfig } = useUpdateUserConfig()
   const { userConfig } = useUserConfig()
@@ -39,6 +39,8 @@ const Guide = ({
     if (userConfig?.showStartInfo) {
       setIsWelcomeShown(false)
       setIsModalOpen(true)
+    } else {
+      setIsModalOpen(false)
     }
   }, [userConfig])
 
