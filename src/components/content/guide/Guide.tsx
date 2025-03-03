@@ -10,9 +10,9 @@ const Guide = ({
   startGuide: boolean
   setStartGuide: (value: boolean) => void
 }) => {
-  const [step, setStep] = useState(1)
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [isWelcomeShown, setIsWelcomeShown] = useState(false)
+  const [step, setStep] = useState<number>(1)
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+  const [isWelcomeShown, setIsWelcomeShown] = useState<boolean>(false)
   const { updateUserConfig } = useUpdateUserConfig()
   const { userConfig } = useUserConfig()
 
@@ -31,7 +31,6 @@ const Guide = ({
   function handleClose() {
     updateUserConfig({
       showStartInfo: false,
-      showTutorial: false,
     }).then(() => {
       setIsModalOpen(false)
       setStartGuide(false)

@@ -1,8 +1,10 @@
 import { InformationSquareIcon } from "@navikt/aksel-icons"
 import { Button, Tooltip } from "@navikt/ds-react"
 import { useState } from "react"
+import { useUserConfig } from "../../api/api.ts"
 import amplitude from "../../utils/amplitude.ts"
 import Guide from "../content/guide/Guide.tsx"
+import { NewConceptMessage } from "../content/guide/GuideModals.tsx"
 import { NewButton } from "../menu/NewButton.tsx"
 import DarkModeToggle from "../menu/darkmode/DarkModeToggle.tsx"
 import "./Header.css"
@@ -14,6 +16,7 @@ interface HeaderProps {
 
 function Header({ conversation }: HeaderProps) {
   const [startGuide, setStartGuide] = useState(false)
+  const { userConfig } = useUserConfig()
 
   const showGuide = () => {
     amplitude.infoÅpnet()
@@ -37,6 +40,7 @@ function Header({ conversation }: HeaderProps) {
             />
           </Tooltip>
           <Guide startGuide={startGuide} setStartGuide={setStartGuide} />
+          {userConfig?.showNewConceptInfo && <NewConceptMessage />}
         </div>
         <DarkModeToggle />
       </div>

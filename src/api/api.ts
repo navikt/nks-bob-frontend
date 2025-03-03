@@ -206,7 +206,7 @@ export const useUpdateUserConfig = () => {
 
   return {
     updateUserConfig: trigger as (
-      userConfig: UserConfig,
+      userConfig: Partial<UserConfig>,
     ) => Promise<UserConfig>,
     isLoading: isMutating,
     error,

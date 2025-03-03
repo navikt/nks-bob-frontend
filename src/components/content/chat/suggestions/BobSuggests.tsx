@@ -71,9 +71,6 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
           size='small'
           aria-label='Kopier svaret'
           onClick={() => {
-            // Wait until `CopyButton` is done before writing to clipboard.
-            // This is done in order to copy rich text to the clipboard, instead of passing
-            // a string in the `copyText` prop.
             new Promise((resolve) => setTimeout(resolve, 100)).then(() =>
               copyMessageContent(),
             )
@@ -117,9 +114,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
 
 const MessageStar = ({ message }: { message: Message }) => {
   const [starred, setStarred] = useState(message.starred ?? false)
-  const { starMessage, isMutating: isLoading } = useStarMessage(
-    message.id,
-  )
+  const { starMessage, isMutating: isLoading } = useStarMessage(message.id)
 
   const handleStarMessage = () => {
     starMessage(!starred)
