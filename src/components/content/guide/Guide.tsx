@@ -28,9 +28,12 @@ const Guide = ({
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
     setStep(Number(e.target.value))
 
+  // Denne må endres på (også i api.ts) til å kun sende false for showStartInfo
   function handleClose() {
     updateUserConfig({
       showStartInfo: false,
+      showTutorial: false,
+      showNewConceptInfo: false,
     }).then(() => {
       setIsModalOpen(false)
       setStartGuide(false)
