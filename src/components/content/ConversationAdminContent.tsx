@@ -38,7 +38,6 @@ export default function ConversationAdminContent() {
               <ChatContainer
                 onSend={handleUserMessage}
                 messages={messages}
-                conversationId={conversationId!}
                 isLoading={isLoading}
               />
             )}

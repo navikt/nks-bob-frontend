@@ -5,9 +5,9 @@ import { BodyLong, Button, Tooltip } from "@navikt/ds-react"
 import { memo } from "react"
 import Markdown from "react-markdown"
 import rehypeRaw from "rehype-raw"
+import amplitude from "../../../../utils/amplitude.ts"
 import { useInputFieldContext } from "../../../inputfield/InputField.tsx"
 import "./ChatBubbles.css"
-import amplitude from "../../../../utils/amplitude.ts"
 
 interface UserChatBubbleProps {
   userQuestion?: Message
@@ -28,7 +28,7 @@ const UserQuestionBubble = memo(
     }
 
     return (
-      <div className='questionhover mb-[20px] flex w-fit flex-row items-end gap-1 self-end'>
+      <div className='questionhover mb-2 flex w-fit flex-row items-end gap-1 self-end'>
         <div className='hide-show-edit fade-in hidden'>
           <Tooltip content='Rediger spørsmålet' placement='bottom'>
             <Button

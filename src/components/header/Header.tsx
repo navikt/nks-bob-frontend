@@ -1,14 +1,28 @@
+import { InformationSquareIcon } from "@navikt/aksel-icons"
+import { Button, Tooltip } from "@navikt/ds-react"
+import { useState } from "react"
+import { useUserConfig } from "../../api/api.ts"
+import amplitude from "../../utils/amplitude.ts"
+import Guide from "../content/guide/Guide.tsx"
+import { NewConceptMessage } from "../content/guide/GuideModals.tsx"
 import { NewButton } from "../menu/NewButton.tsx"
 import DarkModeToggle from "../menu/darkmode/DarkModeToggle.tsx"
 import "./Header.css"
 import { NAVLogo } from "./nav-logo.tsx"
-import TipsFromBob from "./tipsfrombob/TipsFromBob.tsx"
 
 interface HeaderProps {
   conversation: string | undefined
 }
 
 function Header({ conversation }: HeaderProps) {
+  const [startGuide, setStartGuide] = useState(false)
+  const { userConfig } = useUserConfig()
+
+  const showGuide = () => {
+    amplitude.infoÅpnet()
+    setStartGuide(true)
+  }
+
   return (
     <div className='header'>
       <div className='flex max-w-24'>
@@ -17,7 +31,16 @@ function Header({ conversation }: HeaderProps) {
       <div className='max-h-30 flex h-full gap-3'>
         <div className='flex'>
           {conversation && <NewButton conversationId={conversation} />}
-          <TipsFromBob />
+          <Tooltip content='Informasjon og tips'>
+            <Button
+              variant='tertiary'
+              size='medium'
+              onClick={showGuide}
+              icon={<InformationSquareIcon aria-hidden />}
+            />
+          </Tooltip>
+          <Guide startGuide={startGuide} setStartGuide={setStartGuide} />
+          {userConfig?.showNewConceptInfo && <NewConceptMessage />}
         </div>
         <DarkModeToggle />
       </div>
