@@ -26,12 +26,9 @@ export const NewConceptMessage = () => {
   const { updateUserConfig } = useUpdateUserConfig()
   const [newConceptMessage, setNewConceptMessage] = useState<boolean>(true)
 
-  // Denne må endres på (også i api.ts) til å kun sende false for showNewConceptInfo
   const handleClick = () => {
     updateUserConfig({
       showNewConceptInfo: false,
-      showStartInfo: true,
-      showTutorial: false,
     }).then(() => {
       setNewConceptMessage(false)
     })

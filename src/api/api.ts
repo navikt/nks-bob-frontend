@@ -68,6 +68,20 @@ async function putter<Body, Response>(
   })
 }
 
+async function patcher<Body, Response>(
+  url: string,
+  { arg }: { arg: Body },
+): Promise<Response> {
+  return fetcher(url, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify(arg),
+  })
+}
+
 async function deleter<Response>(url: string): Promise<Response> {
   return fetcher(url, {
     method: "DELETE",
@@ -201,12 +215,12 @@ export const useUserConfig = () => {
 export const useUpdateUserConfig = () => {
   const { trigger, isMutating, error } = useSWRMutation(
     "/api/v1/user/config",
-    putter,
+    patcher,
   )
 
   return {
     updateUserConfig: trigger as (
-      userConfig: UserConfig,
+      userConfig: Partial<UserConfig>,
     ) => Promise<UserConfig>,
     isLoading: isMutating,
     error,
