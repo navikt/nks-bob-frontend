@@ -2,12 +2,8 @@ import {
   BulletListIcon,
   HandHeartIcon,
   LanguageIcon,
-  StarFillIcon,
-  StarIcon,
 } from "@navikt/aksel-icons"
 import { Button, CopyButton, Tooltip } from "@navikt/ds-react"
-import { useState } from "react"
-import { useStarMessage } from "../../../../api/api.ts"
 import { Message, NewMessage } from "../../../../types/Message.ts"
 import amplitude from "../../../../utils/amplitude.ts"
 import { md } from "../../../../utils/markdown.ts"
@@ -80,7 +76,8 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
         />
       </Tooltip>
       <GiveUsFeedback message={message} />
-      <MessageStar message={message} />
+      {/*Deaktiverer MessageStar midlertidig pga. vi bør informere om det først*/}
+      {/*<MessageStar message={message} />*/}
       <Tooltip content='Oversett svaret til engelsk'>
         <Button
           variant='tertiary-neutral'
@@ -112,31 +109,33 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
   )
 }
 
-const MessageStar = ({ message }: { message: Message }) => {
-  const [starred, setStarred] = useState(message.starred ?? false)
-  const { starMessage, isMutating: isLoading } = useStarMessage(message.id)
+// Deaktiverer MessageStar midlertidig pga. vi bør informere om det først
 
-  const handleStarMessage = () => {
-    starMessage(!starred)
-    setStarred(!starred)
-  }
-
-  return (
-    <Tooltip content='Marker som bra svar'>
-      <Button
-        disabled={isLoading}
-        variant='tertiary-neutral'
-        size='small'
-        aria-label='Marker som bra svar'
-        icon={
-          starred ? <StarFillIcon className='text-orange-500' /> : <StarIcon />
-        }
-        onClick={() => {
-          handleStarMessage()
-        }}
-      />
-    </Tooltip>
-  )
-}
+// const MessageStar = ({ message }: { message: Message }) => {
+//   const [starred, setStarred] = useState(message.starred ?? false)
+//   const { starMessage, isMutating: isLoading } = useStarMessage(message.id)
+//
+//   const handleStarMessage = () => {
+//     starMessage(!starred)
+//     setStarred(!starred)
+//   }
+//
+//   return (
+//     <Tooltip content='Marker som bra svar'>
+//       <Button
+//         disabled={isLoading}
+//         variant='tertiary-neutral'
+//         size='small'
+//         aria-label='Marker som bra svar'
+//         icon={
+//           starred ? <StarFillIcon className='text-orange-500' /> : <StarIcon />
+//         }
+//         onClick={() => {
+//           handleStarMessage()
+//         }}
+//       />
+//     </Tooltip>
+//   )
+// }
 
 export default BobSuggests
