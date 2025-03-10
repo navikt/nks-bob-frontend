@@ -4,10 +4,9 @@ import { useMessagesSubscription } from "../../api/ws.ts"
 import { useEffect } from "react"
 import { NewMessage } from "../../types/Message.ts"
 import Header from "../header/Header.tsx"
-import InputField, { useInputFieldContext } from "../inputfield/InputField.tsx"
+import InputField, { useInputFieldStore } from "../inputfield/InputField.tsx"
 import {
   ShowAllSources,
-  SourcesContextProvider,
 } from "./chat/chatbubbles/sources/ShowAllSources.tsx"
 import ChatContainer from "./chat/ChatContainer.tsx"
 import { WhitespacePlaceholder } from "./placeholders/Placeholders.tsx"
@@ -38,7 +37,7 @@ function ConversationContent() {
     sendMessage(message)
   }
 
-  const { setFollowUp } = useInputFieldContext()
+  const { setFollowUp } = useInputFieldStore()
 
   const lastMessage = messages.at(-1)
 
@@ -49,7 +48,6 @@ function ConversationContent() {
 
   return (
     <div className='conversation-content'>
-      <SourcesContextProvider>
         <DialogWrapper>
           <Header conversation={conversationId} />
           <div className='chatcontainer'>
@@ -66,7 +64,6 @@ function ConversationContent() {
           <InputField onSend={handleUserMessage} disabled={isLoading} />
         </DialogWrapper>
         <ShowAllSources />
-      </SourcesContextProvider>
     </div>
   )
 }

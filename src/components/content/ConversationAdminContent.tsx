@@ -3,10 +3,7 @@ import { useNavigate, useParams } from "react-router"
 import { useAdminMessages } from "../../api/api.ts"
 import Header from "../header/Header.tsx"
 import InputField from "../inputfield/InputField.tsx"
-import {
-  ShowAllSources,
-  SourcesContextProvider,
-} from "./chat/chatbubbles/sources/ShowAllSources.tsx"
+import { ShowAllSources } from "./chat/chatbubbles/sources/ShowAllSources.tsx"
 import ChatContainer from "./chat/ChatContainer.tsx"
 import { WhitespacePlaceholder } from "./placeholders/Placeholders.tsx"
 import DialogWrapper from "./wrappers/DialogWrapper.tsx"
@@ -28,24 +25,22 @@ export default function ConversationAdminContent() {
 
   return (
     <div className='conversation-content'>
-      <SourcesContextProvider>
-        <DialogWrapper>
-          <Header conversation={conversationId} />
-          <div className='chatcontainer'>
-            {!messages || messages.length < 0 ? (
-              <WhitespacePlaceholder />
-            ) : (
-              <ChatContainer
-                onSend={handleUserMessage}
-                messages={messages}
-                isLoading={isLoading}
-              />
-            )}
-          </div>
-          <InputField onSend={handleUserMessage} disabled={true} />
-        </DialogWrapper>
-        <ShowAllSources />
-      </SourcesContextProvider>
+      <DialogWrapper>
+        <Header conversation={conversationId} />
+        <div className='chatcontainer'>
+          {!messages || messages.length < 0 ? (
+            <WhitespacePlaceholder />
+          ) : (
+            <ChatContainer
+              onSend={handleUserMessage}
+              messages={messages}
+              isLoading={isLoading}
+            />
+          )}
+        </div>
+        <InputField onSend={handleUserMessage} disabled={true} />
+      </DialogWrapper>
+      <ShowAllSources />
     </div>
   )
 }

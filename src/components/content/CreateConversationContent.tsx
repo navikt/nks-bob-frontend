@@ -3,14 +3,14 @@ import { useNavigate } from "react-router"
 import { useCreateConversation } from "../../api/api.ts"
 import { NewConversation, NewMessage } from "../../types/Message.ts"
 import Header from "../header/Header.tsx"
-import InputField, { useInputFieldContext } from "../inputfield/InputField.tsx"
+import InputField, { useInputFieldStore } from "../inputfield/InputField.tsx"
 import { BobPlaceholder } from "./placeholders/Placeholders.tsx"
 import CreateConversationWrapper from "./wrappers/CreateConversationWrapper.tsx"
 
 const CreateConversationContent = () => {
   const navigate = useNavigate()
   const { createConversation } = useCreateConversation()
-  const { setInputValue, setFollowUp } = useInputFieldContext()
+  const { setInputValue, setFollowUp } = useInputFieldStore()
 
   useEffect(() => {
     // reset input state on first render.
