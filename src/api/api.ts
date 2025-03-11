@@ -195,6 +195,19 @@ export const useDeleteConversation = (conversation: Conversation) => {
   }
 }
 
+export const useMessages = (conversationId: string) => {
+  const { data, isLoading, error } = useSWR<Message[], ApiError>(
+    `/api/v1/conversations/${conversationId}/messages`,
+    fetcher,
+  )
+
+  return {
+    messages: data ?? [],
+    isLoading,
+    error,
+  }
+}
+
 export const preloadUserConfig = () => {
   preload("/api/v1/user/config", fetcher)
 }

@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useTransition } from "react"
 import useWebSocket, { ReadyState } from "react-use-websocket"
 import { Citation, Context, Message, NewMessage } from "../types/Message"
+import { messageStore } from "../types/messageStore"
 
 const WS_API_URL = `${import.meta.env.BASE_URL}bob-api-ws`
 
-type MessageEvent =
+export type MessageEvent =
   | NewMessageEvent
   | ContentUpdated
   | CitationsUpdated
@@ -42,31 +43,35 @@ type PendingUpdated = {
   pending: boolean
 }
 
-function isMessage(event: Message | MessageEvent): event is Message {
+export function isMessage(event: Message | MessageEvent): event is Message {
   return (<Message>event).messageRole !== undefined
 }
 
-function isMessageEvent(event: Message | MessageEvent): event is MessageEvent {
+export function isMessageEvent(
+  event: Message | MessageEvent,
+): event is MessageEvent {
   return (<MessageEvent>event).type !== undefined
 }
 
-function isNewMessage(event: MessageEvent): event is NewMessageEvent {
+export function isNewMessage(event: MessageEvent): event is NewMessageEvent {
   return (<MessageEvent>event).type === "NewMessage"
 }
 
-function isContentUpdated(event: MessageEvent): event is ContentUpdated {
+export function isContentUpdated(event: MessageEvent): event is ContentUpdated {
   return (<MessageEvent>event).type === "ContentUpdated"
 }
 
-function isCitationsUpdated(event: MessageEvent): event is CitationsUpdated {
+export function isCitationsUpdated(
+  event: MessageEvent,
+): event is CitationsUpdated {
   return (<MessageEvent>event).type === "CitationsUpdated"
 }
 
-function isContextUpdated(event: MessageEvent): event is ContextUpdated {
+export function isContextUpdated(event: MessageEvent): event is ContextUpdated {
   return (<MessageEvent>event).type === "ContextUpdated"
 }
 
-function isPendingUpdated(event: MessageEvent): event is PendingUpdated {
+export function isPendingUpdated(event: MessageEvent): event is PendingUpdated {
   return (<MessageEvent>event).type === "PendingUpdated"
 }
 
@@ -177,5 +182,62 @@ export const useMessagesSubscription = (conversationId: string) => {
     isLoading:
       readyState !== ReadyState.OPEN ||
       sortedMessages.some((message) => message.pending),
+  }
+}
+
+const API_URL = `${import.meta.env.BASE_URL}bob-api`
+
+export const useSendMessage = (conversationId: string) => {
+  const [isLoading, startTransition] = useTransition()
+  const { updateMessage } = messageStore()
+
+  const sendMessage = ({ content }: { content: string }) =>
+    startTransition(async () => {
+      const response = await fetch(
+        `${API_URL}/api/v1/conversations/${conversationId}/messages/sse`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "text/event-stream",
+          },
+          body: JSON.stringify({
+            content,
+          }),
+        },
+      )
+
+      const reader = response.body
+        ?.pipeThrough(new TextDecoderStream())
+        ?.getReader()
+
+      while (true) {
+        const { value, done } = (await reader?.read()) ?? {
+          value: null,
+          done: false,
+        }
+
+        if (done) {
+          console.debug("closing SSE session")
+          break
+        }
+
+        if (value) {
+          value
+            .split("\r\n")
+            .filter((str) => str)
+            .map((line) => {
+              const eventString = line.replace("data: ", "")
+              return JSON.parse(eventString.trim()) as MessageEvent
+            })
+            .forEach((event) => {
+              updateMessage(event)
+            })
+        }
+      }
+    })
+
+  return {
+    sendMessage,
+    isLoading,
   }
 }
