@@ -11,6 +11,7 @@ export type MessageEvent =
   | CitationsUpdated
   | ContextUpdated
   | PendingUpdated
+  | StatusUpdate
 
 type NewMessageEvent = {
   type: "NewMessage"
@@ -43,6 +44,12 @@ type PendingUpdated = {
   pending: boolean
 }
 
+type StatusUpdate = {
+  type: "StatusUpdate"
+  id: string
+  content: string
+}
+
 export function isMessage(event: Message | MessageEvent): event is Message {
   return (<Message>event).messageRole !== undefined
 }
@@ -73,6 +80,10 @@ export function isContextUpdated(event: MessageEvent): event is ContextUpdated {
 
 export function isPendingUpdated(event: MessageEvent): event is PendingUpdated {
   return (<MessageEvent>event).type === "PendingUpdated"
+}
+
+export function isStatusUpdate(event: MessageEvent): event is StatusUpdate {
+  return (<MessageEvent>event).type === "StatusUpdate"
 }
 
 type MessageMap = { [id: string]: Message }

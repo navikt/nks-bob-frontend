@@ -6,6 +6,7 @@ import {
   isContextUpdated,
   isNewMessage,
   isPendingUpdated,
+  isStatusUpdate,
 } from "../api/ws"
 import { Message } from "./Message"
 
@@ -80,6 +81,11 @@ const getMessage = (
 
   if (isPendingUpdated(event)) {
     return event.message
+  }
+
+  if (isStatusUpdate(event)) {
+    console.debug(`Status: ${event.content}`)
+    return undefined
   }
 
   return undefined
