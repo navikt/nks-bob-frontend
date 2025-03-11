@@ -238,6 +238,7 @@ export const useSendMessage = (conversationId: string) => {
             .filter((str) => str)
             .map((line) => {
               const eventString = line.replace("data: ", "")
+              console.debug(eventString)
               return JSON.parse(eventString.trim()) as MessageEvent
             })
             .forEach((event) => {
