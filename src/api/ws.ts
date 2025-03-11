@@ -40,7 +40,6 @@ type ContextUpdated = {
 type PendingUpdated = {
   type: "PendingUpdated"
   id: string
-  message: Message
   pending: boolean
 }
 
@@ -147,12 +146,8 @@ export const useMessagesSubscription = (conversationId: string) => {
     }
 
     if (isPendingUpdated(received)) {
-      if (received.pending) {
-        return received.message
-      }
-
       return {
-        ...received.message,
+        ...prevMessage,
         pending: received.pending,
       }
     }
