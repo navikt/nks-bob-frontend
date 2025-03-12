@@ -1,8 +1,8 @@
 import { ChevronDownIcon, ChevronUpIcon } from "@navikt/aksel-icons"
 import { BodyShort, HStack, Label } from "@navikt/ds-react"
 import { memo, useState } from "react"
-import "./FollowUpQuestions.css"
 import amplitude from "../../../utils/amplitude"
+import "./FollowUpQuestions.css"
 
 interface FollowUpQuestionsProps {
   followUp: string[]
@@ -24,14 +24,16 @@ export const FollowUpQuestions = memo(
       followUp.length > 0 &&
       !includesDu && (
         <div
-          className={`fade-in flex flex-col gap-2 overflow-hidden py-2 ${className}`}
+          className={`fade-in cu flex flex-col gap-2 overflow-hidden py-2 ${className}`}
         >
           <HStack
             onClick={toggleOpen}
-            className='utdrag-dropdown gap-x-0.5'
+            className='utdrag-dropdown cursor-pointer gap-x-0.5'
             align='stretch'
           >
-            <Label size='small'>Forslag fra Bob</Label>
+            <Label size='small' className='cursor-pointer'>
+              Forslag fra Bob
+            </Label>
             {isOpen ? (
               <ChevronUpIcon className='dropdownchevronup' />
             ) : (

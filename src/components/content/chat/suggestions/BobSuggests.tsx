@@ -11,6 +11,8 @@ import { useStarMessage } from "../../../../api/api.ts"
 import { Message, NewMessage } from "../../../../types/Message.ts"
 import amplitude from "../../../../utils/amplitude.ts"
 import { md } from "../../../../utils/markdown.ts"
+import { CoachMark } from "../../../coachmark/CoachMark.tsx"
+import { AnswerButtonsExplanation } from "../../../coachmark/CoachmarkContent.tsx"
 import { GiveUsFeedback } from "../feedback/GiveUsFeedback.tsx"
 import "./BobSuggests.css"
 
@@ -64,7 +66,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
   }
 
   return (
-    <div className='fade-in mb-6 ml-[-0.3rem] flex h-fit grow flex-wrap items-center justify-start'>
+    <div className='fade-in background-color mb-6 ml-[-0.3rem] flex h-fit w-fit grow flex-wrap items-center justify-start rounded'>
       <Tooltip content='Kopier svaret'>
         <CopyButton
           copyText=''
@@ -108,6 +110,11 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
           onClick={handleEmpathetic}
         />
       </Tooltip>
+      <div className='ml-2 flex'>
+        <CoachMark title='Disse knappene lar deg:' buttonText='Skjønner!'>
+          <AnswerButtonsExplanation />
+        </CoachMark>
+      </div>
     </div>
   )
 }

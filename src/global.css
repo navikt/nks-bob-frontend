@@ -166,6 +166,17 @@ ul {
   animation: fadeIn 2s ease-in-out;
 }
 
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(7, 9, 13, 0.8);
+  z-index: 1000;
+  backdrop-filter: blur(3px);
+}
+
 /*    DARKMODE - NEW DS STYLING    */
 
 :root,

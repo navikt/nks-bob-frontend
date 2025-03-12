@@ -1,2 +1,16 @@
-.text-style {
+.background-color {
+    background-color: #ffffff;
+}
+
+body.dark .background-color {
+    background-color: var(--new-bg);
+}
+
+body.overlay-active {
+    overflow: hidden;
+    pointer-events: none;
+}
+
+body.overlay-active .z-50 {
+    pointer-events: auto;
 }
