@@ -80,10 +80,7 @@ const getMessage = (
   }
 
   if (isPendingUpdated(event)) {
-    return {
-      ...message,
-      pending: event.pending,
-    }
+    return event.message
   }
 
   if (isStatusUpdate(event)) {

@@ -40,6 +40,7 @@ type ContextUpdated = {
 type PendingUpdated = {
   type: "PendingUpdated"
   id: string
+  message: Message
   pending: boolean
 }
 
@@ -231,10 +232,17 @@ export const useSendMessage = (conversationId: string) => {
           value
             .split("\r\n")
             .filter((str) => str)
+            .reduce((prev, current) => {
+              if (current.startsWith("data: ")) {
+                return prev + current.replace("data: ", "") + "$#;"
+              } else {
+                return prev.replace("$#;", "") + current + "$#;"
+              }
+            }, "")
+            .split("$#;")
+            .filter((str) => str)
             .map((line) => {
-              const eventString = line.replace("data: ", "")
-              console.debug(eventString)
-              return JSON.parse(eventString.trim()) as MessageEvent
+              return JSON.parse(line.trim()) as MessageEvent
             })
             .forEach((event) => {
               updateMessage(event)
