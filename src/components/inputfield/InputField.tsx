@@ -1,69 +1,43 @@
 import { Alert, Button, Detail, Textarea } from "@navikt/ds-react"
 
 import { PaperplaneIcon } from "@navikt/aksel-icons"
-import {
-  createContext,
-  PropsWithChildren,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react"
+import { useEffect, useState } from "react"
 
 import * as React from "react"
+import { create } from "zustand"
 import { NewMessage } from "../../types/Message.ts"
 import amplitude from "../../utils/amplitude.ts"
 import { FollowUpQuestions } from "../content/followupquestions/FollowUpQuestions.tsx"
 import "./InputField.css"
 
-type InputFieldContextType = {
+type InputFieldState = {
   inputValue: string
-  setInputValue: React.Dispatch<React.SetStateAction<string>>
+  setInputValue: (value: string) => void
   followUp: string[]
-  setFollowUp: React.Dispatch<React.SetStateAction<string[]>>
+  setFollowUp: (followUp: string[]) => void
   focusTextarea: () => void
-  textareaRef: React.RefObject<HTMLTextAreaElement>
+  textareaRef: React.RefObject<HTMLTextAreaElement | null>
+  setTextAreaRef: (ref: React.RefObject<HTMLTextAreaElement | null>) => void
 }
 
-const InputFieldContext = createContext<InputFieldContextType | undefined>(
-  undefined,
-)
+export const useInputFieldStore = create<InputFieldState>()((set) => {
+  const focusTextarea = () => 
+    set((state) => {
+      state.textareaRef?.current?.focus()
+      return state
+    })
+  
 
-export const useInputFieldContext = () => {
-  const context = useContext(InputFieldContext)
-  if (context === undefined) {
-    throw new Error(
-      "useInputFieldContext must be used within InputFieldContextProvider",
-    )
+  return {
+    inputValue: "",
+    setInputValue: (value) => set((state) => ({ ...state, inputValue: value })),
+    followUp: [],
+    setFollowUp: (followUp) => set((state) => ({ ...state, followUp })),
+    focusTextarea,
+    textareaRef: React.createRef(),
+    setTextAreaRef: (ref) => set((state) => ({ ...state, textareaRef: ref }))
   }
-
-  return context
-}
-
-export const InputFieldContextProvider = ({ children }: PropsWithChildren) => {
-  const [inputValue, setInputValue] = useState<string>("")
-  const [followUp, setFollowUp] = useState<string[]>([])
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
-
-  const focusTextarea = () => {
-    textareaRef.current?.focus()
-  }
-
-  return (
-    <InputFieldContext.Provider
-      value={{
-        inputValue,
-        setInputValue,
-        followUp,
-        setFollowUp,
-        focusTextarea,
-        textareaRef,
-      }}
-    >
-      {children}
-    </InputFieldContext.Provider>
-  )
-}
+})
 
 interface InputFieldProps {
   onSend: (message: NewMessage) => void
@@ -78,7 +52,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
   const [sendDisabled, setSendDisabled] = useState<boolean>(disabled)
 
   const { inputValue, setInputValue, followUp, textareaRef } =
-    useInputFieldContext()
+    useInputFieldStore()
 
   function sendMessage(messageContent?: string) {
     const message: NewMessage = {

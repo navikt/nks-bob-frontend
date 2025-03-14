@@ -6,7 +6,7 @@ import { memo } from "react"
 import Markdown from "react-markdown"
 import rehypeRaw from "rehype-raw"
 import amplitude from "../../../../utils/amplitude.ts"
-import { useInputFieldContext } from "../../../inputfield/InputField.tsx"
+import { useInputFieldStore } from "../../../inputfield/InputField.tsx"
 import "./ChatBubbles.css"
 
 interface UserChatBubbleProps {
@@ -17,7 +17,7 @@ const UserQuestionBubble = memo(
   ({ userQuestion }: UserChatBubbleProps) => {
     const question = userQuestion?.content.replace(/\n/g, "<br>")
 
-    const { setInputValue, focusTextarea } = useInputFieldContext()
+    const { setInputValue, focusTextarea } = useInputFieldStore()
 
     const editQuestion = () => {
       if (userQuestion) {

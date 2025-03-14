@@ -26,6 +26,8 @@ jobs:
           registry-url: 'https://npm.pkg.github.com'
 
       - run: npm install
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
       - run: npm run build
 

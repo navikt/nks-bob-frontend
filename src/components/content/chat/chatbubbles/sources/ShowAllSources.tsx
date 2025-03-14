@@ -14,55 +14,34 @@ import {
   Link,
   VStack,
 } from "@navikt/ds-react"
-import {
-  createContext,
-  PropsWithChildren,
-  useContext,
-  useEffect,
-  useState,
-} from "react"
+import { useState } from "react"
 import Markdown from "react-markdown"
+import { create } from "zustand"
 import { KunnskapsbasenIcon } from "../../../../../assets/icons/KunnskapsbasenIcon.tsx"
 import { NavNoIcon } from "../../../../../assets/icons/NavNoIcon.tsx"
 import { Context, Message } from "../../../../../types/Message.ts"
 import amplitude from "../../../../../utils/amplitude.ts"
 import "./ShowAllSources.css"
 
-type SourcesContextType = {
+type SourcesState = {
   activeMessage: Message | null
   setActiveMessage: (_message: Message | null) => void
 }
 
-const SourcesContext = createContext<SourcesContextType>({
+export const useSourcesStore = create<SourcesState>()((set) => ({
   activeMessage: null,
-  setActiveMessage: (_message: Message | null) => {},
-})
+  setActiveMessage: (activeMessage) =>
+    set((state) => {
+      if (activeMessage !== null) {
+        amplitude.visAlleKilderÅpnet()
+      }
 
-export const useSourcesContext = () => useContext(SourcesContext)
-
-export const SourcesContextProvider = ({ children }: PropsWithChildren) => {
-  const [activeMessage, setActiveMessage] = useState<Message | null>(null)
-
-  useEffect(() => {
-    if (activeMessage !== null) {
-      amplitude.visAlleKilderÅpnet()
-    }
-  }, [activeMessage])
-
-  return (
-    <SourcesContext.Provider
-      value={{
-        activeMessage,
-        setActiveMessage,
-      }}
-    >
-      {children}
-    </SourcesContext.Provider>
-  )
-}
+      return { ...state, activeMessage }
+    }),
+}))
 
 export const ShowAllSources = () => {
-  const { activeMessage, setActiveMessage } = useSourcesContext()
+  const { activeMessage, setActiveMessage } = useSourcesStore()
 
   const context = activeMessage?.context
   const nksContext = context?.filter(({ source }) => source === "nks") ?? []

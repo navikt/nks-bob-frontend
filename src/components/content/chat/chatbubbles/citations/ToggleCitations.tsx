@@ -1,7 +1,7 @@
 import { Chips } from "@navikt/ds-react"
 import { useState } from "react"
 import { Message } from "../../../../../types/Message.ts"
-import { useSourcesContext } from "../sources/ShowAllSources.tsx"
+import { useSourcesStore } from "../sources/ShowAllSources.tsx"
 
 interface ToggleCitationsProps {
   onToggle: (selected: string[]) => void
@@ -37,7 +37,7 @@ const ToggleCitations = ({ onToggle, message }: ToggleCitationsProps) => {
     onToggle(newSelected)
   }
 
-  const { activeMessage, setActiveMessage } = useSourcesContext()
+  const { activeMessage, setActiveMessage } = useSourcesStore()
 
   const isActive = activeMessage !== null && activeMessage.id === message.id
 
