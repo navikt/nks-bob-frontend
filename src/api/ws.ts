@@ -217,6 +217,7 @@ export const useSendMessage = (conversationId: string) => {
         ?.pipeThrough(new TextDecoderStream())
         ?.getReader()
 
+      let buf = ""
       while (true) {
         const { value, done } = (await reader?.read()) ?? {
           value: null,
@@ -229,7 +230,10 @@ export const useSendMessage = (conversationId: string) => {
         }
 
         if (value) {
-          value
+          const newValue = buf + value
+          buf = ""
+
+          newValue
             .split("\r\n")
             .filter((str) => str)
             .reduce((prev, current) => {
@@ -242,10 +246,17 @@ export const useSendMessage = (conversationId: string) => {
             .split("$#;")
             .filter((str) => str)
             .map((line) => {
-              return JSON.parse(line.trim()) as MessageEvent
+              try {
+                return JSON.parse(line.trim()) as MessageEvent
+              } catch (_e) {
+                buf = line
+                return null
+              }
             })
             .forEach((event) => {
-              updateMessage(event)
+              if (event) {
+                updateMessage(event)
+              }
             })
         }
       }
