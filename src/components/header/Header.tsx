@@ -3,6 +3,8 @@ import { Button, Tooltip } from "@navikt/ds-react"
 import { useState } from "react"
 import { useUserConfig } from "../../api/api.ts"
 import amplitude from "../../utils/amplitude.ts"
+import { CoachMark } from "../coachmark/CoachMark.tsx"
+import { MainButtonsExplanation } from "../coachmark/CoachmarkContent.tsx"
 import Guide from "../content/guide/Guide.tsx"
 import { NewConceptMessage } from "../content/guide/GuideModals.tsx"
 import { NewButton } from "../menu/NewButton.tsx"
@@ -17,6 +19,7 @@ interface HeaderProps {
 function Header({ conversation }: HeaderProps) {
   const [startGuide, setStartGuide] = useState(false)
   const { userConfig } = useUserConfig()
+  const coachMarkKey = "coachMarkShownHeader"
 
   const showGuide = () => {
     amplitude.infoÅpnet()
@@ -29,8 +32,19 @@ function Header({ conversation }: HeaderProps) {
         <NAVLogo />
       </div>
       <div className='max-h-30 flex h-full gap-3'>
-        <div className='flex'>
-          {conversation && <NewButton conversationId={conversation} />}
+        <div className='flex items-center justify-center align-middle'>
+          {conversation && (
+            <>
+              <CoachMark
+                title='Her finner du overordnede valg'
+                buttonText='Den er grei!'
+                coachMarkKey={coachMarkKey}
+              >
+                <MainButtonsExplanation />
+              </CoachMark>
+              <NewButton conversationId={conversation} />
+            </>
+          )}
           <Tooltip content='Informasjon og tips'>
             <Button
               variant='tertiary'

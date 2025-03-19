@@ -23,6 +23,8 @@ interface BobSuggestsProps {
 }
 
 const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
+  const coachMarkKey = "coachMarkShownChat"
+
   function handleTranslate() {
     amplitude.svarEndret("oversett")
     const translate: NewMessage = {
@@ -82,6 +84,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
         />
       </Tooltip>
       <GiveUsFeedback message={message} />
+
       <MessageStar message={message} />
       <Tooltip content='Oversett svaret til engelsk'>
         <Button
@@ -111,7 +114,11 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
         />
       </Tooltip>
       <div className='ml-2 flex'>
-        <CoachMark title='Disse knappene lar deg:' buttonText='Skjønner!'>
+        <CoachMark
+          title='Disse knappene lar deg:'
+          buttonText='Skjønner!'
+          coachMarkKey={coachMarkKey}
+        >
           <AnswerButtonsExplanation />
         </CoachMark>
       </div>

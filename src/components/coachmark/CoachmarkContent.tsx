@@ -3,10 +3,13 @@ import {
   ChatExclamationmarkIcon,
   FilesIcon,
   HandHeartIcon,
+  InformationSquareIcon,
   LanguageIcon,
+  NotePencilIcon,
   StarIcon,
 } from "@navikt/aksel-icons"
-import { BodyShort, HStack } from "@navikt/ds-react"
+import { BodyShort, HStack, VStack } from "@navikt/ds-react"
+import DarkModeToggle from "../menu/darkmode/DarkModeToggle.tsx"
 
 export const AnswerButtonsExplanation = () => {
   return (
@@ -36,5 +39,35 @@ export const AnswerButtonsExplanation = () => {
         <BodyShort>Lage svaret mer empatisk</BodyShort>
       </HStack>
     </div>
+  )
+}
+
+export const MainButtonsExplanation = () => {
+  return (
+    <VStack gap='6' className='mb-2'>
+      <HStack align='start' gap='2' wrap={false}>
+        <div className='mt-1'>
+          <NotePencilIcon color='#2277D5' />
+        </div>
+        <BodyShort>
+          Fjerner alt fra denne samtalen og oppretter en ny. Egner seg godt når
+          man ønsker å spørre om et nytt tema.
+        </BodyShort>
+      </HStack>
+      <HStack align='start' gap='2' wrap={false}>
+        <div className='mt-1'>
+          <InformationSquareIcon color='#2277D5' />
+        </div>
+        <BodyShort>
+          Informasjon og veiledning om hvordan du best kan bruke tjenesten.
+        </BodyShort>
+      </HStack>
+      <HStack gap='2' wrap={false}>
+        <div className='mt-1'>
+          <DarkModeToggle />
+        </div>
+        <BodyShort>Sliten i øynene? Bryteren gjør om til mørkmodus.</BodyShort>
+      </HStack>
+    </VStack>
   )
 }
