@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useRef } from "react"
 import { Message, NewMessage } from "../../../types/Message.ts"
-import { BobAnswerBubble } from "./chatbubbles/BobAnswerBubble.tsx"
+import { BobAnswerBubble } from "./chatbubbles/answerbubble/BobAnswerBubble.tsx"
 import UserQuestionBubble from "./chatbubbles/UserQuestionBubble.tsx"
 
 interface ChatDialogProps {
