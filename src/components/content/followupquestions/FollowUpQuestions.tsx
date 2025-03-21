@@ -24,7 +24,7 @@ export const FollowUpQuestions = memo(
       followUp.length > 0 &&
       !includesDu && (
         <div
-          className={`fade-in cu flex flex-col gap-2 overflow-hidden py-2 ${className}`}
+          className={`fade-in flex flex-col gap-2 overflow-hidden py-2 ${className}`}
         >
           <HStack
             onClick={toggleOpen}
