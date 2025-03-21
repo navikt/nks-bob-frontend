@@ -57,10 +57,6 @@ export const BobAnswerBubble = memo(
     const prevMessage = prevProps.message
     const nextMessage = nextProps.message
 
-    if (!prevMessage.pending) {
-      return true
-    }
-
     return prevMessage === nextMessage
   },
 )
