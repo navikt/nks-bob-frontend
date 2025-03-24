@@ -9,7 +9,7 @@ import {
 } from "../types/Message"
 import { UserConfig } from "../types/User"
 
-const API_URL = `${import.meta.env.BASE_URL}bob-api`
+export const API_URL = `${import.meta.env.BASE_URL}bob-api`
 
 type ApiError = {
   status: number

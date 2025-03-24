@@ -1,7 +1,6 @@
-import { useEffect, useState, useTransition } from "react"
+import { useEffect, useState } from "react"
 import useWebSocket, { ReadyState } from "react-use-websocket"
 import { Citation, Context, Message, NewMessage } from "../types/Message"
-import { messageStore } from "../types/messageStore"
 
 const WS_API_URL = `${import.meta.env.BASE_URL}bob-api-ws`
 
@@ -186,81 +185,5 @@ export const useMessagesSubscription = (conversationId: string) => {
     isLoading:
       readyState !== ReadyState.OPEN ||
       sortedMessages.some((message) => message.pending),
-  }
-}
-
-const API_URL = `${import.meta.env.BASE_URL}bob-api`
-
-export const useSendMessage = (conversationId: string) => {
-  const [isLoading, startTransition] = useTransition()
-  const { updateMessage } = messageStore()
-
-  const sendMessage = ({ content }: { content: string }) =>
-    startTransition(async () => {
-      const response = await fetch(
-        `${API_URL}/api/v1/conversations/${conversationId}/messages/sse`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "text/event-stream",
-          },
-          body: JSON.stringify({
-            content,
-          }),
-        },
-      )
-
-      const reader = response.body
-        ?.pipeThrough(new TextDecoderStream())
-        ?.getReader()
-
-      let buf = ""
-      while (true) {
-        const { value, done } = (await reader?.read()) ?? {
-          value: null,
-          done: false,
-        }
-
-        if (done) {
-          console.debug("closing SSE session")
-          break
-        }
-
-        if (value) {
-          const newValue = buf + value
-          buf = ""
-
-          newValue
-            .split("\r\n")
-            .filter((str) => str)
-            .reduce((prev, current) => {
-              if (current.startsWith("data: ")) {
-                return prev + current.replace("data: ", "") + "$#;"
-              } else {
-                return prev.replace("$#;", "") + current + "$#;"
-              }
-            }, "")
-            .split("$#;")
-            .filter((str) => str)
-            .map((line) => {
-              try {
-                return JSON.parse(line.trim()) as MessageEvent
-              } catch (_e) {
-                buf = line
-                return null
-              }
-            })
-            .forEach((event) => {
-              if (event) {
-                updateMessage(event)
-              }
-            })
-        }
-      }
-    })
-
-  return {
-    sendMessage,
-    isLoading,
   }
 }

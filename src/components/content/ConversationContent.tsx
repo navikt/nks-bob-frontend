@@ -1,5 +1,5 @@
 import { useParams, useSearchParams } from "react-router"
-import { useSendMessage } from "../../api/ws.ts"
+import { useSendMessage } from "../../api/sse.ts"
 
 import { useEffect } from "react"
 import { useMessages } from "../../api/api.ts"
