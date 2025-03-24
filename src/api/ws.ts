@@ -131,14 +131,7 @@ export const useMessagesSubscription = (conversationId: string) => {
     }
 
     if (isPendingUpdated(received)) {
-      if (received.pending) {
-        return received.message
-      }
-
-      return {
-        ...received.message,
-        pending: received.pending,
-      }
+      return received.message
     }
 
     return undefined
