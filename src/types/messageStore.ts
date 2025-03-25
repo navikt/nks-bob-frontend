@@ -10,8 +10,11 @@ import {
 } from "../api/ws"
 import { Message } from "./Message"
 
+type MessageMap = { [id: string]: Message }
+
 type MessageState = {
   messages: Message[]
+  messageMap: MessageMap
   addMessage: (message: Message) => void
   updateMessage: (event: ConversationEvent) => void
   setMessages: (messages: Message[]) => void
@@ -19,41 +22,76 @@ type MessageState = {
 }
 
 export const messageStore = create<MessageState>()((set) => {
+  const byDate: ((a: Message, b: Message) => number) | undefined = (a, b) =>
+    new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+
   const updateMessage = (event: ConversationEvent) =>
     set((state) => {
-      const message = getMessage(event, state.messages)
-
+      const message = getMessage(event, state.messageMap)
       if (!message) {
         return state
       }
 
-      const otherMessages = state.messages.filter(({ id }) => id !== event.id)
+      const messageMap: MessageMap = {
+        ...state.messageMap,
+        [message.id]: message,
+      }
 
       return {
         ...state,
-        messages: [...otherMessages, message],
+        messageMap,
+        messages: Object.values(messageMap).sort(byDate),
+      }
+    })
+
+  const addMessage = (message: Message) =>
+    set((state) => {
+      const messageMap = {
+        ...state.messageMap,
+        [message.id]: message,
+      }
+
+      return {
+        ...state,
+        messageMap,
+        messages: Object.values(messageMap).sort(byDate),
+      }
+    })
+
+  const setMessages = (messages: Message[]) =>
+    set((state) => {
+      const messageMap: MessageMap = messages.reduce(
+        (map, message) => Object.assign(map, { [message.id]: message }),
+        {},
+      )
+
+      return {
+        ...state,
+        messageMap,
+        messages: Object.values(messageMap).sort(byDate),
       }
     })
 
   return {
     messages: [],
-    addMessage: (message) =>
-      set((state) => ({ ...state, messages: [...state.messages, message] })),
+    messageMap: {},
+    addMessage,
     updateMessage,
-    setMessages: (messages) => set((state) => ({ ...state, messages })),
-    resetMessages: () => set((state) => ({ ...state, messages: [] })),
+    setMessages,
+    resetMessages: () =>
+      set((state) => ({ ...state, messageMap: {}, messages: [] })),
   }
 })
 
 const getMessage = (
   event: ConversationEvent,
-  messages: Message[],
+  messages: MessageMap,
 ): Message | undefined => {
   if (isNewMessage(event)) {
     return event.message
   }
 
-  const message = messages.find((message) => message.id === event.id)
+  const message = messages[event.id]
   if (!message) {
     return undefined
   }
