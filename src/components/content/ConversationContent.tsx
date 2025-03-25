@@ -22,10 +22,10 @@ function ConversationContent() {
   const { messages, setMessages } = messageStore()
 
   useEffect(() => {
-    if (!isLoadingExistingMessages) {
+    if (!isLoadingExistingMessages && !isLoading) {
       setMessages(existingMessages)
     }
-  }, [existingMessages, isLoadingExistingMessages, setMessages])
+  }, [existingMessages, isLoadingExistingMessages, isLoading, setMessages])
 
   useEffect(() => {
     if (searchParams.has("initialMessage")) {
