@@ -4,12 +4,13 @@ import { Citation, Context, Message, NewMessage } from "../types/Message"
 
 const WS_API_URL = `${import.meta.env.BASE_URL}bob-api-ws`
 
-type MessageEvent =
+export type MessageEvent =
   | NewMessageEvent
   | ContentUpdated
   | CitationsUpdated
   | ContextUpdated
   | PendingUpdated
+  | StatusUpdate
 
 type NewMessageEvent = {
   type: "NewMessage"
@@ -42,32 +43,46 @@ type PendingUpdated = {
   pending: boolean
 }
 
-function isMessage(event: Message | MessageEvent): event is Message {
+type StatusUpdate = {
+  type: "StatusUpdate"
+  id: string
+  content: string
+}
+
+export function isMessage(event: Message | MessageEvent): event is Message {
   return (<Message>event).messageRole !== undefined
 }
 
-function isMessageEvent(event: Message | MessageEvent): event is MessageEvent {
+export function isMessageEvent(
+  event: Message | MessageEvent,
+): event is MessageEvent {
   return (<MessageEvent>event).type !== undefined
 }
 
-function isNewMessage(event: MessageEvent): event is NewMessageEvent {
+export function isNewMessage(event: MessageEvent): event is NewMessageEvent {
   return (<MessageEvent>event).type === "NewMessage"
 }
 
-function isContentUpdated(event: MessageEvent): event is ContentUpdated {
+export function isContentUpdated(event: MessageEvent): event is ContentUpdated {
   return (<MessageEvent>event).type === "ContentUpdated"
 }
 
-function isCitationsUpdated(event: MessageEvent): event is CitationsUpdated {
+export function isCitationsUpdated(
+  event: MessageEvent,
+): event is CitationsUpdated {
   return (<MessageEvent>event).type === "CitationsUpdated"
 }
 
-function isContextUpdated(event: MessageEvent): event is ContextUpdated {
+export function isContextUpdated(event: MessageEvent): event is ContextUpdated {
   return (<MessageEvent>event).type === "ContextUpdated"
 }
 
-function isPendingUpdated(event: MessageEvent): event is PendingUpdated {
+export function isPendingUpdated(event: MessageEvent): event is PendingUpdated {
   return (<MessageEvent>event).type === "PendingUpdated"
+}
+
+export function isStatusUpdate(event: MessageEvent): event is StatusUpdate {
+  return (<MessageEvent>event).type === "StatusUpdate"
 }
 
 type MessageMap = { [id: string]: Message }

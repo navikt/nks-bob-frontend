@@ -9,7 +9,7 @@ import {
 } from "../types/Message"
 import { UserConfig } from "../types/User"
 
-const API_URL = `${import.meta.env.BASE_URL}bob-api`
+export const API_URL = `${import.meta.env.BASE_URL}bob-api`
 
 type ApiError = {
   status: number
@@ -192,6 +192,19 @@ export const useDeleteConversation = (conversation: Conversation) => {
   return {
     deleteConversation: trigger,
     isLoading: isMutating,
+  }
+}
+
+export const useMessages = (conversationId: string) => {
+  const { data, isLoading, error } = useSWR<Message[], ApiError>(
+    `/api/v1/conversations/${conversationId}/messages`,
+    fetcher,
+  )
+
+  return {
+    messages: data ?? [],
+    isLoading,
+    error,
   }
 }
 
