@@ -23,7 +23,9 @@ function ConversationContent() {
 
   useEffect(() => {
     if (!isLoadingExistingMessages && !isLoading) {
-      setMessages(existingMessages)
+      if (messages.length < existingMessages.length) {
+        setMessages(existingMessages)
+      }
     }
   }, [existingMessages, isLoadingExistingMessages, isLoading, setMessages])
 
