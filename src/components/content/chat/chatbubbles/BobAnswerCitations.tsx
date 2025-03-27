@@ -1,10 +1,10 @@
 import { ExternalLinkIcon } from "@navikt/aksel-icons"
 import { BodyLong, BodyShort, Detail, Label, Link } from "@navikt/ds-react"
 import Markdown from "react-markdown"
-import { Citation, Context } from "../../../../types/Message.ts"
+import remarkGfm from "remark-gfm"
 import { KunnskapsbasenIcon } from "../../../../assets/icons/KunnskapsbasenIcon.tsx"
 import { NavNoIcon } from "../../../../assets/icons/NavNoIcon.tsx"
-import remarkGfm from "remark-gfm"
+import { Citation, Context } from "../../../../types/Message.ts"
 
 interface BobAnswerCitationProps {
   citation: Citation
@@ -15,6 +15,49 @@ interface BobAnswerCitationProps {
 function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
   const matchingContextCitationData = context.at(citation.sourceId)
 
+  return (
+    <div className='mb-2 flex flex-col'>
+      <Label size='small' className='mb-1'>
+        {matchingContextCitationData ? (
+          <div className='flex flex-wrap gap-2'>
+            <CitationLink
+              citation={citation}
+              matchingContextCitationData={matchingContextCitationData}
+            />
+            <SourceIcon source={matchingContextCitationData.source} />
+          </div>
+        ) : (
+          <BodyShort size='medium'>
+            Kunne ikke finne lenke til artikkelen.
+          </BodyShort>
+        )}
+      </Label>
+      <BodyLong size='small' className='mt-1 italic'>
+        <Markdown
+          className='markdown'
+          remarkPlugins={[remarkGfm]}
+          components={{
+            a: ({ ...props }) => (
+              <a {...props} target='_blank' rel='noopener noreferrer' />
+            ),
+          }}
+        >
+          {citation.text}
+        </Markdown>
+      </BodyLong>
+    </div>
+  )
+}
+
+export default BobAnswerCitations
+
+const CitationLink = ({
+  citation,
+  matchingContextCitationData,
+}: {
+  citation: Citation
+  matchingContextCitationData: Context
+}) => {
   // Splitting words, making it functional for textStart & textEnd //
   const citeWords = citation.text
     .replace(/\n\n|\n/g, " ")
@@ -43,70 +86,50 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
   )
 
   return (
-    <div className='mb-2 flex flex-col'>
-      <Label size='small' className='mb-1'>
-        {matchingContextCitationData ? (
-          <div className='flex flex-wrap gap-2'>
-            <Link
-              href={
-                useAnchor
-                  ? `${matchingContextCitationData.url}${expandAll}#${matchingContextCitationData.anchor}`
-                  : numWords < 1
-                    ? `${matchingContextCitationData.url}`
-                    : `${matchingContextCitationData.url}${expandAll}#:~:text=${encodeFragment(textStart)},${encodeFragment(textEnd)}`
-              }
-              target='_blank'
-              title='Åpne artikkelen i ny fane'
-            >
-              {matchingContextCitationData.title}
-              <ExternalLinkIcon title='Åpne artikkelen i ny fane' />
-            </Link>
-            {matchingContextCitationData.source === "navno" && (
-              <Detail
-                title='Artikler fra nav.no'
-                textColor="subtle"
-                className="font-normal"
-              >
-                <div className="flex gap-1.5">
-                  <NavNoIcon />
-                  Nav.no
-                </div>
-              </Detail>
-            )}
-            {matchingContextCitationData.source === "nks" && (
-              <Detail
-                title='Artikler fra NKS sin kunnskapsbase i Salesforce'
-                textColor="subtle"
-                className="font-normal"
-              >
-                <div className="flex gap-1.5">
-                  <KunnskapsbasenIcon />
-                  Kunnskapsbasen
-                </div>
-              </Detail>
-            )}
-          </div>
-        ) : (
-          <BodyShort size='medium'>
-            Kunne ikke finne lenke til artikkelen.
-          </BodyShort>
-        )}
-      </Label>
-      <BodyLong size='small' className='mt-1 italic'>
-        <Markdown
-          className='markdown'
-          remarkPlugins={[remarkGfm]}
-          components={{
-            a: ({ ...props }) => (
-              <a {...props} target='_blank' rel='noopener noreferrer' />
-            ),
-          }}
-        >
-          {citation.text}
-        </Markdown>
-      </BodyLong>
-    </div>
+    <Link
+      href={
+        useAnchor
+          ? `${matchingContextCitationData.url}${expandAll}#${matchingContextCitationData.anchor}`
+          : numWords < 1
+            ? `${matchingContextCitationData.url}`
+            : `${matchingContextCitationData.url}${expandAll}#:~:text=${encodeFragment(textStart)},${encodeFragment(textEnd)}`
+      }
+      target='_blank'
+      title='Åpne artikkelen i ny fane'
+    >
+      {matchingContextCitationData.title}
+      <ExternalLinkIcon title='Åpne artikkelen i ny fane' />
+    </Link>
   )
 }
 
-export default BobAnswerCitations
+const SourceIcon = ({ source }: { source: "navno" | "nks" }) => {
+  return (
+    <>
+      {source === "navno" && (
+        <Detail
+          title='Artikler fra nav.no'
+          textColor='subtle'
+          className='font-normal'
+        >
+          <div className='flex gap-1.5'>
+            <NavNoIcon />
+            Nav.no
+          </div>
+        </Detail>
+      )}
+      {source === "nks" && (
+        <Detail
+          title='Artikler fra NKS sin kunnskapsbase i Salesforce'
+          textColor='subtle'
+          className='font-normal'
+        >
+          <div className='flex gap-1.5'>
+            <KunnskapsbasenIcon />
+            Kunnskapsbasen
+          </div>
+        </Detail>
+      )}
+    </>
+  )
+}
