@@ -2,7 +2,7 @@ import { BodyLong, Skeleton, VStack } from "@navikt/ds-react"
 import { memo, useState } from "react"
 import Markdown from "react-markdown"
 import { BobRoboHead } from "../../../../../assets/illustrations/BobRoboHead.tsx"
-import { Message, NewMessage } from "../../../../../types/Message.ts"
+import { Citation, Message, NewMessage } from "../../../../../types/Message.ts"
 import BobSuggests from "../../suggestions/BobSuggests.tsx"
 import BobAnswerCitations from "../BobAnswerCitations.tsx"
 import ToggleCitations from "../citations/ToggleCitations.tsx"
@@ -57,7 +57,7 @@ export const BobAnswerBubble = memo(
     const prevMessage = prevProps.message
     const nextMessage = nextProps.message
 
-    if (prevProps.isLoading && !nextProps.isLoading ) {
+    if (prevProps.isLoading && !nextProps.isLoading) {
       return false
     }
 
@@ -121,6 +121,35 @@ const Citations = memo(
       })
     })
 
+    const citationData = filteredCitations
+      .map((citation) => {
+        const matchingContext = message.context.at(citation.sourceId)!
+
+        return {
+          title: matchingContext.title,
+          source: matchingContext.source,
+          citation,
+        }
+      })
+      .reduce(
+        (acc, { title, source, citation }) => {
+          const existingGroup = acc.find((group) => group.title === title)
+
+          if (existingGroup) {
+            existingGroup.citations.push(citation)
+          } else {
+            acc.push({ title, source, citations: [citation] })
+          }
+
+          return acc
+        },
+        [] as {
+          title: string
+          source: "navno" | "nks"
+          citations: Citation[]
+        }[],
+      )
+
     return (
       <>
         {(!isLoading || !isLastMessage) && (
@@ -136,7 +165,7 @@ const Citations = memo(
               onToggle={handleToggleCitations}
               message={message}
             />
-            {filteredCitations.map((citation, index) => (
+            {citationData.map((citation, index) => (
               <BobAnswerCitations
                 citation={citation}
                 key={`citation-${index}`}

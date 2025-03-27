@@ -7,24 +7,55 @@ import { NavNoIcon } from "../../../../assets/icons/NavNoIcon.tsx"
 import { Citation, Context } from "../../../../types/Message.ts"
 
 interface BobAnswerCitationProps {
-  citation: Citation
+  citation: { title: string; source: "navno" | "nks"; citations: Citation[] }
   context: Context[]
 }
 
 // Matching citation.text against context metadata, to find correct URL //
 function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
-  const matchingContextCitationData = context.at(citation.sourceId)
+  if (citation.citations.length === 1) {
+    const singleCitation = citation.citations.at(0)!
+    return (
+      <SingleCitation
+        citation={singleCitation}
+        context={context.at(singleCitation.sourceId)}
+      />
+    )
+  }
 
+  if (citation.citations.length > 1) {
+    return (
+      <MultiCitation
+        title={citation.title}
+        source={citation.source}
+        citations={citation.citations}
+        contexts={context}
+      />
+    )
+  }
+
+  return <></>
+}
+
+export default BobAnswerCitations
+
+const SingleCitation = ({
+  citation,
+  context,
+}: {
+  citation: Citation
+  context: Context | undefined
+}) => {
   return (
     <div className='mb-2 flex flex-col'>
       <Label size='small' className='mb-1'>
-        {matchingContextCitationData ? (
+        {context ? (
           <div className='flex flex-wrap gap-2'>
             <CitationLink
               citation={citation}
-              matchingContextCitationData={matchingContextCitationData}
+              matchingContextCitationData={context}
             />
-            <SourceIcon source={matchingContextCitationData.source} />
+            <SourceIcon source={context.source} />
           </div>
         ) : (
           <BodyShort size='medium'>
@@ -49,14 +80,69 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
   )
 }
 
-export default BobAnswerCitations
+const MultiCitation = ({
+  title,
+  source,
+  citations,
+  contexts,
+}: {
+  title: string
+  source: "navno" | "nks"
+  citations: Citation[]
+  contexts: Context[]
+}) => {
+  const articleLink = contexts.at(citations[0]!.sourceId)!.url
+  return (
+    <div className='mb-2 flex flex-col'>
+      <Label size='small' className='mb-1'>
+        <div className='flex flex-wrap gap-2'>
+          <Link
+            href={articleLink}
+            target='_blank'
+            title='Åpne artikkelen i ny fane'
+          >
+            {title}
+            <ExternalLinkIcon title='Åpne artikkelen i ny fane' />
+          </Link>
+          <SourceIcon source={source} />
+        </div>
+      </Label>
+      <div className='flex flex-col gap-2'>
+        {citations.map((citation) => (
+          <>
+            <div className='mt-1 italic gap-1'>
+              <Markdown
+                className='markdown'
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  a: ({ ...props }) => (
+                    <a {...props} target='_blank' rel='noopener noreferrer' />
+                  ),
+                }}
+              >
+                {citation.text}
+              </Markdown>
+              <CitationLink
+                citation={citation}
+                matchingContextCitationData={contexts.at(citation.sourceId)!}
+                title='Vis i artikkelen'
+              />
+            </div>
+          </>
+        ))}
+      </div>
+    </div>
+  )
+}
 
 const CitationLink = ({
   citation,
   matchingContextCitationData,
+  title,
 }: {
   citation: Citation
   matchingContextCitationData: Context
+  title?: string
 }) => {
   // Splitting words, making it functional for textStart & textEnd //
   const citeWords = citation.text
@@ -97,7 +183,7 @@ const CitationLink = ({
       target='_blank'
       title='Åpne artikkelen i ny fane'
     >
-      {matchingContextCitationData.title}
+      {title ?? matchingContextCitationData.title}
       <ExternalLinkIcon title='Åpne artikkelen i ny fane' />
     </Link>
   )
