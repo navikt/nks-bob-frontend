@@ -103,7 +103,7 @@ const MultiCitation = ({
     <div className='mb-2 flex flex-col'>
       <Label size='small' className='mb-1'>
         <div className='flex flex-wrap gap-2'>
-          <Tooltip content='Åpne artikkelen i ny fane'>
+          <Tooltip content='Åpner artikkelen i ny fane'>
             <Link href={articleLink} target='_blank'>
               {title}
               <ExternalLinkIcon />
@@ -180,7 +180,7 @@ const CitationLink = ({
   )
 
   return (
-    <Tooltip content='Se sitatet i artikkelen i ny fane'>
+    <Tooltip content='Åpner artikkelen i ny fane'>
       <Link
         href={
           useAnchor
