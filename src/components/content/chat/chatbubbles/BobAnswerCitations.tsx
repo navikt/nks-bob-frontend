@@ -1,5 +1,12 @@
 import { ExternalLinkIcon } from "@navikt/aksel-icons"
-import { BodyLong, BodyShort, Detail, Label, Link } from "@navikt/ds-react"
+import {
+  BodyLong,
+  BodyShort,
+  Detail,
+  Label,
+  Link,
+  Tooltip,
+} from "@navikt/ds-react"
 import Markdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import { KunnskapsbasenIcon } from "../../../../assets/icons/KunnskapsbasenIcon.tsx"
@@ -96,23 +103,21 @@ const MultiCitation = ({
     <div className='mb-2 flex flex-col'>
       <Label size='small' className='mb-1'>
         <div className='flex flex-wrap gap-2'>
-          <Link
-            href={articleLink}
-            target='_blank'
-            title='Åpne artikkelen i ny fane'
-          >
-            {title}
-            <ExternalLinkIcon title='Åpne artikkelen i ny fane' />
-          </Link>
+          <Tooltip content='Åpne artikkelen i ny fane'>
+            <Link href={articleLink} target='_blank'>
+              {title}
+              <ExternalLinkIcon />
+            </Link>
+          </Tooltip>
           <SourceIcon source={source} />
         </div>
       </Label>
       <div className='flex flex-col gap-2'>
         {citations.map((citation) => (
           <>
-            <div className='mt-1 italic gap-1'>
+            <div className='group mt-1 gap-1 italic'>
               <Markdown
-                className='markdown'
+                className='markdown markdown-inline navds-body-short--small mb-1 inline'
                 remarkPlugins={[remarkGfm]}
                 components={{
                   a: ({ ...props }) => (
@@ -121,11 +126,12 @@ const MultiCitation = ({
                 }}
               >
                 {citation.text}
-              </Markdown>
+              </Markdown>{" "}
               <CitationLink
                 citation={citation}
                 matchingContextCitationData={contexts.at(citation.sourceId)!}
-                title='Vis i artikkelen'
+                title=''
+                className='inline'
               />
             </div>
           </>
@@ -139,10 +145,12 @@ const CitationLink = ({
   citation,
   matchingContextCitationData,
   title,
+  className,
 }: {
   citation: Citation
   matchingContextCitationData: Context
   title?: string
+  className?: string
 }) => {
   // Splitting words, making it functional for textStart & textEnd //
   const citeWords = citation.text
@@ -172,20 +180,23 @@ const CitationLink = ({
   )
 
   return (
-    <Link
-      href={
-        useAnchor
-          ? `${matchingContextCitationData.url}${expandAll}#${matchingContextCitationData.anchor}`
-          : numWords < 1
-            ? `${matchingContextCitationData.url}`
-            : `${matchingContextCitationData.url}${expandAll}#:~:text=${encodeFragment(textStart)},${encodeFragment(textEnd)}`
-      }
-      target='_blank'
-      title='Åpne artikkelen i ny fane'
-    >
-      {title ?? matchingContextCitationData.title}
-      <ExternalLinkIcon title='Åpne artikkelen i ny fane' />
-    </Link>
+    <Tooltip content='Se sitatet i artikkelen i ny fane'>
+      <Link
+        href={
+          useAnchor
+            ? `${matchingContextCitationData.url}${expandAll}#${matchingContextCitationData.anchor}`
+            : numWords < 1
+              ? `${matchingContextCitationData.url}`
+              : `${matchingContextCitationData.url}${expandAll}#:~:text=${encodeFragment(textStart)},${encodeFragment(textEnd)}`
+        }
+        target='_blank'
+        inlineText
+        className={`${className} navds-body-short--small`}
+      >
+        {title ?? matchingContextCitationData.title}
+        <ExternalLinkIcon fontSize={18} />
+      </Link>
+    </Tooltip>
   )
 }
 
