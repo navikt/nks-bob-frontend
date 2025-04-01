@@ -47,6 +47,10 @@ ul {
   margin-bottom: 1rem;
 }
 
+.markdown-inline > p {
+  display: inline;
+}
+
 .pagewrapper {
   display: flex;
   flex-direction: column;
