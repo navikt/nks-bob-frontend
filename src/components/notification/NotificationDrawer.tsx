@@ -13,29 +13,61 @@ import { useState } from "react"
 import Markdown from "react-markdown"
 import { useNewsNotifications } from "../../api/api"
 import { NewsNotification } from "../../types/Notifications"
+import { useUpdateLocalStorage } from "../../utils/localStorage"
 
-/* const useReadNotifications = () => {
-  const [readNotifications, setReadNotifications] =
-    useUpdateLocalStorage("readNotifications")
+const useReadNotifications = () => {
+  const [_, setRead, getRead] = useUpdateLocalStorage("readNotifications")
 
-  const updateReadNotifications = (notificationIds: string[]) => {
-    setReadNotifications(new Set([...readNotifications, ...notificationIds]))
+  const setReadNotifications = (notificationIds: string[]) => {
+    setRead(notificationIds)
   }
+
+  const readNotifications = (getRead() as string[] | undefined) ?? []
+
+  const isUnread = (notificationId: string) =>
+    !readNotifications.includes(notificationId)
+
+  const hasUnreadNotifications = (notificationIds: string[]) =>
+    notificationIds.some(isUnread)
 
   return {
-    readNotifications: (readNotifications as string[] | undefined) ?? [],
-    updateReadNotifications,
+    readNotifications,
+    setReadNotifications,
+    hasUnreadNotifications,
+    isUnread,
   }
-} */
+}
+
+type TabName = "alle" | "nye"
 
 export const NotificationToggle = () => {
+  const { newsNotifications } = useNewsNotifications()
+  const { setReadNotifications, hasUnreadNotifications } =
+    useReadNotifications()
+  const [activeTab, setActiveTab] = useState<TabName>("alle")
+  const notificationIds = newsNotifications.map(({ id }) => id)
+
   return (
-    <Dropdown>
+    <Dropdown
+      defaultOpen={hasUnreadNotifications(notificationIds)}
+      onOpenChange={(open) => {
+        if (!open && activeTab === "nye") {
+          setReadNotifications(notificationIds)
+        }
+      }}
+    >
       <Tooltip content='Vis varsler'>
         <Button
           variant='tertiary'
           size='medium'
-          icon={<BellIcon aria-hidden />}
+          icon={
+            <div className='relative'>
+              <BellIcon aria-hidden />
+              {hasUnreadNotifications(notificationIds) && (
+                <NotificationTick className='absolute right-[7px] top-[3px]' />
+              )}
+            </div>
+          }
           as={Dropdown.Toggle}
         />
       </Tooltip>
@@ -44,48 +76,52 @@ export const NotificationToggle = () => {
         className='max-h-[500px] w-[450px] overflow-scroll p-0'
       >
         <Dropdown.Menu.GroupedList>
-          <NotificationDrawer />
+          <NotificationDrawer
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+          />
         </Dropdown.Menu.GroupedList>
       </Dropdown.Menu>
     </Dropdown>
   )
 }
 
-const NotificationDrawer = () => {
+const NotificationDrawer = ({
+  activeTab,
+  setActiveTab,
+}: {
+  activeTab: TabName
+  setActiveTab: React.Dispatch<React.SetStateAction<TabName>>
+}) => {
   const { newsNotifications } = useNewsNotifications()
-  const [unreadNotifications] = useState<NewsNotification[]>([])
-  // const { readNotifications } = useReadNotifications()
+  const { readNotifications: readNotificationIds } = useReadNotifications()
 
-  // useEffect(() => {
-  //   if (!isLoading) {
-  //     setUnreadNotifications(
-  //       newsNotifications.filter(({ id }) => !readNotifications.includes(id)),
-  //     )
-  //   }
-  // }, [newsNotifications, isLoading, readNotifications])
-
-  // console.log(unreadNotifications)
+  const unreadNotifications = newsNotifications.filter(
+    ({ id }) => !readNotificationIds.includes(id),
+  )
 
   return (
-    <>
-      <Tabs defaultValue='alle'>
-        <div className='sticky top-0'>
-          <div className='bg-surface-default'>
-            <div className='bg-surface-neutral-subtle p-4'>Varsler</div>
-            <Tabs.List>
-              <Tabs.Tab value='alle' label='Alle' />
-              <Tabs.Tab value='uleste' label='Uleste' />
-            </Tabs.List>
-          </div>
+    <Tabs
+      defaultValue='alle'
+      value={activeTab}
+      onChange={(value) => setActiveTab(value as TabName)}
+    >
+      <div className='sticky top-0 z-10'>
+        <div className='bg-surface-default'>
+          <div className='bg-surface-neutral-subtle p-4'>Varsler</div>
+          <Tabs.List>
+            <Tabs.Tab value='alle' label='Alle' />
+            <Tabs.Tab value='nye' label='Nye' />
+          </Tabs.List>
         </div>
-        <Tabs.Panel value='alle'>
-          <NotificationList notifications={newsNotifications} />
-        </Tabs.Panel>
-        <Tabs.Panel value='uleste'>
-          <NotificationList notifications={unreadNotifications} />
-        </Tabs.Panel>
-      </Tabs>
-    </>
+      </div>
+      <Tabs.Panel value='alle'>
+        <NotificationList notifications={newsNotifications} />
+      </Tabs.Panel>
+      <Tabs.Panel value='nye'>
+        <NotificationList notifications={unreadNotifications} />
+      </Tabs.Panel>
+    </Tabs>
   )
 }
 
@@ -97,7 +133,7 @@ const NotificationList = ({
   if (notifications.length === 0) {
     return (
       <BodyShort textColor='subtle' className='p-4'>
-        Her var det tomt gitt...
+        Ingen nye varsler
       </BodyShort>
     )
   }
@@ -122,6 +158,8 @@ const NotificationItem = ({
   notification: NewsNotification
   className?: string
 }) => {
+  const { isUnread } = useReadNotifications()
+
   const date = new Date(notification.createdAt)
   const localeDate = date.toLocaleDateString("no-NB", {
     year: "numeric",
@@ -131,9 +169,10 @@ const NotificationItem = ({
 
   return (
     <div className={className}>
-      <Detail className='text-text-subtle' spacing>
-        {localeDate}
-      </Detail>
+      <div className='flex items-center gap-1 pb-2'>
+        <Detail className='text-text-subtle'>{localeDate}</Detail>
+        {isUnread(notification.id) && <NotificationTick />}
+      </div>
       <Heading textColor='subtle' size='small' spacing>
         {notification.title}
       </Heading>
@@ -141,5 +180,13 @@ const NotificationItem = ({
         <Markdown>{notification.content}</Markdown>
       </BodyLong>
     </div>
+  )
+}
+
+const NotificationTick = ({ className }: { className?: string }) => {
+  return (
+    <div
+      className={`h-1.5 w-1.5 animate-ping rounded-full bg-surface-danger ${className}`}
+    />
   )
 }
