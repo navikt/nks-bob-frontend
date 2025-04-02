@@ -40,11 +40,13 @@ const useReadNotifications = () => {
 
 type TabName = "alle" | "nye"
 
+const defaultTabName: TabName = "alle"
+
 export const NotificationToggle = () => {
   const { newsNotifications } = useNewsNotifications()
   const { setReadNotifications, hasUnreadNotifications } =
     useReadNotifications()
-  const [activeTab, setActiveTab] = useState<TabName>("alle")
+  const [activeTab, setActiveTab] = useState<TabName>(defaultTabName)
   const notificationIds = newsNotifications.map(({ id }) => id)
 
   return (
@@ -102,7 +104,7 @@ const NotificationDrawer = ({
 
   return (
     <Tabs
-      defaultValue='alle'
+      defaultValue={defaultTabName}
       value={activeTab}
       onChange={(value) => setActiveTab(value as TabName)}
     >
