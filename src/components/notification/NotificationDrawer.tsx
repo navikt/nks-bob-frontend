@@ -9,7 +9,7 @@ import {
   Tabs,
   Tooltip,
 } from "@navikt/ds-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Markdown from "react-markdown"
 import { useNewsNotifications } from "../../api/api"
 import { NewsNotification } from "../../types/Notifications"
@@ -49,13 +49,25 @@ export const NotificationToggle = () => {
   const [activeTab, setActiveTab] = useState<TabName>(defaultTabName)
   const notificationIds = newsNotifications.map(({ id }) => id)
 
+  const [initialOpen, setInitialOpen] = useState<boolean | null>(null)
+  const hasUnread = hasUnreadNotifications(notificationIds)
+
+  useEffect(() => {
+    if (initialOpen === null) {
+      if (hasUnread) {
+        setInitialOpen(true)
+      }
+    }
+  }, [initialOpen, setInitialOpen, hasUnread])
+
   return (
     <Dropdown
-      defaultOpen={hasUnreadNotifications(notificationIds)}
+      open={initialOpen ?? false}
       onOpenChange={(open) => {
         if (!open && activeTab === "nye") {
           setReadNotifications(notificationIds)
         }
+        setInitialOpen(open)
       }}
     >
       <Tooltip content='Vis varsler'>
@@ -65,7 +77,7 @@ export const NotificationToggle = () => {
           icon={
             <div className='relative'>
               <BellIcon aria-hidden />
-              {hasUnreadNotifications(notificationIds) && (
+              {hasUnread && (
                 <NotificationTick className='absolute right-[7px] top-[3px]' />
               )}
             </div>
