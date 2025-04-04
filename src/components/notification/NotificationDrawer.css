@@ -1,0 +1,19 @@
+body.dark {
+  .bg-surface-neutral-subtle {
+    background-color: var(--new-bg-sunken);
+  }
+
+  .bg-surface-default {
+    background-color: var(--new-bg);
+  }
+
+  h1,
+  .navds-tabs,
+  .navds-tabs__tab {
+    color: var(--darkmode-text-default)
+  }
+
+  .border-b-border-subtle {
+    border-color: var(--new-bg-raised);
+  }
+}

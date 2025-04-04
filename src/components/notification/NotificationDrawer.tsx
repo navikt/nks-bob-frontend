@@ -14,6 +14,7 @@ import Markdown from "react-markdown"
 import { useNewsNotifications } from "../../api/api"
 import { NewsNotification } from "../../types/Notifications"
 import { useUpdateLocalStorage } from "../../utils/localStorage"
+import "./NotificationDrawer.css"
 
 const useReadNotifications = () => {
   const [_, setRead, getRead] = useUpdateLocalStorage("readNotifications")
@@ -183,8 +184,8 @@ const NotificationItem = ({
 
   return (
     <div className={className}>
-      <div className='flex items-center gap-1 pb-2'>
-        <Detail className='text-text-subtle'>{localeDate}</Detail>
+      <div className='flex items-center gap-2 pb-2'>
+        <Detail textColor='subtle'>{localeDate}</Detail>
         {isUnread(notification.id) && <NotificationTick />}
       </div>
       <Heading textColor='subtle' size='small' spacing>
