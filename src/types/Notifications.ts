@@ -1,10 +1,10 @@
 export type Notification = {
   id: string
   createdAt: string
-  expiresAt: string
+  expiresAt: string | null
   title: string
   content: string
-  notificationType: "News" | "Error"
+  notificationType: "News" | "Error" | "Warning"
 }
 
 export type NewsNotification = Omit<
