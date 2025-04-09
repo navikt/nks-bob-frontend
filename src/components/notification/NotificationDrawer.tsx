@@ -57,6 +57,7 @@ export const NotificationToggle = () => {
     if (initialOpen === null) {
       if (hasUnread) {
         setInitialOpen(true)
+        setActiveTab("nye")
       }
     }
   }, [initialOpen, setInitialOpen, hasUnread])
