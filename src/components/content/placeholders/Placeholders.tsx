@@ -35,9 +35,7 @@ export const BobPlaceholder = () => {
           </div>
         </>
       )}
-      {hasErrors && (
-        <BobError errorNotifications={errorNotifications} />
-      )}
+      {hasErrors && <BobError errorNotifications={errorNotifications} />}
     </>
   )
 }
@@ -53,6 +51,10 @@ const BobError = ({
 }: {
   errorNotifications: ErrorNotification[]
 }) => {
+  if (errorNotifications.length < 1) {
+    return null
+  }
+
   const { title, content, notificationType } = errorNotifications.at(0)!
   const level = notificationType.toLowerCase() as "error" | "warning"
 

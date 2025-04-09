@@ -1,11 +1,11 @@
+import { Alert, Heading } from "@navikt/ds-react"
 import { Fragment, useEffect, useRef } from "react"
+import Markdown from "react-markdown"
+import { useErrorNotifications } from "../../../api/api.ts"
 import { Message, NewMessage } from "../../../types/Message.ts"
+import { ErrorNotification } from "../../../types/Notifications.ts"
 import { BobAnswerBubble } from "./chatbubbles/answerbubble/BobAnswerBubble.tsx"
 import UserQuestionBubble from "./chatbubbles/UserQuestionBubble.tsx"
-import { useErrorNotifications } from "../../../api/api.ts"
-import { ErrorNotification } from "../../../types/Notifications.ts"
-import { Alert, Heading } from "@navikt/ds-react"
-import Markdown from "react-markdown"
 
 interface ChatDialogProps {
   messages: Message[]
@@ -53,11 +53,15 @@ const ErrorBanner = ({
 }: {
   errorNotifications: ErrorNotification[]
 }) => {
+  if (errorNotifications.length < 1) {
+    return null
+  }
+
   const { title, content, notificationType } = errorNotifications.at(0)!
   const level = notificationType.toLowerCase() as "error" | "warning"
 
   return (
-    <Alert fullWidth variant={level} className="mb-4">
+    <Alert fullWidth variant={level} className='mb-4'>
       <Heading spacing size='small' level='3'>
         {title}
       </Heading>
