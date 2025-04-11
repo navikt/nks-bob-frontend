@@ -337,6 +337,16 @@ body.dark {
   --ac-alert-info-border: rgba(67, 113, 141, 1);
   --ac-alert-icon-info-color: rgba(90, 131, 155, 1);
 
+   /*    Error alert    */
+  --ac-alert-error-bg: rgba(73, 11, 16, 1);
+  --ac-alert-error-border: rgba(222, 74, 80, 1);
+  --ac-alert-icon-error-color: rgba(222, 74, 80, 1);
+
+  /*    Warning alert    */
+  --ac-alert-warning-bg: rgba(55, 17, 0, 1);
+  --ac-alert-warning-border: rgba(197, 99, 51, 1);
+  --ac-alert-icon-warning-color: rgba(197, 99, 51, 1);
+
   /*    Danger button   */
   --ac-button-danger-bg: rgba(65, 4, 9, 1);
   --ac-button-danger-text: rgba(242, 142, 162, 1);

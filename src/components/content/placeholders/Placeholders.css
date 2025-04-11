@@ -21,3 +21,7 @@
 body.dark .placeholder-text {
   color: rgba(223, 225, 229, 1);
 }
+
+body.dark .navds-heading {
+  color: var(--darkmode-text-default)
+}

@@ -9,6 +9,7 @@ import Guide from "../content/guide/Guide.tsx"
 import { NewConceptMessage } from "../content/guide/GuideModals.tsx"
 import { NewButton } from "../menu/NewButton.tsx"
 import DarkModeToggle from "../menu/darkmode/DarkModeToggle.tsx"
+import { NotificationToggle } from "../notification/NotificationDrawer.tsx"
 import "./Header.css"
 import { NAVLogo } from "./nav-logo.tsx"
 
@@ -45,6 +46,7 @@ function Header({ conversation }: HeaderProps) {
               <NewButton conversationId={conversation} />
             </>
           )}
+          <NotificationToggle />
           <Tooltip content='Informasjon og tips'>
             <Button
               variant='tertiary'
