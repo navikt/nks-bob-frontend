@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react"
 import useWebSocket, { ReadyState } from "react-use-websocket"
-import { Citation, Context, Message, NewMessage } from "../types/Message"
+import {
+  Citation,
+  Context,
+  Message,
+  MessageError,
+  NewMessage,
+} from "../types/Message"
 
 const WS_API_URL = `${import.meta.env.BASE_URL}bob-api-ws`
 
@@ -11,6 +17,7 @@ export type MessageEvent =
   | ContextUpdated
   | PendingUpdated
   | StatusUpdate
+  | ErrorsUpdated
 
 type NewMessageEvent = {
   type: "NewMessage"
@@ -49,6 +56,12 @@ type StatusUpdate = {
   content: string
 }
 
+type ErrorsUpdated = {
+  type: "ErrorsUpdated"
+  id: string
+  errors: MessageError[]
+}
+
 export function isMessage(event: Message | MessageEvent): event is Message {
   return (<Message>event).messageRole !== undefined
 }
@@ -83,6 +96,10 @@ export function isPendingUpdated(event: MessageEvent): event is PendingUpdated {
 
 export function isStatusUpdate(event: MessageEvent): event is StatusUpdate {
   return (<MessageEvent>event).type === "StatusUpdate"
+}
+
+export function isErrorsUpdated(event: MessageEvent): event is ErrorsUpdated {
+  return (<MessageEvent>event).type === "ErrorsUpdated"
 }
 
 type MessageMap = { [id: string]: Message }
