@@ -1,20 +1,157 @@
 import { ExternalLinkIcon } from "@navikt/aksel-icons"
-import { BodyLong, BodyShort, Detail, Label, Link } from "@navikt/ds-react"
+import {
+  BodyLong,
+  BodyShort,
+  Detail,
+  Label,
+  Link,
+  Tooltip,
+} from "@navikt/ds-react"
 import Markdown from "react-markdown"
-import { Citation, Context } from "../../../../types/Message.ts"
+import remarkGfm from "remark-gfm"
 import { KunnskapsbasenIcon } from "../../../../assets/icons/KunnskapsbasenIcon.tsx"
 import { NavNoIcon } from "../../../../assets/icons/NavNoIcon.tsx"
-import remarkGfm from "remark-gfm"
+import { Citation, Context } from "../../../../types/Message.ts"
 
 interface BobAnswerCitationProps {
-  citation: Citation
+  citation: { title: string; source: "navno" | "nks"; citations: Citation[] }
   context: Context[]
 }
 
 // Matching citation.text against context metadata, to find correct URL //
 function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
-  const matchingContextCitationData = context.at(citation.sourceId)
+  if (citation.citations.length === 1) {
+    const singleCitation = citation.citations.at(0)!
+    return (
+      <SingleCitation
+        citation={singleCitation}
+        context={context.at(singleCitation.sourceId)}
+      />
+    )
+  }
 
+  if (citation.citations.length > 1) {
+    return (
+      <MultiCitation
+        title={citation.title}
+        source={citation.source}
+        citations={citation.citations}
+        contexts={context}
+      />
+    )
+  }
+
+  return <></>
+}
+
+export default BobAnswerCitations
+
+const SingleCitation = ({
+  citation,
+  context,
+}: {
+  citation: Citation
+  context: Context | undefined
+}) => {
+  return (
+    <div className='mb-2 flex flex-col'>
+      <Label size='small' className='mb-1'>
+        {context ? (
+          <div className='flex flex-wrap gap-2'>
+            <CitationLink
+              citation={citation}
+              matchingContextCitationData={context}
+            />
+            <SourceIcon source={context.source} />
+          </div>
+        ) : (
+          <BodyShort size='medium'>
+            Kunne ikke finne lenke til artikkelen.
+          </BodyShort>
+        )}
+      </Label>
+      <BodyLong size='small' className='mt-1 italic'>
+        <Markdown
+          className='markdown'
+          remarkPlugins={[remarkGfm]}
+          components={{
+            a: ({ ...props }) => (
+              <a {...props} target='_blank' rel='noopener noreferrer' />
+            ),
+          }}
+        >
+          {citation.text}
+        </Markdown>
+      </BodyLong>
+    </div>
+  )
+}
+
+const MultiCitation = ({
+  title,
+  source,
+  citations,
+  contexts,
+}: {
+  title: string
+  source: "navno" | "nks"
+  citations: Citation[]
+  contexts: Context[]
+}) => {
+  const articleLink = contexts.at(citations[0]!.sourceId)!.url
+  return (
+    <div className='mb-2 flex flex-col'>
+      <Label size='small' className='mb-1'>
+        <div className='flex flex-wrap gap-2'>
+          <Tooltip content='Åpner artikkelen i ny fane'>
+            <Link href={articleLink} target='_blank'>
+              {title}
+              <ExternalLinkIcon />
+            </Link>
+          </Tooltip>
+          <SourceIcon source={source} />
+        </div>
+      </Label>
+      <div className='flex flex-col gap-2'>
+        {citations.map((citation) => (
+          <>
+            <div className='group mt-1 gap-1 italic'>
+              <Markdown
+                className='markdown markdown-inline navds-body-short--small mb-1 inline'
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  a: ({ ...props }) => (
+                    <a {...props} target='_blank' rel='noopener noreferrer' />
+                  ),
+                }}
+              >
+                {citation.text}
+              </Markdown>{" "}
+              <CitationLink
+                citation={citation}
+                matchingContextCitationData={contexts.at(citation.sourceId)!}
+                title=''
+                className='inline'
+              />
+            </div>
+          </>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+const CitationLink = ({
+  citation,
+  matchingContextCitationData,
+  title,
+  className,
+}: {
+  citation: Citation
+  matchingContextCitationData: Context
+  title?: string
+  className?: string
+}) => {
   // Splitting words, making it functional for textStart & textEnd //
   const citeWords = citation.text
     .replace(/\n\n|\n/g, " ")
@@ -43,70 +180,53 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
   )
 
   return (
-    <div className='mb-2 flex flex-col'>
-      <Label size='small' className='mb-1'>
-        {matchingContextCitationData ? (
-          <div className='flex flex-wrap gap-2'>
-            <Link
-              href={
-                useAnchor
-                  ? `${matchingContextCitationData.url}${expandAll}#${matchingContextCitationData.anchor}`
-                  : numWords < 1
-                    ? `${matchingContextCitationData.url}`
-                    : `${matchingContextCitationData.url}${expandAll}#:~:text=${encodeFragment(textStart)},${encodeFragment(textEnd)}`
-              }
-              target='_blank'
-              title='Åpne artikkelen i ny fane'
-            >
-              {matchingContextCitationData.title}
-              <ExternalLinkIcon title='Åpne artikkelen i ny fane' />
-            </Link>
-            {matchingContextCitationData.source === "navno" && (
-              <Detail
-                title='Artikler fra nav.no'
-                textColor="subtle"
-                className="font-normal"
-              >
-                <div className="flex gap-1.5">
-                  <NavNoIcon />
-                  Nav.no
-                </div>
-              </Detail>
-            )}
-            {matchingContextCitationData.source === "nks" && (
-              <Detail
-                title='Artikler fra NKS sin kunnskapsbase i Salesforce'
-                textColor="subtle"
-                className="font-normal"
-              >
-                <div className="flex gap-1.5">
-                  <KunnskapsbasenIcon />
-                  Kunnskapsbasen
-                </div>
-              </Detail>
-            )}
-          </div>
-        ) : (
-          <BodyShort size='medium'>
-            Kunne ikke finne lenke til artikkelen.
-          </BodyShort>
-        )}
-      </Label>
-      <BodyLong size='small' className='mt-1 italic'>
-        <Markdown
-          className='markdown'
-          remarkPlugins={[remarkGfm]}
-          components={{
-            a: ({ ...props }) => (
-              <a {...props} target='_blank' rel='noopener noreferrer' />
-            ),
-          }}
-        >
-          {citation.text}
-        </Markdown>
-      </BodyLong>
-    </div>
+    <Tooltip content='Åpner artikkelen i ny fane'>
+      <Link
+        href={
+          useAnchor
+            ? `${matchingContextCitationData.url}${expandAll}#${matchingContextCitationData.anchor}`
+            : numWords < 1
+              ? `${matchingContextCitationData.url}`
+              : `${matchingContextCitationData.url}${expandAll}#:~:text=${encodeFragment(textStart)},${encodeFragment(textEnd)}`
+        }
+        target='_blank'
+        inlineText
+        className={`${className} navds-body-short--small`}
+      >
+        {title ?? matchingContextCitationData.title}
+        <ExternalLinkIcon fontSize={18} />
+      </Link>
+    </Tooltip>
   )
 }
 
-export default BobAnswerCitations
+const SourceIcon = ({ source }: { source: "navno" | "nks" }) => {
+  return (
+    <>
+      {source === "navno" && (
+        <Detail
+          title='Artikler fra nav.no'
+          textColor='subtle'
+          className='font-normal'
+        >
+          <div className='flex gap-1.5'>
+            <NavNoIcon />
+            Nav.no
+          </div>
+        </Detail>
+      )}
+      {source === "nks" && (
+        <Detail
+          title='Artikler fra NKS sin kunnskapsbase i Salesforce'
+          textColor='subtle'
+          className='font-normal'
+        >
+          <div className='flex gap-1.5'>
+            <KunnskapsbasenIcon />
+            Kunnskapsbasen
+          </div>
+        </Detail>
+      )}
+    </>
+  )
+}
