@@ -1,5 +1,6 @@
 import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
+import { Helmet } from "react-helmet"
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -34,6 +35,15 @@ const router = createBrowserRouter(
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
+    <Helmet>
+      <script
+        defer
+        src='https://cdn.nav.no/team-researchops/sporing/sporing.js'
+        data-host-url='https://umami.nav.no'
+        data-website-id='7a73382f-ec5b-4c80-b3f2-154388c32234'
+        data-domains='bob.ansatt.dev.nav.no,bob.ansatt.nav.no'
+      ></script>
+    </Helmet>
     <RouterProvider router={router} />
   </StrictMode>,
 )
