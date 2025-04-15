@@ -4,6 +4,7 @@ import {
   isCitationsUpdated,
   isContentUpdated,
   isContextUpdated,
+  isErrorsUpdated,
   isNewMessage,
   isPendingUpdated,
   isStatusUpdate,
@@ -124,6 +125,14 @@ const getMessage = (
   if (isStatusUpdate(event)) {
     console.debug(`Status: ${event.content}`)
     return undefined
+  }
+
+  if (isErrorsUpdated(event)) {
+    return {
+      ...message,
+      errors: event.errors,
+      pending: false,
+    }
   }
 
   return undefined

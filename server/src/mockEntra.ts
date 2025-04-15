@@ -6,27 +6,31 @@ import { result, TokenResult } from "./utils.js"
 
 const tokenCache = new CacheContainer(new MemoryStorage())
 
+type MockTokenResponse = {
+  token_type: string
+  id_token: string
+  access_token: string
+  refresh_token: string
+  expires_in: number
+}
+
 async function fetchToken() {
-  const url = "https://fakedings.intern.dev.nav.no/fake/custom"
+  const url = "http://localhost:8888/entraid/token"
   const options = {
     method: "POST",
     headers: { "content-type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams({
       NAVident: process.env.VITE_NAVIDENT ?? "Z123456",
-      aud: "nks-bob-api",
-      azp: "consumer-client-id",
-      sub: "31a9a29e-a7e9-4a4b-b823-8c39707e475e",
-      scp: "User.Read",
-      ver: "2.0",
-      azpacr: "1",
-      aio: "31dfd903-1d65-4512-9e8d-59acd70859ce",
-      tid: "default",
+      grant_type: "authorization_code",
+      code: "code",
+      client_id: "id",
+      client_secret: "secret",
     }),
   }
 
   const res = await fetch(url, options)
-  const token = await res.text()
-  return token
+  const { access_token } = (await res.json()) as MockTokenResponse
+  return access_token
 }
 
 export async function getToken(log: Logger): Promise<TokenResult> {

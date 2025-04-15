@@ -37,5 +37,5 @@ export function useUpdateLocalStorage(key: string) {
     setItem(key, newValue)
   }
 
-  return [storageValue, updateStorageValue] as const
+  return [storageValue, updateStorageValue, () => getItem(key)] as const
 }

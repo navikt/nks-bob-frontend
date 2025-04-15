@@ -7,6 +7,7 @@ import {
   NewConversation,
   NewMessage,
 } from "../types/Message"
+import { ErrorNotification, NewsNotification } from "../types/Notifications"
 import { UserConfig } from "../types/User"
 
 export const API_URL = `${import.meta.env.BASE_URL}bob-api`
@@ -256,4 +257,34 @@ export const useStarMessage = (messageId: string) => {
     })
 
   return { starMessage, isMutating }
+}
+
+export const useNewsNotifications = () => {
+  const { data, isLoading, error } = useSWR<NewsNotification[], ApiError>(
+    "/api/v1/notifications/news",
+    fetcher,
+  )
+
+  return {
+    newsNotifications: data ?? [],
+    isLoading,
+    error,
+  }
+}
+
+export const useErrorNotifications = () => {
+  const { data, isLoading, error } = useSWR<ErrorNotification[], ApiError>(
+    "/api/v1/notifications/errors",
+    fetcher,
+  )
+
+  return {
+    errorNotifications: data ?? [],
+    isLoading,
+    error,
+  }
+}
+
+export const preloadNewsNotifications = () => {
+  preload("/api/v1/notifications/news", fetcher)
 }
