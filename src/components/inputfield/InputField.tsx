@@ -6,7 +6,7 @@ import { useEffect, useState } from "react"
 import * as React from "react"
 import { create } from "zustand"
 import { NewMessage } from "../../types/Message.ts"
-import amplitude from "../../utils/amplitude.ts"
+import analytics from "../../utils/analytics.ts"
 import { FollowUpQuestions } from "../content/followupquestions/FollowUpQuestions.tsx"
 import "./InputField.css"
 
@@ -66,7 +66,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
   }
 
   function handlePasteInfoAlert() {
-    amplitude.tekstInnholdLimtInn()
+    analytics.tekstInnholdLimtInn()
     setIsSensitiveInfoAlert(true)
   }
 
@@ -87,7 +87,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
         e.preventDefault()
 
         if (!sendDisabled) {
-          amplitude.meldingSendt("enter")
+          analytics.meldingSendt("enter")
           sendMessage()
           setInputValue("")
           setIsSensitiveInfoAlert(false)
@@ -98,7 +98,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
 
   function handleButtonClick() {
     if (inputValue.trim() !== "") {
-      amplitude.meldingSendt("knapp")
+      analytics.meldingSendt("knapp")
       sendMessage()
       setInputValue("")
     }
@@ -108,7 +108,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
     const inputContainsFnr = checkContainsFnr(inputValue)
 
     if (inputContainsFnr) {
-      amplitude.tekstInneholderFnr()
+      analytics.tekstInneholderFnr()
     }
 
     setContainsFnr(inputContainsFnr)

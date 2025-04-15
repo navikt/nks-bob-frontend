@@ -1,7 +1,7 @@
 import { ChevronDownIcon, ChevronUpIcon } from "@navikt/aksel-icons"
 import { BodyShort, HStack, Label } from "@navikt/ds-react"
 import { memo, useState } from "react"
-import amplitude from "../../../utils/amplitude"
+import analytics from "../../../utils/analytics"
 import "./FollowUpQuestions.css"
 
 interface FollowUpQuestionsProps {
@@ -45,7 +45,7 @@ export const FollowUpQuestions = memo(
               {followUp.map((question, index) => (
                 <button
                   onClick={() => {
-                    amplitude.forslagTrykket()
+                    analytics.forslagTrykket()
                     onSend(question)
                   }}
                   key={`question-${index}`}

@@ -5,7 +5,7 @@ import { BodyLong, Button, Tooltip } from "@navikt/ds-react"
 import { memo } from "react"
 import Markdown from "react-markdown"
 import rehypeRaw from "rehype-raw"
-import amplitude from "../../../../utils/amplitude.ts"
+import analytics from "../../../../utils/analytics.ts"
 import { useInputFieldStore } from "../../../inputfield/InputField.tsx"
 import "./ChatBubbles.css"
 
@@ -23,7 +23,7 @@ const UserQuestionBubble = memo(
       if (userQuestion) {
         focusTextarea()
         setInputValue(userQuestion.content)
-        amplitude.spørsmålRedigert()
+        analytics.spørsmålRedigert()
       }
     }
 
