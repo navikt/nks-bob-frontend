@@ -9,7 +9,7 @@ import { Button, CopyButton, Tooltip } from "@navikt/ds-react"
 import { useState } from "react"
 import { useStarMessage } from "../../../../api/api.ts"
 import { Message, NewMessage } from "../../../../types/Message.ts"
-import amplitude from "../../../../utils/amplitude.ts"
+import analytics from "../../../../utils/analytics.ts"
 import { md } from "../../../../utils/markdown.ts"
 import { CoachMark } from "../../../coachmark/CoachMark.tsx"
 import { AnswerButtonsExplanation } from "../../../coachmark/CoachmarkContent.tsx"
@@ -26,7 +26,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
   const coachMarkKey = "coachMarkShownChat"
 
   function handleTranslate() {
-    amplitude.svarEndret("oversett")
+    analytics.svarEndret("oversett")
     const translate: NewMessage = {
       content: isLastMessage
         ? "Oversett svaret til engelsk"
@@ -36,7 +36,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
   }
 
   function handleBulletList() {
-    amplitude.svarEndret("punktliste")
+    analytics.svarEndret("punktliste")
     const bulletList: NewMessage = {
       content: isLastMessage
         ? "Gjør om svaret til punktliste"
@@ -46,7 +46,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
   }
 
   function handleEmpathetic() {
-    amplitude.svarEndret("forenkle")
+    analytics.svarEndret("forenkle")
     const simplifyMessage: NewMessage = {
       content: isLastMessage
         ? "Gjør svaret mer empatisk"
@@ -79,7 +79,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
               copyMessageContent(),
             )
 
-            amplitude.svarKopiert(message.id)
+            analytics.svarKopiert(message.id)
           }}
         />
       </Tooltip>

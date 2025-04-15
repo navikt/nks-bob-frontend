@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import amplitude from "../../../utils/amplitude"
+import analytics from "../../../utils/analytics"
 import "./DarkModeToggle.css"
 
 const DarkModeToggle = () => {
@@ -11,10 +11,10 @@ const DarkModeToggle = () => {
   useEffect(() => {
     if (dark) {
       document.body.classList.add("dark")
-      amplitude.mørkModusByttet("mørk")
+      analytics.mørkModusByttet("mørk")
     } else {
       document.body.classList.remove("dark")
-      amplitude.mørkModusByttet("lys")
+      analytics.mørkModusByttet("lys")
     }
   }, [dark])
 

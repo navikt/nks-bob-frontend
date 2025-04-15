@@ -42,7 +42,7 @@ createRoot(document.getElementById("root")!).render(
         data-host-url='https://umami.nav.no'
         data-website-id='7a73382f-ec5b-4c80-b3f2-154388c32234'
         data-domains='bob.ansatt.dev.nav.no,bob.ansatt.nav.no'
-      ></script>
+      />
     </Helmet>
     <RouterProvider router={router} />
   </StrictMode>,
