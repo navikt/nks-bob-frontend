@@ -8,7 +8,7 @@
     "@navikt/oasis": "3.4.0",
     "express": "^4.21.2",
     "express-http-proxy": "2.0.0",
-    "http-proxy-middleware": "3.0.3",
+    "http-proxy-middleware": "3.0.5",
     "http-terminator": "3.2.0",
     "jsdom": "^24.1.0",
     "mustache": "^4.2.0",
