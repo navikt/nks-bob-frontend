@@ -60,6 +60,10 @@ export const NotificationToggle = () => {
         setActiveTab("nye")
       }
     }
+
+    if (!hasUnread) {
+        setActiveTab("alle")
+    }
   }, [initialOpen, setInitialOpen, hasUnread])
 
   return (
