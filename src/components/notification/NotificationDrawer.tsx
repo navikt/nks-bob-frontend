@@ -93,7 +93,7 @@ export const NotificationToggle = () => {
       </Tooltip>
       <Dropdown.Menu
         placement='bottom-end'
-        className='max-h-[500px] w-[450px] overflow-scroll p-0'
+        className='max-h-[800px] w-[450px] overflow-scroll p-0'
       >
         <Dropdown.Menu.GroupedList>
           <NotificationDrawer
