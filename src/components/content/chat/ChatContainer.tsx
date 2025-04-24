@@ -61,7 +61,7 @@ const ErrorBanner = ({
   const level = notificationType.toLowerCase() as "error" | "warning"
 
   return (
-    <Alert fullWidth variant={level} className='mb-4'>
+    <Alert fullWidth size="small" variant={level} className='mb-4'>
       <Heading spacing size='small' level='3'>
         {title}
       </Heading>
