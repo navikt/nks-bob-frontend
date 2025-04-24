@@ -142,11 +142,13 @@ function InputField({ onSend, disabled }: InputFieldProps) {
           Pass på å ikke dele sensitiv personinformasjon.
         </Alert>
       )}
-      <FollowUpQuestions
-        followUp={followUp}
-        onSend={(question) => sendMessage(question)}
-        className='pointer-events-auto'
-      />
+      {!sendDisabled &&
+        <FollowUpQuestions
+          followUp={followUp}
+          onSend={(question) => sendMessage(question)}
+          className='pointer-events-auto'
+        />
+      }
       <div className='inputfield relative flex max-w-[48rem] flex-col items-center justify-end'>
         <Textarea
           ref={textareaRef}
