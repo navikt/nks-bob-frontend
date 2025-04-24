@@ -1,4 +1,3 @@
-import * as oasis from "@navikt/oasis"
 import { NextFunction, Request, Response } from "express"
 import { IncomingMessage } from "http"
 import { Logger } from "winston"
@@ -13,13 +12,6 @@ const entraHandler =
     try {
       if (!audience) {
         next()
-        return
-      }
-
-      const subjectToken = oasis.getToken(req)
-      if (!subjectToken || subjectToken === "") {
-        log.info("no subjectToken found.")
-        res.status(401).send({ error: "Subject token not provided" })
         return
       }
 
