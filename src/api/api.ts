@@ -252,3 +252,7 @@ export const useErrorNotifications = () => {
 export const preloadNewsNotifications = () => {
   preload("/api/v1/notifications/news", fetcher)
 }
+
+export const preloadErrorNotifications = () => {
+  preload("/api/v1/notifications/errors", fetcher)
+}

@@ -8,7 +8,7 @@ import {
   RouterProvider,
 } from "react-router"
 import App from "./App.tsx"
-import { preloadNewsNotifications, preloadUserConfig } from "./api/api.ts"
+import { preloadErrorNotifications, preloadNewsNotifications, preloadUserConfig } from "./api/api.ts"
 import ConversationAdminContent from "./components/content/ConversationAdminContent.tsx"
 import ConversationContent from "./components/content/ConversationContent.tsx"
 import CreateConversationContent from "./components/content/CreateConversationContent.tsx"
@@ -16,6 +16,7 @@ import "./global.css"
 
 preloadUserConfig()
 preloadNewsNotifications()
+preloadErrorNotifications()
 
 const router = createBrowserRouter(
   createRoutesFromElements(
