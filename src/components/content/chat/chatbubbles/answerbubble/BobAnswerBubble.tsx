@@ -111,9 +111,9 @@ const MessageContent = ({ message }: { message: Message }) => (
           <a {...props} target='_blank' rel='noopener noreferrer' />
         ),
         span: ({ node, ...props }) => {
-          const citationId = (props as any)?.["data-citation"]
+          const citationId: string = (props as any)?.["data-citation"]
           if (citationId) {
-            return <CitationNumber id={citationId} context={message.context} />
+            return <CitationNumber id={parseInt(citationId)} context={message.context} />
           }
           return <span {...props} />
         },
@@ -256,7 +256,7 @@ const CitationNumber = ({
           onClick={() => setOpenState(!openState)}
           aria-expanded={openState}
         >
-          {id}
+          {id + 1}
         </Button>
       </sup>
 
