@@ -8,11 +8,16 @@ import {
   RouterProvider,
 } from "react-router"
 import App from "./App.tsx"
-import { preloadErrorNotifications, preloadNewsNotifications, preloadUserConfig } from "./api/api.ts"
+import {
+  preloadErrorNotifications,
+  preloadNewsNotifications,
+  preloadUserConfig,
+} from "./api/api.ts"
 import ConversationAdminContent from "./components/content/ConversationAdminContent.tsx"
 import ConversationContent from "./components/content/ConversationContent.tsx"
 import CreateConversationContent from "./components/content/CreateConversationContent.tsx"
 import "./global.css"
+import { AnalyticsProvider } from "./utils/AnalyticsProvider.tsx"
 
 preloadUserConfig()
 preloadNewsNotifications()
@@ -37,13 +42,7 @@ const router = createBrowserRouter(
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Helmet>
-      <script
-        defer
-        src='https://cdn.nav.no/team-researchops/sporing/sporing.js'
-        data-host-url='https://umami.nav.no'
-        data-website-id='7a73382f-ec5b-4c80-b3f2-154388c32234'
-        data-domains='bob.ansatt.dev.nav.no,bob.ansatt.nav.no'
-      />
+      <AnalyticsProvider />
     </Helmet>
     <RouterProvider router={router} />
   </StrictMode>,
