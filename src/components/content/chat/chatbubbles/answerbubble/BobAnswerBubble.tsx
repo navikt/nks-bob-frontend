@@ -1,4 +1,13 @@
-import { BodyLong, Button, Popover, Skeleton, VStack } from "@navikt/ds-react"
+import { ExternalLinkIcon } from "@navikt/aksel-icons"
+import {
+  BodyLong,
+  Button,
+  Heading,
+  Link,
+  Popover,
+  Skeleton,
+  VStack,
+} from "@navikt/ds-react"
 import { Root, Text } from "mdast"
 import { memo, useRef, useState } from "react"
 import Markdown from "react-markdown"
@@ -232,6 +241,11 @@ const CitationNumber = ({
     return null
   }
 
+  const title =
+    source.source === "nks"
+      ? source.title
+      : `${source.title} / ${source.anchor}`
+
   return (
     <>
       <sup>
@@ -253,7 +267,13 @@ const CitationNumber = ({
         arrow={false}
         className='max-w-xl'
       >
-        <Popover.Content>
+        <Popover.Content className='flex flex-col gap-2'>
+          <div className='flex justify-between'>
+            <Heading size='xsmall'>{title}</Heading>
+            <Link href={`${source.url}#${source.anchor}`} target='_blank'>
+              <ExternalLinkIcon title='Åpne artikkelen i ny fane' />
+            </Link>
+          </div>
           <BodyLong size='small'>
             <Markdown
               className='markdown'
