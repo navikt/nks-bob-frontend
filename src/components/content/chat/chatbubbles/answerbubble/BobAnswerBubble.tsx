@@ -1,4 +1,4 @@
-import { BodyLong, Skeleton, VStack } from "@navikt/ds-react"
+import { BodyLong, Skeleton, Tag, VStack } from "@navikt/ds-react"
 import { memo, useState } from "react"
 import Markdown from "react-markdown"
 import { BobRoboHead } from "../../../../../assets/illustrations/BobRoboHead.tsx"
@@ -151,14 +151,21 @@ const Citations = memo(
       )
 
     return (
-      <>
-        {(!isLoading || !isLastMessage) && (
-          <BobSuggests
-            message={message}
-            onSend={onSend}
-            isLastMessage={isLastMessage}
-          />
-        )}
+      <div className='flex flex-col gap-4'>
+        <div className='flex flex-wrap gap-2'>
+          {(!isLoading || !isLastMessage) && (
+            <BobSuggests
+              message={message}
+              onSend={onSend}
+              isLastMessage={isLastMessage}
+            />
+          )}
+          {message.context.length === 0 ? (
+            <Tag size='small' variant='neutral' className='mt-1 h-fit'>
+              Svaret er generert uten bruk av eksterne kilder
+            </Tag>
+          ) : null}
+        </div>
         {message.citations && message.citations.length > 0 && (
           <div className='fade-in flex flex-col gap-2'>
             <ToggleCitations
@@ -174,7 +181,7 @@ const Citations = memo(
             ))}
           </div>
         )}
-      </>
+      </div>
     )
   },
   (prevProps, nextProps) => {
