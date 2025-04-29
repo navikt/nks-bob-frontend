@@ -160,11 +160,11 @@ const Citations = memo(
               isLastMessage={isLastMessage}
             />
           )}
-          {!message.pending && message.context.length === 0 ? (
+          {!message.pending && message.context.length === 0 && (
             <Tag size='small' variant='neutral' className='mt-1 h-fit'>
               Bob brukte ingen kilder for å lage svaret
             </Tag>
-          ) : null}
+          )}
         </div>
         {message.citations && message.citations.length > 0 && (
           <div className='fade-in flex flex-col gap-2'>
