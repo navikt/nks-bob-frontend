@@ -160,9 +160,9 @@ const Citations = memo(
               isLastMessage={isLastMessage}
             />
           )}
-          {message.context.length === 0 ? (
+          {!message.pending && message.context.length === 0 ? (
             <Tag size='small' variant='neutral' className='mt-1 h-fit'>
-              Svaret er generert uten bruk av eksterne kilder
+              Bob brukte ingen kilder for å lage svaret
             </Tag>
           ) : null}
         </div>
