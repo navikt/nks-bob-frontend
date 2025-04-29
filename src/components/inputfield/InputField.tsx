@@ -5,8 +5,9 @@ import { useEffect, useState } from "react"
 
 import * as React from "react"
 import { create } from "zustand"
+import { useErrorNotifications } from "../../api/api.ts"
 import { NewMessage } from "../../types/Message.ts"
-import amplitude from "../../utils/amplitude.ts"
+import analytics from "../../utils/analytics.ts"
 import { FollowUpQuestions } from "../content/followupquestions/FollowUpQuestions.tsx"
 import "./InputField.css"
 
@@ -16,17 +17,16 @@ type InputFieldState = {
   followUp: string[]
   setFollowUp: (followUp: string[]) => void
   focusTextarea: () => void
-  textareaRef: React.RefObject<HTMLTextAreaElement | null>
-  setTextAreaRef: (ref: React.RefObject<HTMLTextAreaElement | null>) => void
+  textareaRef: React.RefObject<HTMLTextAreaElement | null>
+  setTextAreaRef: (ref: React.RefObject<HTMLTextAreaElement | null>) => void
 }
 
 export const useInputFieldStore = create<InputFieldState>()((set) => {
-  const focusTextarea = () => 
+  const focusTextarea = () =>
     set((state) => {
       state.textareaRef?.current?.focus()
       return state
     })
-  
 
   return {
     inputValue: "",
@@ -35,7 +35,7 @@ export const useInputFieldStore = create<InputFieldState>()((set) => {
     setFollowUp: (followUp) => set((state) => ({ ...state, followUp })),
     focusTextarea,
     textareaRef: React.createRef(),
-    setTextAreaRef: (ref) => set((state) => ({ ...state, textareaRef: ref }))
+    setTextAreaRef: (ref) => set((state) => ({ ...state, textareaRef: ref })),
   }
 })
 
@@ -54,6 +54,10 @@ function InputField({ onSend, disabled }: InputFieldProps) {
   const { inputValue, setInputValue, followUp, textareaRef } =
     useInputFieldStore()
 
+  const { errorNotifications } = useErrorNotifications()
+  const hasErrors =
+    errorNotifications.at(0)?.notificationType === "Error" ?? false
+
   function sendMessage(messageContent?: string) {
     const message: NewMessage = {
       content: messageContent ?? inputValue,
@@ -66,7 +70,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
   }
 
   function handlePasteInfoAlert() {
-    amplitude.tekstInnholdLimtInn()
+    analytics.tekstInnholdLimtInn()
     setIsSensitiveInfoAlert(true)
   }
 
@@ -87,7 +91,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
         e.preventDefault()
 
         if (!sendDisabled) {
-          amplitude.meldingSendt("enter")
+          analytics.meldingSendt("enter")
           sendMessage()
           setInputValue("")
           setIsSensitiveInfoAlert(false)
@@ -98,7 +102,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
 
   function handleButtonClick() {
     if (inputValue.trim() !== "") {
-      amplitude.meldingSendt("knapp")
+      analytics.meldingSendt("knapp")
       sendMessage()
       setInputValue("")
     }
@@ -108,12 +112,12 @@ function InputField({ onSend, disabled }: InputFieldProps) {
     const inputContainsFnr = checkContainsFnr(inputValue)
 
     if (inputContainsFnr) {
-      amplitude.tekstInneholderFnr()
+      analytics.tekstInneholderFnr()
     }
 
     setContainsFnr(inputContainsFnr)
-    setSendDisabled(disabled || inputContainsFnr)
-  }, [inputValue, disabled])
+    setSendDisabled(disabled || inputContainsFnr || hasErrors)
+  }, [inputValue, disabled, hasErrors])
 
   return (
     <div className='dialogcontent z-1 sticky bottom-0 h-auto flex-col self-center px-4'>
@@ -138,11 +142,13 @@ function InputField({ onSend, disabled }: InputFieldProps) {
           Pass på å ikke dele sensitiv personinformasjon.
         </Alert>
       )}
-      <FollowUpQuestions
-        followUp={followUp}
-        onSend={(question) => sendMessage(question)}
-        className='pointer-events-auto'
-      />
+      {!sendDisabled &&
+        <FollowUpQuestions
+          followUp={followUp}
+          onSend={(question) => sendMessage(question)}
+          className='pointer-events-auto'
+        />
+      }
       <div className='inputfield relative flex max-w-[48rem] flex-col items-center justify-end'>
         <Textarea
           ref={textareaRef}
@@ -156,7 +162,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
           value={inputValue}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
-          disabled={disabled}
+          disabled={sendDisabled}
           onPaste={handlePasteInfoAlert}
           tabIndex={0}
         />

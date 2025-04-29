@@ -1,10 +1,13 @@
 import { useParams, useSearchParams } from "react-router"
 import { useSendMessage } from "../../api/sse.ts"
 
+import { Alert, Heading } from "@navikt/ds-react"
 import { useEffect } from "react"
-import { useMessages } from "../../api/api.ts"
+import Markdown from "react-markdown"
+import { useErrorNotifications, useMessages } from "../../api/api.ts"
 import { NewMessage } from "../../types/Message.ts"
 import { messageStore } from "../../types/messageStore.ts"
+import { ErrorNotification } from "../../types/Notifications.ts"
 import Header from "../header/Header.tsx"
 import InputField, { useInputFieldStore } from "../inputfield/InputField.tsx"
 import { ShowAllSources } from "./chat/chatbubbles/sources/ShowAllSources.tsx"
@@ -20,6 +23,7 @@ function ConversationContent() {
     useMessages(conversationId!)
   const { sendMessage, isLoading } = useSendMessage(conversationId!)
   const { messages, setMessages } = messageStore()
+  const { errorNotifications } = useErrorNotifications()
 
   useEffect(() => {
     if (!isLoadingExistingMessages && !isLoading) {
@@ -59,6 +63,7 @@ function ConversationContent() {
     <div className='conversation-content'>
       <DialogWrapper>
         <Header conversation={conversationId} />
+        <ErrorBanner errorNotifications={errorNotifications} />
         <div className='chatcontainer'>
           {!messages || messages.length < 0 ? (
             <WhitespacePlaceholder />
@@ -74,6 +79,33 @@ function ConversationContent() {
       </DialogWrapper>
       <ShowAllSources />
     </div>
+  )
+}
+
+const ErrorBanner = ({
+  errorNotifications,
+}: {
+  errorNotifications: ErrorNotification[]
+}) => {
+  if (errorNotifications.length < 1) {
+    return null
+  }
+
+  const { title, content, notificationType } = errorNotifications.at(0)!
+  const level = notificationType.toLowerCase() as "error" | "warning"
+
+  return (
+    <Alert
+      fullWidth
+      size='small'
+      variant={level}
+      className='mb-4 w-full max-w-[48rem]'
+    >
+      <Heading spacing size='small' level='3'>
+        {title}
+      </Heading>
+      <Markdown>{content}</Markdown>
+    </Alert>
   )
 }
 

@@ -2,7 +2,7 @@ import { InformationSquareIcon } from "@navikt/aksel-icons"
 import { Button, Tooltip } from "@navikt/ds-react"
 import { useState } from "react"
 import { useUserConfig } from "../../api/api.ts"
-import amplitude from "../../utils/amplitude.ts"
+import analytics from "../../utils/analytics.ts"
 import { CoachMark } from "../coachmark/CoachMark.tsx"
 import { MainButtonsExplanation } from "../coachmark/CoachmarkContent.tsx"
 import Guide from "../content/guide/Guide.tsx"
@@ -23,7 +23,7 @@ function Header({ conversation }: HeaderProps) {
   const coachMarkKey = "coachMarkShownHeader"
 
   const showGuide = () => {
-    amplitude.infoÅpnet()
+    analytics.infoÅpnet()
     setStartGuide(true)
   }
 

@@ -41,57 +41,21 @@ async function fetcher<T>(input: RequestInfo, init?: RequestInit): Promise<T> {
   return res.json() as Promise<T>
 }
 
-async function poster<Body, Response>(
-  url: string,
-  { arg }: { arg: Body },
-): Promise<Response> {
-  return fetcher(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    body: JSON.stringify(arg),
-  })
-}
-
-async function putter<Body, Response>(
-  url: string,
-  { arg }: { arg: Body },
-): Promise<Response> {
-  return fetcher(url, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    body: JSON.stringify(arg),
-  })
-}
-
-async function patcher<Body, Response>(
-  url: string,
-  { arg }: { arg: Body },
-): Promise<Response> {
-  return fetcher(url, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    body: JSON.stringify(arg),
-  })
-}
-
-async function deleter<Response>(url: string): Promise<Response> {
-  return fetcher(url, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-  })
-}
+const request = (method: "POST" | "PUT" | "PATCH" | "DELETE") =>
+  async function <Body, Response>(
+    url: string,
+    options?: { arg: Body },
+  ): Promise<Response> {
+    const body = options && JSON.stringify(options.arg)
+    return fetcher(url, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body,
+    })
+  }
 
 export const useAdminMessages = (conversationId: string) => {
   const { data, isLoading, error } = useSWR<Message[], ApiError>(
@@ -109,7 +73,7 @@ export const useAdminMessages = (conversationId: string) => {
 export const useSendMessage = (conversationId: string) => {
   const { trigger, isMutating } = useSWRMutation(
     `/api/v1/conversations/${conversationId}/messages`,
-    poster,
+    request("POST"),
   )
 
   return {
@@ -120,7 +84,7 @@ export const useSendMessage = (conversationId: string) => {
 
 export const useSendMessagePost = (conversationId: string) => {
   const sendMessage = (newMessage: NewMessage) =>
-    poster(`/api/v1/conversations/${conversationId}/messages`, {
+    request("POST")(`/api/v1/conversations/${conversationId}/messages`, {
       arg: newMessage,
     })
 
@@ -132,7 +96,7 @@ export const useSendMessagePost = (conversationId: string) => {
 export const useSendFeedback = (message: Message) => {
   const { trigger, isMutating } = useSWRMutation(
     `/api/v1/messages/${message.id}/feedback`,
-    poster,
+    request("POST"),
   )
 
   return {
@@ -144,7 +108,7 @@ export const useSendFeedback = (message: Message) => {
 export const useSendConversationFeedback = (conversationId: string) => {
   const { trigger, isMutating } = useSWRMutation(
     `/api/v1/conversations/${conversationId}/feedback`,
-    poster,
+    request("POST"),
   )
 
   return {
@@ -170,7 +134,7 @@ export const useConversations = () => {
 export const useCreateConversation = () => {
   const { trigger, isMutating } = useSWRMutation(
     `/api/v1/conversations`,
-    poster,
+    request("POST"),
   )
 
   return {
@@ -186,7 +150,7 @@ export const useDeleteConversation = (conversation: Conversation) => {
   const { trigger, isMutating } = useSWRMutation(
     `/api/v1/conversations/${conversation.id}`,
     async (url) => {
-      await deleter(url)
+      await request("DELETE")(url)
       await mutate(`/api/v1/conversations`)
     },
   )
@@ -232,7 +196,7 @@ export const useUserConfig = () => {
 export const useUpdateUserConfig = () => {
   const { trigger, isMutating, error } = useSWRMutation(
     "/api/v1/user/config",
-    patcher,
+    request("PATCH"),
   )
 
   return {
@@ -247,7 +211,7 @@ export const useUpdateUserConfig = () => {
 export const useStarMessage = (messageId: string) => {
   const { trigger, isMutating } = useSWRMutation(
     `/api/v1/messages/${messageId}`,
-    putter,
+    request("PUT"),
   )
 
   const starMessage = (starred: boolean) =>
@@ -287,4 +251,8 @@ export const useErrorNotifications = () => {
 
 export const preloadNewsNotifications = () => {
   preload("/api/v1/notifications/news", fetcher)
+}
+
+export const preloadErrorNotifications = () => {
+  preload("/api/v1/notifications/errors", fetcher)
 }

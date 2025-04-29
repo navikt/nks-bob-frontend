@@ -1,5 +1,6 @@
 import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
+import { Helmet } from "react-helmet"
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -7,14 +8,20 @@ import {
   RouterProvider,
 } from "react-router"
 import App from "./App.tsx"
-import { preloadNewsNotifications, preloadUserConfig } from "./api/api.ts"
+import {
+  preloadErrorNotifications,
+  preloadNewsNotifications,
+  preloadUserConfig,
+} from "./api/api.ts"
 import ConversationAdminContent from "./components/content/ConversationAdminContent.tsx"
 import ConversationContent from "./components/content/ConversationContent.tsx"
 import CreateConversationContent from "./components/content/CreateConversationContent.tsx"
 import "./global.css"
+import { AnalyticsProvider } from "./utils/AnalyticsProvider.tsx"
 
 preloadUserConfig()
 preloadNewsNotifications()
+preloadErrorNotifications()
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -34,6 +41,9 @@ const router = createBrowserRouter(
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
+    <Helmet>
+      <AnalyticsProvider />
+    </Helmet>
     <RouterProvider router={router} />
   </StrictMode>,
 )

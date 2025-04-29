@@ -151,14 +151,16 @@ const Citations = memo(
       )
 
     return (
-      <>
-        {(!isLoading || !isLastMessage) && (
-          <BobSuggests
-            message={message}
-            onSend={onSend}
-            isLastMessage={isLastMessage}
-          />
-        )}
+      <div className='flex flex-col gap-4'>
+        <div className='flex flex-wrap gap-2'>
+          {(!isLoading || !isLastMessage) && (
+            <BobSuggests
+              message={message}
+              onSend={onSend}
+              isLastMessage={isLastMessage}
+            />
+          )}
+        </div>
         {message.citations && message.citations.length > 0 && (
           <div className='fade-in flex flex-col gap-2'>
             <ToggleCitations
@@ -174,7 +176,7 @@ const Citations = memo(
             ))}
           </div>
         )}
-      </>
+      </div>
     )
   },
   (prevProps, nextProps) => {
