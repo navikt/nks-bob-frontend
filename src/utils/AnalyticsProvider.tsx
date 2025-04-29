@@ -1,3 +1,5 @@
+import { Helmet } from "react-helmet"
+
 const isProd = window.location.hostname === "bob.ansatt.nav.no"
 
 const websiteId = isProd
@@ -7,11 +9,13 @@ const websiteId = isProd
 const domains = isProd ? "bob.ansatt.nav.no" : "bob.ansatt.dev.nav.no"
 
 export const AnalyticsProvider = () => (
-  <script
-    defer
-    src='https://cdn.nav.no/team-researchops/sporing/sporing.js'
-    data-host-url='https://umami.nav.no'
-    data-website-id={websiteId}
-    data-domains={domains}
-  />
+  <Helmet>
+    <script
+      defer
+      src='https://cdn.nav.no/team-researchops/sporing/sporing.js'
+      data-host-url='https://umami.nav.no'
+      data-website-id={websiteId}
+      data-domains={domains}
+    />
+  </Helmet>
 )

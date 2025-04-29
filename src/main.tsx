@@ -1,6 +1,5 @@
 import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
-import { Helmet } from "react-helmet"
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -41,9 +40,7 @@ const router = createBrowserRouter(
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <Helmet>
-      <AnalyticsProvider />
-    </Helmet>
+    <AnalyticsProvider />
     <RouterProvider router={router} />
   </StrictMode>,
 )
