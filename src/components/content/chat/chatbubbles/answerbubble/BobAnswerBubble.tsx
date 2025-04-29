@@ -1,4 +1,4 @@
-import { BodyLong, Skeleton, Tag, VStack } from "@navikt/ds-react"
+import { BodyLong, Skeleton, VStack } from "@navikt/ds-react"
 import { memo, useState } from "react"
 import Markdown from "react-markdown"
 import { BobRoboHead } from "../../../../../assets/illustrations/BobRoboHead.tsx"
@@ -159,11 +159,6 @@ const Citations = memo(
               onSend={onSend}
               isLastMessage={isLastMessage}
             />
-          )}
-          {!message.pending && message.context.length === 0 && (
-            <Tag size='small' variant='neutral' className='mt-1 h-fit'>
-              Bob brukte ingen kilder for å lage svaret
-            </Tag>
           )}
         </div>
         {message.citations && message.citations.length > 0 && (

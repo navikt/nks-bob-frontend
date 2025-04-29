@@ -5,7 +5,7 @@ import {
   StarFillIcon,
   StarIcon,
 } from "@navikt/aksel-icons"
-import { Button, CopyButton, Tooltip } from "@navikt/ds-react"
+import { Button, CopyButton, Tag, Tooltip } from "@navikt/ds-react"
 import { useState } from "react"
 import { useStarMessage } from "../../../../api/api.ts"
 import { Message, NewMessage } from "../../../../types/Message.ts"
@@ -113,7 +113,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
           onClick={handleEmpathetic}
         />
       </Tooltip>
-      <div className='ml-2 flex'>
+      <div className='mx-2 flex'>
         <CoachMark
           title='Disse knappene lar deg:'
           buttonText='Skjønner!'
@@ -122,6 +122,11 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
           <AnswerButtonsExplanation />
         </CoachMark>
       </div>
+      {!message.pending && message.context.length === 0 && (
+        <Tag size='small' variant='neutral' className='mt-1 h-fit'>
+          Bob brukte ingen kilder for å lage svaret
+        </Tag>
+      )}
     </div>
   )
 }
