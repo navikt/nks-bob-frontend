@@ -20,7 +20,7 @@ import { create } from "zustand"
 import { KunnskapsbasenIcon } from "../../../../../assets/icons/KunnskapsbasenIcon.tsx"
 import { NavNoIcon } from "../../../../../assets/icons/NavNoIcon.tsx"
 import { Context, Message } from "../../../../../types/Message.ts"
-import amplitude from "../../../../../utils/amplitude.ts"
+import analytics from "../../../../../utils/analytics.ts"
 import "./ShowAllSources.css"
 
 type SourcesState = {
@@ -33,7 +33,7 @@ export const useSourcesStore = create<SourcesState>()((set) => ({
   setActiveMessage: (activeMessage) =>
     set((state) => {
       if (activeMessage !== null) {
-        amplitude.visAlleKilderÅpnet()
+        analytics.visAlleKilderÅpnet()
       }
 
       return { ...state, activeMessage }

@@ -5,11 +5,11 @@ import {
   StarFillIcon,
   StarIcon,
 } from "@navikt/aksel-icons"
-import { Button, CopyButton, Tooltip } from "@navikt/ds-react"
+import { Button, CopyButton, Tag, Tooltip } from "@navikt/ds-react"
 import { useState } from "react"
 import { useStarMessage } from "../../../../api/api.ts"
 import { Message, NewMessage } from "../../../../types/Message.ts"
-import amplitude from "../../../../utils/amplitude.ts"
+import analytics from "../../../../utils/analytics.ts"
 import { md } from "../../../../utils/markdown.ts"
 import { CoachMark } from "../../../coachmark/CoachMark.tsx"
 import { AnswerButtonsExplanation } from "../../../coachmark/CoachmarkContent.tsx"
@@ -26,7 +26,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
   const coachMarkKey = "coachMarkShownChat"
 
   function handleTranslate() {
-    amplitude.svarEndret("oversett")
+    analytics.svarEndret("oversett")
     const translate: NewMessage = {
       content: isLastMessage
         ? "Oversett svaret til engelsk"
@@ -36,7 +36,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
   }
 
   function handleBulletList() {
-    amplitude.svarEndret("punktliste")
+    analytics.svarEndret("punktliste")
     const bulletList: NewMessage = {
       content: isLastMessage
         ? "Gjør om svaret til punktliste"
@@ -46,7 +46,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
   }
 
   function handleEmpathetic() {
-    amplitude.svarEndret("forenkle")
+    analytics.svarEndret("forenkle")
     const simplifyMessage: NewMessage = {
       content: isLastMessage
         ? "Gjør svaret mer empatisk"
@@ -68,7 +68,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
   }
 
   return (
-    <div className='fade-in background-color mb-6 ml-[-0.3rem] flex h-fit w-fit grow flex-wrap items-center justify-start rounded'>
+    <div className='fade-in background-color ml-[-0.3rem] flex h-fit w-fit flex-wrap items-center justify-start rounded'>
       <Tooltip content='Kopier svaret'>
         <CopyButton
           copyText=''
@@ -79,7 +79,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
               copyMessageContent(),
             )
 
-            amplitude.svarKopiert(message.id)
+            analytics.svarKopiert(message.id)
           }}
         />
       </Tooltip>
@@ -114,7 +114,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
           onClick={handleEmpathetic}
         />
       </Tooltip>
-      <div className='ml-2 flex'>
+      <div className='mx-2 flex'>
         <CoachMark
           title='Disse knappene lar deg:'
           buttonText='Skjønner!'
@@ -123,6 +123,11 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
           <AnswerButtonsExplanation />
         </CoachMark>
       </div>
+      {!message.pending && message.context.length === 0 && (
+        <Tag size='small' variant='neutral' className='mt-1 h-fit'>
+          Bob brukte ingen kilder for å lage svaret
+        </Tag>
+      )}
     </div>
   )
 }

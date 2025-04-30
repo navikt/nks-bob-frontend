@@ -29,12 +29,9 @@ const Guide = ({
     setStep(Number(e.target.value))
 
   function handleClose() {
-    updateUserConfig({
-      showStartInfo: false,
-    }).then(() => {
-      setIsModalOpen(false)
-      setStartGuide(false)
-    })
+    updateUserConfig({ showStartInfo: false, })
+    setIsModalOpen(false)
+    setStartGuide(false)
   }
 
   useEffect(() => {

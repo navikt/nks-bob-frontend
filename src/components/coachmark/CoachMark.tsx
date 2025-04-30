@@ -57,9 +57,9 @@ export const CoachMark = ({
 
 const CoachmarkTick = ({ onClick }: { onClick: () => void }) => {
   return (
-    <div
-      className={`h-3 w-3 animate-ping cursor-pointer rounded-full bg-[#0067C5]`}
-      onClick={onClick}
-    />
+    <span className="cursor-pointer relative flex size-3" onClick={onClick}>
+      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#0067C5] opacity-75"></span>
+      <span className="relative inline-flex size-3 rounded-full bg-[#0067C5]"></span>
+    </span>
   )
 }

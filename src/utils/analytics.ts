@@ -70,36 +70,61 @@ const instance =
     ? mockedAmplitude()
     : createAmpltiudeInstance()
 
+interface Umami {
+  track(payload: unknown): void
+  track(event_name: string, payload: unknown): void
+  identify(session_data: unknown): void
+}
+
+declare global {
+  interface Window {
+    umami?: Umami
+  }
+}
+
+async function umamiTrack(event: string, data?: Record<string, unknown>) {
+  if (window.location.hostname === "localhost") {
+    console.info(`[DEV] hendelse sporet: ${event}`, data)
+    return
+  }
+
+  return window.umami ? window.umami.track(event, data) : Promise.resolve()
+}
+
+const logEvent = (event: string, data?: Record<string, unknown>) => {
+  instance.logEvent(event, data)
+  umamiTrack(event, data)
+}
+
 const svarKopiert = (meldingsId: string) =>
-  instance.logEvent("Svar kopiert", { meldingsId })
+  logEvent("Svar kopiert", { meldingsId })
 
 const svarEndret = (endring: "oversett" | "punktliste" | "forenkle") =>
-  instance.logEvent("Svar endret", { endring })
+  logEvent("Svar endret", { endring })
 
-const feilMeldt = (meldingsId: string) =>
-  instance.logEvent("Feil meldt", { meldingsId })
+const feilMeldt = (meldingsId: string) => logEvent("Feil meldt", { meldingsId })
 
-const infoÅpnet = () => instance.logEvent("Info modal åpnet")
+const infoÅpnet = () => logEvent("Info modal åpnet")
 
 const mørkModusByttet = (modus: "lys" | "mørk") =>
-  instance.logEvent("Mørk modus byttet", { modus })
+  logEvent("Mørk modus byttet", { modus })
 
 const meldingSendt = (trigger: "knapp" | "enter") =>
-  instance.logEvent("Melding sendt", { trigger })
+  logEvent("Melding sendt", { trigger })
 
-const kildeAccordionÅpnet = () => instance.logEvent("Kilde accordion åpnet")
+const kildeAccordionÅpnet = () => logEvent("Kilde accordion åpnet")
 
-const kildeAccordionSkjult = () => instance.logEvent("Kilde accordion skjult")
+const kildeAccordionSkjult = () => logEvent("Kilde accordion skjult")
 
-const tekstInnholdLimtInn = () => instance.logEvent("Tekstinnhold limt inn")
+const tekstInnholdLimtInn = () => logEvent("Tekstinnhold limt inn")
 
-const tekstInneholderFnr = () => instance.logEvent("Tekst inneholder fnr")
+const tekstInneholderFnr = () => logEvent("Tekst inneholder fnr")
 
-const forslagTrykket = () => instance.logEvent("Forslag trykket")
+const forslagTrykket = () => logEvent("Forslag trykket")
 
-const visAlleKilderÅpnet = () => instance.logEvent("Vis alle kilder åpnet")
+const visAlleKilderÅpnet = () => logEvent("Vis alle kilder åpnet")
 
-const spørsmålRedigert = () => instance.logEvent("Rediger spørsmål trykket")
+const spørsmålRedigert = () => logEvent("Rediger spørsmål trykket")
 
 export default {
   svarKopiert,

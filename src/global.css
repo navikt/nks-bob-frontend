@@ -236,6 +236,7 @@ ul {
   /*  Tag  */
   --ac-tag-neutral-bg: rgba(245, 246, 247, 1);
   --ac-tag-neutral-border: rgba(207, 211, 216, 1);
+  --ac-tag-neutral-text: rgba(73, 81, 94, 1);
 
   --ax-border-subtle: rgba(207, 211, 216, 1);
 }
