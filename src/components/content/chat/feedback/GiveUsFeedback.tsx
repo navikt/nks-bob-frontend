@@ -82,15 +82,11 @@ interface FeedbackOnAnswerProps {
 
 export const FeedbackOnAnswer = ({ message }: FeedbackOnAnswerProps) => {
   const ref = useRef<HTMLDialogElement>(null)
-  const handleChange = (val: string[]) => console.info(val)
+  const handleChange = (val: string[]) => console.info(val + message.id)
   const [isAnnet, setIsAnnet] = useState(false)
 
   const handleAnnetClick = () => {
-    if (!isAnnet) {
-      setIsAnnet(true)
-    } else {
-      setIsAnnet(false)
-    }
+    setIsAnnet(!isAnnet)
   }
 
   return (
