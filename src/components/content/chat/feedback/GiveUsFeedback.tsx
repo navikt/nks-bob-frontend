@@ -7,7 +7,8 @@ import {
   TextField,
   Tooltip,
 } from "@navikt/ds-react"
-import { useRef, useState } from "react"
+import { useMemo, useRef, useState } from "react"
+import { useAddFeedback } from "../../../../api/api.ts"
 import { Message } from "../../../../types/Message.ts"
 
 // interface GiveUsFeedbackProps {
@@ -76,33 +77,65 @@ import { Message } from "../../../../types/Message.ts"
 //   )
 // }
 
+const OPTIONS = {
+  "feil-med-svar": "Hele-/deler av svaret er feil",
+  "vesentlige-detaljer": "Mangler vesentlige detaljer",
+  "forventede-artikler": "Benytter ikke forventede artikler",
+  kontekst: "Forholder seg ikke til kontekst",
+  "blander-ytelser": "Blander ytelser",
+  "sitat-i-artikkelen": "Finner ikke sitatet i artikkelen",
+  "mangler-kilder": "Mangler kilder",
+  annet: "Annet",
+}
+
+type OptionKeys = keyof typeof OPTIONS
+
 interface FeedbackOnAnswerProps {
   message: Message
 }
 
 export const FeedbackOnAnswer = ({ message }: FeedbackOnAnswerProps) => {
-  const ref = useRef<HTMLDialogElement>(null)
-  const handleChange = (val: string[]) => console.info(val + message.id)
-  const [isAnnet, setIsAnnet] = useState(false)
+  const modalRef = useRef<HTMLDialogElement>(null)
+  const { addFeedback } = useAddFeedback(message.id)
 
-  const handleAnnetClick = () => {
-    setIsAnnet(!isAnnet)
+  const [options, setOptions] = useState<OptionKeys[]>([])
+  const [comment, setComment] = useState<string | null>(null)
+  const isAnnet = useMemo(() => options.includes("annet"), [options])
+
+  const resetFields = () => {
+    setOptions([])
+    setComment(null)
+  }
+
+  const handleOptionChanged = (opts: OptionKeys[]) => {
+    setOptions(opts)
+  }
+
+  const submit = () => {
+    const optionLabels = options.map((option) => OPTIONS[option])
+    addFeedback({
+      options: optionLabels,
+      comment,
+    })
+
+    resetFields()
+    modalRef.current?.close()
   }
 
   return (
-    <div className='py-12'>
+    <div>
       <Tooltip content='Meld inn feil med svaret'>
         <Button
           variant='tertiary-neutral'
           size='small'
           aria-label='Meld inn feil med svaret'
           icon={<ChatExclamationmarkIcon />}
-          onClick={() => ref.current?.showModal()}
+          onClick={() => modalRef.current?.showModal()}
         />
       </Tooltip>
 
       <Modal
-        ref={ref}
+        ref={modalRef}
         header={{
           heading: "Meld inn feil",
           size: "small",
@@ -111,52 +144,31 @@ export const FeedbackOnAnswer = ({ message }: FeedbackOnAnswerProps) => {
         width={400}
       >
         <Modal.Body>
-          <form method='dialog' id='skjema' onSubmit={() => alert("onSubmit")}>
-            <CheckboxGroup
-              legend='Hva er galt med svaret?'
-              onChange={handleChange}
-              size='small'
-            >
-              <Checkbox value='feil-med-svar' className='mb-1 mt-3'>
-                Hele-/deler av svaret er feil
+          <CheckboxGroup
+            legend='Hva er galt med svaret?'
+            onChange={handleOptionChanged}
+            value={options}
+            size='small'
+          >
+            {Object.entries(OPTIONS).map(([value, label]) => (
+              <Checkbox value={value} className='mb-1 first:mt-3 last:mb-4'>
+                {label}
               </Checkbox>
-              <Checkbox value='vesentlige-detaljer' className='mb-1'>
-                Mangler vesentlige detaljer
-              </Checkbox>
-              <Checkbox value='forventede-artikler' className='mb-1'>
-                Benytter ikke forventede artikler
-              </Checkbox>
-              <Checkbox value='kontekst' className='mb-1'>
-                Forholder seg ikke til kontekst
-              </Checkbox>
-              <Checkbox value='blander-ytelser' className='mb-1'>
-                Blander ytelser
-              </Checkbox>
-              <Checkbox value='sitat-i-artikkelen' className='mb-1'>
-                Finner ikke sitatet i artikkelen
-              </Checkbox>
-              <Checkbox value='mangler-kilder' className='mb-1'>
-                Mangler kilder
-              </Checkbox>
-              <Checkbox
-                value='annet'
-                onClick={handleAnnetClick}
-                className='mb-4'
-              >
-                Annet
-              </Checkbox>
-              {!isAnnet ? (
-                <TextField label='Gi oss en kort beskrivelse av hva som er galt'></TextField>
-              ) : null}
-            </CheckboxGroup>
-          </form>
+            ))}
+            {isAnnet ? (
+              <TextField
+                label='Gi oss en kort beskrivelse av hva som er galt'
+                onChange={(e) => setComment(e.target.value)}
+              />
+            ) : null}
+          </CheckboxGroup>
         </Modal.Body>
         <Modal.Footer>
-          <Button form='skjema'>Send</Button>
+          <Button onClick={submit}>Send</Button>
           <Button
             type='button'
             variant='secondary'
-            onClick={() => ref.current?.close()}
+            onClick={() => modalRef.current?.close()}
           >
             Avbryt
           </Button>

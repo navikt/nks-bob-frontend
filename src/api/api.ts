@@ -256,3 +256,18 @@ export const preloadNewsNotifications = () => {
 export const preloadErrorNotifications = () => {
   preload("/api/v1/notifications/errors", fetcher)
 }
+
+export const useAddFeedback = (messageId: string) => {
+  const { trigger, isMutating } = useSWRMutation(
+    `/api/v1/messages/${messageId}/feedback`,
+    request("POST"),
+  )
+
+  const addFeedback = (body: { options: string[]; comment: string | null }) =>
+    trigger(body)
+
+  return {
+    addFeedback,
+    isLoading: isMutating,
+  }
+}

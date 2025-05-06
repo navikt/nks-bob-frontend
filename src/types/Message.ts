@@ -2,10 +2,6 @@ export type MessageType = "question" | "answer"
 
 export type MessageRole = "human" | "ai"
 
-export type Feedback = {
-  liked: boolean
-}
-
 export type NewMessage = {
   content: string
 }
@@ -14,7 +10,6 @@ export type Message = {
   id: string
   content: string
   createdAt: string
-  feedback: Feedback
   messageType: MessageType
   messageRole: MessageRole
   createdBy: string
@@ -58,4 +53,13 @@ export type Conversation = {
   title: string
   createdAt: string
   owner: string
+}
+
+export type Feedback = {
+  id: string
+  createdAt: string
+  messageId: string
+  options: string[]
+  comment: string | null
+  resolved: boolean
 }
