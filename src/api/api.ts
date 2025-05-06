@@ -2,6 +2,7 @@ import useSWR, { mutate, preload } from "swr"
 import useSWRMutation from "swr/mutation"
 import {
   Conversation,
+  ConversationFeedback,
   Feedback,
   Message,
   NewConversation,
@@ -112,7 +113,9 @@ export const useSendConversationFeedback = (conversationId: string) => {
   )
 
   return {
-    sendFeedback: trigger as (feedback: Feedback) => Promise<Feedback>,
+    sendFeedback: trigger as (
+      feedback: ConversationFeedback,
+    ) => Promise<Feedback>,
     isLoading: isMutating,
   }
 }

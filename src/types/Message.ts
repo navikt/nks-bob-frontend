@@ -2,6 +2,10 @@ export type MessageType = "question" | "answer"
 
 export type MessageRole = "human" | "ai"
 
+export type ConversationFeedback = {
+  liked: boolean
+}
+
 export type NewMessage = {
   content: string
 }
