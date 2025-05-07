@@ -115,7 +115,7 @@ export const FeedbackOnAnswer = ({ message }: FeedbackOnAnswerProps) => {
     const optionLabels = options.map((option) => OPTIONS[option])
     addFeedback({
       options: optionLabels,
-      comment,
+      comment: isAnnet ? comment : null,
     })
 
     resetFields()
