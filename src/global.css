@@ -37,17 +37,17 @@ ol li::marker {
   overflow-wrap: break-word;
 }
 
-.markdown > ol,
+.markdown>ol,
 ul {
   all: revert;
   padding-left: 1.5rem;
 }
 
-.markdown > p:not(li p):not(:last-child) {
+.markdown>p:not(li p):not(:last-child) {
   margin-bottom: 1rem;
 }
 
-.markdown-inline > p {
+.markdown-inline>p {
   display: inline;
 }
 
@@ -125,12 +125,15 @@ ul {
   .hide-on-mobile {
     display: none;
   }
+
   .show-on-mobile {
     display: flex;
   }
+
   .infotext {
     display: none;
   }
+
   .bobhead {
     display: none;
   }
@@ -144,6 +147,7 @@ ul {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -153,6 +157,7 @@ ul {
   from {
     opacity: 1;
   }
+
   to {
     opacity: 0;
   }
@@ -309,11 +314,15 @@ body.dark {
   --ac-textarea-border: rgba(165, 172, 182, 1);
   --ac-textarea-hover-border: rgba(66, 138, 227, 1);
   --ac-textarea-active-border: rgba(66, 138, 227, 1);
+  --ac-textfield-bg: var(--new-bg);
+  --ac-textfield-text: var(--darkmode-text-default);
+  --ac-textfield-placeholder: rgba(165, 172, 182, 1);
+  --ac-textfield-border: rgba(165, 172, 182, 1);
+  --ac-textfield-hover-border: rgba(66, 138, 227, 1);
+  --ac-textfield-active-border: rgba(66, 138, 227, 1);
 
   /*  Feedback buttons  */
-  --ac-button-tertiary-neutral-text: var(
-    --darkmode-button-neutral-text-default
-  );
+  --ac-button-tertiary-neutral-text: var(--darkmode-button-neutral-text-default);
   --ac-button-tertiary-neutral-hover-text: var(--button-neutral-hover-text);
   --ac-button-tertiary-neutral-hover-bg: var(--button-neutral-hover-bg);
 
@@ -342,7 +351,7 @@ body.dark {
   --ac-alert-info-border: rgba(67, 113, 141, 1);
   --ac-alert-icon-info-color: rgba(90, 131, 155, 1);
 
-   /*    Error alert    */
+  /*    Error alert    */
   --ac-alert-error-bg: rgba(73, 11, 16, 1);
   --ac-alert-error-border: rgba(222, 74, 80, 1);
   --ac-alert-icon-error-color: rgba(222, 74, 80, 1);
@@ -398,7 +407,7 @@ body.dark {
   --ac-select-hover-border: var(--new-link-text);
   --ac-select-active-border: var(--new-link-text);
 
-
+  --a-text-default: var(--darkmode-text-default);
 
 
 
@@ -412,7 +421,14 @@ body.dark p {
   color: var(--darkmode-text-default);
 }
 
-body.dark .navds-popover {
+body.dark .navds-popover,
+body.dark .navds-modal {
   background-color: var(--new-bg);
   border-color: rgba(101, 109, 123, 1);
+}
+
+body.dark .navds-modal__body,
+body.dark .navds-modal:not(.navds-modal--polyfilled) .navds-modal__body {
+  background: none;
+  background-color: var(--new-bg);
 }
