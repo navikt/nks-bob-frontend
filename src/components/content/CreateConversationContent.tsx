@@ -5,6 +5,7 @@ import { NewConversation, NewMessage } from "../../types/Message.ts"
 import { messageStore } from "../../types/messageStore.ts"
 import Header from "../header/Header.tsx"
 import InputField, { useInputFieldStore } from "../inputfield/InputField.tsx"
+import AdminMenu from "./admin/menu/AdminMenu.tsx"
 import { BobPlaceholder } from "./placeholders/Placeholders.tsx"
 import CreateConversationWrapper from "./wrappers/CreateConversationWrapper.tsx"
 
@@ -47,6 +48,7 @@ const CreateConversationContent = () => {
       <Header conversation={undefined} />
       <BobPlaceholder />
       <InputField onSend={handleUserMessage} disabled={false} />
+      <AdminMenu />
     </CreateConversationWrapper>
   )
 }

@@ -10,6 +10,7 @@ import { messageStore } from "../../types/messageStore.ts"
 import { ErrorNotification } from "../../types/Notifications.ts"
 import Header from "../header/Header.tsx"
 import InputField, { useInputFieldStore } from "../inputfield/InputField.tsx"
+import AdminMenu from "./admin/menu/AdminMenu.tsx"
 import { ShowAllSources } from "./chat/chatbubbles/sources/ShowAllSources.tsx"
 import ChatContainer from "./chat/ChatContainer.tsx"
 import { WhitespacePlaceholder } from "./placeholders/Placeholders.tsx"
@@ -78,6 +79,7 @@ function ConversationContent() {
         <InputField onSend={handleUserMessage} disabled={isLoading} />
       </DialogWrapper>
       <ShowAllSources />
+      <AdminMenu />
     </div>
   )
 }
