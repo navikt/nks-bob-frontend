@@ -56,7 +56,6 @@ export type Conversation = {
   id: string
   title: string
   createdAt: string
-  owner: string
 }
 
 export type Feedback = {
