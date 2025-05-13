@@ -7,6 +7,18 @@ import {
 import { Button, Heading, HStack, VStack } from "@navikt/ds-react"
 import { useEffect, useRef, useState } from "react"
 import SearchConversation from "./searchconversation/SearchConversation.tsx"
+import { useUserConfig } from "../../../../api/api.ts"
+
+const AdminMenuWrapper = () => {
+  const {userConfig } = useUserConfig()
+  const userType = userConfig?.userType
+
+  if (userType === "admin") {
+    return <AdminMenu />
+  }
+
+  return null
+}
 
 const AdminMenu = () => {
   const [activeComponent, setActiveComponent] = useState<string | null>(null)
@@ -87,7 +99,7 @@ const AdminMenu = () => {
   )
 }
 
-export default AdminMenu
+export default AdminMenuWrapper
 
 const FeedbackFromUsers = () => {
   return (
