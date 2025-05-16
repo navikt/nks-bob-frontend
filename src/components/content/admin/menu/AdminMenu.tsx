@@ -6,11 +6,12 @@ import {
 } from "@navikt/aksel-icons"
 import { Button, Heading, HStack, VStack } from "@navikt/ds-react"
 import { useEffect, useRef, useState } from "react"
-import SearchConversation from "./searchconversation/SearchConversation.tsx"
 import { useUserConfig } from "../../../../api/api.ts"
+import { FeedbackFromUsers } from "./FeedbackFromUsers.tsx"
+import SearchConversation from "./searchconversation/SearchConversation.tsx"
 
 const AdminMenuWrapper = () => {
-  const {userConfig } = useUserConfig()
+  const { userConfig } = useUserConfig()
   const userType = userConfig?.userType
 
   if (userType === "admin") {
@@ -30,11 +31,11 @@ const AdminMenu = () => {
         setActiveComponent(null)
       }
     }
-    document.addEventListener("mousedown", handleClickOutside)
+    document.addEventListener("click", handleClickOutside)
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
+      document.removeEventListener("click", handleClickOutside)
     }
-  })
+  }, [menuRef, setActiveComponent])
 
   return (
     <>
@@ -87,7 +88,7 @@ const AdminMenu = () => {
           />
         </div>
         <div
-          className={`z-101 z-1 pointer-events-auto mt-1 h-full max-w-80 border-l border-border-subtle bg-bg-default`}
+          className={`z-101 z-1 pointer-events-auto mt-1 h-full max-w-80 overflow-y-auto border-l border-border-subtle bg-bg-default`}
         >
           {activeComponent === "search" && <SearchConversation />}
           {activeComponent === "feedback" && <FeedbackFromUsers />}
@@ -100,16 +101,6 @@ const AdminMenu = () => {
 }
 
 export default AdminMenuWrapper
-
-const FeedbackFromUsers = () => {
-  return (
-    <VStack>
-      <div className='w-80 border-b border-b-border-subtle p-4'>
-        <Heading size='xsmall'>Feilmeldinger fra veiledere</Heading>
-      </div>
-    </VStack>
-  )
-}
 
 const CreateWarning = () => {
   return (
