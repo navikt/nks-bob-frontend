@@ -12,7 +12,15 @@ import {
   VStack,
 } from "@navikt/ds-react"
 import { format } from "date-fns"
-import { Dispatch, RefObject, SetStateAction, useRef, useState } from "react"
+import {
+  Dispatch,
+  RefObject,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react"
+import { useNavigate, useSearchParams } from "react-router"
 import { useFeedbacks } from "../../../../api/admin"
 import { Feedback } from "../../../../types/Message"
 
@@ -68,7 +76,7 @@ const FeedbackHeader = ({
   activeFilter,
   setActiveFilter,
 }: {
-    menuRef: RefObject<HTMLDivElement | null>
+  menuRef: RefObject<HTMLDivElement | null>
   sort: SortValue
   setSort: Dispatch<SetStateAction<SortValue>>
   activeFilter: FilterValue
@@ -140,6 +148,17 @@ const FeedbackList = ({
   activeFilter: FilterValue
 }) => {
   const { feedbacks, isLoading } = useFeedbacks(activeFilter)
+  const [searchParams] = useSearchParams()
+  const [selectedMessageId, setSelectedMessageId] = useState<string | null>(
+    null,
+  )
+
+  useEffect(() => {
+    if (searchParams.has("messageId")) {
+      const messageId = searchParams.get("messageId")!
+      setSelectedMessageId(messageId)
+    }
+  }, [searchParams])
 
   if (isLoading) {
     return (
@@ -169,6 +188,7 @@ const FeedbackList = ({
         <SingleFeedback
           key={`single-feedback-${feedback.id}`}
           feedback={feedback}
+          isSelected={feedback.messageId === selectedMessageId}
         />
       ))}
     </VStack>
@@ -182,13 +202,26 @@ const OPTIONS = {
   "særskilt-viktig": "Særskilt viktig",
 }
 
-const SingleFeedback = ({ feedback }: { feedback: Feedback }) => {
+const SingleFeedback = ({
+  feedback,
+  isSelected,
+}: {
+  feedback: Feedback
+  isSelected: boolean
+}) => {
+  const navigate = useNavigate()
   return (
     <Box
       paddingBlock='7'
       paddingInline='4'
       borderWidth='0 0 1 0'
       borderColor='border-subtle'
+      onClick={() =>
+        navigate(
+          `/admin/${feedback.conversationId}?messageId=${feedback.messageId}`,
+        )
+      }
+      className={`cursor-pointer hover:bg-[#F1F7FF] ${isSelected ? "bg-[#F5F6F7]" : ""}`}
     >
       <VStack gap='4'>
         <Label size='medium'>

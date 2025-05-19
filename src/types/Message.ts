@@ -62,6 +62,7 @@ export type Feedback = {
   id: string
   createdAt: string
   messageId: string
+  conversationId: string
   options: string[]
   comment: string | null
   resolved: boolean
