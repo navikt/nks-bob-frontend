@@ -184,6 +184,11 @@ export const useUserConfig = () => {
   const { data, isLoading, error } = useSWR<UserConfig, ApiError>(
     "/api/v1/user/config",
     fetcher,
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false
+    }
   )
 
   return {
