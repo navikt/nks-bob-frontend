@@ -2,6 +2,7 @@ import useSWR, { mutate, preload } from "swr"
 import useSWRMutation from "swr/mutation"
 import {
   Conversation,
+  ConversationFeedback,
   Feedback,
   Message,
   NewConversation,
@@ -112,7 +113,9 @@ export const useSendConversationFeedback = (conversationId: string) => {
   )
 
   return {
-    sendFeedback: trigger as (feedback: Feedback) => Promise<Feedback>,
+    sendFeedback: trigger as (
+      feedback: ConversationFeedback,
+    ) => Promise<Feedback>,
     isLoading: isMutating,
   }
 }
@@ -260,4 +263,19 @@ export const preloadNewsNotifications = () => {
 
 export const preloadErrorNotifications = () => {
   preload("/api/v1/notifications/errors", fetcher)
+}
+
+export const useAddFeedback = (messageId: string) => {
+  const { trigger, isMutating } = useSWRMutation(
+    `/api/v1/messages/${messageId}/feedback`,
+    request("POST"),
+  )
+
+  const addFeedback = (body: { options: string[]; comment: string | null }) =>
+    trigger(body)
+
+  return {
+    addFeedback,
+    isLoading: isMutating,
+  }
 }
