@@ -1,8 +1,26 @@
-import { BodyLong, Skeleton, VStack } from "@navikt/ds-react"
-import { memo, useState } from "react"
+import { ExternalLinkIcon } from "@navikt/aksel-icons"
+import {
+  BodyLong,
+  Button,
+  Heading,
+  Link,
+  Popover,
+  Skeleton,
+  VStack,
+} from "@navikt/ds-react"
+import { Root, Text } from "mdast"
+import { memo, useRef, useState } from "react"
 import Markdown from "react-markdown"
+import rehypeRaw from "rehype-raw"
+import { Plugin } from "unified"
+import { visit } from "unist-util-visit"
 import { BobRoboHead } from "../../../../../assets/illustrations/BobRoboHead.tsx"
-import { Citation, Message, NewMessage } from "../../../../../types/Message.ts"
+import {
+  Citation,
+  Context,
+  Message,
+  NewMessage,
+} from "../../../../../types/Message.ts"
 import BobSuggests from "../../suggestions/BobSuggests.tsx"
 import BobAnswerCitations from "../BobAnswerCitations.tsx"
 import ToggleCitations from "../citations/ToggleCitations.tsx"
@@ -86,10 +104,19 @@ const MessageContent = ({ message }: { message: Message }) => (
   <BodyLong className='fade-in'>
     <Markdown
       className='markdown'
+      remarkPlugins={[remarkCitations]}
+      rehypePlugins={[rehypeRaw]}
       components={{
         a: ({ ...props }) => (
           <a {...props} target='_blank' rel='noopener noreferrer' />
         ),
+        span: ({ node, ...props }) => {
+          const citationId: string = (props as any)?.["data-citation"]
+          if (citationId) {
+            return <CitationNumber id={parseInt(citationId)} context={message.context} />
+          }
+          return <span {...props} />
+        },
       }}
     >
       {message.content}
@@ -198,3 +225,112 @@ const Citations = memo(
     return prevCitations === nextCitations
   },
 )
+
+const CitationNumber = ({
+  id,
+  context,
+}: {
+  id: number
+  context: Context[]
+}) => {
+  const buttonRef = useRef<HTMLButtonElement>(null)
+  const [openState, setOpenState] = useState(false)
+
+  const source = context.at(id)
+  if (!context || !source) {
+    return null
+  }
+
+  const title =
+    source.source === "nks"
+      ? source.title
+      : `${source.title} / ${source.anchor}`
+
+  return (
+    <>
+      <sup>
+        <Button
+          variant='tertiary'
+          size='xsmall'
+          ref={buttonRef}
+          onClick={() => setOpenState(!openState)}
+          aria-expanded={openState}
+        >
+          {id + 1}
+        </Button>
+      </sup>
+
+      <Popover
+        open={openState}
+        onClose={() => setOpenState(false)}
+        anchorEl={buttonRef.current}
+        arrow={false}
+        className='max-w-xl'
+      >
+        <Popover.Content className='flex flex-col gap-2'>
+          <div className='flex justify-between'>
+            <Heading size='xsmall'>{title}</Heading>
+            <Link href={`${source.url}#${source.anchor}`} target='_blank'>
+              <ExternalLinkIcon title='Åpne artikkelen i ny fane' />
+            </Link>
+          </div>
+          <BodyLong size='small'>
+            <Markdown
+              className='markdown'
+              components={{
+                a: ({ ...props }) => (
+                  <a {...props} target='_blank' rel='noopener noreferrer' />
+                ),
+              }}
+            >
+              {source.content}
+            </Markdown>
+          </BodyLong>
+        </Popover.Content>
+      </Popover>
+    </>
+  )
+}
+
+const remarkCitations: Plugin<[], Root> = () => {
+  return (tree) => {
+    visit(tree, "text", (node: Text, index, parent) => {
+      if (!parent) return
+
+      const citationRegex = /\[(\d)\]/g
+      const value = node.value
+
+      let match
+      let lastIndex = 0
+      const newNodes: any[] = []
+
+      while ((match = citationRegex.exec(value)) !== null) {
+        const [fullMatch, id] = match
+        const start = match.index
+
+        if (start > lastIndex) {
+          newNodes.push({
+            type: "text",
+            value: value.slice(lastIndex, start),
+          })
+        }
+
+        newNodes.push({
+          type: "html",
+          value: `<span data-citation="${id}"></span>`,
+        })
+
+        lastIndex = start + fullMatch.length
+      }
+
+      if (lastIndex < value.length) {
+        newNodes.push({
+          type: "text",
+          value: value.slice(lastIndex),
+        })
+      }
+
+      parent.children.splice(index!, 1, ...newNodes)
+    })
+  }
+}
