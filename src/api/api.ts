@@ -187,8 +187,8 @@ export const useUserConfig = () => {
     {
       revalidateIfStale: false,
       revalidateOnFocus: false,
-      revalidateOnReconnect: false
-    }
+      revalidateOnReconnect: false,
+    },
   )
 
   return {
@@ -260,4 +260,15 @@ export const preloadNewsNotifications = () => {
 
 export const preloadErrorNotifications = () => {
   preload("/api/v1/notifications/errors", fetcher)
+}
+
+let hasTriggeredAuth = false
+export const triggerReAuth = () => {
+  if (hasTriggeredAuth) return
+  hasTriggeredAuth = true
+
+  const loginUrl = new URL("/login", window.location.origin)
+  loginUrl.searchParams.set("referer", window.location.href)
+
+  window.location.href = loginUrl.toString()
 }
