@@ -30,7 +30,12 @@ async function fetcher<T>(input: RequestInfo, init?: RequestInit): Promise<T> {
     return {} as T
   }
 
-  if (res.status >= 400) {
+  if (res.status === 401) {
+    const redirect = new URL(res.url).searchParams.get("redirect") ?? "/"
+    document.location = redirect
+  }
+
+  if (res.status >= 401) {
     throw {
       status: res.status,
       message: res.statusText,
