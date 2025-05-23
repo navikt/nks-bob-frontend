@@ -66,4 +66,5 @@ export type Feedback = {
   options: string[]
   comment: string | null
   resolved: boolean
+  resolvedCategory: string
 }

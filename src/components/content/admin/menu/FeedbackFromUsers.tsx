@@ -1,4 +1,8 @@
-import { ChatExclamationmarkIcon, FilterIcon } from "@navikt/aksel-icons"
+import {
+  ChatExclamationmarkIcon,
+  CheckmarkCircleIcon,
+  FilterIcon,
+} from "@navikt/aksel-icons"
 import {
   ActionMenu,
   BodyShort,
@@ -14,6 +18,7 @@ import {
 import { format } from "date-fns"
 import {
   Dispatch,
+  FormEvent,
   RefObject,
   SetStateAction,
   useEffect,
@@ -21,7 +26,7 @@ import {
   useState,
 } from "react"
 import { useNavigate, useSearchParams } from "react-router"
-import { useFeedbacks } from "../../../../api/admin"
+import { useFeedbacks, useUpdateFeedback } from "../../../../api/admin"
 import { Feedback } from "../../../../types/Message"
 
 export const FeedbackFromUsers = () => {
@@ -202,6 +207,8 @@ const OPTIONS = {
   "særskilt-viktig": "Særskilt viktig",
 }
 
+type OptionsValue = keyof typeof OPTIONS
+
 const SingleFeedback = ({
   feedback,
   isSelected,
@@ -210,6 +217,36 @@ const SingleFeedback = ({
   isSelected: boolean
 }) => {
   const navigate = useNavigate()
+  const [category, setCategory] = useState<OptionsValue | "">(
+    (feedback.resolvedCategory as OptionsValue) ?? "",
+  )
+  const [isResolved, setIsResolved] = useState(feedback.resolved)
+  const { updateFeedback, isLoading } = useUpdateFeedback(feedback.id)
+
+  const submit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (category === "" || !OPTIONS[category]) {
+      console.error(`Invalid category value "${category}"`)
+      return
+    }
+
+    const updatedFeedback = {
+      options: feedback.options,
+      comment: feedback.comment,
+      resolved: true,
+      resolvedCategory: category,
+    }
+
+    updateFeedback(updatedFeedback).then(({ resolved }) => {
+      setIsResolved(resolved)
+    })
+  }
+
+  const buttonLabel = isResolved ? "Ferdigstilt" : "Ferdigstill"
+  const buttonStyle = isResolved
+    ? "bg-[#00893C] text-white"
+    : ""
+
   return (
     <Box
       paddingBlock='7'
@@ -240,14 +277,39 @@ const SingleFeedback = ({
             ))}
           </HStack>
         </VStack>
-        <Select label='Marker som' size='small'>
-          <option value=''>Velg</option>
-          {Object.entries(OPTIONS).map(([value, label]) => (
-            <option key={`feedback-option-${value}`} value={value}>
-              {label}
-            </option>
-          ))}
-        </Select>
+        <form onSubmit={submit}>
+          <HStack gap='2' align='end'>
+            <Select
+              label='Marker som'
+              size='small'
+              className='max-w-32'
+              onChange={(event) =>
+                setCategory(event.target.value as OptionsValue | "")
+              }
+              value={category}
+            >
+              <option value=''>Velg</option>
+              {Object.entries(OPTIONS).map(([value, label]) => (
+                <option key={`feedback-option-${value}`} value={value}>
+                  {label}
+                </option>
+              ))}
+            </Select>
+            {category !== "" && (
+              <Button
+                type='submit'
+                variant='secondary-neutral'
+                size='small'
+                iconPosition='right'
+                icon={<CheckmarkCircleIcon />}
+                loading={isLoading}
+                className={buttonStyle}
+              >
+                {buttonLabel}
+              </Button>
+            )}
+          </HStack>
+        </form>
       </VStack>
     </Box>
   )
