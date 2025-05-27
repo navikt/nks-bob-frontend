@@ -6,11 +6,13 @@ import {
   Route,
   RouterProvider,
 } from "react-router"
+import { SWRConfig } from "swr"
 import App from "./App.tsx"
 import {
   preloadErrorNotifications,
   preloadNewsNotifications,
   preloadUserConfig,
+  triggerReAuth,
 } from "./api/api.ts"
 import ConversationAdminContent from "./components/content/ConversationAdminContent.tsx"
 import ConversationContent from "./components/content/ConversationContent.tsx"
@@ -40,7 +42,17 @@ const router = createBrowserRouter(
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <AnalyticsProvider />
-    <RouterProvider router={router} />
+    <SWRConfig
+      value={{
+        onError: (err) => {
+          if (err.status === 401) {
+            triggerReAuth()
+          }
+        },
+      }}
+    >
+      <AnalyticsProvider />
+      <RouterProvider router={router} />
+    </SWRConfig>
   </StrictMode>,
 )

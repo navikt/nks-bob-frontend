@@ -177,6 +177,11 @@ export const useUserConfig = () => {
   const { data, isLoading, error } = useSWR<UserConfig, ApiError>(
     "/api/v1/user/config",
     fetcher,
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    },
   )
 
   return {
@@ -250,6 +255,7 @@ export const preloadErrorNotifications = () => {
   preload("/api/v1/notifications/errors", fetcher)
 }
 
+
 export const useAddFeedback = (messageId: string) => {
   const { trigger, isMutating } = useSWRMutation(
     `/api/v1/messages/${messageId}/feedback`,
@@ -263,4 +269,14 @@ export const useAddFeedback = (messageId: string) => {
     addFeedback,
     isLoading: isMutating,
   }
+ 
+let hasTriggeredAuth = false
+export const triggerReAuth = () => {
+  if (hasTriggeredAuth) return
+  hasTriggeredAuth = true
+
+  const loginUrl = new URL("/login", window.location.origin)
+  loginUrl.searchParams.set("referer", window.location.href)
+
+  window.location.href = loginUrl.toString()
 }
