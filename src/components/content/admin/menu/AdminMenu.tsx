@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from "react"
 import { useUserConfig } from "../../../../api/api.ts"
 import { FeedbackFromUsers } from "./FeedbackFromUsers.tsx"
 import SearchConversation from "./searchconversation/SearchConversation.tsx"
-import { CreateAlert } from "./CreateWarning.tsx"
+import { CreateAlert } from "./CreateAlert.tsx"
 
 const AdminMenuWrapper = () => {
   const { userConfig } = useUserConfig()
