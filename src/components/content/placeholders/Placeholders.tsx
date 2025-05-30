@@ -1,17 +1,17 @@
-import { Alert, BodyShort, Heading } from "@navikt/ds-react"
+import { Alert as AlertComponent, BodyShort, Heading } from "@navikt/ds-react"
 import Markdown from "react-markdown"
-import { useErrorNotifications } from "../../../api/api.ts"
+import { useAlerts } from "../../../api/api.ts"
 import {
   BobTheRobot,
   BobTheRobotDark,
 } from "../../../assets/illustrations/BobTheRobot.tsx"
 import { SadBob } from "../../../assets/illustrations/SadBob.tsx"
-import { ErrorNotification } from "../../../types/Notifications.ts"
+import { Alert } from "../../../types/Notifications.ts"
 import "./Placeholders.css"
 
 export const BobPlaceholder = () => {
-  const { errorNotifications } = useErrorNotifications()
-  const hasErrors = errorNotifications.length > 0
+  const { alerts } = useAlerts()
+  const hasErrors = alerts.length > 0
 
   return (
     <>
@@ -35,7 +35,7 @@ export const BobPlaceholder = () => {
           </div>
         </>
       )}
-      {hasErrors && <BobError errorNotifications={errorNotifications} />}
+      {hasErrors && <BobError alerts={alerts} />}
     </>
   )
 }
@@ -46,27 +46,23 @@ export const WhitespacePlaceholder = () => {
   )
 }
 
-const BobError = ({
-  errorNotifications,
-}: {
-  errorNotifications: ErrorNotification[]
-}) => {
-  if (errorNotifications.length < 1) {
+const BobError = ({ alerts }: { alerts: Alert[] }) => {
+  if (alerts.length < 1) {
     return null
   }
 
-  const { title, content, notificationType } = errorNotifications.at(0)!
+  const { title, content, notificationType } = alerts.at(0)!
   const level = notificationType.toLowerCase() as "error" | "warning"
 
   return (
     <div className='bob-styling flex w-full max-w-2xl flex-row items-center gap-16'>
       <SadBob level={level} />
-      <Alert inline variant={level}>
+      <AlertComponent inline variant={level}>
         <Heading spacing size='small' level='3'>
           {title}
         </Heading>
         <Markdown>{content}</Markdown>
-      </Alert>
+      </AlertComponent>
     </div>
   )
 }

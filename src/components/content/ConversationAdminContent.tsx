@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { useNavigate, useParams } from "react-router"
-import { useAdminMessages } from "../../api/api.ts"
+import { useAdminMessages } from "../../api/admin.ts"
 import Header from "../header/Header.tsx"
 import InputField from "../inputfield/InputField.tsx"
 import { ShowAllSources } from "./chat/chatbubbles/sources/ShowAllSources.tsx"

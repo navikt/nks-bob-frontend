@@ -12,12 +12,13 @@ interface BobAnswerBubbleProps {
   onSend: (message: NewMessage) => void
   isLoading: boolean
   isLastMessage: boolean
+  isHighlighted: boolean
 }
 
 const options = ["Sitater fra Nav.no", "Sitater fra Kunnskapsbasen"]
 
 export const BobAnswerBubble = memo(
-  ({ message, onSend, isLoading, isLastMessage }: BobAnswerBubbleProps) => {
+  ({ message, onSend, isLoading, isLastMessage, isHighlighted }: BobAnswerBubbleProps) => {
     const hasError = ({ errors, pending, content }: Message): boolean =>
       errors.length > 0 && !pending && content === ""
 
@@ -31,7 +32,7 @@ export const BobAnswerBubble = memo(
             <BobRoboHead />
           </div>
           <div className='flex w-full flex-col pt-3'>
-            <div className='overflow-wrap mb-2 flex w-full'>
+            <div className={`overflow-wrap mb-2 flex w-full ${isHighlighted ? "bg-[#FFF5E4] p-2" : ""}`}>
               {hasError(message) ? (
                 <ErrorContent message={message} />
               ) : isPending(message) ? (
@@ -58,6 +59,10 @@ export const BobAnswerBubble = memo(
     const nextMessage = nextProps.message
 
     if (prevProps.isLoading && !nextProps.isLoading) {
+      return false
+    }
+
+    if (prevProps.isHighlighted !== nextProps.isHighlighted) {
       return false
     }
 
@@ -98,7 +103,7 @@ const MessageContent = ({ message }: { message: Message }) => (
 )
 
 const Citations = memo(
-  ({ message, onSend, isLoading, isLastMessage }: BobAnswerBubbleProps) => {
+  ({ message, onSend, isLoading, isLastMessage }: Omit<BobAnswerBubbleProps, "isHighlighted" >) => {
     const [selectedCitations, setSelectedCitations] =
       useState<string[]>(options)
 
