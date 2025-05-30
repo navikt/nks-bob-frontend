@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from "react"
 import { useUserConfig } from "../../../../api/api.ts"
 import { FeedbackFromUsers } from "./FeedbackFromUsers.tsx"
 import SearchConversation from "./searchconversation/SearchConversation.tsx"
+import { CreateWarning } from "./CreateWarning.tsx"
 
 const AdminMenuWrapper = () => {
   const { userConfig } = useUserConfig()
@@ -101,16 +102,6 @@ const AdminMenu = () => {
 }
 
 export default AdminMenuWrapper
-
-const CreateWarning = () => {
-  return (
-    <VStack>
-      <div className='w-80 border-b border-b-border-subtle p-4'>
-        <Heading size='xsmall'>Opprett feilmelding</Heading>
-      </div>
-    </VStack>
-  )
-}
 
 const CreateNews = () => {
   return (

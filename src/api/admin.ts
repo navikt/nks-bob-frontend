@@ -1,6 +1,7 @@
 import useSWR from "swr"
 import useSWRMutation from "swr/mutation"
 import { Feedback, Message } from "../types/Message"
+import { ErrorNotification, Notification } from "../types/Notifications"
 import { ApiError, fetcher, request } from "./api"
 
 export const useAdminMessages = (conversationId: string) => {
@@ -43,6 +44,65 @@ export const useUpdateFeedback = (feedbackId: string) => {
         "id" | "messageId" | "conversationId" | "createdAt"
       >,
     ) => Promise<Feedback>,
+    isLoading: isMutating,
+  }
+}
+
+type CreateErrorNotification = Omit<
+  ErrorNotification,
+  "id" | "createdAt" | "notificationType"
+> & {
+  notificationType: "Error" | "Warning"
+}
+
+export const useCreateErrorNotification = () => {
+  const { trigger, isMutating } = useSWRMutation(
+    `/api/v1/admin/notifications`,
+    request("POST"),
+  )
+
+  const createErrorNotification = (
+    errorNotification: CreateErrorNotification,
+  ): Promise<Notification> => {
+    return trigger(errorNotification, {
+      optimisticData: errorNotification,
+    }) as Promise<Notification>
+  }
+
+  return {
+    createErrorNotification,
+    isLoading: isMutating,
+  }
+}
+
+export const useUpdateErrorNotification = (id: string) => {
+  const { trigger, isMutating } = useSWRMutation(
+    `/api/v1/admin/notifications/${id}`,
+    request("PUT"),
+  )
+
+  const updateErrorNotification = (
+    errorNotification: CreateErrorNotification,
+  ): Promise<Notification> => {
+    return trigger(errorNotification, {
+      optimisticData: errorNotification,
+    }) as Promise<Notification>
+  }
+
+  return {
+    updateErrorNotification,
+    isLoading: isMutating,
+  }
+}
+
+export const useDeleteErrorNotification = (id: string) => {
+  const { trigger, isMutating } = useSWRMutation(
+    `/api/v1/admin/notifications/${id}`,
+    request("DELETE"),
+  )
+
+  return {
+    deleteErrorNotification: trigger,
     isLoading: isMutating,
   }
 }
