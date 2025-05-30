@@ -6,7 +6,7 @@ import { useEffect, useState } from "react"
 import * as React from "react"
 import { create } from "zustand"
 import { createJSONStorage, persist } from "zustand/middleware"
-import { useErrorNotifications } from "../../api/api.ts"
+import { useAlerts } from "../../api/api.ts"
 import { NewMessage } from "../../types/Message.ts"
 import analytics from "../../utils/analytics.ts"
 import { FollowUpQuestions } from "../content/followupquestions/FollowUpQuestions.tsx"
@@ -66,9 +66,9 @@ function InputField({ onSend, disabled }: InputFieldProps) {
   const { inputValue, setInputValue, followUp, textareaRef } =
     useInputFieldStore()
 
-  const { errorNotifications } = useErrorNotifications()
+  const { alerts } = useAlerts()
   const hasErrors =
-    errorNotifications.at(0)?.notificationType === "Error" ?? false
+    alerts.at(0)?.notificationType === "Error" ?? false
 
   function sendMessage(messageContent?: string) {
     const message: NewMessage = {

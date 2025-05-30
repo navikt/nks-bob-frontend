@@ -8,7 +8,7 @@ import {
   NewConversation,
   NewMessage,
 } from "../types/Message"
-import { ErrorNotification, NewsNotification } from "../types/Notifications"
+import { Alert, NewsNotification } from "../types/Notifications"
 import { UserConfig } from "../types/User"
 
 export const API_URL = `${import.meta.env.BASE_URL}bob-api`
@@ -234,14 +234,14 @@ export const useNewsNotifications = () => {
   }
 }
 
-export const useErrorNotifications = () => {
-  const { data, isLoading, error } = useSWR<ErrorNotification[], ApiError>(
+export const useAlerts = () => {
+  const { data, isLoading, error } = useSWR<Alert[], ApiError>(
     "/api/v1/notifications/errors",
     fetcher,
   )
 
   return {
-    errorNotifications: data ?? [],
+    alerts: data ?? [],
     isLoading,
     error,
   }
@@ -251,7 +251,7 @@ export const preloadNewsNotifications = () => {
   preload("/api/v1/notifications/news", fetcher)
 }
 
-export const preloadErrorNotifications = () => {
+export const preloadAlerts = () => {
   preload("/api/v1/notifications/errors", fetcher)
 }
 

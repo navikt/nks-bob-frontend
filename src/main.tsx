@@ -9,7 +9,7 @@ import {
 import { SWRConfig } from "swr"
 import App from "./App.tsx"
 import {
-  preloadErrorNotifications,
+  preloadAlerts,
   preloadNewsNotifications,
   preloadUserConfig,
   triggerReAuth,
@@ -22,7 +22,7 @@ import { AnalyticsProvider } from "./utils/AnalyticsProvider.tsx"
 
 preloadUserConfig()
 preloadNewsNotifications()
-preloadErrorNotifications()
+preloadAlerts()
 
 const router = createBrowserRouter(
   createRoutesFromElements(

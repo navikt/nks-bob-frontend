@@ -1,6 +1,6 @@
 import { ExclamationmarkTriangleIcon } from "@navikt/aksel-icons"
 import {
-  Alert,
+  Alert as AlertComponent,
   BodyShort,
   Box,
   Button,
@@ -18,25 +18,23 @@ import { formatDate } from "date-fns"
 import { FormEvent, useEffect, useRef, useState } from "react"
 import { useSWRConfig } from "swr"
 import {
-  useCreateErrorNotification,
-  useDeleteErrorNotification,
-  useUpdateErrorNotification,
+  useCreateAlert,
+  useDeleteAlert,
+  useUpdateAlert,
 } from "../../../../api/admin"
-import { useErrorNotifications } from "../../../../api/api"
-import { ErrorNotification } from "../../../../types/Notifications"
+import { useAlerts } from "../../../../api/api"
+import { Alert } from "../../../../types/Notifications"
 
 export const CreateAlert = () => {
-  const { errorNotifications } = useErrorNotifications()
+  const { alerts } = useAlerts()
   const [isTesting, setIsTesting] = useState(false)
 
   return (
     <VStack>
       <AlertDescription />
       <AlertHeader />
-      {!isTesting && errorNotifications.length > 0 && (
-        <SingleAlert errorNotification={errorNotifications.at(0)!} />
-      )}
-      {(isTesting || errorNotifications.length === 0) && (
+      {!isTesting && alerts.length > 0 && <SingleAlert alert={alerts.at(0)!} />}
+      {(isTesting || alerts.length === 0) && (
         <AlertForm setIsTesting={setIsTesting} />
       )}
     </VStack>
@@ -75,11 +73,12 @@ const AlertForm = ({
 }: {
   setIsTesting: React.Dispatch<React.SetStateAction<boolean>>
 }) => {
-  const [notificationType, setNotificationType] = useState<AlertNotificationType>("")
+  const [notificationType, setNotificationType] =
+    useState<AlertNotificationType>("")
   const [title, setTitle] = useState<string>("")
   const [content, setContent] = useState<string>("")
   const ref = useRef<HTMLDialogElement>(null)
-  const { createErrorNotification, isLoading } = useCreateErrorNotification()
+  const { createAlert, isLoading } = useCreateAlert()
   const { mutate } = useSWRConfig()
 
   const submit = (_event: FormEvent<HTMLFormElement>) => {
@@ -87,7 +86,7 @@ const AlertForm = ({
       return
     }
 
-const errorNotification = {
+    const alert = {
       title,
       content,
       notificationType,
@@ -95,15 +94,13 @@ const errorNotification = {
     }
 
     setIsTesting(false)
-    createErrorNotification(errorNotification).then(() => {
+    createAlert(alert).then(() => {
       mutate("/api/v1/notifications")
       mutate("/api/v1/notifications/errors")
     })
   }
 
-  const testErrorNotification = (
-    event: React.MouseEvent<HTMLButtonElement>,
-  ) => {
+  const testAlert = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
     event.stopPropagation()
 
@@ -112,7 +109,7 @@ const errorNotification = {
     }
 
     setIsTesting(true)
-    const errorNotification: ErrorNotification[] = [
+    const alert: Alert[] = [
       {
         id: "test-id",
         title,
@@ -125,8 +122,8 @@ const errorNotification = {
 
     // Update the cache to get a preview
     const opts = { revalidate: false }
-    mutate("/api/v1/notifications", errorNotification, opts)
-    mutate("/api/v1/notifications/errors", errorNotification, opts)
+    mutate("/api/v1/notifications", alert, opts)
+    mutate("/api/v1/notifications/errors", alert, opts)
   }
 
   // Clear test data on unmount
@@ -181,7 +178,7 @@ const errorNotification = {
         variant='secondary-neutral'
         size='small'
         className='w-fit'
-        onClick={testErrorNotification}
+        onClick={testAlert}
       >
         Test (vises kun for deg)
       </Button>
@@ -206,7 +203,7 @@ const errorNotification = {
         closeOnBackdropClick
       >
         <Modal.Body>
-          <form method='dialog' id='notification-schema' onSubmit={submit}>
+          <form method='dialog' id='alert-schema' onSubmit={submit}>
             <BodyShort textColor='subtle'>
               Er du sikker på at du ønsker å publisere feilmeldingen? Den vil
               bli synlig for alle brukere.
@@ -220,7 +217,7 @@ const errorNotification = {
             </Button>
             <Button
               variant='primary'
-              form='notification-schema'
+              form='alert-schema'
               type='submit'
               loading={isLoading}
             >
@@ -233,45 +230,33 @@ const errorNotification = {
   )
 }
 
-const SingleAlert = ({
-  errorNotification,
-}: {
-  errorNotification: ErrorNotification
-}) => {
-  const [updateErrorNotification, setUpdateErrorNotification] =
-    useState<ErrorNotification | null>(null)
+const SingleAlert = ({ alert }: { alert: Alert }) => {
+  const [updateAlert, setUpdateAlert] = useState<Alert | null>(null)
 
-  if (updateErrorNotification) {
-    return <UpdateAlertForm errorNotification={updateErrorNotification}
-      setUpdateErrorNotification={setUpdateErrorNotification}
-/>
+  if (updateAlert) {
+    return (
+      <UpdateAlertForm alert={updateAlert} setUpdateAlert={setUpdateAlert} />
+    )
   }
 
-  return (
-    <SingleAlertInner
-      errorNotification={errorNotification}
-      setUpdateErrorNotification={setUpdateErrorNotification}
-    />
-  )
+  return <SingleAlertInner alert={alert} setUpdateAlert={setUpdateAlert} />
 }
 
 const SingleAlertInner = ({
-  errorNotification,
-  setUpdateErrorNotification,
+  alert,
+  setUpdateAlert,
 }: {
-  errorNotification: ErrorNotification
-  setUpdateErrorNotification: React.Dispatch<
-    React.SetStateAction<ErrorNotification | null>
-  >
+  alert: Alert
+  setUpdateAlert: React.Dispatch<React.SetStateAction<Alert | null>>
 }) => {
-  const { id, createdAt, notificationType, title, content } = errorNotification
+  const { id, createdAt, notificationType, title, content } = alert
   const ref = useRef<HTMLDialogElement>(null)
   const { mutate } = useSWRConfig()
-  const { deleteErrorNotification, isLoading } = useDeleteErrorNotification(id)
+  const { deleteAlert, isLoading } = useDeleteAlert(id)
   const alertVariant = notificationType.toLowerCase() as "error" | "warning"
 
   const deleteOnSubmit = () => {
-    deleteErrorNotification().then(() => {
+    deleteAlert().then(() => {
       mutate("/api/v1/notifications")
       mutate("/api/v1/notifications/errors")
     })
@@ -290,9 +275,9 @@ const SingleAlertInner = ({
       </BodyShort>
       <VStack>
         <Label>Feilmeldingstype</Label>
-        <Alert inline variant={alertVariant}>
+        <AlertComponent inline variant={alertVariant}>
           {notificationType}
-        </Alert>
+        </AlertComponent>
       </VStack>
       <VStack>
         <Label>Tittel</Label>
@@ -309,7 +294,7 @@ const SingleAlertInner = ({
           onClick={(event) => {
             event.preventDefault()
             event.stopPropagation()
-            setUpdateErrorNotification(errorNotification)
+            setUpdateAlert(alert)
           }}
         >
           Endre
@@ -367,23 +352,20 @@ const SingleAlertInner = ({
 }
 
 const UpdateAlertForm = ({
-  errorNotification,
-  setUpdateErrorNotification,
+  alert,
+  setUpdateAlert,
 }: {
-  errorNotification: ErrorNotification
-  setUpdateErrorNotification: React.Dispatch<
-    React.SetStateAction<ErrorNotification | null>
-  >
+  alert: Alert
+  setUpdateAlert: React.Dispatch<React.SetStateAction<Alert | null>>
 }) => {
-  const [notificationType, setNotificationType] = useState<AlertNotificationType>(
-    errorNotification.notificationType as AlertNotificationType,
-  )
-  const [title, setTitle] = useState<string>(errorNotification.title)
-  const [text, setText] = useState<string>(errorNotification.content)
+  const [notificationType, setNotificationType] =
+    useState<AlertNotificationType>(
+      alert.notificationType as AlertNotificationType,
+    )
+  const [title, setTitle] = useState<string>(alert.title)
+  const [text, setText] = useState<string>(alert.content)
   const ref = useRef<HTMLDialogElement>(null)
-  const { updateErrorNotification, isLoading } = useUpdateErrorNotification(
-    errorNotification.id,
-  )
+  const { updateAlert, isLoading } = useUpdateAlert(alert.id)
   const { mutate } = useSWRConfig()
 
   const submit = (_event: FormEvent<HTMLFormElement>) => {
@@ -391,21 +373,19 @@ const UpdateAlertForm = ({
       return
     }
 
-    updateErrorNotification({
+    updateAlert({
       title,
       content: text,
       notificationType,
       expiresAt: null,
     }).then(() => {
-      setUpdateErrorNotification(null)
+      setUpdateAlert(null)
       mutate("/api/v1/notifications")
       mutate("/api/v1/notifications/errors")
     })
   }
 
-  const testErrorNotification = (
-    event: React.MouseEvent<HTMLButtonElement>,
-  ) => {
+  const testAlert = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
     event.stopPropagation()
 
@@ -413,7 +393,7 @@ const UpdateAlertForm = ({
       return
     }
 
-    const errorNotification: ErrorNotification[] = [
+    const alert: Alert[] = [
       {
         id: "test-id",
         title,
@@ -425,8 +405,8 @@ const UpdateAlertForm = ({
     ]
 
     const opts = { revalidate: false }
-    mutate("/api/v1/notifications", errorNotification, opts)
-    mutate("/api/v1/notifications/errors", errorNotification, opts)
+    mutate("/api/v1/notifications", alert, opts)
+    mutate("/api/v1/notifications/errors", alert, opts)
   }
 
   // Clear test data on unmount
@@ -481,7 +461,7 @@ const UpdateAlertForm = ({
         variant='secondary-neutral'
         size='small'
         className='w-fit'
-        onClick={testErrorNotification}
+        onClick={testAlert}
       >
         Test (vises kun for deg)
       </Button>
@@ -506,7 +486,7 @@ const UpdateAlertForm = ({
         closeOnBackdropClick
       >
         <Modal.Body>
-          <form method='dialog' id='notification-schema' onSubmit={submit}>
+          <form method='dialog' id='alert-schema' onSubmit={submit}>
             <BodyShort textColor='subtle'>
               Er du sikker på at du ønsker å endre feilmeldingen? Endringene vil
               bli synlig for alle brukere.
@@ -520,7 +500,7 @@ const UpdateAlertForm = ({
             </Button>
             <Button
               variant='primary'
-              form='notification-schema'
+              form='alert-schema'
               type='submit'
               loading={isLoading}
             >
