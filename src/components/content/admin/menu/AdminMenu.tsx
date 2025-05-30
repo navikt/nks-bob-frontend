@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from "react"
 import { useUserConfig } from "../../../../api/api.ts"
 import { FeedbackFromUsers } from "./FeedbackFromUsers.tsx"
 import SearchConversation from "./searchconversation/SearchConversation.tsx"
-import { CreateWarning } from "./CreateWarning.tsx"
+import { CreateAlert } from "./CreateWarning.tsx"
 
 const AdminMenuWrapper = () => {
   const { userConfig } = useUserConfig()
@@ -23,7 +23,7 @@ const AdminMenuWrapper = () => {
 }
 
 const AdminMenu = () => {
-  const [activeComponent, setActiveComponent] = useState<string | null>(null)
+  const [activeComponent, setActiveComponent] = useState<"search" | "feedback" | "alert" | "news" | null>(null)
   const menuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -71,10 +71,10 @@ const AdminMenu = () => {
             size='small'
             variant='primary-neutral'
             icon={<ExclamationmarkTriangleIcon />}
-            className={`${activeComponent === "warning" ? "bg-[#49515E]" : "bg-[#B65781]"} hover:bg-[#555D6A]`}
+            className={`${activeComponent === "alert" ? "bg-[#49515E]" : "bg-[#B65781]"} hover:bg-[#555D6A]`}
             onClick={() =>
               setActiveComponent(
-                activeComponent === "warning" ? null : "warning",
+                activeComponent === "alert" ? null : "alert",
               )
             }
           />
@@ -93,7 +93,7 @@ const AdminMenu = () => {
         >
           {activeComponent === "search" && <SearchConversation />}
           {activeComponent === "feedback" && <FeedbackFromUsers />}
-          {activeComponent === "warning" && <CreateWarning />}
+          {activeComponent === "alert" && <CreateAlert />}
           {activeComponent === "news" && <CreateNews />}
         </div>
       </HStack>

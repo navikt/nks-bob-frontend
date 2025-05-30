@@ -25,25 +25,25 @@ import {
 import { useErrorNotifications } from "../../../../api/api"
 import { ErrorNotification } from "../../../../types/Notifications"
 
-export const CreateWarning = () => {
+export const CreateAlert = () => {
   const { errorNotifications } = useErrorNotifications()
   const [isTesting, setIsTesting] = useState(false)
 
   return (
     <VStack>
-      <WarningDescription />
-      <WarningHeader />
+      <AlertDescription />
+      <AlertHeader />
       {!isTesting && errorNotifications.length > 0 && (
-        <SingleAlertWrapper errorNotification={errorNotifications.at(0)!} />
+        <SingleAlert errorNotification={errorNotifications.at(0)!} />
       )}
       {(isTesting || errorNotifications.length === 0) && (
-        <WarningForm setIsTesting={setIsTesting} />
+        <AlertForm setIsTesting={setIsTesting} />
       )}
     </VStack>
   )
 }
 
-const WarningDescription = () => {
+const AlertDescription = () => {
   return (
     <Box padding='4' position='sticky'>
       <BodyShort size='medium' textColor='subtle'>
@@ -52,7 +52,7 @@ const WarningDescription = () => {
     </Box>
   )
 }
-const WarningHeader = () => {
+const AlertHeader = () => {
   return (
     <Box className='bg-[#F5F6F7]' padding='4' position='sticky'>
       <BodyShort size='medium' weight='semibold' textColor='subtle'>
@@ -62,22 +62,22 @@ const WarningHeader = () => {
   )
 }
 
-const WARNING_OPTIONS = {
+const ALERT_OPTIONS = {
   "": "Velg",
   Warning: "Warning",
   Error: "Error",
 }
 
-type NotificationType = keyof typeof WARNING_OPTIONS
+type AlertNotificationType = keyof typeof ALERT_OPTIONS
 
-const WarningForm = ({
+const AlertForm = ({
   setIsTesting,
 }: {
   setIsTesting: React.Dispatch<React.SetStateAction<boolean>>
 }) => {
-  const [notificationType, setNotificationType] = useState<NotificationType>("")
+  const [notificationType, setNotificationType] = useState<AlertNotificationType>("")
   const [title, setTitle] = useState<string>("")
-  const [text, setText] = useState<string>("")
+  const [content, setContent] = useState<string>("")
   const ref = useRef<HTMLDialogElement>(null)
   const { createErrorNotification, isLoading } = useCreateErrorNotification()
   const { mutate } = useSWRConfig()
@@ -89,7 +89,7 @@ const WarningForm = ({
 
 const errorNotification = {
       title,
-      content: text,
+      content,
       notificationType,
       expiresAt: null,
     }
@@ -116,7 +116,7 @@ const errorNotification = {
       {
         id: "test-id",
         title,
-        content: text,
+        content: content,
         notificationType,
         expiresAt: null,
         createdAt: new Date().toISOString(),
@@ -138,7 +138,7 @@ const errorNotification = {
   }, [])
 
   const isValidForm = () => {
-    return notificationType !== "" && title !== "" && text !== ""
+    return notificationType !== "" && title !== "" && content !== ""
   }
 
   return (
@@ -149,10 +149,10 @@ const errorNotification = {
         className='max-w-48'
         value={notificationType}
         onChange={(event) =>
-          setNotificationType(event.target.value as NotificationType)
+          setNotificationType(event.target.value as AlertNotificationType)
         }
       >
-        {Object.entries(WARNING_OPTIONS).map(([value, label]) => (
+        {Object.entries(ALERT_OPTIONS).map(([value, label]) => (
           <option key={`notification-type-option-${value}`} value={value}>
             {label}
           </option>
@@ -169,9 +169,9 @@ const errorNotification = {
       <Textarea
         label='Tekst'
         size='small'
-        value={text}
+        value={content}
         onChange={(event) => {
-          setText(event.target.value)
+          setContent(event.target.value)
         }}
       />
       <Detail textColor='subtle'>
@@ -233,7 +233,7 @@ const errorNotification = {
   )
 }
 
-const SingleAlertWrapper = ({
+const SingleAlert = ({
   errorNotification,
 }: {
   errorNotification: ErrorNotification
@@ -248,14 +248,14 @@ const SingleAlertWrapper = ({
   }
 
   return (
-    <SingleAlert
+    <SingleAlertInner
       errorNotification={errorNotification}
       setUpdateErrorNotification={setUpdateErrorNotification}
     />
   )
 }
 
-const SingleAlert = ({
+const SingleAlertInner = ({
   errorNotification,
   setUpdateErrorNotification,
 }: {
@@ -375,8 +375,8 @@ const UpdateAlertForm = ({
     React.SetStateAction<ErrorNotification | null>
   >
 }) => {
-  const [notificationType, setNotificationType] = useState<NotificationType>(
-    errorNotification.notificationType as NotificationType,
+  const [notificationType, setNotificationType] = useState<AlertNotificationType>(
+    errorNotification.notificationType as AlertNotificationType,
   )
   const [title, setTitle] = useState<string>(errorNotification.title)
   const [text, setText] = useState<string>(errorNotification.content)
@@ -449,10 +449,10 @@ const UpdateAlertForm = ({
         className='max-w-48'
         value={notificationType}
         onChange={(event) =>
-          setNotificationType(event.target.value as NotificationType)
+          setNotificationType(event.target.value as AlertNotificationType)
         }
       >
-        {Object.entries(WARNING_OPTIONS).map(([value, label]) => (
+        {Object.entries(ALERT_OPTIONS).map(([value, label]) => (
           <option key={`notification-type-option-${value}`} value={value}>
             {label}
           </option>
