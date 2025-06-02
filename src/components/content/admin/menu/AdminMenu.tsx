@@ -4,12 +4,13 @@ import {
   ExclamationmarkTriangleIcon,
   MagnifyingGlassIcon,
 } from "@navikt/aksel-icons"
-import { Button, Heading, HStack, VStack } from "@navikt/ds-react"
+import { Button, HStack } from "@navikt/ds-react"
 import { useEffect, useRef, useState } from "react"
 import { useUserConfig } from "../../../../api/api.ts"
+import { CreateAlert } from "./CreateAlert.tsx"
+import { CreateNews } from "./CreateNews.tsx"
 import { FeedbackFromUsers } from "./FeedbackFromUsers.tsx"
 import SearchConversation from "./searchconversation/SearchConversation.tsx"
-import { CreateAlert } from "./CreateAlert.tsx"
 
 const AdminMenuWrapper = () => {
   const { userConfig } = useUserConfig()
@@ -23,7 +24,9 @@ const AdminMenuWrapper = () => {
 }
 
 const AdminMenu = () => {
-  const [activeComponent, setActiveComponent] = useState<"search" | "feedback" | "alert" | "news" | null>(null)
+  const [activeComponent, setActiveComponent] = useState<
+    "search" | "feedback" | "alert" | "news" | null
+  >(null)
   const menuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -73,9 +76,7 @@ const AdminMenu = () => {
             icon={<ExclamationmarkTriangleIcon />}
             className={`${activeComponent === "alert" ? "bg-[#49515E]" : "bg-[#B65781]"} hover:bg-[#555D6A]`}
             onClick={() =>
-              setActiveComponent(
-                activeComponent === "alert" ? null : "alert",
-              )
+              setActiveComponent(activeComponent === "alert" ? null : "alert")
             }
           />
           <Button
@@ -102,13 +103,3 @@ const AdminMenu = () => {
 }
 
 export default AdminMenuWrapper
-
-const CreateNews = () => {
-  return (
-    <VStack>
-      <div className='w-80 border-b border-b-border-subtle p-4'>
-        <Heading size='xsmall'>Opprett nyhet</Heading>
-      </div>
-    </VStack>
-  )
-}

@@ -1,7 +1,7 @@
 import useSWR from "swr"
 import useSWRMutation from "swr/mutation"
 import { Feedback, Message } from "../types/Message"
-import { Alert, Notification } from "../types/Notifications"
+import { Alert, NewsNotification, Notification } from "../types/Notifications"
 import { ApiError, fetcher, request } from "./api"
 
 export const useAdminMessages = (conversationId: string) => {
@@ -96,6 +96,29 @@ export const useDeleteAlert = (id: string) => {
 
   return {
     deleteAlert: trigger,
+    isLoading: isMutating,
+  }
+}
+
+type CreateNews = Omit<NewsNotification, "id" | "createdAt">
+
+export const useCreateNews = () => {
+  const { trigger, isMutating } = useSWRMutation(
+    `/api/v1/admin/notifications`,
+    request("POST"),
+  )
+
+  const createNews = (news: CreateNews): Promise<Notification> => {
+    return trigger(
+      { ...news, notificationType: "News", expiresAt: null },
+      {
+        optimisticData: news,
+      },
+    ) as Promise<Notification>
+  }
+
+  return {
+    createNews,
     isLoading: isMutating,
   }
 }
