@@ -227,8 +227,11 @@ export const useNewsNotifications = () => {
     fetcher,
   )
 
+  const byDate: (a: NewsNotification, b: NewsNotification) => number = (a, b) =>
+    new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+
   return {
-    newsNotifications: data ?? [],
+    newsNotifications: (data ?? []).sort(byDate),
     isLoading,
     error,
   }

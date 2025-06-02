@@ -58,7 +58,6 @@ export const NewsForm = () => {
     }
 
     createNews(newsNotification).then(() => {
-      mutate("/api/v1/notifications")
       mutate("/api/v1/notifications/news")
     })
   }
@@ -67,25 +66,27 @@ export const NewsForm = () => {
     event.preventDefault()
     event.stopPropagation()
 
-    const news: NewsNotification[] = [
-      {
-        id: crypto.randomUUID(),
-        title,
-        content: content,
-        createdAt: new Date().toISOString(),
-      },
-    ]
+    const news: NewsNotification = {
+      id: crypto.randomUUID(),
+      title,
+      content: content,
+      createdAt: new Date().toISOString(),
+    }
 
     // Update the cache to get a preview
     const opts = { revalidate: false }
-    mutate("/api/v1/notifications", news, opts)
-    mutate("/api/v1/notifications/news", news, opts)
+    mutate(
+      "/api/v1/notifications/news",
+      (existing: any) => {
+        return [news, ...existing]
+      },
+      opts,
+    )
   }
 
   // Clear test data on unmount
   useEffect(() => {
     return () => {
-      mutate("/api/v1/notifications")
       mutate("/api/v1/notifications/news")
     }
   }, [])
