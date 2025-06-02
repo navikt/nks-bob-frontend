@@ -5,7 +5,6 @@ export const mockMessages: Message[] = [
     id: "a6447e7d-5672-4bc7-92fe-fce1445146bc",
     content: "Hva er dagpenger?",
     createdAt: "2025-02-25T11:01:17.523039994",
-    feedback: { liked: false },
     messageType: "question",
     messageRole: "human",
     citations: [],
@@ -20,7 +19,6 @@ export const mockMessages: Message[] = [
     content:
       "Dagpenger er en pengestøtte du kan få når du er arbeidsledig eller permittert. Formålet med dagpenger er å sikre inntekt i perioder hvor du ikke har arbeid. For å ha rett til dagpenger må du oppfylle visse krav til tidligere inntekt og arbeid.",
     createdAt: "2025-02-25T11:01:17.537888",
-    feedback: { liked: false },
     messageType: "answer",
     messageRole: "ai",
     citations: [

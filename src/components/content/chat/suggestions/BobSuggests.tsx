@@ -13,7 +13,7 @@ import analytics from "../../../../utils/analytics.ts"
 import { md } from "../../../../utils/markdown.ts"
 import { CoachMark } from "../../../coachmark/CoachMark.tsx"
 import { AnswerButtonsExplanation } from "../../../coachmark/CoachmarkContent.tsx"
-import { GiveUsFeedback } from "../feedback/GiveUsFeedback.tsx"
+import { FeedbackOnAnswer } from "../feedback/GiveUsFeedback.tsx"
 import "./BobSuggests.css"
 
 interface BobSuggestsProps {
@@ -83,7 +83,8 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
           }}
         />
       </Tooltip>
-      <GiveUsFeedback message={message} />
+      {/*<GiveUsFeedback message={message} />*/}
+      <FeedbackOnAnswer message={message} />
 
       <MessageStar message={message} />
       <Tooltip content='Oversett svaret til engelsk'>
