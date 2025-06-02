@@ -52,8 +52,8 @@ export const FeedbackFromUsers = () => {
 const FeedbackDescription = () => {
   return (
     <Box padding='4' position='sticky'>
-      Her finner du feilmeldinger som veilederne sender oss når de ser at noe er
-      galt med svaret.
+      Her finner du tilbakemeldinger som veilederne sender oss når de ser at noe
+      er galt med svaret.
     </Box>
   )
 }
@@ -93,7 +93,7 @@ const FeedbackHeader = ({
         <HStack gap='2' align='center'>
           <ChatExclamationmarkIcon />
           <BodyShort size='medium' textColor='subtle'>
-            Alle feilmeldinger
+            Alle tilbakemeldinger
           </BodyShort>
         </HStack>
         <ActionMenu rootElement={menuRef.current}>
@@ -243,9 +243,7 @@ const SingleFeedback = ({
   }
 
   const buttonLabel = isResolved ? "Ferdigstilt" : "Ferdigstill"
-  const buttonStyle = isResolved
-    ? "bg-[#00893C] text-white"
-    : ""
+  const buttonStyle = isResolved ? "bg-[#00893C] text-white" : ""
 
   return (
     <Box
