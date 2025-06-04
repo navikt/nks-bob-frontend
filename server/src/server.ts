@@ -185,7 +185,7 @@ const main = async () => {
   app.disable("x-powered-by")
   app.set("views", BUILD_PATH)
 
-  app.use("/*", (_req, res, next) => {
+  app.use("/*splat", (_req, res, next) => {
     res.setHeader("NAIS_APP_IMAGE", NAIS_APP_IMAGE)
     next()
   })
@@ -256,13 +256,17 @@ const main = async () => {
     }),
   )
 
-  app.get("/internal/isAlive", (_req, res) => res.sendStatus(200))
+  app.get("/internal/isAlive", (_req, res) => {
+    res.sendStatus(200)
+    return
+  })
 
-  app.get("/internal/isReady", (_req, res) =>
-    res.sendStatus(appReady ? 200 : 500),
-  )
+  app.get("/internal/isReady", (_req, res) => {
+    res.sendStatus(appReady ? 200 : 500)
+    return
+  })
 
-  app.get("/*", (_req, res) => {
+  app.get("/*splat", (_req, res) => {
     res.setHeader("Cache-Control", "no-store")
     res.setHeader("Etag", GIT_COMMIT)
     res.send(indexHtml)
