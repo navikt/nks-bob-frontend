@@ -1,3 +1,4 @@
+import * as oasis from "@navikt/oasis"
 import { NextFunction, Request, Response } from "express"
 import { CacheContainer } from "node-ts-cache"
 import { MemoryStorage } from "node-ts-cache-storage-memory"
@@ -35,7 +36,7 @@ async function fetchToken() {
 
 export async function getToken(log: Logger): Promise<TokenResult> {
   const cachedToken = await tokenCache.getItem<string>("token")
-  if (cachedToken) {
+  if (cachedToken && oasis.expiresIn(cachedToken) > 60) {
     return result.ok(cachedToken)
   }
 
