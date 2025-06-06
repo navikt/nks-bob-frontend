@@ -7,6 +7,7 @@ import {
   RouterProvider,
 } from "react-router"
 import { SWRConfig } from "swr"
+import { createHead, UnheadProvider } from "@unhead/react/client"
 import App from "./App.tsx"
 import {
   preloadAlerts,
@@ -16,6 +17,8 @@ import {
 } from "./api/api.ts"
 import "./global.css"
 import { AnalyticsProvider } from "./utils/AnalyticsProvider.tsx"
+
+const head = createHead()
 
 // Lazy load components to reduce initial bundle size
 const CreateConversationContent = lazy(
@@ -72,17 +75,19 @@ const router = createBrowserRouter(
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <SWRConfig
-      value={{
-        onError: (err) => {
-          if (err.status === 401) {
-            triggerReAuth()
-          }
-        },
-      }}
-    >
-      <AnalyticsProvider />
-      <RouterProvider router={router} />
-    </SWRConfig>
+    <UnheadProvider head={head}>
+      <SWRConfig
+        value={{
+          onError: (err) => {
+            if (err.status === 401) {
+              triggerReAuth()
+            }
+          },
+        }}
+      >
+        <AnalyticsProvider />
+        <RouterProvider router={router} />
+      </SWRConfig>
+    </UnheadProvider>
   </StrictMode>,
 )
