@@ -1,4 +1,4 @@
-import { Helmet } from "react-helmet"
+import { Head } from "@unhead/react"
 
 const isProd = window.location.hostname === "bob.ansatt.nav.no"
 
@@ -9,7 +9,7 @@ const websiteId = isProd
 const domains = isProd ? "bob.ansatt.nav.no" : "bob.ansatt.dev.nav.no"
 
 export const AnalyticsProvider = () => (
-  <Helmet>
+  <Head>
     <script
       defer
       src='https://cdn.nav.no/team-researchops/sporing/sporing.js'
@@ -17,5 +17,5 @@ export const AnalyticsProvider = () => (
       data-website-id={websiteId}
       data-domains={domains}
     />
-  </Helmet>
+  </Head>
 )
