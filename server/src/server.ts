@@ -185,7 +185,7 @@ const main = async () => {
   app.disable("x-powered-by")
   app.set("views", BUILD_PATH)
 
-  app.use("/*splat", (_req, res, next) => {
+  app.use("/{*splat}", (_req, res, next) => {
     res.setHeader("NAIS_APP_IMAGE", NAIS_APP_IMAGE)
     next()
   })
@@ -266,7 +266,7 @@ const main = async () => {
     return
   })
 
-  app.get("/*splat", (_req, res) => {
+  app.get("/{*splat}", (_req, res) => {
     res.setHeader("Cache-Control", "no-store")
     res.setHeader("Etag", GIT_COMMIT)
     res.send(indexHtml)
