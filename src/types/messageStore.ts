@@ -1,15 +1,35 @@
 import { create } from "zustand"
-import {
-  MessageEvent as ConversationEvent,
-  isCitationsUpdated,
-  isContentUpdated,
-  isContextUpdated,
-  isErrorsUpdated,
-  isNewMessage,
-  isPendingUpdated,
-  isStatusUpdate,
-} from "../api/ws"
+import { MessageEvent as ConversationEvent } from "../api/sse"
 import { Message } from "./Message"
+
+// Type guard functions for MessageEvent types
+function isNewMessage(event: ConversationEvent): event is { type: "NewMessage", id: string, message: Message } {
+  return event.type === "NewMessage"
+}
+
+function isContentUpdated(event: ConversationEvent): event is { type: "ContentUpdated", id: string, content: string } {
+  return event.type === "ContentUpdated"
+}
+
+function isCitationsUpdated(event: ConversationEvent): event is { type: "CitationsUpdated", id: string, citations: any[] } {
+  return event.type === "CitationsUpdated"
+}
+
+function isContextUpdated(event: ConversationEvent): event is { type: "ContextUpdated", id: string, context: any[] } {
+  return event.type === "ContextUpdated"
+}
+
+function isPendingUpdated(event: ConversationEvent): event is { type: "PendingUpdated", id: string, message: Message, pending: boolean } {
+  return event.type === "PendingUpdated"
+}
+
+function isStatusUpdate(event: ConversationEvent): event is { type: "StatusUpdate", id: string, content: string } {
+  return event.type === "StatusUpdate"
+}
+
+function isErrorsUpdated(event: ConversationEvent): event is { type: "ErrorsUpdated", id: string, errors: any[] } {
+  return event.type === "ErrorsUpdated"
+}
 
 type MessageMap = { [id: string]: Message }
 

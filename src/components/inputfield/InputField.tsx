@@ -68,7 +68,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
 
   const { alerts } = useAlerts()
   const hasErrors =
-    alerts.at(0)?.notificationType === "Error" ?? false
+    alerts.at(0)?.notificationType === "Error"
 
   function sendMessage(messageContent?: string) {
     const message: NewMessage = {
