@@ -101,13 +101,14 @@ const FeedbackHeader = ({
   activeFilter: FilterValue
   setActiveFilter: Dispatch<SetStateAction<FilterValue>>
 }) => {
+  const { total } = useFeedbacks(activeFilter, 0, 0)
   return (
     <Box className='bg-[#F5F6F7]' padding='4' position='sticky'>
       <HStack align='center' justify='space-between'>
         <HStack gap='2' align='center'>
           <ChatExclamationmarkIcon />
           <BodyShort size='medium' textColor='subtle'>
-            Alle tilbakemeldinger
+            Alle tilbakemeldinger {total > 0 && `(${total})`}
           </BodyShort>
         </HStack>
         <ActionMenu rootElement={menuRef.current}>
