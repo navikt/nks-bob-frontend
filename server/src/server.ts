@@ -191,6 +191,11 @@ const main = async () => {
       level: 6,
       filter: (req, res) => {
         const contentType = (res.getHeader("Content-Type") as string) || ""
+
+        if (contentType === "text/event-stream") {
+          return false
+        }
+
         // Compress all text files, JavaScript, CSS, and JSON
         return (
           /text|javascript|json|css|font|svg|xml/i.test(contentType) ||
