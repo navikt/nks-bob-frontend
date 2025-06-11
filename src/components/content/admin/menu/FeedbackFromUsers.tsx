@@ -35,7 +35,7 @@ export const FeedbackFromUsers = () => {
   const [sort, setSort] = useState<SortValue>("nyest")
   const [activeFilter, setActiveFilter] = useState<FilterValue>("nye")
   const [currentPage, setCurrentPage] = useState(1)
-  const pageSize = 5
+  const pageSize = 4
 
   // Reset to page 1 when filter changes
   useEffect(() => {
