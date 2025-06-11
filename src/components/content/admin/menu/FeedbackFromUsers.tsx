@@ -11,6 +11,7 @@ import {
   HStack,
   Label,
   Loader,
+  Pagination,
   Select,
   Tag,
   VStack,
@@ -33,6 +34,13 @@ export const FeedbackFromUsers = () => {
   const menuRef = useRef<HTMLDivElement>(null)
   const [sort, setSort] = useState<SortValue>("nyest")
   const [activeFilter, setActiveFilter] = useState<FilterValue>("nye")
+  const [currentPage, setCurrentPage] = useState(1)
+  const pageSize = 5
+
+  // Reset to page 1 when filter changes
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [activeFilter])
 
   return (
     <VStack ref={menuRef}>
@@ -44,7 +52,13 @@ export const FeedbackFromUsers = () => {
         activeFilter={activeFilter}
         setActiveFilter={setActiveFilter}
       />
-      <FeedbackList sort={sort} activeFilter={activeFilter} />
+      <FeedbackList 
+        sort={sort} 
+        activeFilter={activeFilter} 
+        currentPage={currentPage}
+        pageSize={pageSize}
+        onPageChange={setCurrentPage}
+      />
     </VStack>
   )
 }
@@ -148,15 +162,23 @@ const FeedbackHeader = ({
 const FeedbackList = ({
   sort,
   activeFilter,
+  currentPage,
+  pageSize,
+  onPageChange,
 }: {
   sort: SortValue
   activeFilter: FilterValue
+  currentPage: number
+  pageSize: number
+  onPageChange: (page: number) => void
 }) => {
-  const { feedbacks, isLoading } = useFeedbacks(activeFilter)
+  const { feedbacks, total, isLoading } = useFeedbacks(activeFilter, currentPage - 1, pageSize)
   const [searchParams] = useSearchParams()
   const [selectedMessageId, setSelectedMessageId] = useState<string | null>(
     null,
   )
+  
+  const totalPages = Math.ceil(total / pageSize)
 
   useEffect(() => {
     if (searchParams.has("messageId")) {
@@ -196,6 +218,17 @@ const FeedbackList = ({
           isSelected={feedback.messageId === selectedMessageId}
         />
       ))}
+      
+      {totalPages > 1 && (
+        <HStack padding='4' justify="center">
+          <Pagination
+            page={currentPage}
+            onPageChange={onPageChange}
+            count={totalPages}
+            size='xsmall'
+          />
+        </HStack>
+      )}
     </VStack>
   )
 }
