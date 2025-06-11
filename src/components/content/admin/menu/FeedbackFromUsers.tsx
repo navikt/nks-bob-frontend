@@ -52,9 +52,9 @@ export const FeedbackFromUsers = () => {
         activeFilter={activeFilter}
         setActiveFilter={setActiveFilter}
       />
-      <FeedbackList 
-        sort={sort} 
-        activeFilter={activeFilter} 
+      <FeedbackList
+        sort={sort}
+        activeFilter={activeFilter}
         currentPage={currentPage}
         pageSize={pageSize}
         onPageChange={setCurrentPage}
@@ -173,12 +173,16 @@ const FeedbackList = ({
   pageSize: number
   onPageChange: (page: number) => void
 }) => {
-  const { feedbacks, total, isLoading } = useFeedbacks(activeFilter, currentPage - 1, pageSize)
+  const { feedbacks, total, isLoading } = useFeedbacks(
+    activeFilter,
+    currentPage - 1,
+    pageSize,
+  )
   const [searchParams] = useSearchParams()
   const [selectedMessageId, setSelectedMessageId] = useState<string | null>(
     null,
   )
-  
+
   const totalPages = Math.ceil(total / pageSize)
 
   useEffect(() => {
@@ -219,9 +223,9 @@ const FeedbackList = ({
           isSelected={feedback.messageId === selectedMessageId}
         />
       ))}
-      
+
       {totalPages > 1 && (
-        <HStack padding='4' justify="center">
+        <HStack padding='4' justify='center'>
           <Pagination
             page={currentPage}
             onPageChange={onPageChange}
@@ -293,10 +297,15 @@ const SingleFeedback = ({
       className={`cursor-pointer hover:bg-[#F1F7FF] ${isSelected ? "bg-[#F5F6F7]" : ""}`}
     >
       <VStack gap='4'>
-        <Label size='medium'>
-          Feil innmeldt:{" "}
-          {format(new Date(feedback.createdAt), "dd.MM.yy (HH:mm)")}
-        </Label>
+        <HStack justify='space-between'>
+          <Label size='medium'>
+            Feil innmeldt:{" "}
+            {format(new Date(feedback.createdAt), "dd.MM.yy (HH:mm)")}
+          </Label>
+          <Tag variant='neutral-moderate' size='xsmall'>
+            {feedback.id.substring(30)}
+          </Tag>
+        </HStack>
         <VStack gap='2'>
           <Label size='small'>Hva er galt med svaret?</Label>
           <HStack gap='2'>
