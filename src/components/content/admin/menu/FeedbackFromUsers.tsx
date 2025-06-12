@@ -14,6 +14,7 @@ import {
   Pagination,
   Select,
   Tag,
+  Textarea,
   VStack,
 } from "@navikt/ds-react"
 import { format } from "date-fns"
@@ -238,14 +239,21 @@ const FeedbackList = ({
   )
 }
 
-const OPTIONS = {
+const IMPORTANCE_OPTIONS = {
   "ikke-relevant": "Ikke relevant",
   "lite-viktig": "Lite viktig",
   viktig: "Viktig",
   "særskilt-viktig": "Særskilt viktig",
 }
 
-type OptionsValue = keyof typeof OPTIONS
+type ImportanceOptionsValue = keyof typeof IMPORTANCE_OPTIONS
+
+const CATEGORY_OPTIONS = {
+  "ki-feil": "KI-feil",
+  brukerfeil: "Brukerfeil",
+}
+
+type CategoryOptionsValue = keyof typeof CATEGORY_OPTIONS
 
 const SingleFeedback = ({
   feedback,
@@ -255,16 +263,25 @@ const SingleFeedback = ({
   isSelected: boolean
 }) => {
   const navigate = useNavigate()
-  const [category, setCategory] = useState<OptionsValue | "">(
-    (feedback.resolvedCategory as OptionsValue) ?? "",
+  const [category, setCategory] = useState<CategoryOptionsValue | "">(
+    (feedback.resolvedCategory as CategoryOptionsValue) ?? "",
   )
+  const [importance, setImportance] = useState<ImportanceOptionsValue | "">(
+    (feedback.resolvedImportance as ImportanceOptionsValue) ?? "",
+  )
+  const [note, setNote] = useState<string>("")
   const [isResolved, setIsResolved] = useState(feedback.resolved)
   const { updateFeedback, isLoading } = useUpdateFeedback(feedback.id)
 
   const submit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (category === "" || !OPTIONS[category]) {
+    if (category === "" || !CATEGORY_OPTIONS[category]) {
       console.error(`Invalid category value "${category}"`)
+      return
+    }
+
+    if (importance === "" || !IMPORTANCE_OPTIONS[importance]) {
+      console.error(`Invalid importance value "${importance}"`)
       return
     }
 
@@ -273,6 +290,8 @@ const SingleFeedback = ({
       comment: feedback.comment,
       resolved: true,
       resolvedCategory: category,
+      resolvedImportance: importance,
+      resolvedNote: note,
     }
 
     updateFeedback(updatedFeedback).then(({ resolved }) => {
@@ -282,6 +301,8 @@ const SingleFeedback = ({
 
   const buttonLabel = isResolved ? "Ferdigstilt" : "Ferdigstill"
   const buttonStyle = isResolved ? "bg-[#00893C] text-white" : ""
+
+  const isResolvable = category !== "" && importance !== ""
 
   return (
     <Box
@@ -325,18 +346,46 @@ const SingleFeedback = ({
               size='small'
               className='max-w-32'
               onChange={(event) =>
-                setCategory(event.target.value as OptionsValue | "")
+                setCategory(event.target.value as CategoryOptionsValue | "")
               }
               value={category}
             >
               <option value=''>Velg</option>
-              {Object.entries(OPTIONS).map(([value, label]) => (
-                <option key={`feedback-option-${value}`} value={value}>
+              {Object.entries(CATEGORY_OPTIONS).map(([value, label]) => (
+                <option key={`feedback-category-option-${value}`} value={value}>
                   {label}
                 </option>
               ))}
             </Select>
-            {category !== "" && (
+            <Select
+              label='Viktighet'
+              size='small'
+              className='max-w-32'
+              onChange={(event) =>
+                setImportance(event.target.value as ImportanceOptionsValue | "")
+              }
+              value={importance}
+            >
+              <option value=''>Velg</option>
+              {Object.entries(IMPORTANCE_OPTIONS).map(([value, label]) => (
+                <option
+                  key={`feedback-importance-option-${value}`}
+                  value={value}
+                >
+                  {label}
+                </option>
+              ))}
+            </Select>
+            <Textarea
+              label='Notat'
+              value={note}
+              onChange={(event) => setNote(event.target.value)}
+              size="small"
+              minRows={1}
+              rows={1}
+              maxRows={5}
+            />
+            {isResolvable && (
               <Button
                 type='submit'
                 variant='secondary-neutral'
