@@ -12,13 +12,12 @@ import { useSourcesStore } from "./chat/chatbubbles/sources/ShowAllSources.tsx"
 const CreateConversationContent = () => {
   const navigate = useNavigate()
   const { createConversation } = useCreateConversation()
-  const { setInputValue, setFollowUp } = useInputFieldStore()
+  const { setFollowUp } = useInputFieldStore()
   const { setActiveMessage } = useSourcesStore()
   const { resetMessages } = messageStore()
 
   useEffect(() => {
-    // reset input state on first render.
-    setInputValue("")
+    // reset message state on first render.
     setFollowUp([])
     resetMessages()
     // reset sources sidebar
