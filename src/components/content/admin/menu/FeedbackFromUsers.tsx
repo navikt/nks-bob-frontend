@@ -33,7 +33,7 @@ import { Feedback } from "../../../../types/Message"
 
 export const FeedbackFromUsers = () => {
   const menuRef = useRef<HTMLDivElement>(null)
-  const [sort, setSort] = useState<SortValue>("nyest")
+  const [sort, setSort] = useState<SortValue>("CREATED_AT_DESC")
   const [activeFilter, setActiveFilter] = useState<FilterValue>("nye")
   const [currentPage, setCurrentPage] = useState(1)
   const pageSize = 4
@@ -74,8 +74,8 @@ const FeedbackDescription = () => {
 }
 
 const SORT = {
-  nyest: "Nyeste først",
-  eldst: "Eldste først",
+  "CREATED_AT_DESC": "Nyeste først",
+  "CREATED_AT_ASC": "Eldste først",
 }
 
 type SortValue = keyof typeof SORT
@@ -102,7 +102,7 @@ const FeedbackHeader = ({
   activeFilter: FilterValue
   setActiveFilter: Dispatch<SetStateAction<FilterValue>>
 }) => {
-  const { total } = useFeedbacks(activeFilter, 0, 0)
+  const { total } = useFeedbacks(activeFilter)
   return (
     <Box className='bg-[#F5F6F7]' padding='4' position='sticky'>
       <HStack align='center' justify='space-between'>
@@ -178,6 +178,7 @@ const FeedbackList = ({
     activeFilter,
     currentPage - 1,
     pageSize,
+    sort,
   )
   const [searchParams] = useSearchParams()
   const [selectedMessageId, setSelectedMessageId] = useState<string | null>(
@@ -207,17 +208,9 @@ const FeedbackList = ({
     )
   }
 
-  const compareDate = (a: string, b: string) =>
-    new Date(a).getTime() - new Date(b).getTime()
-
-  const byDate: ((a: Feedback, b: Feedback) => number) | undefined = (a, b) =>
-    sort === "eldst"
-      ? compareDate(a.createdAt, b.createdAt)
-      : compareDate(b.createdAt, a.createdAt)
-
   return (
     <VStack className='overflow-scroll'>
-      {feedbacks.sort(byDate).map((feedback) => (
+      {feedbacks.map((feedback) => (
         <SingleFeedback
           key={`single-feedback-${feedback.id}`}
           feedback={feedback}
@@ -269,7 +262,7 @@ const SingleFeedback = ({
   const [importance, setImportance] = useState<ImportanceOptionsValue | "">(
     (feedback.resolvedImportance as ImportanceOptionsValue) ?? "",
   )
-  const [note, setNote] = useState<string>("")
+  const [note, setNote] = useState<string>(feedback.resolvedNote ?? "")
   const [isResolved, setIsResolved] = useState(feedback.resolved)
   const { updateFeedback, isLoading } = useUpdateFeedback(feedback.id)
 
@@ -349,6 +342,7 @@ const SingleFeedback = ({
                 setCategory(event.target.value as CategoryOptionsValue | "")
               }
               value={category}
+              disabled={isResolved}
             >
               <option value=''>Velg</option>
               {Object.entries(CATEGORY_OPTIONS).map(([value, label]) => (
@@ -365,6 +359,7 @@ const SingleFeedback = ({
                 setImportance(event.target.value as ImportanceOptionsValue | "")
               }
               value={importance}
+              disabled={isResolved}
             >
               <option value=''>Velg</option>
               {Object.entries(IMPORTANCE_OPTIONS).map(([value, label]) => (
@@ -380,7 +375,8 @@ const SingleFeedback = ({
               label='Notat'
               value={note}
               onChange={(event) => setNote(event.target.value)}
-              size="small"
+              disabled={isResolved}
+              size='small'
               minRows={1}
               rows={1}
               maxRows={5}
@@ -394,6 +390,7 @@ const SingleFeedback = ({
                 icon={<CheckmarkCircleIcon />}
                 loading={isLoading}
                 className={buttonStyle}
+                disabled={isResolved}
               >
                 {buttonLabel}
               </Button>
