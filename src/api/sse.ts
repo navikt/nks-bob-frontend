@@ -1,7 +1,60 @@
 import { useTransition } from "react"
+import { Citation, Context, Message, MessageError } from "../types/Message"
 import { messageStore } from "../types/messageStore"
 import { API_URL } from "./api"
-import { MessageEvent as ConversationEvent } from "./ws"
+
+// Define necessary types from ws.ts directly here
+export type MessageEvent =
+  | NewMessageEvent
+  | ContentUpdated
+  | CitationsUpdated
+  | ContextUpdated
+  | PendingUpdated
+  | StatusUpdate
+  | ErrorsUpdated
+
+type NewMessageEvent = {
+  type: "NewMessage"
+  id: string
+  message: Message
+}
+
+type ContentUpdated = {
+  type: "ContentUpdated"
+  id: string
+  content: string
+}
+
+type CitationsUpdated = {
+  type: "CitationsUpdated"
+  id: string
+  citations: Citation[]
+}
+
+type ContextUpdated = {
+  type: "ContextUpdated"
+  id: string
+  context: Context[]
+}
+
+type PendingUpdated = {
+  type: "PendingUpdated"
+  id: string
+  message: Message
+  pending: boolean
+}
+
+type StatusUpdate = {
+  type: "StatusUpdate"
+  id: string
+  content: string
+}
+
+type ErrorsUpdated = {
+  type: "ErrorsUpdated"
+  id: string
+  errors: MessageError[]
+}
 
 const CHUNK_SEP = "$#;"
 
@@ -59,7 +112,7 @@ export const useSendMessage = (conversationId: string) => {
             .filter((str) => str)
             .map((line) => {
               try {
-                return JSON.parse(line.trim()) as ConversationEvent
+                return JSON.parse(line.trim()) as MessageEvent
               } catch (_e) {
                 buf = line
                 return null

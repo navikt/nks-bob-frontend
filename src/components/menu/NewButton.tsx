@@ -3,9 +3,11 @@ import { BodyShort, Button, Modal, Tooltip, VStack } from "@navikt/ds-react"
 import { useRef } from "react"
 import { Link } from "react-router"
 import FeedbackThumbs from "../content/chat/feedback/FeedbackThumbs"
+import { useInputFieldStore } from "../inputfield/InputField"
 
 export const NewButton = ({ conversationId }: { conversationId: string }) => {
   const newConversationRef = useRef<HTMLDialogElement>(null)
+  const { setInputValue } = useInputFieldStore()
 
   return (
     <>
@@ -49,7 +51,7 @@ export const NewButton = ({ conversationId }: { conversationId: string }) => {
             Tilbake
           </Button>
           <Link to='/' className='w-fit'>
-            <Button type='button' variant='danger' size='medium'>
+            <Button type='button' variant='danger' size='medium' onClick={() => setInputValue("")}>
               Start ny samtale
             </Button>
           </Link>

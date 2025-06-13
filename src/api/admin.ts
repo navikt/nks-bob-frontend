@@ -17,15 +17,32 @@ export const useAdminMessages = (conversationId: string) => {
   }
 }
 
-export const useFeedbacks = (filter: string | null) => {
-  const filterQuery = filter ? `?filter=${filter}` : ""
-  const { data, isLoading, error } = useSWR<Feedback[], ApiError>(
-    `/api/v1/admin/feedbacks${filterQuery}`,
-    fetcher,
-  )
+type SortType = "CREATED_AT_ASC" | "CREATED_AT_DESC"
+
+export const useFeedbacks = (
+  filter: string | null,
+  page: number = 0,
+  size: number = 5,
+  sort: SortType = "CREATED_AT_DESC",
+) => {
+  const params = new URLSearchParams()
+  if (filter) params.append("filter", filter)
+  params.append("page", page.toString())
+  params.append("size", size.toString())
+  params.append("sort", sort)
+
+  const queryString = params.toString()
+  const { data, isLoading, error } = useSWR<
+    { data: Feedback[]; total: number },
+    ApiError
+  >(`/api/v1/admin/feedbacks?${queryString}`, fetcher)
+
+  const feedbacks = data?.data ?? []
+  const total = data?.total ?? 0
 
   return {
-    feedbacks: data ?? [],
+    feedbacks,
+    total,
     isLoading,
     error,
   }
