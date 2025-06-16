@@ -11,8 +11,10 @@ import {
   HStack,
   Label,
   Loader,
+  Pagination,
   Select,
   Tag,
+  Textarea,
   VStack,
 } from "@navikt/ds-react"
 import { format } from "date-fns"
@@ -31,8 +33,15 @@ import { Feedback } from "../../../../types/Message"
 
 export const FeedbackFromUsers = () => {
   const menuRef = useRef<HTMLDivElement>(null)
-  const [sort, setSort] = useState<SortValue>("nyest")
+  const [sort, setSort] = useState<SortValue>("CREATED_AT_DESC")
   const [activeFilter, setActiveFilter] = useState<FilterValue>("nye")
+  const [currentPage, setCurrentPage] = useState(1)
+  const pageSize = 4
+
+  // Reset to page 1 when filter changes
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [activeFilter])
 
   return (
     <VStack ref={menuRef}>
@@ -44,7 +53,13 @@ export const FeedbackFromUsers = () => {
         activeFilter={activeFilter}
         setActiveFilter={setActiveFilter}
       />
-      <FeedbackList sort={sort} activeFilter={activeFilter} />
+      <FeedbackList
+        sort={sort}
+        activeFilter={activeFilter}
+        currentPage={currentPage}
+        pageSize={pageSize}
+        onPageChange={setCurrentPage}
+      />
     </VStack>
   )
 }
@@ -59,8 +74,8 @@ const FeedbackDescription = () => {
 }
 
 const SORT = {
-  nyest: "Nyeste først",
-  eldst: "Eldste først",
+  "CREATED_AT_DESC": "Nyeste først",
+  "CREATED_AT_ASC": "Eldste først",
 }
 
 type SortValue = keyof typeof SORT
@@ -87,13 +102,14 @@ const FeedbackHeader = ({
   activeFilter: FilterValue
   setActiveFilter: Dispatch<SetStateAction<FilterValue>>
 }) => {
+  const { total } = useFeedbacks(activeFilter)
   return (
     <Box className='bg-[#F5F6F7]' padding='4' position='sticky'>
       <HStack align='center' justify='space-between'>
         <HStack gap='2' align='center'>
           <ChatExclamationmarkIcon />
           <BodyShort size='medium' textColor='subtle'>
-            Alle tilbakemeldinger
+            Alle tilbakemeldinger {total > 0 && `(${total})`}
           </BodyShort>
         </HStack>
         <ActionMenu rootElement={menuRef.current}>
@@ -148,15 +164,28 @@ const FeedbackHeader = ({
 const FeedbackList = ({
   sort,
   activeFilter,
+  currentPage,
+  pageSize,
+  onPageChange,
 }: {
   sort: SortValue
   activeFilter: FilterValue
+  currentPage: number
+  pageSize: number
+  onPageChange: (page: number) => void
 }) => {
-  const { feedbacks, isLoading } = useFeedbacks(activeFilter)
+  const { feedbacks, total, isLoading } = useFeedbacks(
+    activeFilter,
+    currentPage - 1,
+    pageSize,
+    sort,
+  )
   const [searchParams] = useSearchParams()
   const [selectedMessageId, setSelectedMessageId] = useState<string | null>(
     null,
   )
+
+  const totalPages = Math.ceil(total / pageSize)
 
   useEffect(() => {
     if (searchParams.has("messageId")) {
@@ -179,35 +208,45 @@ const FeedbackList = ({
     )
   }
 
-  const compareDate = (a: string, b: string) =>
-    new Date(a).getTime() - new Date(b).getTime()
-
-  const byDate: ((a: Feedback, b: Feedback) => number) | undefined = (a, b) =>
-    sort === "eldst"
-      ? compareDate(a.createdAt, b.createdAt)
-      : compareDate(b.createdAt, a.createdAt)
-
   return (
     <VStack className='overflow-scroll'>
-      {feedbacks.sort(byDate).map((feedback) => (
+      {feedbacks.map((feedback) => (
         <SingleFeedback
           key={`single-feedback-${feedback.id}`}
           feedback={feedback}
           isSelected={feedback.messageId === selectedMessageId}
         />
       ))}
+
+      {totalPages > 1 && (
+        <HStack padding='4' justify='center'>
+          <Pagination
+            page={currentPage}
+            onPageChange={onPageChange}
+            count={totalPages}
+            size='xsmall'
+          />
+        </HStack>
+      )}
     </VStack>
   )
 }
 
-const OPTIONS = {
+const IMPORTANCE_OPTIONS = {
   "ikke-relevant": "Ikke relevant",
   "lite-viktig": "Lite viktig",
   viktig: "Viktig",
   "særskilt-viktig": "Særskilt viktig",
 }
 
-type OptionsValue = keyof typeof OPTIONS
+type ImportanceOptionsValue = keyof typeof IMPORTANCE_OPTIONS
+
+const CATEGORY_OPTIONS = {
+  "ki-feil": "KI-feil",
+  brukerfeil: "Brukerfeil",
+}
+
+type CategoryOptionsValue = keyof typeof CATEGORY_OPTIONS
 
 const SingleFeedback = ({
   feedback,
@@ -217,16 +256,25 @@ const SingleFeedback = ({
   isSelected: boolean
 }) => {
   const navigate = useNavigate()
-  const [category, setCategory] = useState<OptionsValue | "">(
-    (feedback.resolvedCategory as OptionsValue) ?? "",
+  const [category, setCategory] = useState<CategoryOptionsValue | "">(
+    (feedback.resolvedCategory as CategoryOptionsValue) ?? "",
   )
+  const [importance, setImportance] = useState<ImportanceOptionsValue | "">(
+    (feedback.resolvedImportance as ImportanceOptionsValue) ?? "",
+  )
+  const [note, setNote] = useState<string>(feedback.resolvedNote ?? "")
   const [isResolved, setIsResolved] = useState(feedback.resolved)
   const { updateFeedback, isLoading } = useUpdateFeedback(feedback.id)
 
   const submit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (category === "" || !OPTIONS[category]) {
+    if (category === "" || !CATEGORY_OPTIONS[category]) {
       console.error(`Invalid category value "${category}"`)
+      return
+    }
+
+    if (importance === "" || !IMPORTANCE_OPTIONS[importance]) {
+      console.error(`Invalid importance value "${importance}"`)
       return
     }
 
@@ -235,6 +283,8 @@ const SingleFeedback = ({
       comment: feedback.comment,
       resolved: true,
       resolvedCategory: category,
+      resolvedImportance: importance,
+      resolvedNote: note,
     }
 
     updateFeedback(updatedFeedback).then(({ resolved }) => {
@@ -244,6 +294,8 @@ const SingleFeedback = ({
 
   const buttonLabel = isResolved ? "Ferdigstilt" : "Ferdigstill"
   const buttonStyle = isResolved ? "bg-[#00893C] text-white" : ""
+
+  const isResolvable = category !== "" && importance !== ""
 
   return (
     <Box
@@ -259,10 +311,15 @@ const SingleFeedback = ({
       className={`cursor-pointer hover:bg-[#F1F7FF] ${isSelected ? "bg-[#F5F6F7]" : ""}`}
     >
       <VStack gap='4'>
-        <Label size='medium'>
-          Feil innmeldt:{" "}
-          {format(new Date(feedback.createdAt), "dd.MM.yy (HH:mm)")}
-        </Label>
+        <HStack justify='space-between'>
+          <Label size='medium'>
+            Feil innmeldt:{" "}
+            {format(new Date(feedback.createdAt), "dd.MM.yy (HH:mm)")}
+          </Label>
+          <Tag variant='neutral-moderate' size='xsmall'>
+            {feedback.id.substring(30)}
+          </Tag>
+        </HStack>
         <VStack gap='2'>
           <Label size='small'>Hva er galt med svaret?</Label>
           <HStack gap='2'>
@@ -282,18 +339,49 @@ const SingleFeedback = ({
               size='small'
               className='max-w-32'
               onChange={(event) =>
-                setCategory(event.target.value as OptionsValue | "")
+                setCategory(event.target.value as CategoryOptionsValue | "")
               }
               value={category}
+              disabled={isResolved}
             >
               <option value=''>Velg</option>
-              {Object.entries(OPTIONS).map(([value, label]) => (
-                <option key={`feedback-option-${value}`} value={value}>
+              {Object.entries(CATEGORY_OPTIONS).map(([value, label]) => (
+                <option key={`feedback-category-option-${value}`} value={value}>
                   {label}
                 </option>
               ))}
             </Select>
-            {category !== "" && (
+            <Select
+              label='Viktighet'
+              size='small'
+              className='max-w-32'
+              onChange={(event) =>
+                setImportance(event.target.value as ImportanceOptionsValue | "")
+              }
+              value={importance}
+              disabled={isResolved}
+            >
+              <option value=''>Velg</option>
+              {Object.entries(IMPORTANCE_OPTIONS).map(([value, label]) => (
+                <option
+                  key={`feedback-importance-option-${value}`}
+                  value={value}
+                >
+                  {label}
+                </option>
+              ))}
+            </Select>
+            <Textarea
+              label='Notat'
+              value={note}
+              onChange={(event) => setNote(event.target.value)}
+              disabled={isResolved}
+              size='small'
+              minRows={1}
+              rows={1}
+              maxRows={5}
+            />
+            {isResolvable && (
               <Button
                 type='submit'
                 variant='secondary-neutral'
@@ -302,6 +390,7 @@ const SingleFeedback = ({
                 icon={<CheckmarkCircleIcon />}
                 loading={isLoading}
                 className={buttonStyle}
+                disabled={isResolved}
               >
                 {buttonLabel}
               </Button>
