@@ -1,3 +1,4 @@
+import compression from "compression"
 import { randomUUID } from "crypto"
 import express from "express"
 import { readFileSync } from "fs"
@@ -185,7 +186,39 @@ const main = async () => {
   app.disable("x-powered-by")
   app.set("views", BUILD_PATH)
 
-  app.use("/*", (_req, res, next) => {
+  app.use(
+    compression({
+      level: 6,
+      filter: (req, res) => {
+        const contentType = (res.getHeader("Content-Type") as string) || ""
+
+        if (contentType === "text/event-stream") {
+          return false
+        }
+
+        // Compress all text files, JavaScript, CSS, and JSON
+        return (
+          /text|javascript|json|css|font|svg|xml/i.test(contentType) ||
+          req.headers["accept-encoding"]?.includes("gzip") ||
+          false
+        )
+      },
+      threshold: 0,
+    }),
+  )
+
+  app.use((req, res, next) => {
+    const originalSend = res.send
+    // @ts-ignore - override send method to add custom header
+    res.send = function (body) {
+      // Add a custom header to indicate if compression is enabled
+      res.setHeader("X-Compression-Enabled", "true")
+      return originalSend.call(this, body)
+    }
+    next()
+  })
+
+  app.use("/{*splat}", (_req, res, next) => {
     res.setHeader("NAIS_APP_IMAGE", NAIS_APP_IMAGE)
     next()
   })
@@ -251,18 +284,45 @@ const main = async () => {
     "/",
     express.static(BUILD_PATH, {
       index: false,
-      etag: false,
-      maxAge: "1h",
+      etag: true,
+      lastModified: true,
+      setHeaders: (res, path) => {
+        // Apply different cache strategies based on file type
+        if (path.endsWith(".html")) {
+          // HTML files - no caching
+          res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate")
+        } else if (
+          path.match(/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff2|woff|ttf|eot)$/)
+        ) {
+          // Assets with hash in filename - cache for 1 year
+          if (path.match(/[a-f0-9]{8,}\.(js|css|png|jpg|jpeg|gif|svg)$/)) {
+            res.setHeader(
+              "Cache-Control",
+              "public, max-age=31536000, immutable",
+            )
+          } else {
+            // Assets without hash - cache for 1 day
+            res.setHeader("Cache-Control", "public, max-age=86400")
+          }
+        } else {
+          // Default - moderate caching
+          res.setHeader("Cache-Control", "public, max-age=3600")
+        }
+      },
     }),
   )
 
-  app.get("/internal/isAlive", (_req, res) => res.sendStatus(200))
+  app.get("/internal/isAlive", (_req, res) => {
+    res.sendStatus(200)
+    return
+  })
 
-  app.get("/internal/isReady", (_req, res) =>
-    res.sendStatus(appReady ? 200 : 500),
-  )
+  app.get("/internal/isReady", (_req, res) => {
+    res.sendStatus(appReady ? 200 : 500)
+    return
+  })
 
-  app.get("/*", (_req, res) => {
+  app.get("/{*splat}", (_req, res) => {
     res.setHeader("Cache-Control", "no-store")
     res.setHeader("Etag", GIT_COMMIT)
     res.send(indexHtml)
