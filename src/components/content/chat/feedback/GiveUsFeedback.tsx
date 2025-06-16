@@ -7,7 +7,7 @@ import {
   Textarea,
   Tooltip,
 } from "@navikt/ds-react"
-import { useMemo, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import { useAddFeedback } from "../../../../api/api.ts"
 import { Message } from "../../../../types/Message.ts"
 
@@ -34,7 +34,6 @@ export const FeedbackOnAnswer = ({ message }: FeedbackOnAnswerProps) => {
 
   const [options, setOptions] = useState<OptionKeys[]>([])
   const [comment, setComment] = useState<string | null>(null)
-  const isAnnet = useMemo(() => options.includes("annet"), [options])
 
   const resetFields = () => {
     setOptions([])
@@ -49,7 +48,7 @@ export const FeedbackOnAnswer = ({ message }: FeedbackOnAnswerProps) => {
     const optionLabels = options.map((option) => OPTIONS[option])
     addFeedback({
       options: optionLabels,
-      comment: isAnnet ? comment : null,
+      comment,
     })
 
     resetFields()
@@ -71,15 +70,16 @@ export const FeedbackOnAnswer = ({ message }: FeedbackOnAnswerProps) => {
       <Modal
         ref={modalRef}
         header={{
-          heading: "Meld inn feil",
+          heading: "Meld feil",
           size: "small",
           icon: <ChatExclamationmarkIcon />,
         }}
-        width={400}
+        width={600}
       >
         <Modal.Body>
           <CheckboxGroup
             legend='Hva er galt med svaret?'
+            description="Du kan også sende blankt svar"
             onChange={handleOptionChanged}
             value={options}
             size='small'
@@ -89,12 +89,13 @@ export const FeedbackOnAnswer = ({ message }: FeedbackOnAnswerProps) => {
                 {label}
               </Checkbox>
             ))}
-            {isAnnet ? (
+            {options.length > 0 ? (
               <Textarea
-                label='Gi oss en kort beskrivelse av hva som er galt'
+                label='Beskriv hva som er galt (valgfritt)'
                 onChange={(e) => setComment(e.target.value)}
-                minRows={1}
-                maxRows={4}
+                minRows={3}
+                maxRows={5}
+                maxLength={250}
               />
             ) : null}
           </CheckboxGroup>
