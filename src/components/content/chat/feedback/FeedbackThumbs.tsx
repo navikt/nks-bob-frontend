@@ -2,7 +2,7 @@ import { ThumbDownFillIcon, ThumbUpFillIcon } from "@navikt/aksel-icons"
 import { BodyShort, Button } from "@navikt/ds-react"
 import { useState } from "react"
 import { useSendConversationFeedback } from "../../../../api/api.ts"
-import { Feedback } from "../../../../types/Message.ts"
+import { ConversationFeedback } from "../../../../types/Message.ts"
 
 interface FeedbackButtonsProps {
   conversationId: string
@@ -27,7 +27,7 @@ function FeedbackThumbs({ conversationId }: FeedbackButtonsProps) {
 
   async function handleFeedback(liked: boolean) {
     setFeedback(liked ? "positive" : "negative")
-    const feedbackData: Feedback = { liked }
+    const feedbackData: ConversationFeedback = { liked }
     try {
       await sendFeedback(feedbackData)
     } catch (error) {

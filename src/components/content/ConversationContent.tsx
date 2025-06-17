@@ -1,15 +1,16 @@
 import { useParams, useSearchParams } from "react-router"
 import { useSendMessage } from "../../api/sse.ts"
 
-import { Alert, Heading } from "@navikt/ds-react"
+import { Alert as AlertComponent, Heading } from "@navikt/ds-react"
 import { useEffect } from "react"
 import Markdown from "react-markdown"
-import { useErrorNotifications, useMessages } from "../../api/api.ts"
+import { useAlerts, useMessages } from "../../api/api.ts"
 import { NewMessage } from "../../types/Message.ts"
 import { messageStore } from "../../types/messageStore.ts"
-import { ErrorNotification } from "../../types/Notifications.ts"
+import { Alert } from "../../types/Notifications.ts"
 import Header from "../header/Header.tsx"
 import InputField, { useInputFieldStore } from "../inputfield/InputField.tsx"
+import AdminMenu from "./admin/menu/AdminMenu.tsx"
 import { ShowAllSources } from "./chat/chatbubbles/sources/ShowAllSources.tsx"
 import ChatContainer from "./chat/ChatContainer.tsx"
 import { WhitespacePlaceholder } from "./placeholders/Placeholders.tsx"
@@ -23,7 +24,7 @@ function ConversationContent() {
     useMessages(conversationId!)
   const { sendMessage, isLoading } = useSendMessage(conversationId!)
   const { messages, setMessages } = messageStore()
-  const { errorNotifications } = useErrorNotifications()
+  const { alerts } = useAlerts()
 
   useEffect(() => {
     if (!isLoadingExistingMessages && !isLoading) {
@@ -63,7 +64,7 @@ function ConversationContent() {
     <div className='conversation-content'>
       <DialogWrapper>
         <Header conversation={conversationId} />
-        <ErrorBanner errorNotifications={errorNotifications} />
+        <ErrorBanner alerts={alerts} />
         <div className='chatcontainer'>
           {!messages || messages.length < 0 ? (
             <WhitespacePlaceholder />
@@ -78,24 +79,21 @@ function ConversationContent() {
         <InputField onSend={handleUserMessage} disabled={isLoading} />
       </DialogWrapper>
       <ShowAllSources />
+      <AdminMenu />
     </div>
   )
 }
 
-const ErrorBanner = ({
-  errorNotifications,
-}: {
-  errorNotifications: ErrorNotification[]
-}) => {
-  if (errorNotifications.length < 1) {
+const ErrorBanner = ({ alerts }: { alerts: Alert[] }) => {
+  if (alerts.length < 1) {
     return null
   }
 
-  const { title, content, notificationType } = errorNotifications.at(0)!
+  const { title, content, notificationType } = alerts.at(0)!
   const level = notificationType.toLowerCase() as "error" | "warning"
 
   return (
-    <Alert
+    <AlertComponent
       fullWidth
       size='small'
       variant={level}
@@ -105,7 +103,7 @@ const ErrorBanner = ({
         {title}
       </Heading>
       <Markdown>{content}</Markdown>
-    </Alert>
+    </AlertComponent>
   )
 }
 

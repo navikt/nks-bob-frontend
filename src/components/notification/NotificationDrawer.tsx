@@ -54,15 +54,13 @@ export const NotificationToggle = () => {
   const hasUnread = hasUnreadNotifications(notificationIds)
 
   useEffect(() => {
-    if (initialOpen === null) {
-      if (hasUnread) {
-        setInitialOpen(true)
-        setActiveTab("nye")
-      }
+    if (hasUnread) {
+      setInitialOpen(true)
+      setActiveTab("nye")
     }
 
     if (!hasUnread) {
-        setActiveTab("alle")
+      setActiveTab("alle")
     }
   }, [initialOpen, setInitialOpen, hasUnread])
 

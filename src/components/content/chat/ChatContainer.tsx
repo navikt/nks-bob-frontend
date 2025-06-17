@@ -1,4 +1,5 @@
-import { Fragment, useEffect, useRef } from "react"
+import { Fragment, useEffect, useRef, useState } from "react"
+import { useSearchParams } from "react-router"
 import { Message, NewMessage } from "../../../types/Message.ts"
 import { BobAnswerBubble } from "./chatbubbles/answerbubble/BobAnswerBubble.tsx"
 import UserQuestionBubble from "./chatbubbles/UserQuestionBubble.tsx"
@@ -11,14 +12,37 @@ interface ChatDialogProps {
 
 function ChatContainer({ messages, onSend, isLoading }: ChatDialogProps) {
   const lastMessageRef = useRef<HTMLDivElement | null>(null)
+  const selectedMessageRef = useRef<HTMLDivElement | null>(null)
+  const [selectedMessageId, setSelectedMessageId] = useState<string | null>(
+    null,
+  )
+  const [searchParams] = useSearchParams()
 
+  // update selected message
   useEffect(() => {
-    if (lastMessageRef.current) {
+    if (searchParams.has("messageId")) {
+      const messageId = searchParams.get("messageId")!
+      setSelectedMessageId(messageId)
+    }
+  }, [searchParams, setSelectedMessageId])
+
+  // scroll on param
+  useEffect(() => {
+    if (selectedMessageRef.current) {
+      selectedMessageRef.current.scrollIntoView({
+        behavior: "instant",
+      })
+    }
+  }, [messages, selectedMessageRef, selectedMessageId])
+
+  // scroll on new message
+  useEffect(() => {
+    if (lastMessageRef.current && !selectedMessageRef.current) {
       lastMessageRef.current.scrollIntoView({
         behavior: "instant",
       })
     }
-  }, [messages])
+  }, [messages, lastMessageRef, selectedMessageRef])
 
   return (
     <div className='dialogcontent h-auto grow flex-col px-4 pt-4'>
@@ -29,13 +53,19 @@ function ChatContainer({ messages, onSend, isLoading }: ChatDialogProps) {
             <UserQuestionBubble userQuestion={message} />
           </Fragment>
         ) : (
-          <BobAnswerBubble
-            key={message.id}
-            message={message}
-            onSend={onSend}
-            isLoading={isLoading}
-            isLastMessage={index === messages.length - 1}
-          />
+          <Fragment key={message.id}>
+            {message.id === selectedMessageId && (
+              <div ref={selectedMessageRef} />
+            )}
+            <BobAnswerBubble
+              key={message.id}
+              message={message}
+              onSend={onSend}
+              isLoading={isLoading}
+              isLastMessage={index === messages.length - 1}
+              isHighlighted={message.id === selectedMessageId}
+            />
+          </Fragment>
         ),
       )}
     </div>

@@ -5,7 +5,8 @@ import { useEffect, useState } from "react"
 
 import * as React from "react"
 import { create } from "zustand"
-import { useErrorNotifications } from "../../api/api.ts"
+import { createJSONStorage, persist } from "zustand/middleware"
+import { useAlerts } from "../../api/api.ts"
 import { NewMessage } from "../../types/Message.ts"
 import analytics from "../../utils/analytics.ts"
 import { FollowUpQuestions } from "../content/followupquestions/FollowUpQuestions.tsx"
@@ -21,23 +22,34 @@ type InputFieldState = {
   setTextAreaRef: (ref: React.RefObject<HTMLTextAreaElement | null>) => void
 }
 
-export const useInputFieldStore = create<InputFieldState>()((set) => {
-  const focusTextarea = () =>
-    set((state) => {
-      state.textareaRef?.current?.focus()
-      return state
-    })
+export const useInputFieldStore = create<InputFieldState>()(
+  persist(
+    (set) => {
+      const focusTextarea = () =>
+        set((state) => {
+          state.textareaRef?.current?.focus()
+          return state
+        })
 
-  return {
-    inputValue: "",
-    setInputValue: (value) => set((state) => ({ ...state, inputValue: value })),
-    followUp: [],
-    setFollowUp: (followUp) => set((state) => ({ ...state, followUp })),
-    focusTextarea,
-    textareaRef: React.createRef(),
-    setTextAreaRef: (ref) => set((state) => ({ ...state, textareaRef: ref })),
-  }
-})
+      return {
+        inputValue: "",
+        setInputValue: (value) =>
+          set((state) => ({ ...state, inputValue: value })),
+        followUp: [],
+        setFollowUp: (followUp) => set((state) => ({ ...state, followUp })),
+        focusTextarea,
+        textareaRef: React.createRef(),
+        setTextAreaRef: (ref) =>
+          set((state) => ({ ...state, textareaRef: ref })),
+      }
+    },
+    {
+      name: "input-storage",
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({ inputValue: state.inputValue }),
+    },
+  ),
+)
 
 interface InputFieldProps {
   onSend: (message: NewMessage) => void
@@ -54,9 +66,9 @@ function InputField({ onSend, disabled }: InputFieldProps) {
   const { inputValue, setInputValue, followUp, textareaRef } =
     useInputFieldStore()
 
-  const { errorNotifications } = useErrorNotifications()
+  const { alerts } = useAlerts()
   const hasErrors =
-    errorNotifications.at(0)?.notificationType === "Error" ?? false
+    alerts.at(0)?.notificationType === "Error"
 
   function sendMessage(messageContent?: string) {
     const message: NewMessage = {
@@ -142,13 +154,13 @@ function InputField({ onSend, disabled }: InputFieldProps) {
           Pass på å ikke dele sensitiv personinformasjon.
         </Alert>
       )}
-      {!sendDisabled &&
+      {!sendDisabled && (
         <FollowUpQuestions
           followUp={followUp}
           onSend={(question) => sendMessage(question)}
           className='pointer-events-auto'
         />
-      }
+      )}
       <div className='inputfield relative flex max-w-[48rem] flex-col items-center justify-end'>
         <Textarea
           ref={textareaRef}

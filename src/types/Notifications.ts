@@ -12,4 +12,4 @@ export type NewsNotification = Omit<
   "expiresAt" | "notificationType"
 >
 
-export type ErrorNotification = Omit<Notification, "expiresAt">
+export type Alert = Notification

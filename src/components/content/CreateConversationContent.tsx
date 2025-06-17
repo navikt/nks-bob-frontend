@@ -7,18 +7,21 @@ import Header from "../header/Header.tsx"
 import InputField, { useInputFieldStore } from "../inputfield/InputField.tsx"
 import { BobPlaceholder } from "./placeholders/Placeholders.tsx"
 import CreateConversationWrapper from "./wrappers/CreateConversationWrapper.tsx"
+import { useSourcesStore } from "./chat/chatbubbles/sources/ShowAllSources.tsx"
 
 const CreateConversationContent = () => {
   const navigate = useNavigate()
   const { createConversation } = useCreateConversation()
-  const { setInputValue, setFollowUp } = useInputFieldStore()
+  const { setFollowUp } = useInputFieldStore()
+  const { setActiveMessage } = useSourcesStore()
   const { resetMessages } = messageStore()
 
   useEffect(() => {
-    // reset input state on first render.
-    setInputValue("")
+    // reset message state on first render.
     setFollowUp([])
     resetMessages()
+    // reset sources sidebar
+    setActiveMessage(null)
   }, [])
 
   function handleUserMessage(message: NewMessage) {
