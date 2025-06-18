@@ -22,7 +22,7 @@ import {
   NewMessage,
 } from "../../../../../types/Message.ts"
 import BobSuggests from "../../suggestions/BobSuggests.tsx"
-import BobAnswerCitations from "../BobAnswerCitations.tsx"
+import BobAnswerCitations, { SourceIcon } from "../BobAnswerCitations.tsx"
 import ToggleCitations from "../citations/ToggleCitations.tsx"
 
 interface BobAnswerBubbleProps {
@@ -36,7 +36,13 @@ interface BobAnswerBubbleProps {
 const options = ["Sitater fra Nav.no", "Sitater fra Kunnskapsbasen"]
 
 export const BobAnswerBubble = memo(
-  ({ message, onSend, isLoading, isLastMessage, isHighlighted }: BobAnswerBubbleProps) => {
+  ({
+    message,
+    onSend,
+    isLoading,
+    isLastMessage,
+    isHighlighted,
+  }: BobAnswerBubbleProps) => {
     const hasError = ({ errors, pending, content }: Message): boolean =>
       errors.length > 0 && !pending && content === ""
 
@@ -50,7 +56,9 @@ export const BobAnswerBubble = memo(
             <BobRoboHead />
           </div>
           <div className='flex w-full flex-col pt-3'>
-            <div className={`overflow-wrap mb-2 flex w-full ${isHighlighted ? "bg-[#FFF5E4] p-2" : ""}`}>
+            <div
+              className={`overflow-wrap mb-2 flex w-full ${isHighlighted ? "bg-[#FFF5E4] p-2" : ""}`}
+            >
               {hasError(message) ? (
                 <ErrorContent message={message} />
               ) : isPending(message) ? (
@@ -118,7 +126,12 @@ const MessageContent = ({ message }: { message: Message }) => (
         span: ({ node, ...props }) => {
           const citationId: string = (props as any)?.["data-citation"]
           if (citationId) {
-            return <CitationNumber id={parseInt(citationId)} context={message.context} />
+            return (
+              <CitationNumber
+                id={parseInt(citationId)}
+                context={message.context}
+              />
+            )
           }
           return <span {...props} />
         },
@@ -130,7 +143,12 @@ const MessageContent = ({ message }: { message: Message }) => (
 )
 
 const Citations = memo(
-  ({ message, onSend, isLoading, isLastMessage }: Omit<BobAnswerBubbleProps, "isHighlighted" >) => {
+  ({
+    message,
+    onSend,
+    isLoading,
+    isLastMessage,
+  }: Omit<BobAnswerBubbleProps, "isHighlighted">) => {
     const [selectedCitations, setSelectedCitations] =
       useState<string[]>(options)
 
@@ -272,13 +290,16 @@ const CitationNumber = ({
         arrow={false}
         className='max-w-xl'
       >
-        <Popover.Content className='flex flex-col gap-2'>
-          <div className='flex justify-between'>
-            <Heading size='xsmall'>{title}</Heading>
-            <Link href={`${source.url}#${source.anchor}`} target='_blank'>
-              <ExternalLinkIcon title='Åpne artikkelen i ny fane' />
-            </Link>
-          </div>
+        <Popover.Content className='flex flex-col gap-4'>
+          <VStack gap='1'>
+            <div className='flex justify-between'>
+              <Heading size='xsmall'>{title}</Heading>
+              <Link href={`${source.url}#${source.anchor}`} target='_blank'>
+                <ExternalLinkIcon title='Åpne artikkelen i ny fane' />
+              </Link>
+            </div>
+            <SourceIcon source={source.source} />
+          </VStack>
           <BodyLong size='small'>
             <Markdown
               className='markdown'
