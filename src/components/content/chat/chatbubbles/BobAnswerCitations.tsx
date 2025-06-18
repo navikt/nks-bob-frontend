@@ -200,7 +200,7 @@ const CitationLink = ({
   )
 }
 
-const SourceIcon = ({ source }: { source: "navno" | "nks" }) => {
+export const SourceIcon = ({ source }: { source: "navno" | "nks" }) => {
   return (
     <>
       {source === "navno" && (
