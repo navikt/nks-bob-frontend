@@ -16,7 +16,7 @@ type MockTokenResponse = {
 }
 
 async function fetchToken() {
-  const url = "http://localhost:8888/entraid/token"
+  const url = "http://localhost:8899/entraid/token"
   const options = {
     method: "POST",
     headers: { "content-type": "application/x-www-form-urlencoded" },
