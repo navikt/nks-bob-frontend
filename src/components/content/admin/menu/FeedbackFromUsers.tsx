@@ -74,8 +74,8 @@ const FeedbackDescription = () => {
 }
 
 const SORT = {
-  "CREATED_AT_DESC": "Nyeste først",
-  "CREATED_AT_ASC": "Eldste først",
+  CREATED_AT_DESC: "Nyeste først",
+  CREATED_AT_ASC: "Eldste først",
 }
 
 type SortValue = keyof typeof SORT
@@ -83,8 +83,12 @@ type SortValue = keyof typeof SORT
 const FILTERS = {
   nye: "Nye",
   ferdigstilte: "Ferdigstilte",
+  "ikke-relevante": "Ikke relevante",
+  "litt-viktige": "Litt viktige",
   viktige: "Viktige",
   "særskilt-viktige": "Særskilt viktige",
+  brukerfeil: "Brukerfeil",
+  "ki-feil": "KI-feil",
 }
 
 type FilterValue = keyof typeof FILTERS

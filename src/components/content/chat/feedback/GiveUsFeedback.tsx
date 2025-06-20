@@ -7,7 +7,7 @@ import {
   Textarea,
   Tooltip,
 } from "@navikt/ds-react"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useAddFeedback } from "../../../../api/api.ts"
 import { Message } from "../../../../types/Message.ts"
 
@@ -30,23 +30,57 @@ interface FeedbackOnAnswerProps {
 
 export const FeedbackOnAnswer = ({ message }: FeedbackOnAnswerProps) => {
   const modalRef = useRef<HTMLDialogElement>(null)
-  const { addFeedback } = useAddFeedback(message.id)
+  const { addFeedback, isLoading } = useAddFeedback(message.id)
 
   const [options, setOptions] = useState<OptionKeys[]>([])
+  const [optionsDirty, setOptionsDirty] = useState<boolean>(false)
+  const [optionsError, setOptionsError] = useState<string | null>(null)
   const [comment, setComment] = useState<string | null>(null)
+  const [commentDirty, setCommentDirty] = useState<boolean>(false)
+  const [commentError, setCommentError] = useState<string | null>(null)
 
   const resetFields = () => {
     setOptions([])
+    setOptionsDirty(false)
     setComment(null)
+    setCommentDirty(false)
   }
 
   const handleOptionChanged = (opts: OptionKeys[]) => {
     setOptions(opts)
+    setOptionsDirty(true)
   }
 
-  const submit = () => {
+  const optionsIsValid = options.length > 0
+
+  useEffect(() => {
+    if (optionsDirty && !optionsIsValid) {
+      setOptionsError("Minst én av boksene må være huket av")
+    }
+  }, [optionsDirty])
+
+  const handleCommentChanged = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setComment(e.target.value)
+    setCommentDirty(true)
+  }
+
+  const commentIsValid = comment !== null && comment.trim() !== ""
+
+  const isValidForm = optionsIsValid && commentIsValid
+
+  useEffect(() => {
+    if (commentDirty && !commentIsValid) {
+      setCommentError("Vennligst beskriv feilen du opplever")
+    }
+  }, [commentDirty])
+
+  const onSubmitHandler = async () => {
+    if (!isValidForm) {
+      return
+    }
+
     const optionLabels = options.map((option) => OPTIONS[option])
-    addFeedback({
+    await addFeedback({
       options: optionLabels,
       comment,
     })
@@ -79,29 +113,37 @@ export const FeedbackOnAnswer = ({ message }: FeedbackOnAnswerProps) => {
         <Modal.Body>
           <CheckboxGroup
             legend='Hva er galt med svaret?'
-            description="Du kan også sende blankt svar"
             onChange={handleOptionChanged}
             value={options}
             size='small'
+            error={optionsError}
           >
             {Object.entries(OPTIONS).map(([value, label]) => (
               <Checkbox value={value} className='mb-1 first:mt-3 last:mb-4'>
                 {label}
               </Checkbox>
             ))}
-            {options.length > 0 ? (
-              <Textarea
-                label='Beskriv hva som er galt (valgfritt)'
-                onChange={(e) => setComment(e.target.value)}
-                minRows={3}
-                maxRows={5}
-                maxLength={250}
-              />
-            ) : null}
           </CheckboxGroup>
+          {options.length > 0 ? (
+            <Textarea
+              label='Beskriv hva som er galt'
+              onChange={handleCommentChanged}
+              value={comment ?? ""}
+              minRows={3}
+              maxRows={5}
+              maxLength={250}
+              error={commentError}
+            />
+          ) : null}
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={submit}>Send</Button>
+          <Button
+            disabled={!isValidForm}
+            loading={isLoading}
+            onClick={onSubmitHandler}
+          >
+            Send
+          </Button>
           <Button
             type='button'
             variant='secondary'
