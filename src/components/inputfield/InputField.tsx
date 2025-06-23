@@ -67,8 +67,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
     useInputFieldStore()
 
   const { alerts } = useAlerts()
-  const hasErrors =
-    alerts.at(0)?.notificationType === "Error"
+  const hasErrors = alerts.at(0)?.notificationType === "Error"
 
   function sendMessage(messageContent?: string) {
     if (sendDisabled) {
@@ -145,7 +144,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
           onClose={() => setIsSensitiveInfoAlert(false)}
           className='fade-in'
         >
-          Pass på å ikke dele sensitiv personinformasjon.
+          Pass på å ikke dele personopplysninger når du limer inn tekst.
         </Alert>
       )}
       {containsFnr && (
@@ -155,7 +154,8 @@ function InputField({ onSend, disabled }: InputFieldProps) {
           onClose={() => setContainsFnr(false)}
           className='fade-in'
         >
-          Pass på å ikke dele sensitiv personinformasjon.
+          Du har skrevet inn noe som ligner på et fødselsnummer. Derfor får du
+          ikke sendt meldingen.
         </Alert>
       )}
       {!sendDisabled && (
