@@ -71,6 +71,10 @@ function InputField({ onSend, disabled }: InputFieldProps) {
     alerts.at(0)?.notificationType === "Error"
 
   function sendMessage(messageContent?: string) {
+    if (sendDisabled) {
+      return
+    }
+
     const message: NewMessage = {
       content: messageContent ?? inputValue,
     }
