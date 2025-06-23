@@ -32,6 +32,7 @@
     "remark-gfm": "^4.0.1",
     "remark-rehype": "^11.1.2",
     "remark-stringify": "^11.0.0",
+    "server": "file:server",
     "strip-markdown": "^6.0.0",
     "swr": "^2.3.3",
     "zustand": "^5.0.5"
