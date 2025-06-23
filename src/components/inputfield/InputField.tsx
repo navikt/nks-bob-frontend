@@ -174,7 +174,6 @@ function InputField({ onSend, disabled }: InputFieldProps) {
           value={inputValue}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
-          disabled={sendDisabled}
           onPaste={handlePasteInfoAlert}
           tabIndex={0}
         />
