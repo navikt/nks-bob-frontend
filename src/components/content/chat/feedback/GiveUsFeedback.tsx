@@ -56,8 +56,10 @@ export const FeedbackOnAnswer = ({ message }: FeedbackOnAnswerProps) => {
   useEffect(() => {
     if (optionsDirty && !optionsIsValid) {
       setOptionsError("Minst én av boksene må være huket av")
+    } else {
+      setOptionsError(null)
     }
-  }, [optionsDirty])
+  }, [optionsDirty, options])
 
   const handleCommentChanged = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value)
@@ -71,8 +73,10 @@ export const FeedbackOnAnswer = ({ message }: FeedbackOnAnswerProps) => {
   useEffect(() => {
     if (commentDirty && !commentIsValid) {
       setCommentError("Vennligst beskriv feilen du opplever")
+    } else {
+      setCommentError(null)
     }
-  }, [commentDirty])
+  }, [commentDirty, comment])
 
   const onSubmitHandler = async () => {
     if (!isValidForm) {
