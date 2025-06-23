@@ -1,4 +1,4 @@
-import useSWR from "swr"
+import useSWR, { preload } from "swr"
 import useSWRMutation from "swr/mutation"
 import { Feedback, Message } from "../types/Message"
 import { Alert, NewsNotification, Notification } from "../types/Notifications"
@@ -22,7 +22,7 @@ type SortType = "CREATED_AT_ASC" | "CREATED_AT_DESC"
 export const useFeedbacks = (
   filter: string | null,
   page: number = 0,
-  size: number = 5,
+  size: number = 4,
   sort: SortType = "CREATED_AT_DESC",
 ) => {
   const params = new URLSearchParams()
@@ -46,6 +46,22 @@ export const useFeedbacks = (
     isLoading,
     error,
   }
+}
+
+export const preloadFeedbacks = (
+  filter: string | null,
+  page: number = 0,
+  size: number = 4,
+  sort: SortType = "CREATED_AT_DESC",
+) => {
+  const params = new URLSearchParams()
+  if (filter) params.append("filter", filter)
+  params.append("page", page.toString())
+  params.append("size", size.toString())
+  params.append("sort", sort)
+
+  const queryString = params.toString()
+  preload(`/api/v1/admin/feedbacks?${queryString}`, fetcher)
 }
 
 export const useUpdateFeedback = (feedbackId: string) => {

@@ -28,7 +28,11 @@ import {
   useState,
 } from "react"
 import { useNavigate, useSearchParams } from "react-router"
-import { useFeedbacks, useUpdateFeedback } from "../../../../api/admin"
+import {
+  preloadFeedbacks,
+  useFeedbacks,
+  useUpdateFeedback,
+} from "../../../../api/admin"
 import { Feedback } from "../../../../types/Message"
 
 export const FeedbackFromUsers = () => {
@@ -191,6 +195,16 @@ const FeedbackList = ({
 
   const totalPages = Math.ceil(total / pageSize)
 
+  // preloads the page before and after `page`
+  const preloadPrevNext = (page: number) => {
+    // NOTE: `page` is 1-indexed
+    const prevPage = Math.max(0, page - 2)
+    const nextPage = Math.min(totalPages - 1, page)
+
+    preloadFeedbacks(activeFilter, prevPage, pageSize, sort)
+    preloadFeedbacks(activeFilter, nextPage, pageSize, sort)
+  }
+
   useEffect(() => {
     if (searchParams.has("messageId")) {
       const messageId = searchParams.get("messageId")!
@@ -226,9 +240,13 @@ const FeedbackList = ({
         <HStack padding='4' justify='center'>
           <Pagination
             page={currentPage}
-            onPageChange={onPageChange}
+            onPageChange={(page) => {
+              preloadPrevNext(page)
+              onPageChange(page)
+            }}
             count={totalPages}
             size='xsmall'
+            onPointerEnter={() => preloadPrevNext(currentPage)}
           />
         </HStack>
       )}
