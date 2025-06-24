@@ -6,6 +6,7 @@ import {
   Link,
   Popover,
   Skeleton,
+  Tag,
   VStack,
 } from "@navikt/ds-react"
 import { Root, Text } from "mdast"
@@ -113,34 +114,74 @@ const LoadingContent = () => (
   </div>
 )
 
-const MessageContent = ({ message }: { message: Message }) => (
-  <BodyLong className='fade-in'>
-    <Markdown
-      className='markdown'
-      remarkPlugins={[remarkCitations]}
-      rehypePlugins={[rehypeRaw]}
-      components={{
-        a: ({ ...props }) => (
-          <a {...props} target='_blank' rel='noopener noreferrer' />
-        ),
-        span: ({ node, ...props }) => {
-          const citationId: string = (props as any)?.["data-citation"]
-          if (citationId) {
-            return (
-              <CitationNumber
-                id={parseInt(citationId)}
-                context={message.context}
-              />
-            )
-          }
-          return <span {...props} />
-        },
-      }}
-    >
-      {message.content}
-    </Markdown>
-  </BodyLong>
-)
+const MessageContent = ({ message }: { message: Message }) => {
+  const [citations, setCitations] = useState<
+    { citationId: number; position: number }[]
+  >([])
+
+  const addCitation = (citationId: number, position: number) => {
+    let existingCitations = citations
+    const newCitation = { citationId, position }
+
+    const existingCitation = citations.find(
+      (citation) => citation.citationId === citationId,
+    )
+
+    if (existingCitation) {
+      if (existingCitation.position <= position) {
+        return
+      }
+      // Ignore existing citation to overwrite it.
+      existingCitations = citations.filter(
+        (citation) => citation.citationId !== citationId,
+      )
+    }
+
+    // Store citations as a list ordered by `position`
+    const before = existingCitations.filter(
+      (citation) => citation.position <= position,
+    )
+    const after = existingCitations.filter(
+      (citation) => citation.position > position,
+    )
+    setCitations([...before, newCitation, ...after])
+  }
+
+  return (
+    <BodyLong className='fade-in'>
+      <Markdown
+        className='markdown'
+        remarkPlugins={[remarkCitations]}
+        rehypePlugins={[rehypeRaw]}
+        components={{
+          a: ({ ...props }) => (
+            <a {...props} target='_blank' rel='noopener noreferrer' />
+          ),
+          span: ({ node, ...props }) => {
+            const dataCitation: string = (props as any)?.["data-citation"]
+            const dataPosition: string = (props as any)?.["data-position"]
+
+            if (dataCitation && dataPosition) {
+              const citationId = parseInt(dataCitation)
+              addCitation(citationId, parseInt(dataPosition))
+
+              return (
+                <CitationNumber
+                  citations={citations}
+                  citationId={citationId}
+                  context={message.context}
+                />
+              )
+            }
+            return <span {...props} />
+          },
+        }}
+      >
+        {message.content}
+      </Markdown>
+    </BodyLong>
+  )
+}
 
 const Citations = memo(
   ({
@@ -250,16 +291,18 @@ const Citations = memo(
 )
 
 const CitationNumber = ({
-  id,
+  citations,
+  citationId,
   context,
 }: {
-  id: number
+  citations: { citationId: number }[]
+  citationId: number
   context: Context[]
 }) => {
   const buttonRef = useRef<HTMLButtonElement>(null)
   const [openState, setOpenState] = useState(false)
 
-  const source = context.at(id)
+  const source = context.at(citationId)
   if (!context || !source) {
     return null
   }
@@ -269,18 +312,22 @@ const CitationNumber = ({
       ? source.title
       : `${source.title} / ${source.anchor}`
 
+  const displayId =
+    citations.findIndex((citation) => citation.citationId === citationId) + 1
+
   return (
     <>
       <sup>
-        <Button
-          variant='tertiary'
+        <Tag
+          variant='neutral'
           size='xsmall'
           ref={buttonRef}
           onClick={() => setOpenState(!openState)}
           aria-expanded={openState}
+          className="m-1"
         >
-          {id + 1}
-        </Button>
+          {displayId}
+        </Tag>
       </sup>
 
       <Popover
@@ -343,7 +390,7 @@ const remarkCitations: Plugin<[], Root> = () => {
 
         newNodes.push({
           type: "html",
-          value: `<span data-citation="${id}"></span>`,
+          value: `<span data-citation="${id}" data-position="${start}"></span>`,
         })
 
         lastIndex = start + fullMatch.length
