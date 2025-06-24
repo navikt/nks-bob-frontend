@@ -1,10 +1,10 @@
 import { ExternalLinkIcon } from "@navikt/aksel-icons"
 import {
   BodyLong,
+  Box,
   Heading,
   HStack,
   Link,
-  Popover,
   Skeleton,
   Tag,
   VStack,
@@ -25,6 +25,7 @@ import {
 import BobSuggests from "../../suggestions/BobSuggests.tsx"
 import BobAnswerCitations, { SourceIcon } from "../BobAnswerCitations.tsx"
 import ToggleCitations from "../citations/ToggleCitations.tsx"
+import React from "react"
 
 interface BobAnswerBubbleProps {
   message: Message
@@ -148,7 +149,7 @@ const MessageContent = ({ message }: { message: Message }) => {
   }
 
   return (
-    <VStack gap="5">
+    <VStack gap='5'>
       <BodyLong className='fade-in'>
         <Markdown
           className='markdown'
@@ -361,9 +362,6 @@ const CitationNumber = ({
   citationId: number
   context: Context[]
 }) => {
-  const buttonRef = useRef<HTMLButtonElement>(null)
-  const [openState, setOpenState] = useState(false)
-
   const source = context.at(citationId)
   if (!context || !source) {
     return null
@@ -377,52 +375,119 @@ const CitationNumber = ({
   const displayId =
     citations.findIndex((citation) => citation.citationId === citationId) + 1
 
-  return (
-    <>
-      <sup>
-        <Tag
-          variant='neutral'
-          size='xsmall'
-          ref={buttonRef}
-          onClick={() => setOpenState(!openState)}
-          aria-expanded={openState}
-          className='m-1'
+  const hoverContent = (
+    <div className='flex flex-col gap-4'>
+      <VStack gap='1'>
+        <div className='flex justify-between'>
+          <Heading size='xsmall'>{title}</Heading>
+          <Link href={`${source.url}#${source.anchor}`} target='_blank'>
+            <ExternalLinkIcon title='Åpne artikkelen i ny fane' />
+          </Link>
+        </div>
+        <SourceIcon source={source.source} />
+      </VStack>
+      <BodyLong size='small'>
+        <Markdown
+          className='markdown'
+          components={{
+            a: ({ ...props }) => (
+              <a {...props} target='_blank' rel='noopener noreferrer' />
+            ),
+          }}
         >
+          {source.content}
+        </Markdown>
+      </BodyLong>
+    </div>
+  )
+
+  return (
+    <sup>
+      <HoverCard content={hoverContent}>
+        <Tag variant='neutral' size='xsmall' className='m-1'>
           {displayId}
         </Tag>
-      </sup>
+      </HoverCard>
+    </sup>
+  )
+}
 
-      <Popover
-        open={openState}
-        onClose={() => setOpenState(false)}
-        anchorEl={buttonRef.current}
-        arrow={false}
-        className='max-w-xl'
+interface HoverCardProps {
+  children: React.ReactNode
+  content: React.ReactNode
+}
+
+const HoverCard = ({ children, content }: HoverCardProps) => {
+  const [isOpen, setIsOpen] = useState(false)
+  const [position, setPosition] = useState({ x: 0, y: 0 })
+  const triggerRef = useRef<HTMLElement>(null)
+  const cardRef = useRef<HTMLDivElement>(null)
+  const timeoutRef = useRef<NodeJS.Timeout>(null)
+
+  const handleMouseEnter = (_e: React.MouseEvent) => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+    }
+
+    if (triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect()
+      setPosition({
+        x: rect.left + rect.width / 2,
+        y: rect.bottom + 8,
+      })
+    }
+    setIsOpen(true)
+  }
+
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      setIsOpen(false)
+    }, 100)
+  }
+
+  const handleCardMouseEnter = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+    }
+  }
+
+  const handleCardMouseLeave = () => {
+    setIsOpen(false)
+  }
+
+  return (
+    <>
+      <span
+        ref={triggerRef}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
-        <Popover.Content className='flex flex-col gap-4'>
-          <VStack gap='1'>
-            <div className='flex justify-between'>
-              <Heading size='xsmall'>{title}</Heading>
-              <Link href={`${source.url}#${source.anchor}`} target='_blank'>
-                <ExternalLinkIcon title='Åpne artikkelen i ny fane' />
-              </Link>
-            </div>
-            <SourceIcon source={source.source} />
-          </VStack>
-          <BodyLong size='small'>
-            <Markdown
-              className='markdown'
-              components={{
-                a: ({ ...props }) => (
-                  <a {...props} target='_blank' rel='noopener noreferrer' />
-                ),
-              }}
-            >
-              {source.content}
-            </Markdown>
-          </BodyLong>
-        </Popover.Content>
-      </Popover>
+        {children}
+      </span>
+      {isOpen && (
+        <div
+          ref={cardRef}
+          className='fixed z-50 max-w-xl'
+          style={{
+            left: position.x,
+            top: position.y,
+            transform: "translateX(-50%)",
+          }}
+          onMouseEnter={handleCardMouseEnter}
+          onMouseLeave={handleCardMouseLeave}
+        >
+          <Box
+            background='surface-default'
+            padding='4'
+            borderRadius='medium'
+            borderColor='border-subtle'
+            borderWidth='1'
+            shadow='medium'
+          >
+            {content}
+          </Box>
+        </div>
+      )}
     </>
   )
 }
