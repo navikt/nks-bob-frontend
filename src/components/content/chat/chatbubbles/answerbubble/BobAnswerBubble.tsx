@@ -377,14 +377,20 @@ const CitationNumber = ({
 
   const hoverContent = (
     <div className='flex flex-col gap-4'>
-      <VStack gap='1'>
-        <div className='flex justify-between'>
-          <Heading size='xsmall'>{title}</Heading>
-          <Link href={`${source.url}#${source.anchor}`} target='_blank'>
-            <ExternalLinkIcon title='Åpne artikkelen i ny fane' />
-          </Link>
+      <VStack gap='2'>
+        <div className='border-b border-border-subtle pb-2'>
+          <SourceIcon source={source.source} />
         </div>
-        <SourceIcon source={source.source} />
+        <Link
+          href={`${source.url}#${source.anchor}`}
+          target='_blank'
+          title='Åpne artikkelen i ny fane'
+        >
+          <Heading size='xsmall' className='inline'>
+            {title}
+          </Heading>
+          <ExternalLinkIcon className='ml-1' />
+        </Link>
       </VStack>
       <BodyLong size='small'>
         <Markdown
@@ -433,7 +439,7 @@ const HoverCard = ({ children, content }: HoverCardProps) => {
       const rect = triggerRef.current.getBoundingClientRect()
       const viewportHeight = window.innerHeight
       const spaceBelow = viewportHeight - rect.bottom - 8 - 20 // 8px offset + 20px margin
-      
+
       setPosition({
         x: rect.left + rect.width / 2,
         y: rect.bottom + 8,
@@ -489,7 +495,7 @@ const HoverCard = ({ children, content }: HoverCardProps) => {
             borderWidth='1'
             shadow='medium'
             className='overflow-y-auto'
-            style={{ maxHeight: 'inherit' }}
+            style={{ maxHeight: "inherit" }}
           >
             {content}
           </Box>
