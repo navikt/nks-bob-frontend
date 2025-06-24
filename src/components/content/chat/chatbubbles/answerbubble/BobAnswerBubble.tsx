@@ -419,7 +419,7 @@ interface HoverCardProps {
 
 const HoverCard = ({ children, content }: HoverCardProps) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [position, setPosition] = useState({ x: 0, y: 0 })
+  const [position, setPosition] = useState({ x: 0, y: 0, maxHeight: 0 })
   const triggerRef = useRef<HTMLElement>(null)
   const cardRef = useRef<HTMLDivElement>(null)
   const timeoutRef = useRef<NodeJS.Timeout>(null)
@@ -431,9 +431,13 @@ const HoverCard = ({ children, content }: HoverCardProps) => {
 
     if (triggerRef.current) {
       const rect = triggerRef.current.getBoundingClientRect()
+      const viewportHeight = window.innerHeight
+      const spaceBelow = viewportHeight - rect.bottom - 8 - 20 // 8px offset + 20px margin
+      
       setPosition({
         x: rect.left + rect.width / 2,
         y: rect.bottom + 8,
+        maxHeight: Math.max(200, spaceBelow), // Minimum 200px height
       })
     }
     setIsOpen(true)
@@ -472,6 +476,7 @@ const HoverCard = ({ children, content }: HoverCardProps) => {
             left: position.x,
             top: position.y,
             transform: "translateX(-50%)",
+            maxHeight: position.maxHeight,
           }}
           onMouseEnter={handleCardMouseEnter}
           onMouseLeave={handleCardMouseLeave}
@@ -483,6 +488,8 @@ const HoverCard = ({ children, content }: HoverCardProps) => {
             borderColor='border-subtle'
             borderWidth='1'
             shadow='medium'
+            className='overflow-y-auto'
+            style={{ maxHeight: 'inherit' }}
           >
             {content}
           </Box>
