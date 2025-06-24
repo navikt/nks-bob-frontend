@@ -1,8 +1,8 @@
 import { ExternalLinkIcon } from "@navikt/aksel-icons"
 import {
   BodyLong,
-  Button,
   Heading,
+  HStack,
   Link,
   Popover,
   Skeleton,
@@ -148,38 +148,41 @@ const MessageContent = ({ message }: { message: Message }) => {
   }
 
   return (
-    <BodyLong className='fade-in'>
-      <Markdown
-        className='markdown'
-        remarkPlugins={[remarkCitations]}
-        rehypePlugins={[rehypeRaw]}
-        components={{
-          a: ({ ...props }) => (
-            <a {...props} target='_blank' rel='noopener noreferrer' />
-          ),
-          span: ({ node, ...props }) => {
-            const dataCitation: string = (props as any)?.["data-citation"]
-            const dataPosition: string = (props as any)?.["data-position"]
+    <VStack gap="5">
+      <BodyLong className='fade-in'>
+        <Markdown
+          className='markdown'
+          remarkPlugins={[remarkCitations]}
+          rehypePlugins={[rehypeRaw]}
+          components={{
+            a: ({ ...props }) => (
+              <a {...props} target='_blank' rel='noopener noreferrer' />
+            ),
+            span: ({ node, ...props }) => {
+              const dataCitation: string = (props as any)?.["data-citation"]
+              const dataPosition: string = (props as any)?.["data-position"]
 
-            if (dataCitation && dataPosition) {
-              const citationId = parseInt(dataCitation)
-              addCitation(citationId, parseInt(dataPosition))
+              if (dataCitation && dataPosition) {
+                const citationId = parseInt(dataCitation)
+                addCitation(citationId, parseInt(dataPosition))
 
-              return (
-                <CitationNumber
-                  citations={citations}
-                  citationId={citationId}
-                  context={message.context}
-                />
-              )
-            }
-            return <span {...props} />
-          },
-        }}
-      >
-        {message.content}
-      </Markdown>
-    </BodyLong>
+                return (
+                  <CitationNumber
+                    citations={citations}
+                    citationId={citationId}
+                    context={message.context}
+                  />
+                )
+              }
+              return <span {...props} />
+            },
+          }}
+        >
+          {message.content}
+        </Markdown>
+      </BodyLong>
+      <CitationLinks citations={citations} context={message.context} />
+    </VStack>
   )
 }
 
@@ -290,6 +293,65 @@ const Citations = memo(
   },
 )
 
+const CitationLinks = ({
+  citations,
+  context,
+}: {
+  citations: { citationId: number }[]
+  context: Context[]
+}) => {
+  return (
+    <VStack gap='2' justify='center'>
+      {citations.map(({ citationId }) => (
+        <CitationLink
+          citations={citations}
+          citationId={citationId}
+          context={context}
+        />
+      ))}
+    </VStack>
+  )
+}
+
+const CitationLink = ({
+  citations,
+  citationId,
+  context,
+}: {
+  citations: { citationId: number }[]
+  citationId: number
+  context: Context[]
+}) => {
+  const source = context.at(citationId)
+  if (!context || !source) {
+    return null
+  }
+
+  const title =
+    source.source === "nks"
+      ? source.title
+      : `${source.title} / ${source.anchor}`
+
+  const displayId =
+    citations.findIndex((citation) => citation.citationId === citationId) + 1
+
+  return (
+    <HStack gap='2' align='center'>
+      <Tag variant='neutral' size='xsmall'>
+        {displayId}
+      </Tag>
+      <Link
+        href={`${source.url}#${source.anchor}`}
+        target='_blank'
+        title='Åpne artikkelen i ny fane'
+      >
+        {title}
+        <ExternalLinkIcon />
+      </Link>
+    </HStack>
+  )
+}
+
 const CitationNumber = ({
   citations,
   citationId,
@@ -324,7 +386,7 @@ const CitationNumber = ({
           ref={buttonRef}
           onClick={() => setOpenState(!openState)}
           aria-expanded={openState}
-          className="m-1"
+          className='m-1'
         >
           {displayId}
         </Tag>
