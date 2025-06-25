@@ -1,5 +1,13 @@
 import { ExternalLinkIcon } from "@navikt/aksel-icons"
-import { BodyLong, Heading, HStack, Link, Tag, VStack } from "@navikt/ds-react"
+import {
+  BodyLong,
+  Heading,
+  HStack,
+  Label,
+  Link,
+  Tag,
+  VStack,
+} from "@navikt/ds-react"
 import Markdown from "react-markdown"
 import { Context } from "../../../../../types/Message.ts"
 import { HoverCard } from "../../../../ui/HoverCard.tsx"
@@ -67,7 +75,7 @@ export const CitationNumber = ({
         <Tag
           variant='neutral'
           size='xsmall'
-          className='m-1 cursor-pointer transition-colors hover:border-surface-neutral-hover hover:bg-surface-neutral-hover hover:text-text-on-neutral'
+          className='m-1 cursor-pointer select-none transition-colors hover:border-surface-neutral-hover hover:bg-surface-neutral-hover hover:text-text-on-neutral'
         >
           {displayId}
         </Tag>
@@ -125,14 +133,16 @@ const CitationLink = ({
       <Tag variant='neutral' size='xsmall'>
         {displayId}
       </Tag>
-      <Link
-        href={`${source.url}#${source.anchor}`}
-        target='_blank'
-        title='Åpne artikkelen i ny fane'
-      >
-        {title}
-        <ExternalLinkIcon />
-      </Link>
+      <Label size='small'>
+        <Link
+          href={`${source.url}#${source.anchor}`}
+          target='_blank'
+          title='Åpne artikkelen i ny fane'
+        >
+          {title}
+          <ExternalLinkIcon />
+        </Link>
+      </Label>
     </HStack>
   )
 }
