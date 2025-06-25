@@ -1,31 +1,22 @@
-import { ExternalLinkIcon } from "@navikt/aksel-icons"
 import {
   BodyLong,
-  Box,
-  Heading,
-  HStack,
-  Link,
   Skeleton,
-  Tag,
   VStack,
 } from "@navikt/ds-react"
-import { Root, Text } from "mdast"
-import { memo, useRef, useState } from "react"
+import { memo, useState } from "react"
 import Markdown from "react-markdown"
 import rehypeRaw from "rehype-raw"
-import { Plugin } from "unified"
-import { visit } from "unist-util-visit"
 import { BobRoboHead } from "../../../../../assets/illustrations/BobRoboHead.tsx"
 import {
   Citation,
-  Context,
   Message,
   NewMessage,
 } from "../../../../../types/Message.ts"
+import { md } from "../../../../../utils/markdown.ts"
 import BobSuggests from "../../suggestions/BobSuggests.tsx"
-import BobAnswerCitations, { SourceIcon } from "../BobAnswerCitations.tsx"
+import BobAnswerCitations from "../BobAnswerCitations.tsx"
 import ToggleCitations from "../citations/ToggleCitations.tsx"
-import React from "react"
+import { CitationLinks, CitationNumber } from "./Citations.tsx"
 
 interface BobAnswerBubbleProps {
   message: Message
@@ -150,7 +141,7 @@ const MessageContent = ({ message }: { message: Message }) => {
       <BodyLong className='fade-in'>
         <Markdown
           className='markdown'
-          remarkPlugins={[remarkCitations]}
+          remarkPlugins={[md.remarkCitations]}
           rehypePlugins={[rehypeRaw]}
           components={{
             a: ({ ...props }) => (
@@ -291,256 +282,3 @@ const Citations = memo(
   },
 )
 
-const CitationLinks = ({
-  citations,
-  context,
-}: {
-  citations: { citationId: number }[]
-  context: Context[]
-}) => {
-  return (
-    <VStack gap='2' justify='center'>
-      {citations.map(({ citationId }) => (
-        <CitationLink
-          citations={citations}
-          citationId={citationId}
-          context={context}
-        />
-      ))}
-    </VStack>
-  )
-}
-
-const CitationLink = ({
-  citations,
-  citationId,
-  context,
-}: {
-  citations: { citationId: number }[]
-  citationId: number
-  context: Context[]
-}) => {
-  const source = context.at(citationId)
-  if (!context || !source) {
-    return null
-  }
-
-  const title =
-    source.source === "nks"
-      ? source.title
-      : `${source.title} / ${source.anchor}`
-
-  const displayId =
-    citations.findIndex((citation) => citation.citationId === citationId) + 1
-
-  return (
-    <HStack gap='2' align='center'>
-      <Tag variant='neutral' size='xsmall'>
-        {displayId}
-      </Tag>
-      <Link
-        href={`${source.url}#${source.anchor}`}
-        target='_blank'
-        title='Åpne artikkelen i ny fane'
-      >
-        {title}
-        <ExternalLinkIcon />
-      </Link>
-    </HStack>
-  )
-}
-
-const CitationNumber = ({
-  citations,
-  citationId,
-  context,
-}: {
-  citations: { citationId: number }[]
-  citationId: number
-  context: Context[]
-}) => {
-  const source = context.at(citationId)
-  if (!context || !source) {
-    return null
-  }
-
-  const title =
-    source.source === "nks"
-      ? source.title
-      : `${source.title} / ${source.anchor}`
-
-  const displayId =
-    citations.findIndex((citation) => citation.citationId === citationId) + 1
-
-  const hoverContent = (
-    <div className='flex flex-col gap-4'>
-      <VStack gap='2'>
-        <div className='border-b border-border-subtle pb-2'>
-          <SourceIcon source={source.source} />
-        </div>
-        <Link
-          href={`${source.url}#${source.anchor}`}
-          target='_blank'
-          title='Åpne artikkelen i ny fane'
-        >
-          <Heading size='xsmall' className='inline'>
-            {title}
-          </Heading>
-          <ExternalLinkIcon className='ml-1' />
-        </Link>
-      </VStack>
-      <BodyLong size='small'>
-        <Markdown
-          className='markdown'
-          components={{
-            a: ({ ...props }) => (
-              <a {...props} target='_blank' rel='noopener noreferrer' />
-            ),
-          }}
-        >
-          {source.content}
-        </Markdown>
-      </BodyLong>
-    </div>
-  )
-
-  return (
-    <sup>
-      <HoverCard content={hoverContent}>
-        <Tag variant='neutral' size='xsmall' className='m-1'>
-          {displayId}
-        </Tag>
-      </HoverCard>
-    </sup>
-  )
-}
-
-interface HoverCardProps {
-  children: React.ReactNode
-  content: React.ReactNode
-}
-
-const HoverCard = ({ children, content }: HoverCardProps) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const [position, setPosition] = useState({ x: 0, y: 0, maxHeight: 0 })
-  const triggerRef = useRef<HTMLElement>(null)
-  const cardRef = useRef<HTMLDivElement>(null)
-  const timeoutRef = useRef<NodeJS.Timeout>(null)
-
-  const handleMouseEnter = (_e: React.MouseEvent) => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current)
-    }
-
-    if (triggerRef.current) {
-      const rect = triggerRef.current.getBoundingClientRect()
-      const viewportHeight = window.innerHeight
-      const spaceBelow = viewportHeight - rect.bottom - 8 - 20 // 8px offset + 20px margin
-
-      setPosition({
-        x: rect.left + rect.width / 2,
-        y: rect.bottom + 8,
-        maxHeight: Math.max(200, spaceBelow), // Minimum 200px height
-      })
-    }
-    setIsOpen(true)
-  }
-
-  const handleMouseLeave = () => {
-    timeoutRef.current = setTimeout(() => {
-      setIsOpen(false)
-    }, 100)
-  }
-
-  const handleCardMouseEnter = () => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current)
-    }
-  }
-
-  const handleCardMouseLeave = () => {
-    setIsOpen(false)
-  }
-
-  return (
-    <>
-      <span
-        ref={triggerRef}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
-        {children}
-      </span>
-      {isOpen && (
-        <div
-          ref={cardRef}
-          className='fixed z-50 max-w-xl'
-          style={{
-            left: position.x,
-            top: position.y,
-            transform: "translateX(-50%)",
-            maxHeight: position.maxHeight,
-          }}
-          onMouseEnter={handleCardMouseEnter}
-          onMouseLeave={handleCardMouseLeave}
-        >
-          <Box
-            background='surface-default'
-            padding='4'
-            borderRadius='medium'
-            borderColor='border-subtle'
-            borderWidth='1'
-            shadow='medium'
-            className='overflow-y-auto'
-            style={{ maxHeight: "inherit" }}
-          >
-            {content}
-          </Box>
-        </div>
-      )}
-    </>
-  )
-}
-
-const remarkCitations: Plugin<[], Root> = () => {
-  return (tree) => {
-    visit(tree, "text", (node: Text, index, parent) => {
-      if (!parent) return
-
-      const citationRegex = /\[(\d)\]/g
-      const value = node.value
-
-      let match
-      let lastIndex = 0
-      const newNodes: any[] = []
-
-      while ((match = citationRegex.exec(value)) !== null) {
-        const [fullMatch, id] = match
-        const start = match.index
-
-        if (start > lastIndex) {
-          newNodes.push({
-            type: "text",
-            value: value.slice(lastIndex, start),
-          })
-        }
-
-        newNodes.push({
-          type: "html",
-          value: `<span data-citation="${id}" data-position="${start}"></span>`,
-        })
-
-        lastIndex = start + fullMatch.length
-      }
-
-      if (lastIndex < value.length) {
-        newNodes.push({
-          type: "text",
-          value: value.slice(lastIndex),
-        })
-      }
-
-      parent.children.splice(index!, 1, ...newNodes)
-    })
-  }
-}
