@@ -1,11 +1,22 @@
-import { BodyLong, Skeleton, VStack } from "@navikt/ds-react"
+import {
+  BodyLong,
+  Skeleton,
+  VStack,
+} from "@navikt/ds-react"
 import { memo, useState } from "react"
 import Markdown from "react-markdown"
+import rehypeRaw from "rehype-raw"
 import { BobRoboHead } from "../../../../../assets/illustrations/BobRoboHead.tsx"
-import { Citation, Message, NewMessage } from "../../../../../types/Message.ts"
+import {
+  Citation,
+  Message,
+  NewMessage,
+} from "../../../../../types/Message.ts"
+import { md } from "../../../../../utils/markdown.ts"
 import BobSuggests from "../../suggestions/BobSuggests.tsx"
 import BobAnswerCitations from "../BobAnswerCitations.tsx"
 import ToggleCitations from "../citations/ToggleCitations.tsx"
+import { CitationLinks, CitationNumber } from "./Citations.tsx"
 
 interface BobAnswerBubbleProps {
   message: Message
@@ -18,7 +29,13 @@ interface BobAnswerBubbleProps {
 const options = ["Sitater fra Nav.no", "Sitater fra Kunnskapsbasen"]
 
 export const BobAnswerBubble = memo(
-  ({ message, onSend, isLoading, isLastMessage, isHighlighted }: BobAnswerBubbleProps) => {
+  ({
+    message,
+    onSend,
+    isLoading,
+    isLastMessage,
+    isHighlighted,
+  }: BobAnswerBubbleProps) => {
     const hasError = ({ errors, pending, content }: Message): boolean =>
       errors.length > 0 && !pending && content === ""
 
@@ -32,7 +49,9 @@ export const BobAnswerBubble = memo(
             <BobRoboHead />
           </div>
           <div className='flex w-full flex-col pt-3'>
-            <div className={`overflow-wrap mb-2 flex w-full ${isHighlighted ? "bg-[#FFF5E4] p-2" : ""}`}>
+            <div
+              className={`overflow-wrap mb-2 flex w-full ${isHighlighted ? "bg-[#FFF5E4] p-2" : ""}`}
+            >
               {hasError(message) ? (
                 <ErrorContent message={message} />
               ) : isPending(message) ? (
@@ -87,23 +106,82 @@ const LoadingContent = () => (
   </div>
 )
 
-const MessageContent = ({ message }: { message: Message }) => (
-  <BodyLong className='fade-in'>
-    <Markdown
-      className='markdown'
-      components={{
-        a: ({ ...props }) => (
-          <a {...props} target='_blank' rel='noopener noreferrer' />
-        ),
-      }}
-    >
-      {message.content}
-    </Markdown>
-  </BodyLong>
-)
+const MessageContent = ({ message }: { message: Message }) => {
+  const [citations, setCitations] = useState<
+    { citationId: number; position: number }[]
+  >([])
+
+  const addCitation = (citationId: number, position: number) => {
+    let existingCitations = citations
+    const newCitation = { citationId, position }
+
+    const existingCitation = citations.find(
+      (citation) => citation.citationId === citationId,
+    )
+
+    if (existingCitation) {
+      if (existingCitation.position <= position) {
+        return
+      }
+      // Ignore existing citation to overwrite it.
+      existingCitations = citations.filter(
+        (citation) => citation.citationId !== citationId,
+      )
+    }
+
+    // Store citations as a list ordered by `position`
+    const newState = [...existingCitations, newCitation].sort(
+      (a, b) => a.position - b.position,
+    )
+    setCitations(newState)
+  }
+
+  return (
+    <VStack gap='5'>
+      <BodyLong className='fade-in'>
+        <Markdown
+          className='markdown'
+          remarkPlugins={[md.remarkCitations]}
+          rehypePlugins={[rehypeRaw]}
+          components={{
+            a: ({ ...props }) => (
+              <a {...props} target='_blank' rel='noopener noreferrer' />
+            ),
+            span: ({ node, ...props }) => {
+              const dataCitation: string = (props as any)?.["data-citation"]
+              const dataPosition: string = (props as any)?.["data-position"]
+
+              if (dataCitation && dataPosition) {
+                const citationId = parseInt(dataCitation)
+                addCitation(citationId, parseInt(dataPosition))
+
+                return (
+                  <CitationNumber
+                    citations={citations}
+                    citationId={citationId}
+                    context={message.context}
+                  />
+                )
+              }
+              return <span {...props} />
+            },
+          }}
+        >
+          {message.content}
+        </Markdown>
+      </BodyLong>
+      <CitationLinks citations={citations} context={message.context} />
+    </VStack>
+  )
+}
 
 const Citations = memo(
-  ({ message, onSend, isLoading, isLastMessage }: Omit<BobAnswerBubbleProps, "isHighlighted" >) => {
+  ({
+    message,
+    onSend,
+    isLoading,
+    isLastMessage,
+  }: Omit<BobAnswerBubbleProps, "isHighlighted">) => {
     const [selectedCitations, setSelectedCitations] =
       useState<string[]>(options)
 
@@ -203,3 +281,4 @@ const Citations = memo(
     return prevCitations === nextCitations
   },
 )
+
