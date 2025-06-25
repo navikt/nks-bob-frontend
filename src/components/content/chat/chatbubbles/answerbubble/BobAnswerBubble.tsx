@@ -139,13 +139,10 @@ const MessageContent = ({ message }: { message: Message }) => {
     }
 
     // Store citations as a list ordered by `position`
-    const before = existingCitations.filter(
-      (citation) => citation.position <= position,
+    const newState = [...existingCitations, newCitation].sort(
+      (a, b) => a.position - b.position,
     )
-    const after = existingCitations.filter(
-      (citation) => citation.position > position,
-    )
-    setCitations([...before, newCitation, ...after])
+    setCitations(newState)
   }
 
   return (
