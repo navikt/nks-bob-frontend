@@ -71,13 +71,11 @@ export const HoverCard = ({ children, content }: HoverCardProps) => {
           onMouseLeave={handleCardMouseLeave}
         >
           <Box
-            background="surface-default"
             padding="4"
             borderRadius="medium"
-            borderColor="border-subtle"
             borderWidth="1"
             shadow="medium"
-            className="overflow-y-auto"
+            className="overflow-y-auto bg-surface-default border-border-default"
             style={{ maxHeight: "inherit" }}
           >
             {content}
