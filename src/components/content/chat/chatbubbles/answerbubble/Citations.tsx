@@ -1,9 +1,7 @@
 import { ExternalLinkIcon } from "@navikt/aksel-icons"
 import {
   BodyLong,
-  Heading,
-  HStack,
-  Label,
+  HStack, Label,
   Link,
   Tag,
   VStack,
@@ -40,7 +38,7 @@ export const CitationNumber = ({
   const hoverContent = (
     <div className='flex flex-col gap-4'>
       <VStack gap='2'>
-        <div className='border-b border-border-subtle pb-2'>
+        <div className='border-b border-border-subtle pb-3 mb-2'>
           <SourceIcon source={source.source} />
         </div>
         <Link
@@ -48,10 +46,10 @@ export const CitationNumber = ({
           target='_blank'
           title='Åpne artikkelen i ny fane'
         >
-          <Heading size='xsmall' className='inline'>
+          <Label size='medium' className='inline cursor-pointer'>
             {title}
-          </Heading>
-          <ExternalLinkIcon className='ml-1' />
+          </Label>
+          <ExternalLinkIcon fontSize={18} className='ml-1' />
         </Link>
       </VStack>
       <BodyLong size='small'>
@@ -133,16 +131,15 @@ const CitationLink = ({
       <Tag variant='neutral' size='xsmall'>
         {displayId}
       </Tag>
-      <Label size='small'>
         <Link
           href={`${source.url}#${source.anchor}`}
           target='_blank'
           title='Åpne artikkelen i ny fane'
+          className='text-base'
         >
           {title}
           <ExternalLinkIcon />
         </Link>
-      </Label>
     </HStack>
   )
 }

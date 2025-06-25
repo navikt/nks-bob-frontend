@@ -21,7 +21,7 @@ export const HoverCard = ({ children, content }: HoverCardProps) => {
     if (triggerRef.current) {
       const rect = triggerRef.current.getBoundingClientRect()
       const viewportHeight = window.innerHeight
-      const spaceBelow = viewportHeight - rect.bottom - 8 - 20 // 8px offset + 20px margin
+      const spaceBelow = viewportHeight - rect.bottom - 8 - 20
 
       setPosition({
         x: rect.left + rect.width / 2,
