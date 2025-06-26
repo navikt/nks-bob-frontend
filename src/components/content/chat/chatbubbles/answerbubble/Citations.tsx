@@ -89,7 +89,7 @@ interface CitationLinksProps {
 
 export const CitationLinks = ({ citations, context }: CitationLinksProps) => {
   return (
-    <VStack gap='2' justify='center'>
+    <VStack gap='2' justify='center' className='mb-4'>
       {citations.map(({ citationId }) => (
         <CitationLink
           key={citationId}
