@@ -3,7 +3,7 @@ import {
   Skeleton,
   VStack,
 } from "@navikt/ds-react"
-import { memo, useState } from "react"
+import React, { memo, useState } from "react"
 import Markdown from "react-markdown"
 import rehypeRaw from "rehype-raw"
 import { BobRoboHead } from "../../../../../assets/illustrations/BobRoboHead.tsx"
@@ -42,6 +42,10 @@ export const BobAnswerBubble = memo(
     const isPending = ({ pending, content }: Message): boolean =>
       pending && content === ""
 
+    const [citations, setCitations] = useState<
+      { citationId: number; position: number }[]
+    >([])
+
     return (
       <VStack gap='1' align='stretch' className='pb-12'>
         <VStack align='start' width='full'>
@@ -57,7 +61,7 @@ export const BobAnswerBubble = memo(
               ) : isPending(message) ? (
                 <LoadingContent />
               ) : (
-                <MessageContent message={message} />
+                <MessageContent message={message} citations={citations} setCitations={setCitations} />
               )}
             </div>
             <div className='flex flex-col'>
@@ -66,6 +70,7 @@ export const BobAnswerBubble = memo(
                 onSend={onSend}
                 isLoading={isLoading}
                 isLastMessage={isLastMessage}
+                citations={citations}
               />
             </div>
           </div>
@@ -106,10 +111,13 @@ const LoadingContent = () => (
   </div>
 )
 
-const MessageContent = ({ message }: { message: Message }) => {
-  const [citations, setCitations] = useState<
-    { citationId: number; position: number }[]
-  >([])
+const MessageContent = ({ message, citations, setCitations }: {
+  message: Message
+  citations: { citationId: number; position: number } []
+  setCitations: React.Dispatch<React.SetStateAction< {
+    citationId: number
+    position: number
+  }[]>> }) => {
 
   const addCitation = (citationId: number, position: number) => {
     let existingCitations = citations
@@ -170,9 +178,12 @@ const MessageContent = ({ message }: { message: Message }) => {
           {message.content}
         </Markdown>
       </BodyLong>
-      <CitationLinks citations={citations} context={message.context} />
     </VStack>
   )
+}
+
+interface CitationsProps extends Omit<BobAnswerBubbleProps, "isHighlighted"> {
+  citations: { citationId: number; position: number }[]
 }
 
 const Citations = memo(
@@ -181,7 +192,8 @@ const Citations = memo(
     onSend,
     isLoading,
     isLastMessage,
-  }: Omit<BobAnswerBubbleProps, "isHighlighted">) => {
+    citations,
+  }: CitationsProps ) => {
     const [selectedCitations, setSelectedCitations] =
       useState<string[]>(options)
 
@@ -235,7 +247,7 @@ const Citations = memo(
 
     return (
       <div className='flex flex-col gap-4'>
-        <div className='flex flex-wrap gap-2'>
+        <div className='flex flex-col gap-2'>
           {(!isLoading || !isLastMessage) && (
             <BobSuggests
               message={message}
@@ -243,6 +255,7 @@ const Citations = memo(
               isLastMessage={isLastMessage}
             />
           )}
+          <CitationLinks citations={citations} context={message.context} />
         </div>
         {message.citations && message.citations.length > 0 && (
           <div className='fade-in flex flex-col gap-2'>

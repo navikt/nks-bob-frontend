@@ -1,6 +1,6 @@
 import { ExternalLinkIcon } from "@navikt/aksel-icons"
 import {
-  BodyLong,
+  BodyLong, BodyShort,
   HStack, Label,
   Link,
   Tag,
@@ -89,7 +89,7 @@ interface CitationLinksProps {
 
 export const CitationLinks = ({ citations, context }: CitationLinksProps) => {
   return (
-    <VStack gap='2' justify='center'>
+    <VStack gap='2' justify='center' className='mb-4'>
       {citations.map(({ citationId }) => (
         <CitationLink
           key={citationId}
@@ -127,7 +127,7 @@ const CitationLink = ({
     citations.findIndex((citation) => citation.citationId === citationId) + 1
 
   return (
-    <HStack gap='2' align='center'>
+    <HStack gap='2' align='start' wrap={false}>
       <Tag variant='neutral' size='xsmall'>
         {displayId}
       </Tag>
@@ -137,8 +137,12 @@ const CitationLink = ({
           title='Åpne artikkelen i ny fane'
           className='text-base'
         >
+          <span className='inline-flex items-center gap-2'>
+          <BodyShort size='small'>
           {title}
-          <ExternalLinkIcon />
+          </BodyShort>
+          <ExternalLinkIcon className='self-start mt-0.5' />
+            </span>
         </Link>
     </HStack>
   )
