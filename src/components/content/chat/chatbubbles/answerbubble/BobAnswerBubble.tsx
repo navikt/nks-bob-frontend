@@ -190,7 +190,6 @@ const Citations = memo(
   ({
     message,
     onSend,
-    isLoading,
     isLastMessage,
     citations,
   }: CitationsProps ) => {
@@ -248,13 +247,11 @@ const Citations = memo(
     return (
       <div className='flex flex-col gap-4'>
         <div className='flex flex-col gap-2'>
-          {(!isLoading || !isLastMessage) && (
             <BobSuggests
               message={message}
               onSend={onSend}
               isLastMessage={isLastMessage}
             />
-          )}
           <CitationLinks citations={citations} context={message.context} />
         </div>
         {message.citations && message.citations.length > 0 && (
