@@ -192,6 +192,7 @@ const Citations = memo(
     onSend,
     isLastMessage,
     citations,
+    isLoading
   }: CitationsProps ) => {
     const [selectedCitations, setSelectedCitations] =
       useState<string[]>(options)
@@ -247,11 +248,13 @@ const Citations = memo(
     return (
       <div className='flex flex-col gap-4'>
         <div className='flex flex-col gap-2'>
+          {(!isLoading || !isLastMessage) &&
             <BobSuggests
-              message={message}
-              onSend={onSend}
-              isLastMessage={isLastMessage}
-            />
+            message={message}
+            onSend={onSend}
+            isLastMessage={isLastMessage}
+          />
+          }
           <CitationLinks citations={citations} context={message.context} />
         </div>
         {message.citations && message.citations.length > 0 && (
