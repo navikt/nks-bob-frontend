@@ -1,4 +1,5 @@
 import compression from "compression"
+import cors from "cors"
 import { randomUUID } from "crypto"
 import express from "express"
 import { readFileSync } from "fs"
@@ -30,6 +31,7 @@ export const {
   NAIS_CLUSTER_NAME = "local",
   MILJO = "local",
   NAIS_TOKEN_EXCHANGE_ENDPOINT = "",
+  SALESFORCE_DOMAINS = "", // Comma-separated list of allowed Salesforce domains
 } = process.env
 
 const audience =
@@ -186,6 +188,31 @@ const main = async () => {
   app.disable("x-powered-by")
   app.set("views", BUILD_PATH)
 
+  // Configure CORS for Salesforce iframe support
+  const allowedOrigins = SALESFORCE_DOMAINS 
+    ? SALESFORCE_DOMAINS.split(',').map(domain => domain.trim())
+    : []
+  
+  if (MILJO === 'local') {
+    allowedOrigins.push('http://localhost:5173', 'http://127.0.0.1:5173')
+  }
+
+  app.use(cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin (mobile apps, etc.)
+      if (!origin) return callback(null, true)
+      
+      // Allow if origin is in the allowed list or if no specific domains configured
+      if (allowedOrigins.length === 0 || allowedOrigins.includes(origin)) {
+        callback(null, true)
+      } else {
+        callback(new Error('Not allowed by CORS'))
+      }
+    },
+    credentials: true,
+    optionsSuccessStatus: 200
+  }))
+
   app.use(
     compression({
       level: 6,
@@ -272,10 +299,15 @@ const main = async () => {
   app.get("/login", (req, res) => {
     const target = new URL(LOGIN_URL)
     const referer = (req.query.referer as string | undefined) ?? "/"
-    log.info(`redirecting to login with referer ${referer}`)
+    
+    // For popup authentication, redirect to auth success page
+    const isPopup = req.query.popup === 'true'
+    const redirectUrl = isPopup ? '/auth/success' : referer
+    
+    log.info(`redirecting to login with referer ${redirectUrl}`)
 
-    target.searchParams.set("redirect", referer!)
-    res.setHeader("Referer", referer!)
+    target.searchParams.set("redirect", redirectUrl)
+    res.setHeader("Referer", redirectUrl)
 
     res.redirect(target.href)
   })
