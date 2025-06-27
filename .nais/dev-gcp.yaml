@@ -31,6 +31,9 @@ spec:
         groups:
           - id: "dcb5ec4c-8027-428c-9dfd-15852388001c" # Administratorgruppe
           - id: "1a7b1fec-44c3-40c1-bf1d-f462b5a90a26" # Brukergruppe
+      replyURLs:
+        - https://bob.ansatt.dev.nav.no/oauth2/callback
+        - https://app-connect-7729--c.scratch.container.force.com/auth/success
     sidecar:
       enabled: true
       autoLogin: true
