@@ -34,6 +34,7 @@ spec:
       replyURLs:
         - https://bob.ansatt.dev.nav.no/oauth2/callback
         - https://app-connect-7729--c.scratch.container.force.com/auth/success
+      singlePageApplication: true
     sidecar:
       enabled: true
       autoLogin: true
@@ -49,7 +50,7 @@ spec:
     - name: MILJO
       value: dev
     - name: SALESFORCE_DOMAINS
-      value: https://app-connect-7729.scratch.my.salesforce-setup.com,https://bob.ansatt.dev.nav.no
+      value: https://app-connect-7729--c.scratch.container.force.com,app-connect-7729.scratch.lightning.force.com,https://app-connect-7729.scratch.lightning.force.com,https://app-connect-7729.scratch.my.salesforce-setup.com,https://bob.ansatt.dev.nav.no
   observability:
     autoInstrumentation:
       enabled: true
