@@ -10,8 +10,11 @@ import {
 } from "../types/Message"
 import { Alert, NewsNotification } from "../types/Notifications"
 import { UserConfig } from "../types/User"
+import { isSalesforceMode } from "../utils/iframe"
 
-export const API_URL = `${import.meta.env.BASE_URL}bob-api`
+export const API_URL = isSalesforceMode()
+  ? `https://bob.ansatt.dev.nav.no/bob-api` // TODO support multiple envs.
+  : `${import.meta.env.BASE_URL}bob-api`
 
 export type ApiError = {
   status: number
