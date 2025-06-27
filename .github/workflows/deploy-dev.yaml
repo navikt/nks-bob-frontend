@@ -31,6 +31,28 @@ jobs:
 
       - run: npm run build
 
+      - name: Build Salesforce version
+        run: npm run build
+        env:
+          VITE_SALESFORCE_BUILD: "true"
+          VITE_AZURE_CLIENT_ID: ${{ secrets.AZURE_APP_CLIENT_ID }}
+          VITE_AZURE_AUTHORITY: ${{ secrets.AZURE_AUTHORITY }}
+
+      - name: Create Salesforce deployment zip
+        run: |
+          cd dist
+          zip -r ../nks-bob-salesforce-${GITHUB_SHA}.zip .
+          cd ..
+          echo "Created Salesforce zip: nks-bob-salesforce-${GITHUB_SHA}.zip"
+          ls -la nks-bob-salesforce-*.zip
+
+      - name: Upload Salesforce build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nks-bob-salesforce-${{ github.sha }}
+          path: nks-bob-salesforce-${{ github.sha }}.zip
+          retention-days: 30
+
       - run: npm install
         working-directory: server
         env:
