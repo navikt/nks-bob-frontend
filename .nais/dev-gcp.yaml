@@ -46,7 +46,7 @@ spec:
     - name: MILJO
       value: dev
     - name: SALESFORCE_DOMAINS
-      value: https://app-connect-7729.scratch.my.salesforce-setup.com
+      value: https://app-connect-7729.scratch.my.salesforce-setup.com,https://bob.ansatt.dev.nav.no
   observability:
     autoInstrumentation:
       enabled: true
