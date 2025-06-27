@@ -14,11 +14,16 @@ export const isSalesforceMode = (): boolean => {
 
 export const postMessageToParent = (type: string, data?: any): void => {
   if (window.parent && window.parent !== window) {
+    // Use specific Salesforce domain for security in production
+    const targetOrigin = window.location.hostname.includes('lightning.force.com') 
+      ? 'https://app-connect-7729.scratch.lightning.force.com'
+      : '*' // Allow any origin in development
+      
     window.parent.postMessage({
       type,
       data,
       source: 'nks-bob-iframe'
-    }, '*') // In production, specify Salesforce domain
+    }, targetOrigin)
   }
 }
 
@@ -98,7 +103,18 @@ export const setupIframeMessageListener = (): void => {
   if (!isSalesforceMode()) return
 
   window.addEventListener('message', (event) => {
-    // In production, validate event.origin against Salesforce domains
+    // Validate event origin for security
+    const allowedOrigins = [
+      'https://app-connect-7729.scratch.lightning.force.com',
+      'http://localhost:5173', // Development
+      'http://127.0.0.1:5173'  // Development
+    ]
+    
+    if (!allowedOrigins.includes(event.origin)) {
+      console.warn('Ignored message from unauthorized origin:', event.origin)
+      return
+    }
+    
     if (event.data?.source === 'salesforce-parent') {
       switch (event.data.type) {
         case 'AUTH_TOKEN':

@@ -7,6 +7,7 @@ export const msalConfig: Configuration = {
     authority: import.meta.env.VITE_AZURE_AUTHORITY || "https://login.microsoftonline.com/62366534-1ec3-4962-8869-9b5535279d0b",
     redirectUri: window.location.origin + "/auth/success",
     postLogoutRedirectUri: window.location.origin,
+    navigateToLoginRequestUrl: false, // Important for popup flows
   },
   cache: {
     cacheLocation: "sessionStorage", // This is better for iframe scenarios

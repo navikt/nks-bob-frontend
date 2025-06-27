@@ -34,6 +34,7 @@ spec:
       replyURLs:
         - https://bob.ansatt.dev.nav.no/oauth2/callback
         - https://app-connect-7729--c.scratch.container.force.com/auth/success
+        - https://app-connect-7729--c.scratch.container.force.com
       singlePageApplication: true
     sidecar:
       enabled: true

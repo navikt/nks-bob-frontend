@@ -17,10 +17,11 @@ export const IframeLoginButton = ({ loginUrl }: IframeLoginButtonProps) => {
       // If successful in iframe mode, notify parent and refresh
       if (isSalesforceMode()) {
         postMessageToParent('AUTH_SUCCESS', { timestamp: Date.now() })
+        console.log("MSAL login success")
         // Small delay then refresh
-        setTimeout(() => {
-          window.location.reload()
-        }, 500)
+        // setTimeout(() => {
+        //   window.location.reload()
+        // }, 500)
       }
     } catch (error) {
       console.error("MSAL login failed:", error)
@@ -48,10 +49,10 @@ export const IframeLoginButton = ({ loginUrl }: IframeLoginButtonProps) => {
       }
 
       const checkClosed = setInterval(() => {
-        if (popup.closed) {
-          clearInterval(checkClosed)
-          window.location.reload()
-        }
+        // if (popup.closed) {
+        //   clearInterval(checkClosed)
+        //   window.location.reload()
+        // }
       }, 1000)
 
       setTimeout(() => {
