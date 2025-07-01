@@ -1,13 +1,14 @@
 import { Alert as AlertComponent, BodyShort, Heading } from "@navikt/ds-react"
 import Markdown from "react-markdown"
 import { useAlerts } from "../../../api/api.ts"
-import {
-  BobTheRobot,
-  BobTheRobotDark,
-} from "../../../assets/illustrations/BobTheRobot.tsx"
+// import {
+//   BobTheRobot,
+//   BobTheRobotDark,
+// } from "../../../assets/illustrations/BobTheRobot.tsx"
 import { SadBob } from "../../../assets/illustrations/SadBob.tsx"
 import { Alert } from "../../../types/Notifications.ts"
 import "./Placeholders.css"
+import BobSummerRobot from '../../../assets/illustrations/PNG/BobSummerRobot.png'
 
 export const BobPlaceholder = () => {
   const { alerts } = useAlerts()
@@ -18,16 +19,22 @@ export const BobPlaceholder = () => {
       {!hasErrors && (
         <>
           <div className='bob-styling flex dark:hidden'>
-            <div>
-              <BobTheRobot />
+            <div className="h-[450px] w-[450px] flex self-center mb-4">
+              <img src={BobSummerRobot} alt="Sommer-Bob" className="h-full w-full"/>
             </div>
+            {/*<div>*/}
+            {/*  <BobTheRobot />*/}
+            {/*</div>*/}
             <BodyShort size='medium' className='self-center text-text-subtle'>
               Hei! Hva kan jeg hjelpe deg med?
             </BodyShort>
           </div>
           <div className='bob-styling hidden dark:flex'>
-            <div>
-              <BobTheRobotDark />
+            {/*<div>*/}
+            {/*  <BobTheRobotDark />*/}
+            {/*</div>*/}
+            <div className="h-[450px] w-[450px] flex self-center mb-4">
+              <img src={BobSummerRobot} alt="Sommer-Bob" className="h-full w-full"/>
             </div>
             <BodyShort size='medium' className='self-center text-text-subtle'>
               Hei! Hva kan jeg hjelpe deg med?
