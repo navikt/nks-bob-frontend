@@ -6,7 +6,7 @@
   "main": "src/server.ts",
   "dependencies": {
     "@navikt/oasis": "3.8.0",
-    "compression": "^1.8.0",
+    "compression": "^1.8.1",
     "express": "^5.1.0",
     "express-http-proxy": "2.1.1",
     "http-proxy-middleware": "3.0.5",
