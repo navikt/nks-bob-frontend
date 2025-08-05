@@ -1,6 +1,6 @@
 import {
   BulletListIcon,
-  HandHeartIcon,
+  HandShakeHeartIcon,
   LanguageIcon,
   StarFillIcon,
   StarIcon,
@@ -110,7 +110,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
           variant='tertiary-neutral'
           size='small'
           aria-label='Gjør svaret mer empatisk'
-          icon={<HandHeartIcon />}
+          icon={<HandShakeHeartIcon />}
           onClick={handleEmpathetic}
         />
       </Tooltip>
