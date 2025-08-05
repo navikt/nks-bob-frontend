@@ -1,6 +1,6 @@
 import { InformationSquareIcon } from "@navikt/aksel-icons"
 import { Button, Tooltip } from "@navikt/ds-react"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { useUserConfig } from "../../api/api.ts"
 import analytics from "../../utils/analytics.ts"
 import { CoachMark } from "../coachmark/CoachMark.tsx"
@@ -21,6 +21,7 @@ function Header({ conversation }: HeaderProps) {
   const [startGuide, setStartGuide] = useState(false)
   const { userConfig } = useUserConfig()
   const coachMarkKey = "coachMarkShownHeader"
+  const newConversationRef = useRef<HTMLDialogElement>(null)
 
   const showGuide = () => {
     analytics.infoÅpnet()
@@ -30,7 +31,8 @@ function Header({ conversation }: HeaderProps) {
   return (
     <div className='header'>
       <div className='flex max-w-24'>
-        <NAVLogo />
+        {conversation ?
+          <NAVLogoButton newConversationRef={newConversationRef} /> : <NAVLogo /> }
       </div>
       <div className='max-h-30 flex h-full gap-3'>
         <div className='flex items-center justify-center align-middle'>
@@ -43,7 +45,7 @@ function Header({ conversation }: HeaderProps) {
               >
                 <MainButtonsExplanation />
               </CoachMark>
-              <NewButton conversationId={conversation} />
+              <NewButton conversationId={conversation} newConversationRef={newConversationRef} />
             </>
           )}
           <NotificationToggle />
@@ -64,4 +66,13 @@ function Header({ conversation }: HeaderProps) {
   )
 }
 
+const NAVLogoButton = ({ newConversationRef }: {
+  newConversationRef: React.RefObject<HTMLDialogElement | null>
+  }) => (
+      <NAVLogo style={{ cursor: "pointer" }} onClick={() =>
+      newConversationRef.current?.showModal()} />
+)
+
 export default Header
+
+

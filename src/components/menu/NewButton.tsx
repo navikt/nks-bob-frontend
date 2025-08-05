@@ -1,12 +1,16 @@
 import { NotePencilIcon } from "@navikt/aksel-icons"
 import { BodyShort, Button, Modal, Tooltip, VStack } from "@navikt/ds-react"
-import { useRef } from "react"
 import { Link } from "react-router"
 import FeedbackThumbs from "../content/chat/feedback/FeedbackThumbs"
 import { useInputFieldStore } from "../inputfield/InputField"
 
-export const NewButton = ({ conversationId }: { conversationId: string }) => {
-  const newConversationRef = useRef<HTMLDialogElement>(null)
+export const NewButton = ({
+  conversationId,
+  newConversationRef
+  }: {
+  conversationId: string
+  newConversationRef: React.RefObject<HTMLDialogElement | null>
+  }) => {
   const { setInputValue } = useInputFieldStore()
 
   return (
