@@ -64,6 +64,7 @@ function ChatContainer({ messages, onSend, isLoading }: ChatDialogProps) {
               isLoading={isLoading}
               isLastMessage={index === messages.length - 1}
               isHighlighted={message.id === selectedMessageId}
+              followUp={message.followUp ?? []}
             />
           </Fragment>
         ),

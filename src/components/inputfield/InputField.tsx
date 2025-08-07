@@ -9,13 +9,11 @@ import { createJSONStorage, persist } from "zustand/middleware"
 import { useAlerts } from "../../api/api.ts"
 import { NewMessage } from "../../types/Message.ts"
 import analytics from "../../utils/analytics.ts"
-import { FollowUpQuestions } from "../content/followupquestions/FollowUpQuestions.tsx"
 import "./InputField.css"
 
 type InputFieldState = {
   inputValue: string
   setInputValue: (value: string) => void
-  followUp: string[]
   setFollowUp: (followUp: string[]) => void
   focusTextarea: () => void
   textareaRef: React.RefObject<HTMLTextAreaElement | null>
@@ -63,7 +61,7 @@ function InputField({ onSend, disabled }: InputFieldProps) {
   const [containsFnr, setContainsFnr] = useState<boolean>(false)
   const [sendDisabled, setSendDisabled] = useState<boolean>(disabled)
 
-  const { inputValue, setInputValue, followUp, textareaRef } =
+  const { inputValue, setInputValue, textareaRef } =
     useInputFieldStore()
 
   const { alerts } = useAlerts()
@@ -157,13 +155,6 @@ function InputField({ onSend, disabled }: InputFieldProps) {
           Du har skrevet inn noe som ligner på et fødselsnummer. Derfor får du
           ikke sendt meldingen.
         </Alert>
-      )}
-      {!sendDisabled && (
-        <FollowUpQuestions
-          followUp={followUp}
-          onSend={(question) => sendMessage(question)}
-          className='pointer-events-auto'
-        />
       )}
       <div className='inputfield relative flex max-w-[48rem] flex-col items-center justify-end'>
         <Textarea
