@@ -17,6 +17,7 @@ import BobSuggests from "../../suggestions/BobSuggests.tsx"
 import BobAnswerCitations from "../BobAnswerCitations.tsx"
 import ToggleCitations from "../citations/ToggleCitations.tsx"
 import { CitationLinks, CitationNumber } from "./Citations.tsx"
+import { FollowUpQuestions } from "../../../followupquestions/FollowUpQuestions.tsx"
 
 interface BobAnswerBubbleProps {
   message: Message
@@ -24,6 +25,7 @@ interface BobAnswerBubbleProps {
   isLoading: boolean
   isLastMessage: boolean
   isHighlighted: boolean
+  followUp: string[]
 }
 
 const options = ["Sitater fra Nav.no", "Sitater fra Kunnskapsbasen"]
@@ -35,6 +37,7 @@ export const BobAnswerBubble = memo(
     isLoading,
     isLastMessage,
     isHighlighted,
+    followUp,
   }: BobAnswerBubbleProps) => {
     const hasError = ({ errors, pending, content }: Message): boolean =>
       errors.length > 0 && !pending && content === ""
@@ -64,13 +67,17 @@ export const BobAnswerBubble = memo(
                 <MessageContent message={message} citations={citations} setCitations={setCitations} />
               )}
             </div>
-            <div className='flex flex-col'>
+            <div className='flex flex-col gap-2'>
               <Citations
                 message={message}
                 onSend={onSend}
                 isLoading={isLoading}
                 isLastMessage={isLastMessage}
                 citations={citations}
+              />
+              <FollowUpQuestions
+                followUp={followUp} onSend={(question) => onSend({ content: question })}
+                className='pointer-events-auto'
               />
             </div>
           </div>
@@ -182,7 +189,7 @@ const MessageContent = ({ message, citations, setCitations }: {
   )
 }
 
-interface CitationsProps extends Omit<BobAnswerBubbleProps, "isHighlighted"> {
+interface CitationsProps extends Omit<BobAnswerBubbleProps, "isHighlighted" | "followUp"> {
   citations: { citationId: number; position: number }[]
 }
 

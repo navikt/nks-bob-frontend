@@ -1,25 +1,22 @@
-.followupchip {
+.followupcontainer {
     display: flex;
     padding: 4px 8px;
-    border: 1px solid rgba(7, 26, 54, 0.21);
-    border-radius: 8px;
     background: rgba(241, 247, 255, 1);
     white-space: normal !important;
 }
 
-.followupchip:hover {
+.followupcontainer:hover {
     background: rgba(212, 229, 253, 1);
-    border-radius: 8px 8px 2px 8px;
 }
 
-body.dark .followupchip {
+body.dark .followupcontainer {
     background: rgba(16, 29, 45, 1);
-    border: 1px solid rgba(46, 54, 65, 1);
+
 }
 
-body.dark .followupchip:hover {
+body.dark .followupcontainer:hover {
     background: rgba(26, 44, 65, 1);
-    border: 1px solid rgba(35, 55, 79, 1);
+
 }
 
 .question-text {
