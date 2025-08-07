@@ -12,6 +12,7 @@ import DarkModeToggle from "../menu/darkmode/DarkModeToggle.tsx"
 import { NotificationToggle } from "../notification/NotificationDrawer.tsx"
 import "./Header.css"
 import { NAVLogo } from "./nav-logo.tsx"
+import { Link } from "react-router"
 
 interface HeaderProps {
   conversation: string | undefined
@@ -31,8 +32,7 @@ function Header({ conversation }: HeaderProps) {
   return (
     <div className='header'>
       <div className='flex max-w-24'>
-        {conversation ?
-          <NAVLogoButton newConversationRef={newConversationRef} /> : <NAVLogo /> }
+        <Link to='https://www.nav.no/' target='_blank'><NAVLogo /></Link>
       </div>
       <div className='max-h-30 flex h-full gap-3'>
         <div className='flex items-center justify-center align-middle'>
@@ -65,13 +65,6 @@ function Header({ conversation }: HeaderProps) {
     </div>
   )
 }
-
-const NAVLogoButton = ({ newConversationRef }: {
-  newConversationRef: React.RefObject<HTMLDialogElement | null>
-  }) => (
-      <NAVLogo style={{ cursor: "pointer" }} onClick={() =>
-      newConversationRef.current?.showModal()} />
-)
 
 export default Header
 
