@@ -39,7 +39,8 @@ function ChatContainer({ messages, onSend, isLoading }: ChatDialogProps) {
   useEffect(() => {
     if (lastMessageRef.current && !selectedMessageRef.current) {
       lastMessageRef.current.scrollIntoView({
-        behavior: "instant",
+        behavior: "smooth",
+        block: "start",
       })
     }
   }, [messages, lastMessageRef, selectedMessageRef])
