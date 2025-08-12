@@ -1,8 +1,9 @@
 import { useParams, useSearchParams } from "react-router"
 import { useSendMessage } from "../../api/sse.ts"
 
-import { Alert as AlertComponent, Heading } from "@navikt/ds-react"
-import { useEffect } from "react"
+import { ArrowDownIcon } from "@navikt/aksel-icons"
+import { Alert as AlertComponent, Button, Heading } from "@navikt/ds-react"
+import { useEffect, useRef, useState } from "react"
 import Markdown from "react-markdown"
 import { useAlerts, useMessages } from "../../api/api.ts"
 import { NewMessage } from "../../types/Message.ts"
@@ -17,11 +18,13 @@ import { WhitespacePlaceholder } from "./placeholders/Placeholders.tsx"
 import DialogWrapper from "./wrappers/DialogWrapper.tsx"
 
 function ConversationContent() {
+  const containerRef = useRef<HTMLDivElement | null>(null)
+  const [showScrollButton, setShowScrollButton] = useState<boolean>(false)
+
   const { conversationId } = useParams()
   const [searchParams, setSearchParams] = useSearchParams()
 
-  const { messages: existingMessages, isLoading: isLoadingExistingMessages } =
-    useMessages(conversationId!)
+  const { messages: existingMessages, isLoading: isLoadingExistingMessages } = useMessages(conversationId!)
   const { sendMessage, isLoading } = useSendMessage(conversationId!)
   const { messages, setMessages } = messageStore()
   const { alerts } = useAlerts()
@@ -60,12 +63,36 @@ function ConversationContent() {
     setFollowUp(followUp)
   }, [lastMessage])
 
+  useEffect(() => {
+    const container = containerRef.current
+
+    const handleScroll = () => {
+      if (!container) return
+
+      const isAtBottom = container.scrollHeight - container.scrollTop <= container.clientHeight + 100
+      setShowScrollButton(!isAtBottom)
+    }
+
+    container?.addEventListener("scroll", handleScroll)
+    return () => container?.removeEventListener("scroll", handleScroll)
+  }, [])
+
+  const scrollToBottom = () => {
+    containerRef.current?.scrollTo({
+      top: containerRef.current.scrollHeight,
+      behavior: "smooth",
+    })
+  }
+
   return (
     <div className='conversation-content'>
       <DialogWrapper>
         <Header conversation={conversationId} />
         <ErrorBanner alerts={alerts} />
-        <div className='chatcontainer'>
+        <div
+          className='chatcontainer'
+          ref={containerRef}
+        >
           {!messages || messages.length < 0 ? (
             <WhitespacePlaceholder />
           ) : (
@@ -75,8 +102,20 @@ function ConversationContent() {
               isLoading={isLoading}
             />
           )}
+          {showScrollButton && (
+            <Button
+              icon={<ArrowDownIcon />}
+              className='fixed bottom-28 left-1/2 -translate-x-1/2 opacity-75'
+              variant='primary-neutral'
+              size='small'
+              onClick={scrollToBottom}
+            />
+          )}
         </div>
-        <InputField onSend={handleUserMessage} disabled={isLoading} />
+        <InputField
+          onSend={handleUserMessage}
+          disabled={isLoading}
+        />
       </DialogWrapper>
       <ShowAllSources />
       <AdminMenu />
@@ -99,7 +138,11 @@ const ErrorBanner = ({ alerts }: { alerts: Alert[] }) => {
       variant={level}
       className='mb-4 w-full max-w-[48rem]'
     >
-      <Heading spacing size='small' level='3'>
+      <Heading
+        spacing
+        size='small'
+        level='3'
+      >
         {title}
       </Heading>
       <Markdown>{content}</Markdown>

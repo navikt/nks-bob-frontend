@@ -3,8 +3,9 @@
     "prettier-plugin-organize-imports",
     "prettier-plugin-tailwindcss"
   ],
+  "singleAttributePerLine": true,
   "semi": false,
-  "printWidth": 80,
+  "printWidth": 120,
   "jsxSingleQuote": true,
   "jsxBracketSameLine": false,
   "arrowParens": "always",
