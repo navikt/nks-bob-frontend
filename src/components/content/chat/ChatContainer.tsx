@@ -13,10 +13,9 @@ interface ChatDialogProps {
 function ChatContainer({ messages, onSend, isLoading }: ChatDialogProps) {
   const lastMessageRef = useRef<HTMLDivElement | null>(null)
   const selectedMessageRef = useRef<HTMLDivElement | null>(null)
-  const [selectedMessageId, setSelectedMessageId] = useState<string | null>(
-    null,
-  )
+  const [selectedMessageId, setSelectedMessageId] = useState<string | null>(null)
   const [searchParams] = useSearchParams()
+  const prevMessagesLength = useRef<number>(messages.length)
 
   // update selected message
   useEffect(() => {
@@ -37,12 +36,13 @@ function ChatContainer({ messages, onSend, isLoading }: ChatDialogProps) {
 
   // scroll on new message
   useEffect(() => {
-    if (lastMessageRef.current && !selectedMessageRef.current) {
+    if (lastMessageRef.current && !selectedMessageRef.current && messages.length > prevMessagesLength.current) {
       lastMessageRef.current.scrollIntoView({
         behavior: "smooth",
         block: "start",
       })
     }
+    prevMessagesLength.current = messages.length
   }, [messages, lastMessageRef, selectedMessageRef])
 
   return (
@@ -55,9 +55,7 @@ function ChatContainer({ messages, onSend, isLoading }: ChatDialogProps) {
           </Fragment>
         ) : (
           <Fragment key={message.id}>
-            {message.id === selectedMessageId && (
-              <div ref={selectedMessageRef} />
-            )}
+            {message.id === selectedMessageId && <div ref={selectedMessageRef} />}
             <BobAnswerBubble
               key={message.id}
               message={message}

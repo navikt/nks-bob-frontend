@@ -1,23 +1,15 @@
-import {
-  BodyLong,
-  Skeleton,
-  VStack,
-} from "@navikt/ds-react"
+import { BodyLong, Heading, Skeleton, VStack } from "@navikt/ds-react"
 import React, { memo, useState } from "react"
 import Markdown from "react-markdown"
 import rehypeRaw from "rehype-raw"
 import { BobRoboHead } from "../../../../../assets/illustrations/BobRoboHead.tsx"
-import {
-  Citation,
-  Message,
-  NewMessage,
-} from "../../../../../types/Message.ts"
+import { Citation, Message, NewMessage } from "../../../../../types/Message.ts"
 import { md } from "../../../../../utils/markdown.ts"
+import { FollowUpQuestions } from "../../../followupquestions/FollowUpQuestions.tsx"
 import BobSuggests from "../../suggestions/BobSuggests.tsx"
 import BobAnswerCitations from "../BobAnswerCitations.tsx"
 import ToggleCitations from "../citations/ToggleCitations.tsx"
 import { CitationLinks, CitationNumber } from "./Citations.tsx"
-import { FollowUpQuestions } from "../../../followupquestions/FollowUpQuestions.tsx"
 
 interface BobAnswerBubbleProps {
   message: Message
@@ -31,40 +23,38 @@ interface BobAnswerBubbleProps {
 const options = ["Sitater fra Nav.no", "Sitater fra Kunnskapsbasen"]
 
 export const BobAnswerBubble = memo(
-  ({
-    message,
-    onSend,
-    isLoading,
-    isLastMessage,
-    isHighlighted,
-    followUp,
-  }: BobAnswerBubbleProps) => {
-    const hasError = ({ errors, pending, content }: Message): boolean =>
-      errors.length > 0 && !pending && content === ""
+  ({ message, onSend, isLoading, isLastMessage, isHighlighted, followUp }: BobAnswerBubbleProps) => {
+    const hasError = ({ errors, pending, content }: Message): boolean => errors.length > 0 && !pending && content === ""
 
-    const isPending = ({ pending, content }: Message): boolean =>
-      pending && content === ""
+    const isPending = ({ pending, content }: Message): boolean => pending && content === ""
 
-    const [citations, setCitations] = useState<
-      { citationId: number; position: number }[]
-    >([])
+    const [citations, setCitations] = useState<{ citationId: number; position: number }[]>([])
 
     return (
-      <VStack gap='1' align='stretch' className='pb-12'>
-        <VStack align='start' width='full'>
+      <VStack
+        gap='1'
+        align='stretch'
+        className={`pb-12 ${isLastMessage ? "min-h-[calc(100vh_-_250px)]" : ""}`}
+      >
+        <VStack
+          align='start'
+          width='full'
+        >
           <div className='pt-1'>
             <BobRoboHead />
           </div>
           <div className='flex w-full flex-col pt-3'>
-            <div
-              className={`overflow-wrap mb-2 flex w-full ${isHighlighted ? "bg-[#FFF5E4] p-2" : ""}`}
-            >
+            <div className={`overflow-wrap mb-2 flex w-full ${isHighlighted ? "bg-[#FFF5E4] p-2" : ""} `}>
               {hasError(message) ? (
                 <ErrorContent message={message} />
               ) : isPending(message) ? (
                 <LoadingContent />
               ) : (
-                <MessageContent message={message} citations={citations} setCitations={setCitations} />
+                <MessageContent
+                  message={message}
+                  citations={citations}
+                  setCitations={setCitations}
+                />
               )}
             </div>
             <div className='flex flex-col gap-2'>
@@ -76,7 +66,8 @@ export const BobAnswerBubble = memo(
                 citations={citations}
               />
               <FollowUpQuestions
-                followUp={followUp} onSend={(question) => onSend({ content: question })}
+                followUp={followUp}
+                onSend={(question) => onSend({ content: question })}
                 className='pointer-events-auto'
               />
             </div>
@@ -97,62 +88,75 @@ export const BobAnswerBubble = memo(
       return false
     }
 
+    if (prevProps.isLastMessage !== nextProps.isLastMessage) return false
+
     return prevMessage === nextMessage
   },
 )
 
 const ErrorContent = ({ message }: { message: Message }) => (
   <BodyLong>
-    <Markdown>
-      {message.errors
-        .map((error) => `**${error.title}:** ${error.description}`)
-        .join("\n\n")}
-    </Markdown>
+    <Markdown>{message.errors.map((error) => `**${error.title}:** ${error.description}`).join("\n\n")}</Markdown>
   </BodyLong>
 )
 
 const LoadingContent = () => (
   <div className='w-full'>
-    <Skeleton width='100%' variant='text' />
-    <Skeleton width='70%' variant='text' />
+    <Skeleton
+      width='100%'
+      variant='text'
+    />
+    <Skeleton
+      width='70%'
+      variant='text'
+    />
   </div>
 )
 
-const MessageContent = ({ message, citations, setCitations }: {
+const MessageContent = ({
+  message,
+  citations,
+  setCitations,
+}: {
   message: Message
-  citations: { citationId: number; position: number } []
-  setCitations: React.Dispatch<React.SetStateAction< {
-    citationId: number
-    position: number
-  }[]>> }) => {
-
+  citations: { citationId: number; position: number }[]
+  setCitations: React.Dispatch<
+    React.SetStateAction<
+      {
+        citationId: number
+        position: number
+      }[]
+    >
+  >
+}) => {
   const addCitation = (citationId: number, position: number) => {
     let existingCitations = citations
     const newCitation = { citationId, position }
 
-    const existingCitation = citations.find(
-      (citation) => citation.citationId === citationId,
-    )
+    const existingCitation = citations.find((citation) => citation.citationId === citationId)
 
     if (existingCitation) {
       if (existingCitation.position <= position) {
         return
       }
       // Ignore existing citation to overwrite it.
-      existingCitations = citations.filter(
-        (citation) => citation.citationId !== citationId,
-      )
+      existingCitations = citations.filter((citation) => citation.citationId !== citationId)
     }
 
     // Store citations as a list ordered by `position`
-    const newState = [...existingCitations, newCitation].sort(
-      (a, b) => a.position - b.position,
-    )
+    const newState = [...existingCitations, newCitation].sort((a, b) => a.position - b.position)
     setCitations(newState)
   }
 
   return (
     <VStack gap='5'>
+      <Heading
+        size='small'
+        className='sr-only top-0'
+        level='2'
+      >
+        Svar fra Bob:
+      </Heading>
       <BodyLong className='fade-in'>
         <Markdown
           className='markdown'
@@ -160,7 +164,11 @@ const MessageContent = ({ message, citations, setCitations }: {
           rehypePlugins={[rehypeRaw]}
           components={{
             a: ({ ...props }) => (
-              <a {...props} target='_blank' rel='noopener noreferrer' />
+              <a
+                {...props}
+                target='_blank'
+                rel='noopener noreferrer'
+              />
             ),
             span: ({ node, ...props }) => {
               const dataCitation: string = (props as any)?.["data-citation"]
@@ -194,15 +202,8 @@ interface CitationsProps extends Omit<BobAnswerBubbleProps, "isHighlighted" | "f
 }
 
 const Citations = memo(
-  ({
-    message,
-    onSend,
-    isLoading,
-    isLastMessage,
-    citations,
-  }: CitationsProps ) => {
-    const [selectedCitations, setSelectedCitations] =
-      useState<string[]>(options)
+  ({ message, onSend, isLoading, isLastMessage, citations }: CitationsProps) => {
+    const [selectedCitations, setSelectedCitations] = useState<string[]>(options)
 
     const handleToggleCitations = (selected: string[]) => {
       setSelectedCitations(selected)
@@ -262,7 +263,10 @@ const Citations = memo(
               isLastMessage={isLastMessage}
             />
           )}
-          <CitationLinks citations={citations} context={message.context} />
+          <CitationLinks
+            citations={citations}
+            context={message.context}
+          />
         </div>
         {message.citations && message.citations.length > 0 && (
           <div className='fade-in flex flex-col gap-2'>
@@ -301,4 +305,3 @@ const Citations = memo(
     return prevCitations === nextCitations
   },
 )
-
