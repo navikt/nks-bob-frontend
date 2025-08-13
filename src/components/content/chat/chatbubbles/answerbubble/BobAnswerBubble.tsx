@@ -34,7 +34,7 @@ export const BobAnswerBubble = memo(
       <VStack
         gap='1'
         align='stretch'
-        className='pb-12'
+        className={`pb-12 ${isLastMessage ? "min-h-[calc(100vh_-_250px)]" : ""}`}
       >
         <VStack
           align='start'
@@ -44,7 +44,7 @@ export const BobAnswerBubble = memo(
             <BobRoboHead />
           </div>
           <div className='flex w-full flex-col pt-3'>
-            <div className={`overflow-wrap mb-2 flex w-full ${isHighlighted ? "bg-[#FFF5E4] p-2" : ""}`}>
+            <div className={`overflow-wrap mb-2 flex w-full ${isHighlighted ? "bg-[#FFF5E4] p-2" : ""} `}>
               {hasError(message) ? (
                 <ErrorContent message={message} />
               ) : isPending(message) ? (
@@ -87,6 +87,8 @@ export const BobAnswerBubble = memo(
     if (prevProps.isHighlighted !== nextProps.isHighlighted) {
       return false
     }
+
+    if (prevProps.isLastMessage !== nextProps.isLastMessage) return false
 
     return prevMessage === nextMessage
   },

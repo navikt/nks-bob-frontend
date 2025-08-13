@@ -13,9 +13,7 @@ interface ChatDialogProps {
 function ChatContainer({ messages, onSend, isLoading }: ChatDialogProps) {
   const lastMessageRef = useRef<HTMLDivElement | null>(null)
   const selectedMessageRef = useRef<HTMLDivElement | null>(null)
-  const [selectedMessageId, setSelectedMessageId] = useState<string | null>(
-    null,
-  )
+  const [selectedMessageId, setSelectedMessageId] = useState<string | null>(null)
   const [searchParams] = useSearchParams()
 
   // update selected message
@@ -55,9 +53,7 @@ function ChatContainer({ messages, onSend, isLoading }: ChatDialogProps) {
           </Fragment>
         ) : (
           <Fragment key={message.id}>
-            {message.id === selectedMessageId && (
-              <div ref={selectedMessageRef} />
-            )}
+            {message.id === selectedMessageId && <div ref={selectedMessageRef} />}
             <BobAnswerBubble
               key={message.id}
               message={message}
