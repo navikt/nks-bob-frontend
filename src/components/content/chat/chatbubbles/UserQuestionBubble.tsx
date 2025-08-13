@@ -1,7 +1,7 @@
 import { Message } from "../../../../types/Message.ts"
 
 import { PencilWritingIcon } from "@navikt/aksel-icons"
-import { BodyLong, Button, Tooltip } from "@navikt/ds-react"
+import { BodyLong, Button, Heading, Tooltip } from "@navikt/ds-react"
 import { memo } from "react"
 import Markdown from "react-markdown"
 import rehypeRaw from "rehype-raw"
@@ -30,7 +30,10 @@ const UserQuestionBubble = memo(
     return (
       <div className='questionhover mb-2 flex w-fit flex-row items-end gap-1 self-end'>
         <div className='hide-show-edit fade-in hidden'>
-          <Tooltip content='Rediger spørsmålet' placement='bottom'>
+          <Tooltip
+            content='Rediger spørsmålet'
+            placement='bottom'
+          >
             <Button
               variant='tertiary-neutral'
               size='small'
@@ -41,6 +44,13 @@ const UserQuestionBubble = memo(
           </Tooltip>
         </div>
         <div className='questionbubble max-w-prose'>
+          <Heading
+            size='small'
+            className='sr-only top-0'
+            level='2'
+          >
+            Du spurte:
+          </Heading>
           <BodyLong>
             <Markdown rehypePlugins={[rehypeRaw]}>{question}</Markdown>
           </BodyLong>
