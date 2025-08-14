@@ -207,7 +207,7 @@ interface CitationsProps extends Omit<BobAnswerBubbleProps, "isHighlighted" | "f
 }
 
 const Citations = memo(
-  ({ message, onSend, isLoading, isLastMessage, citations }: CitationsProps) => {
+  ({ message, citations }: CitationsProps) => {
     const [selectedCitations, setSelectedCitations] = useState<string[]>(options)
 
     const handleToggleCitations = (selected: string[]) => {
