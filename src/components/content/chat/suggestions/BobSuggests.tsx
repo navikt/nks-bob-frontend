@@ -1,11 +1,5 @@
-import {
-  BulletListIcon,
-  HandShakeHeartIcon,
-  LanguageIcon,
-  StarFillIcon,
-  StarIcon,
-} from "@navikt/aksel-icons"
-import { Button, CopyButton, Tag, Tooltip } from "@navikt/ds-react"
+import { BulletListIcon, HandShakeHeartIcon, LanguageIcon, StarFillIcon, StarIcon } from "@navikt/aksel-icons"
+import { Button, CopyButton, Tooltip } from "@navikt/ds-react"
 import { useState } from "react"
 import { useStarMessage } from "../../../../api/api.ts"
 import { Message, NewMessage } from "../../../../types/Message.ts"
@@ -28,9 +22,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
   function handleTranslate() {
     analytics.svarEndret("oversett")
     const translate: NewMessage = {
-      content: isLastMessage
-        ? "Oversett svaret til engelsk"
-        : `Oversett til engelsk:\n${message.content}`,
+      content: isLastMessage ? "Oversett svaret til engelsk" : `Oversett til engelsk:\n${message.content}`,
     }
     onSend(translate)
   }
@@ -38,9 +30,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
   function handleBulletList() {
     analytics.svarEndret("punktliste")
     const bulletList: NewMessage = {
-      content: isLastMessage
-        ? "Gjør om svaret til punktliste"
-        : `Gjør om til punktliste:\n${message.content}`,
+      content: isLastMessage ? "Gjør om svaret til punktliste" : `Gjør om til punktliste:\n${message.content}`,
     }
     onSend(bulletList)
   }
@@ -48,9 +38,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
   function handleEmpathetic() {
     analytics.svarEndret("forenkle")
     const simplifyMessage: NewMessage = {
-      content: isLastMessage
-        ? "Gjør svaret mer empatisk"
-        : `Gjør svaret mer empatisk:\n${message.content}`,
+      content: isLastMessage ? "Gjør svaret mer empatisk" : `Gjør svaret mer empatisk:\n${message.content}`,
     }
     onSend(simplifyMessage)
   }
@@ -68,16 +56,14 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
   }
 
   return (
-    <div className='fade-in background-color ml-[-0.3rem] flex h-fit w-fit flex-wrap items-center justify-start rounded mb-4'>
+    <div className='fade-in background-color ml-[-0.3rem] flex h-fit w-fit flex-wrap items-center justify-start rounded'>
       <Tooltip content='Kopier svaret'>
         <CopyButton
           copyText=''
           size='small'
           aria-label='Kopier svaret'
           onClick={() => {
-            new Promise((resolve) => setTimeout(resolve, 100)).then(() =>
-              copyMessageContent(),
-            )
+            new Promise((resolve) => setTimeout(resolve, 100)).then(() => copyMessageContent())
 
             analytics.svarKopiert(message.id)
           }}
@@ -123,11 +109,6 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
           <AnswerButtonsExplanation />
         </CoachMark>
       </div>
-      {!message.pending && message.context.length === 0 && (
-        <Tag size='small' variant='neutral' className='mt-1 h-fit'>
-          Bob brukte ingen kilder for å lage svaret
-        </Tag>
-      )}
     </div>
   )
 }
@@ -148,9 +129,7 @@ const MessageStar = ({ message }: { message: Message }) => {
         variant='tertiary-neutral'
         size='small'
         aria-label='Marker som bra svar'
-        icon={
-          starred ? <StarFillIcon className='text-orange-500' /> : <StarIcon />
-        }
+        icon={starred ? <StarFillIcon className='text-orange-500' /> : <StarIcon />}
         onClick={() => {
           handleStarMessage()
         }}
