@@ -58,7 +58,7 @@ export const BobAnswerBubble = memo(
               )}
             </div>
             {(message.content || !isLastMessage) && (
-              <div className='flex flex-wrap-reverse items-center gap-2'>
+              <div className='mb-6 flex flex-wrap-reverse items-center gap-2'>
                 <BobSuggests
                   message={message}
                   onSend={onSend}
@@ -68,7 +68,7 @@ export const BobAnswerBubble = memo(
                   <Tag
                     size='small'
                     variant='neutral'
-                    className='h-fit'
+                    className='h-fit w-fit px-3'
                   >
                     Bob brukte ingen kilder for å lage svaret
                   </Tag>
