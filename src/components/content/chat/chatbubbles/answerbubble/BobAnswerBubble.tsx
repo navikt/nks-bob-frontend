@@ -35,6 +35,8 @@ export const BobAnswerBubble = memo(
 
     const [citations, setCitations] = useState<{ citationId: number; position: number }[]>([])
 
+    const contentReady = !hasError(message) && !isPending(message) && !!message.content
+
     return (
       <VStack
         gap='1'
@@ -62,7 +64,7 @@ export const BobAnswerBubble = memo(
                 />
               )}
             </div>
-            {(message.content || !isLastMessage) && (
+            {contentReady && message.content && (
               <div className='mb-6 flex flex-wrap-reverse items-center gap-2'>
                 <BobSuggests
                   message={message}
@@ -86,6 +88,7 @@ export const BobAnswerBubble = memo(
               isLoading={isLoading}
               isLastMessage={isLastMessage}
               citations={citations}
+              showLinks={contentReady}
             />
             <FollowUpQuestions
               followUp={followUp}
@@ -209,10 +212,11 @@ const MessageContent = ({
 
 interface CitationsProps extends Omit<BobAnswerBubbleProps, "isHighlighted" | "followUp"> {
   citations: { citationId: number; position: number }[]
+  showLinks: boolean
 }
 
 const Citations = memo(
-  ({ message, citations }: CitationsProps) => {
+  ({ message, citations, showLinks }: CitationsProps) => {
     const [selectedCitations, setSelectedCitations] = useState<string[]>(options)
 
     const handleToggleCitations = (selected: string[]) => {
@@ -265,12 +269,14 @@ const Citations = memo(
 
     return (
       <div className='flex flex-col gap-4'>
-        <div className='flex flex-col gap-2'>
-          <CitationLinks
-            citations={citations}
-            context={message.context}
-          />
-        </div>
+        {showLinks && (
+          <div className='flex flex-col gap-2'>
+            <CitationLinks
+              citations={citations}
+              context={message.context}
+            />
+          </div>
+        )}
         {message.citations && message.citations.length > 0 && (
           <div className='fade-in flex flex-col gap-2'>
             <ToggleCitations
@@ -296,6 +302,7 @@ const Citations = memo(
     if (prevProps.isLoading !== nextProps.isLoading) return false
     if (prevProps.isLastMessage !== nextProps.isLastMessage) return false
     if (prevProps.citations !== nextProps.citations) return false
+    if (prevProps.showLinks !== nextProps.showLinks) return false
     if (prevCitations === nextCitations) return true
     return prevCitations.length === nextCitations.length
   },
