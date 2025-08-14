@@ -22,6 +22,11 @@ interface BobAnswerBubbleProps {
 
 const options = ["Sitater fra Nav.no", "Sitater fra Kunnskapsbasen"]
 
+interface CitationSpanProps extends React.HTMLAttributes<HTMLSpanElement> {
+  "data-citation"?: string
+  "data-position"?: string
+}
+
 export const BobAnswerBubble = memo(
   ({ message, onSend, isLoading, isLastMessage, isHighlighted, followUp }: BobAnswerBubbleProps) => {
     const hasError = ({ errors, pending, content }: Message): boolean => errors.length > 0 && !pending && content === ""
@@ -93,20 +98,11 @@ export const BobAnswerBubble = memo(
     )
   },
   (prevProps, nextProps) => {
-    const prevMessage = prevProps.message
-    const nextMessage = nextProps.message
-
-    if (prevProps.isLoading && !nextProps.isLoading) {
-      return false
-    }
-
-    if (prevProps.isHighlighted !== nextProps.isHighlighted) {
-      return false
-    }
-
+    if (prevProps.isLoading && !nextProps.isLoading) return false
+    if (prevProps.isHighlighted !== nextProps.isHighlighted) return false
     if (prevProps.isLastMessage !== nextProps.isLastMessage) return false
 
-    return prevMessage === nextMessage
+    return prevProps.message === nextProps.message
   },
 )
 
@@ -186,14 +182,12 @@ const MessageContent = ({
                 rel='noopener noreferrer'
               />
             ),
-            span: ({ node, ...props }) => {
-              const dataCitation: string = (props as any)?.["data-citation"]
-              const dataPosition: string = (props as any)?.["data-position"]
-
+            span: (props: CitationSpanProps) => {
+              const dataCitation = props["data-citation"]
+              const dataPosition = props["data-position"]
               if (dataCitation && dataPosition) {
-                const citationId = parseInt(dataCitation)
-                addCitation(citationId, parseInt(dataPosition))
-
+                const citationId = parseInt(dataCitation, 10)
+                addCitation(citationId, parseInt(dataPosition, 10))
                 return (
                   <CitationNumber
                     citations={citations}
@@ -299,18 +293,10 @@ const Citations = memo(
     const prevCitations = prevProps.message.citations
     const nextCitations = nextProps.message.citations
 
-    if (prevProps.isLoading !== nextProps.isLoading) {
-      return false
-    }
-
-    if (prevProps.isLastMessage !== nextProps.isLastMessage) {
-      return false
-    }
-
-    if (prevCitations.length === nextCitations.length) {
-      return true
-    }
-
-    return prevCitations === nextCitations
+    if (prevProps.isLoading !== nextProps.isLoading) return false
+    if (prevProps.isLastMessage !== nextProps.isLastMessage) return false
+    if (prevProps.citations !== nextProps.citations) return false
+    if (prevCitations === nextCitations) return true
+    return prevCitations.length === nextCitations.length
   },
 )

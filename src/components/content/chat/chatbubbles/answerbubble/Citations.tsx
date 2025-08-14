@@ -1,11 +1,5 @@
 import { ExternalLinkIcon } from "@navikt/aksel-icons"
-import {
-  BodyLong, BodyShort,
-  HStack, Label,
-  Link,
-  Tag,
-  VStack,
-} from "@navikt/ds-react"
+import { BodyLong, BodyShort, HStack, Label, Link, Tag, VStack } from "@navikt/ds-react"
 import Markdown from "react-markdown"
 import { Context } from "../../../../../types/Message.ts"
 import { HoverCard } from "../../../../ui/HoverCard.tsx"
@@ -17,28 +11,20 @@ interface CitationNumberProps {
   context: Context[]
 }
 
-export const CitationNumber = ({
-  citations,
-  citationId,
-  context,
-}: CitationNumberProps) => {
+export const CitationNumber = ({ citations, citationId, context }: CitationNumberProps) => {
   const source = context.at(citationId)
   if (!context || !source) {
     return null
   }
 
-  const title =
-    source.source === "nks"
-      ? source.title
-      : `${source.title} / ${source.anchor}`
+  const title = source.source === "nks" ? source.title : `${source.title} / ${source.anchor}`
 
-  const displayId =
-    citations.findIndex((citation) => citation.citationId === citationId) + 1
+  const displayId = citations.findIndex((citation) => citation.citationId === citationId) + 1
 
   const hoverContent = (
     <div className='flex flex-col gap-4'>
       <VStack gap='2'>
-        <div className='border-b border-border-subtle pb-3 mb-2'>
+        <div className='mb-2 border-b border-border-subtle pb-3'>
           <SourceIcon source={source.source} />
         </div>
         <Link
@@ -46,10 +32,16 @@ export const CitationNumber = ({
           target='_blank'
           title='Åpne artikkelen i ny fane'
         >
-          <Label size='medium' className='inline cursor-pointer'>
+          <Label
+            size='medium'
+            className='inline cursor-pointer'
+          >
             {title}
           </Label>
-          <ExternalLinkIcon fontSize={18} className='ml-1' />
+          <ExternalLinkIcon
+            fontSize={18}
+            className='ml-1'
+          />
         </Link>
       </VStack>
       <BodyLong size='small'>
@@ -57,7 +49,11 @@ export const CitationNumber = ({
           className='markdown'
           components={{
             a: ({ ...props }) => (
-              <a {...props} target='_blank' rel='noopener noreferrer' />
+              <a
+                {...props}
+                target='_blank'
+                rel='noopener noreferrer'
+              />
             ),
           }}
         >
@@ -89,7 +85,11 @@ interface CitationLinksProps {
 
 export const CitationLinks = ({ citations, context }: CitationLinksProps) => {
   return (
-    <VStack gap='2' justify='center' className='mb-4'>
+    <VStack
+      gap='2'
+      justify='center'
+      className='mb-4'
+    >
       {citations.map(({ citationId }) => (
         <CitationLink
           key={citationId}
@@ -108,42 +108,39 @@ interface CitationLinkProps {
   context: Context[]
 }
 
-const CitationLink = ({
-  citations,
-  citationId,
-  context,
-}: CitationLinkProps) => {
+const CitationLink = ({ citations, citationId, context }: CitationLinkProps) => {
   const source = context.at(citationId)
   if (!context || !source) {
     return null
   }
 
-  const title =
-    source.source === "nks"
-      ? source.title
-      : `${source.title} / ${source.anchor}`
+  const title = source.source === "nks" ? source.title : `${source.title} / ${source.anchor}`
 
-  const displayId =
-    citations.findIndex((citation) => citation.citationId === citationId) + 1
+  const displayId = citations.findIndex((citation) => citation.citationId === citationId) + 1
 
   return (
-    <HStack gap='2' align='start' wrap={false}>
-      <Tag variant='neutral' size='xsmall'>
+    <HStack
+      gap='2'
+      align='start'
+      wrap={false}
+    >
+      <Tag
+        variant='neutral'
+        size='xsmall'
+      >
         {displayId}
       </Tag>
-        <Link
-          href={`${source.url}#${source.anchor}`}
-          target='_blank'
-          title='Åpne artikkelen i ny fane'
-          className='text-base'
-        >
-          <span className='inline-flex items-center gap-2'>
-          <BodyShort size='small'>
-          {title}
-          </BodyShort>
-          <ExternalLinkIcon className='self-start mt-0.5' />
-            </span>
-        </Link>
+      <Link
+        href={`${source.url}#${source.anchor}`}
+        target='_blank'
+        title='Åpne artikkelen i ny fane'
+        className='text-base'
+      >
+        <span className='inline-flex items-center gap-2'>
+          <BodyShort size='small'>{title}</BodyShort>
+          <ExternalLinkIcon className='mt-0.5 self-start' />
+        </span>
+      </Link>
     </HStack>
   )
 }
