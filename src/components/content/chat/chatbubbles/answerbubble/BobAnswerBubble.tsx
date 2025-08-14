@@ -57,20 +57,25 @@ export const BobAnswerBubble = memo(
                 />
               )}
             </div>
-            <div className='flex flex-col gap-2'>
-              <Citations
+            {(message.content || !isLastMessage) && (
+              <BobSuggests
                 message={message}
                 onSend={onSend}
-                isLoading={isLoading}
                 isLastMessage={isLastMessage}
-                citations={citations}
               />
-              <FollowUpQuestions
-                followUp={followUp}
-                onSend={(question) => onSend({ content: question })}
-                className='pointer-events-auto'
-              />
-            </div>
+            )}
+            <Citations
+              message={message}
+              onSend={onSend}
+              isLoading={isLoading}
+              isLastMessage={isLastMessage}
+              citations={citations}
+            />
+            <FollowUpQuestions
+              followUp={followUp}
+              onSend={(question) => onSend({ content: question })}
+              className='pointer-events-auto'
+            />
           </div>
         </VStack>
       </VStack>
@@ -256,13 +261,6 @@ const Citations = memo(
     return (
       <div className='flex flex-col gap-4'>
         <div className='flex flex-col gap-2'>
-          {(!isLoading || !isLastMessage) && (
-            <BobSuggests
-              message={message}
-              onSend={onSend}
-              isLastMessage={isLastMessage}
-            />
-          )}
           <CitationLinks
             citations={citations}
             context={message.context}
