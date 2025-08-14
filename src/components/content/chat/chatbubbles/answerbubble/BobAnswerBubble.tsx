@@ -1,4 +1,4 @@
-import { BodyLong, Heading, Skeleton, VStack } from "@navikt/ds-react"
+import { BodyLong, Heading, Skeleton, Tag, VStack } from "@navikt/ds-react"
 import React, { memo, useState } from "react"
 import Markdown from "react-markdown"
 import rehypeRaw from "rehype-raw"
@@ -58,11 +58,22 @@ export const BobAnswerBubble = memo(
               )}
             </div>
             {(message.content || !isLastMessage) && (
-              <BobSuggests
-                message={message}
-                onSend={onSend}
-                isLastMessage={isLastMessage}
-              />
+              <div className='flex flex-wrap-reverse items-center gap-2'>
+                <BobSuggests
+                  message={message}
+                  onSend={onSend}
+                  isLastMessage={isLastMessage}
+                />
+                {message.context.length === 0 && (
+                  <Tag
+                    size='small'
+                    variant='neutral'
+                    className='h-fit'
+                  >
+                    Bob brukte ingen kilder for å lage svaret
+                  </Tag>
+                )}
+              </div>
             )}
             <Citations
               message={message}
