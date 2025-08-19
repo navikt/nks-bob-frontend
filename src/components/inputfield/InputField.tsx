@@ -31,14 +31,12 @@ export const useInputFieldStore = create<InputFieldState>()(
 
       return {
         inputValue: "",
-        setInputValue: (value) =>
-          set((state) => ({ ...state, inputValue: value })),
+        setInputValue: (value) => set((state) => ({ ...state, inputValue: value })),
         followUp: [],
         setFollowUp: (followUp) => set((state) => ({ ...state, followUp })),
         focusTextarea,
         textareaRef: React.createRef(),
-        setTextAreaRef: (ref) =>
-          set((state) => ({ ...state, textareaRef: ref })),
+        setTextAreaRef: (ref) => set((state) => ({ ...state, textareaRef: ref })),
       }
     },
     {
@@ -52,17 +50,17 @@ export const useInputFieldStore = create<InputFieldState>()(
 interface InputFieldProps {
   onSend: (message: NewMessage) => void
   disabled: boolean
+  inputContainerRef: React.RefObject<HTMLDivElement | null>
 }
 
-function InputField({ onSend, disabled }: InputFieldProps) {
+function InputField({ onSend, disabled, inputContainerRef }: InputFieldProps) {
   const placeholderText = "Spør Bob om noe Nav-relatert"
-  const [isSensitiveInfoAlert, setIsSensitiveInfoAlert] =
-    useState<boolean>(false)
+  const [isSensitiveInfoAlert, setIsSensitiveInfoAlert] = useState<boolean>(false)
   const [containsFnr, setContainsFnr] = useState<boolean>(false)
   const [sendDisabled, setSendDisabled] = useState<boolean>(disabled)
+  const [isFocused, setIsFocused] = useState(false)
 
-  const { inputValue, setInputValue, textareaRef } =
-    useInputFieldStore()
+  const { inputValue, setInputValue, textareaRef } = useInputFieldStore()
 
   const { alerts } = useAlerts()
   const hasErrors = alerts.at(0)?.notificationType === "Error"
@@ -133,14 +131,17 @@ function InputField({ onSend, disabled }: InputFieldProps) {
   }, [inputValue, disabled, hasErrors])
 
   return (
-    <div className='dialogcontent z-1 sticky bottom-0 h-auto flex-col self-center px-4'>
+    <div
+      className='dialogcontent sticky bottom-0 h-auto flex-col self-center px-4'
+      ref={inputContainerRef}
+    >
       {isSensitiveInfoAlert && (
         <Alert
           variant='info'
           size='small'
           closeButton={true}
           onClose={() => setIsSensitiveInfoAlert(false)}
-          className='fade-in'
+          className='fade-in mb-2'
         >
           Pass på å ikke dele personopplysninger når du limer inn tekst.
         </Alert>
@@ -150,40 +151,55 @@ function InputField({ onSend, disabled }: InputFieldProps) {
           variant='error'
           size='small'
           onClose={() => setContainsFnr(false)}
-          className='fade-in'
+          className='fade-in mb-2'
         >
-          Du har skrevet inn noe som ligner på et fødselsnummer. Derfor får du
-          ikke sendt meldingen.
+          Du har skrevet inn noe som ligner på et fødselsnummer. Derfor får du ikke sendt meldingen.
         </Alert>
       )}
       <div className='inputfield relative flex max-w-[48rem] flex-col items-center justify-end'>
         <Textarea
+          resize={isFocused ? "vertical" : false}
           ref={textareaRef}
           size='medium'
           label=''
           hideLabel
-          className='dialogcontent mb-3 truncate *:h-[43px] *:transition-[height] *:delay-150 *:duration-300 *:ease-in focus:*:h-[80px]'
+          className='dialogcontent mb-3 min-h-[43px] truncate [&_textarea]:max-h-[450px] [&_textarea]:min-h-[43px] focus:[&_textarea]:min-h-[50px]'
           minRows={1}
-          maxRows={8}
+          maxRows={15}
           placeholder={placeholderText}
           value={inputValue}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           onPaste={handlePasteInfoAlert}
           tabIndex={0}
+          onFocus={() => {
+            setIsFocused(true)
+          }}
+          onBlur={() => {
+            setIsFocused(false)
+
+            const ta = textareaRef.current
+
+            if (ta) {
+              ta.style.height = ""
+              ta.style.width = ""
+            }
+          }}
         />
         <Button
           icon={<PaperplaneIcon title='Send melding' />}
           variant='tertiary'
           size='medium'
-          className='input-button absolute'
+          className='absolute right-[0.2%] top-[2%] h-full max-h-[2.5rem] w-full max-w-[2.3rem]'
           onClick={handleButtonClick}
           disabled={sendDisabled}
         />
       </div>
-      <Detail align='center' className='detailcolor pb-2'>
-        Bob er en kunstig intelligens og kan ta feil – sjekk kilder om du er
-        usikker.
+      <Detail
+        align='center'
+        className='detailcolor pb-2'
+      >
+        Bob er en kunstig intelligens og kan ta feil – sjekk kilder om du er usikker.
       </Detail>
     </div>
   )
