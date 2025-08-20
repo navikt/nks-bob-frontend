@@ -139,7 +139,7 @@ function ConversationContent() {
         <InputField
           onSend={handleUserMessage}
           disabled={isLoading}
-          inputContainerRef={inputContainerRef}
+          ref={inputContainerRef}
         />
       </DialogWrapper>
       <ShowAllSources />

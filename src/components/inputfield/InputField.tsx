@@ -1,7 +1,7 @@
 import { Alert, Button, Detail, Textarea } from "@navikt/ds-react"
 
 import { PaperplaneIcon } from "@navikt/aksel-icons"
-import { useEffect, useState } from "react"
+import { forwardRef, useEffect, useState } from "react"
 
 import * as React from "react"
 import { create } from "zustand"
@@ -50,10 +50,9 @@ export const useInputFieldStore = create<InputFieldState>()(
 interface InputFieldProps {
   onSend: (message: NewMessage) => void
   disabled: boolean
-  inputContainerRef: React.RefObject<HTMLDivElement | null>
 }
 
-function InputField({ onSend, disabled, inputContainerRef }: InputFieldProps) {
+const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputField({ onSend, disabled }, containerRef) {
   const placeholderText = "Spør Bob om noe Nav-relatert"
   const [isSensitiveInfoAlert, setIsSensitiveInfoAlert] = useState<boolean>(false)
   const [containsFnr, setContainsFnr] = useState<boolean>(false)
@@ -133,7 +132,7 @@ function InputField({ onSend, disabled, inputContainerRef }: InputFieldProps) {
   return (
     <div
       className='dialogcontent sticky bottom-0 h-auto flex-col self-center px-4'
-      ref={inputContainerRef}
+      ref={containerRef}
     >
       {isSensitiveInfoAlert && (
         <Alert
@@ -203,6 +202,6 @@ function InputField({ onSend, disabled, inputContainerRef }: InputFieldProps) {
       </Detail>
     </div>
   )
-}
+})
 
 export default InputField
