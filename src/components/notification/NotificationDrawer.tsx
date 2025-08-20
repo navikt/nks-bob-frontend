@@ -1,15 +1,7 @@
 import { BellIcon } from "@navikt/aksel-icons"
-import {
-  BodyLong,
-  BodyShort,
-  Button,
-  Detail,
-  Dropdown,
-  Heading,
-  Tabs,
-  Tooltip,
-} from "@navikt/ds-react"
+import { BodyLong, BodyShort, Button, Detail, Dropdown, Heading, Tabs, Tooltip } from "@navikt/ds-react"
 import { useEffect, useState } from "react"
+import { useHotkeys } from "react-hotkeys-hook"
 import Markdown from "react-markdown"
 import { useNewsNotifications } from "../../api/api"
 import { NewsNotification } from "../../types/Notifications"
@@ -25,11 +17,9 @@ const useReadNotifications = () => {
 
   const readNotifications = (getRead() as string[] | undefined) ?? []
 
-  const isUnread = (notificationId: string) =>
-    !readNotifications.includes(notificationId)
+  const isUnread = (notificationId: string) => !readNotifications.includes(notificationId)
 
-  const hasUnreadNotifications = (notificationIds: string[]) =>
-    notificationIds.some(isUnread)
+  const hasUnreadNotifications = (notificationIds: string[]) => notificationIds.some(isUnread)
 
   return {
     readNotifications,
@@ -45,8 +35,7 @@ const defaultTabName: TabName = "alle"
 
 export const NotificationToggle = () => {
   const { newsNotifications } = useNewsNotifications()
-  const { setReadNotifications, hasUnreadNotifications } =
-    useReadNotifications()
+  const { setReadNotifications, hasUnreadNotifications } = useReadNotifications()
   const [activeTab, setActiveTab] = useState<TabName>(defaultTabName)
   const notificationIds = newsNotifications.map(({ id }) => id)
 
@@ -63,6 +52,8 @@ export const NotificationToggle = () => {
       setActiveTab("alle")
     }
   }, [initialOpen, setInitialOpen, hasUnread])
+
+  useHotkeys("ctrl+v", () => setInitialOpen((prev) => !prev))
 
   return (
     <Dropdown
@@ -81,9 +72,7 @@ export const NotificationToggle = () => {
           icon={
             <div className='relative'>
               <BellIcon aria-hidden />
-              {hasUnread && (
-                <NotificationTick className='absolute right-[7px] top-[3px]' />
-              )}
+              {hasUnread && <NotificationTick className='absolute right-[7px] top-[3px]' />}
             </div>
           }
           as={Dropdown.Toggle}
@@ -114,9 +103,7 @@ const NotificationDrawer = ({
   const { newsNotifications } = useNewsNotifications()
   const { readNotifications: readNotificationIds } = useReadNotifications()
 
-  const unreadNotifications = newsNotifications.filter(
-    ({ id }) => !readNotificationIds.includes(id),
-  )
+  const unreadNotifications = newsNotifications.filter(({ id }) => !readNotificationIds.includes(id))
 
   return (
     <Tabs
@@ -128,8 +115,14 @@ const NotificationDrawer = ({
         <div className='bg-surface-default'>
           <div className='bg-surface-neutral-subtle p-4'>Varsler</div>
           <Tabs.List>
-            <Tabs.Tab value='alle' label='Alle' />
-            <Tabs.Tab value='nye' label='Nye' />
+            <Tabs.Tab
+              value='alle'
+              label='Alle'
+            />
+            <Tabs.Tab
+              value='nye'
+              label='Nye'
+            />
           </Tabs.List>
         </div>
       </div>
@@ -143,14 +136,13 @@ const NotificationDrawer = ({
   )
 }
 
-const NotificationList = ({
-  notifications,
-}: {
-  notifications: NewsNotification[]
-}) => {
+const NotificationList = ({ notifications }: { notifications: NewsNotification[] }) => {
   if (notifications.length === 0) {
     return (
-      <BodyShort textColor='subtle' className='p-4'>
+      <BodyShort
+        textColor='subtle'
+        className='p-4'
+      >
         Ingen nye varsler
       </BodyShort>
     )
@@ -169,13 +161,7 @@ const NotificationList = ({
   )
 }
 
-const NotificationItem = ({
-  notification,
-  className,
-}: {
-  notification: NewsNotification
-  className?: string
-}) => {
+const NotificationItem = ({ notification, className }: { notification: NewsNotification; className?: string }) => {
   const { isUnread } = useReadNotifications()
 
   const date = new Date(notification.createdAt)
@@ -191,7 +177,11 @@ const NotificationItem = ({
         <Detail textColor='subtle'>{localeDate}</Detail>
         {isUnread(notification.id) && <NotificationTick />}
       </div>
-      <Heading textColor='subtle' size='small' spacing>
+      <Heading
+        textColor='subtle'
+        size='small'
+        spacing
+      >
         {notification.title}
       </Heading>
       <BodyLong textColor='subtle'>
@@ -202,9 +192,5 @@ const NotificationItem = ({
 }
 
 const NotificationTick = ({ className }: { className?: string }) => {
-  return (
-    <div
-      className={`h-1.5 w-1.5 animate-ping rounded-full bg-surface-danger ${className}`}
-    />
-  )
+  return <div className={`h-1.5 w-1.5 animate-ping rounded-full bg-surface-danger ${className}`} />
 }

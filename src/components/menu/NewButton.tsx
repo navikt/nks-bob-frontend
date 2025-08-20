@@ -1,17 +1,20 @@
 import { NotePencilIcon } from "@navikt/aksel-icons"
 import { BodyShort, Button, Modal, Tooltip, VStack } from "@navikt/ds-react"
+import { useHotkeys } from "react-hotkeys-hook"
 import { Link } from "react-router"
 import FeedbackThumbs from "../content/chat/feedback/FeedbackThumbs"
 import { useInputFieldStore } from "../inputfield/InputField"
 
 export const NewButton = ({
   conversationId,
-  newConversationRef
-  }: {
+  newConversationRef,
+}: {
   conversationId: string
   newConversationRef: React.RefObject<HTMLDialogElement | null>
-  }) => {
-  const { setInputValue } = useInputFieldStore()
+}) => {
+  const { setInputValue } = useInputFieldStore()
+
+  useHotkeys("ctrl+n", () => newConversationRef.current?.showModal())
 
   return (
     <>
@@ -36,15 +39,15 @@ export const NewButton = ({
         className='modal-styling'
       >
         <Modal.Body>
-          <VStack gap='0' className='pt-3'>
+          <VStack
+            gap='0'
+            className='pt-3'
+          >
             <BodyShort weight='semibold'>Hva synes du om samtalen?</BodyShort>
             <FeedbackThumbs conversationId={conversationId} />
           </VStack>
           <div className='flex flex-col gap-1 pt-8'>
-            <BodyShort>
-              Når du starter en ny samtale vil du miste innholdet fra denne.
-              Ønsker du å fortsette?
-            </BodyShort>
+            <BodyShort>Når du starter en ny samtale vil du miste innholdet fra denne. Ønsker du å fortsette?</BodyShort>
           </div>
         </Modal.Body>
         <Modal.Footer className='justify-end'>
@@ -54,8 +57,16 @@ export const NewButton = ({
           >
             Tilbake
           </Button>
-          <Link to='/' className='w-fit'>
-            <Button type='button' variant='danger' size='medium' onClick={() => setInputValue("")}>
+          <Link
+            to='/'
+            className='w-fit'
+          >
+            <Button
+              type='button'
+              variant='danger'
+              size='medium'
+              onClick={() => setInputValue("")}
+            >
               Start ny samtale
             </Button>
           </Link>

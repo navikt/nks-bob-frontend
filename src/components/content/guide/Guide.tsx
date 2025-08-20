@@ -3,13 +3,7 @@ import { useUpdateUserConfig, useUserConfig } from "../../../api/api.ts"
 import { Step1, Step2, Step3, Step4, WelcomeMessage } from "./GuideModals.tsx"
 import "./GuideStyling.css"
 
-const Guide = ({
-  startGuide,
-  setStartGuide,
-}: {
-  startGuide: boolean
-  setStartGuide: (value: boolean) => void
-}) => {
+const Guide = ({ startGuide, setStartGuide }: { startGuide: boolean; setStartGuide: (value: boolean) => void }) => {
   const [step, setStep] = useState<number>(1)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const [isWelcomeShown, setIsWelcomeShown] = useState<boolean>(false)
@@ -25,11 +19,10 @@ const Guide = ({
   }
 
   const handlePrevious = () => setStep((prevStep) => prevStep - 1)
-  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
-    setStep(Number(e.target.value))
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => setStep(Number(e.target.value))
 
   function handleClose() {
-    updateUserConfig({ showStartInfo: false, })
+    updateUserConfig({ showStartInfo: false })
     setIsModalOpen(false)
     setStartGuide(false)
   }
@@ -57,7 +50,10 @@ const Guide = ({
     <div>
       <div className='modal-overlay' />
       {!isWelcomeShown && (
-        <WelcomeMessage onNext={handleNext} onClose={handleClose} />
+        <WelcomeMessage
+          onNext={handleNext}
+          onClose={handleClose}
+        />
       )}
       {isWelcomeShown && step === 1 && (
         <Step1
