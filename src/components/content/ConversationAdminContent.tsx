@@ -38,7 +38,10 @@ export default function ConversationAdminContent() {
             />
           )}
         </div>
-        <InputField onSend={handleUserMessage} disabled={true} />
+        <InputField
+          onSend={handleUserMessage}
+          disabled={true}
+        />
       </DialogWrapper>
       <ShowAllSources />
     </div>

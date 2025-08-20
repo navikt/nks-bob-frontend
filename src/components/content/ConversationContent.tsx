@@ -3,7 +3,7 @@ import { useSendMessage } from "../../api/sse.ts"
 
 import { ArrowDownIcon } from "@navikt/aksel-icons"
 import { Alert as AlertComponent, Button, Heading } from "@navikt/ds-react"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import Markdown from "react-markdown"
 import { useAlerts, useMessages } from "../../api/api.ts"
 import { NewMessage } from "../../types/Message.ts"
@@ -28,6 +28,9 @@ function ConversationContent() {
   const { sendMessage, isLoading } = useSendMessage(conversationId!)
   const { messages, setMessages } = messageStore()
   const { alerts } = useAlerts()
+
+  const inputContainerRef = useRef<HTMLDivElement | null>(null)
+  const [inputHeight, setInputHeight] = useState(0)
 
   useEffect(() => {
     if (!isLoadingExistingMessages && !isLoading) {
@@ -77,6 +80,26 @@ function ConversationContent() {
     return () => container?.removeEventListener("scroll", handleScroll)
   }, [])
 
+  useLayoutEffect(() => {
+    const el = inputContainerRef.current
+    if (!el) return
+
+    const update = () => setInputHeight(el.clientHeight || 0)
+    update()
+
+    const resizeObserver = new ResizeObserver(update)
+    resizeObserver.observe(el)
+    window.addEventListener("resize", update)
+
+    return () => {
+      resizeObserver.disconnect()
+      window.removeEventListener("resize", update)
+    }
+  }, [])
+
+  const buttonBaseOffset = 20
+  const dynamicBottom = buttonBaseOffset + inputHeight
+
   const scrollToBottom = () => {
     containerRef.current?.scrollTo({
       top: containerRef.current.scrollHeight,
@@ -102,19 +125,21 @@ function ConversationContent() {
               isLoading={isLoading}
             />
           )}
-          {showScrollButton && (
-            <Button
-              icon={<ArrowDownIcon />}
-              className='fixed bottom-28 left-1/2 -translate-x-1/2 opacity-75'
-              variant='primary-neutral'
-              size='small'
-              onClick={scrollToBottom}
-            />
-          )}
         </div>
+        {showScrollButton && (
+          <Button
+            icon={<ArrowDownIcon />}
+            className='fixed left-1/2 -translate-x-1/2'
+            style={{ bottom: dynamicBottom }}
+            variant='primary-neutral'
+            size='small'
+            onClick={scrollToBottom}
+          />
+        )}
         <InputField
           onSend={handleUserMessage}
           disabled={isLoading}
+          ref={inputContainerRef}
         />
       </DialogWrapper>
       <ShowAllSources />
