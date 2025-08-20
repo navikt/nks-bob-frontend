@@ -1,6 +1,8 @@
 import { InformationSquareIcon } from "@navikt/aksel-icons"
 import { Button, Tooltip } from "@navikt/ds-react"
 import { useRef, useState } from "react"
+import { useHotkeys } from "react-hotkeys-hook"
+import { Link } from "react-router"
 import { useUserConfig } from "../../api/api.ts"
 import analytics from "../../utils/analytics.ts"
 import { CoachMark } from "../coachmark/CoachMark.tsx"
@@ -12,7 +14,6 @@ import DarkModeToggle from "../menu/darkmode/DarkModeToggle.tsx"
 import { NotificationToggle } from "../notification/NotificationDrawer.tsx"
 import "./Header.css"
 import { NAVLogo } from "./nav-logo.tsx"
-import { Link } from "react-router"
 
 interface HeaderProps {
   conversation: string | undefined
@@ -29,10 +30,17 @@ function Header({ conversation }: HeaderProps) {
     setStartGuide(true)
   }
 
+  useHotkeys("ctrl+i", () => showGuide())
+
   return (
     <div className='header'>
       <div className='flex max-w-24'>
-        <Link to='https://www.nav.no/' target='_blank'><NAVLogo /></Link>
+        <Link
+          to='https://www.nav.no/'
+          target='_blank'
+        >
+          <NAVLogo />
+        </Link>
       </div>
       <div className='max-h-30 flex h-full gap-3'>
         <div className='flex items-center justify-center align-middle'>
@@ -45,7 +53,10 @@ function Header({ conversation }: HeaderProps) {
               >
                 <MainButtonsExplanation />
               </CoachMark>
-              <NewButton conversationId={conversation} newConversationRef={newConversationRef} />
+              <NewButton
+                conversationId={conversation}
+                newConversationRef={newConversationRef}
+              />
             </>
           )}
           <NotificationToggle />
@@ -57,7 +68,10 @@ function Header({ conversation }: HeaderProps) {
               icon={<InformationSquareIcon aria-hidden />}
             />
           </Tooltip>
-          <Guide startGuide={startGuide} setStartGuide={setStartGuide} />
+          <Guide
+            startGuide={startGuide}
+            setStartGuide={setStartGuide}
+          />
           {userConfig?.showNewConceptInfo && <NewConceptMessage />}
         </div>
         <DarkModeToggle />
@@ -67,5 +81,3 @@ function Header({ conversation }: HeaderProps) {
 }
 
 export default Header
-
-
