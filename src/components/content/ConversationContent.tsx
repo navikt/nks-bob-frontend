@@ -4,7 +4,6 @@ import { useSendMessage } from "../../api/sse.ts"
 import { ArrowDownIcon } from "@navikt/aksel-icons"
 import { Alert as AlertComponent, Button, Heading } from "@navikt/ds-react"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 import Markdown from "react-markdown"
 import { useAlerts, useMessages } from "../../api/api.ts"
 import { NewMessage } from "../../types/Message.ts"
@@ -108,7 +107,7 @@ function ConversationContent() {
     })
   }
 
-  useHotkeys("ctrl+b", () => scrollToBottom())
+  // useHotkeys("ctrl+b", () => scrollToBottom())
 
   return (
     <div className='conversation-content'>

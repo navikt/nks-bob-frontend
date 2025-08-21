@@ -1,7 +1,6 @@
 import { BulletListIcon, HandShakeHeartIcon, LanguageIcon, StarFillIcon, StarIcon } from "@navikt/aksel-icons"
 import { Button, CopyButton, Tooltip } from "@navikt/ds-react"
 import { useState } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 import { useStarMessage } from "../../../../api/api.ts"
 import { Message, NewMessage } from "../../../../types/Message.ts"
 import analytics from "../../../../utils/analytics.ts"
@@ -56,7 +55,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
     return navigator.clipboard.write([data])
   }
 
-  useHotkeys("ctrl+shift+c", () => new Promise((resolve) => setTimeout(resolve, 100)).then(() => copyMessageContent()))
+  // useHotkeys("ctrl+shift+c", () => new Promise((resolve) => setTimeout(resolve, 100)).then(() => copyMessageContent()))
 
   return (
     <div className='fade-in background-color ml-[-0.3rem] flex h-fit w-fit flex-wrap items-center justify-start rounded'>

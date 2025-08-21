@@ -1,7 +1,6 @@
 import { BellIcon } from "@navikt/aksel-icons"
 import { BodyLong, BodyShort, Button, Detail, Dropdown, Heading, Tabs, Tooltip } from "@navikt/ds-react"
 import { useEffect, useState } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 import Markdown from "react-markdown"
 import { useNewsNotifications } from "../../api/api"
 import { NewsNotification } from "../../types/Notifications"
@@ -53,7 +52,7 @@ export const NotificationToggle = () => {
     }
   }, [initialOpen, setInitialOpen, hasUnread])
 
-  useHotkeys("ctrl+v", () => setInitialOpen((prev) => !prev))
+  // useHotkeys("ctrl+shift+v", () => setInitialOpen((prev) => !prev))
 
   return (
     <Dropdown

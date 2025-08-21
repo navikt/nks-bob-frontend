@@ -1,7 +1,6 @@
 import { InformationSquareIcon } from "@navikt/aksel-icons"
 import { Button, Tooltip } from "@navikt/ds-react"
 import { useRef, useState } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 import { Link } from "react-router"
 import { useUserConfig } from "../../api/api.ts"
 import analytics from "../../utils/analytics.ts"
@@ -30,7 +29,7 @@ function Header({ conversation }: HeaderProps) {
     setStartGuide(true)
   }
 
-  useHotkeys("ctrl+i", () => showGuide())
+  // useHotkeys("ctrl+i", () => showGuide())
 
   return (
     <div className='header'>
