@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 import analytics from "../../../utils/analytics"
 import "./DarkModeToggle.css"
 
@@ -29,7 +28,7 @@ const DarkModeToggle = () => {
 
   const tooltip = dark ? "Bytt til lys modus" : "Bytt til mørk modus"
 
-  useHotkeys("ctrl+d", () => darkModeHandler())
+  // useHotkeys("ctrl+d", () => darkModeHandler())
 
   return (
     <div className='darkmode-toggle'>
