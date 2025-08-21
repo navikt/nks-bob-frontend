@@ -2,8 +2,9 @@ import { useParams, useSearchParams } from "react-router"
 import { useSendMessage } from "../../api/sse.ts"
 
 import { ArrowDownIcon } from "@navikt/aksel-icons"
-import { Alert as AlertComponent, Button, Heading } from "@navikt/ds-react"
+import { Alert as AlertComponent, Button, Heading, Tooltip } from "@navikt/ds-react"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
+import { useHotkeys } from "react-hotkeys-hook"
 import Markdown from "react-markdown"
 import { useAlerts, useMessages } from "../../api/api.ts"
 import { NewMessage } from "../../types/Message.ts"
@@ -107,7 +108,7 @@ function ConversationContent() {
     })
   }
 
-  // useHotkeys("ctrl+b", () => scrollToBottom())
+  useHotkeys("alt+ctrl+b", () => scrollToBottom())
 
   return (
     <div className='conversation-content'>
@@ -129,14 +130,16 @@ function ConversationContent() {
           )}
         </div>
         {showScrollButton && (
-          <Button
-            icon={<ArrowDownIcon />}
-            className='fixed left-1/2 -translate-x-1/2'
-            style={{ bottom: dynamicBottom }}
-            variant='primary-neutral'
-            size='small'
-            onClick={scrollToBottom}
-          />
+          <Tooltip content='Scroll til bunnen ( Alt+Ctrl+B )'>
+            <Button
+              icon={<ArrowDownIcon />}
+              className='fixed left-1/2 -translate-x-1/2'
+              style={{ bottom: dynamicBottom }}
+              variant='primary-neutral'
+              size='small'
+              onClick={scrollToBottom}
+            />
+          </Tooltip>
         )}
         <InputField
           onSend={handleUserMessage}
