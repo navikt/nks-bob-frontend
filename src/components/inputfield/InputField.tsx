@@ -5,6 +5,7 @@ import { forwardRef, useEffect, useState } from "react"
 
 import * as React from "react"
 import { useHotkeys } from "react-hotkeys-hook"
+import { useParams } from "react-router"
 import { create } from "zustand"
 import { createJSONStorage, persist } from "zustand/middleware"
 import { useAlerts } from "../../api/api.ts"
@@ -59,6 +60,8 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
   const [containsFnr, setContainsFnr] = useState<boolean>(false)
   const [sendDisabled, setSendDisabled] = useState<boolean>(disabled)
   const [isFocused, setIsFocused] = useState(false)
+
+  const { conversationId } = useParams()
 
   const { inputValue, setInputValue, textareaRef } = useInputFieldStore()
 
@@ -134,9 +137,9 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     setSendDisabled(disabled || inputContainsFnr || hasErrors)
   }, [inputValue, disabled, hasErrors])
 
-  useHotkeys("alt+ctrl+o", () => sendMessage("Oversett til engelsk"))
-  useHotkeys("alt+ctrl+p", () => sendMessage("Gjør om svaret til punktliste"))
-  useHotkeys("alt+ctrl+l", () => sendMessage("Gjør svaret mer empatisk"))
+  useHotkeys("alt+ctrl+o", () => sendMessage("Oversett til engelsk"), { enabled: !!conversationId })
+  useHotkeys("alt+ctrl+p", () => sendMessage("Gjør om svaret til punktliste"), { enabled: !!conversationId })
+  useHotkeys("alt+ctrl+l", () => sendMessage("Gjør svaret mer empatisk"), { enabled: !!conversationId })
 
   return (
     <div
