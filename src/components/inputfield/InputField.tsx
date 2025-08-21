@@ -4,6 +4,7 @@ import { PaperplaneIcon } from "@navikt/aksel-icons"
 import { forwardRef, useEffect, useState } from "react"
 
 import * as React from "react"
+import { useHotkeys } from "react-hotkeys-hook"
 import { create } from "zustand"
 import { createJSONStorage, persist } from "zustand/middleware"
 import { useAlerts } from "../../api/api.ts"
@@ -131,9 +132,9 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     setSendDisabled(disabled || inputContainsFnr || hasErrors)
   }, [inputValue, disabled, hasErrors])
 
-  // useHotkeys("ctrl+o", () => sendMessage("Oversett til engelsk"))
-  // useHotkeys("ctrl+p", () => sendMessage("Gjør om svaret til punktliste"))
-  // useHotkeys("ctrl+e", () => sendMessage("Gjør svaret mer empatisk"))
+  useHotkeys("alt+ctrl+o", () => sendMessage("Oversett til engelsk"))
+  useHotkeys("alt+ctrl+p", () => sendMessage("Gjør om svaret til punktliste"))
+  useHotkeys("alt+ctrl+l", () => sendMessage("Gjør svaret mer empatisk"))
 
   return (
     <div

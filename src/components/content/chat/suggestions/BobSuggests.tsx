@@ -1,6 +1,7 @@
 import { BulletListIcon, HandShakeHeartIcon, LanguageIcon, StarFillIcon, StarIcon } from "@navikt/aksel-icons"
 import { Button, CopyButton, Tooltip } from "@navikt/ds-react"
 import { useState } from "react"
+import { useHotkeys } from "react-hotkeys-hook"
 import { useStarMessage } from "../../../../api/api.ts"
 import { Message, NewMessage } from "../../../../types/Message.ts"
 import analytics from "../../../../utils/analytics.ts"
@@ -55,11 +56,11 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
     return navigator.clipboard.write([data])
   }
 
-  // useHotkeys("ctrl+shift+c", () => new Promise((resolve) => setTimeout(resolve, 100)).then(() => copyMessageContent()))
+  useHotkeys("alt+ctrl+c", () => new Promise((resolve) => setTimeout(resolve, 100)).then(() => copyMessageContent()))
 
   return (
     <div className='fade-in background-color ml-[-0.3rem] flex h-fit w-fit flex-wrap items-center justify-start rounded'>
-      <Tooltip content='Kopier svaret'>
+      <Tooltip content={`${isLastMessage ? "Kopier svaret ( Alt+Ctrl+C )" : "Kopier svaret"}`}>
         <CopyButton
           copyText=''
           size='small'
@@ -75,7 +76,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
       <FeedbackOnAnswer message={message} />
 
       <MessageStar message={message} />
-      <Tooltip content='Oversett svaret til engelsk'>
+      <Tooltip content={`${isLastMessage ? "Oversett til engelsk ( Alt+Ctrl+O )" : "Oversett til engelsk"}`}>
         <Button
           variant='tertiary-neutral'
           size='small'
@@ -84,7 +85,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
           onClick={handleTranslate}
         />
       </Tooltip>
-      <Tooltip content='Gjør svaret om til punktliste'>
+      <Tooltip content={`${isLastMessage ? "Gjør om til punktliste ( Alt+Ctrl+P )" : "Gjør om til punktliste"}`}>
         <Button
           variant='tertiary-neutral'
           size='small'
@@ -93,7 +94,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
           onClick={handleBulletList}
         />
       </Tooltip>
-      <Tooltip content='Gjør svaret mer empatisk'>
+      <Tooltip content={`${isLastMessage ? "Gjør mer empatisk ( Alt+Ctrl+L )" : "Gjør mer empatisk"}`}>
         <Button
           variant='tertiary-neutral'
           size='small'

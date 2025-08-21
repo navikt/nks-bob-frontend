@@ -1,5 +1,6 @@
 import { NotePencilIcon } from "@navikt/aksel-icons"
 import { BodyShort, Button, Modal, Tooltip, VStack } from "@navikt/ds-react"
+import { useHotkeys } from "react-hotkeys-hook"
 import { Link } from "react-router"
 import FeedbackThumbs from "../content/chat/feedback/FeedbackThumbs"
 import { useInputFieldStore } from "../inputfield/InputField"
@@ -13,12 +14,12 @@ export const NewButton = ({
 }) => {
   const { setInputValue } = useInputFieldStore()
 
-  // useHotkeys("ctrl+n", () => newConversationRef.current?.showModal())
+  useHotkeys("Alt+Ctrl+N", () => newConversationRef.current?.showModal())
 
   return (
     <>
       <div className='flex self-center'>
-        <Tooltip content='Start ny samtale'>
+        <Tooltip content='Start ny samtale ( Alt+Ctrl+N )'>
           <Button
             variant='tertiary'
             size='medium'
