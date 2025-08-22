@@ -4,6 +4,8 @@ import { PaperplaneIcon } from "@navikt/aksel-icons"
 import { forwardRef, useEffect, useState } from "react"
 
 import * as React from "react"
+import { useHotkeys } from "react-hotkeys-hook"
+import { useParams } from "react-router"
 import { create } from "zustand"
 import { createJSONStorage, persist } from "zustand/middleware"
 import { useAlerts } from "../../api/api.ts"
@@ -58,6 +60,8 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
   const [containsFnr, setContainsFnr] = useState<boolean>(false)
   const [sendDisabled, setSendDisabled] = useState<boolean>(disabled)
   const [isFocused, setIsFocused] = useState(false)
+
+  const { conversationId } = useParams()
 
   const { inputValue, setInputValue, textareaRef } = useInputFieldStore()
 
@@ -133,9 +137,9 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     setSendDisabled(disabled || inputContainsFnr || hasErrors)
   }, [inputValue, disabled, hasErrors])
 
-  // useHotkeys("ctrl+o", () => sendMessage("Oversett til engelsk"))
-  // useHotkeys("ctrl+p", () => sendMessage("Gjør om svaret til punktliste"))
-  // useHotkeys("ctrl+e", () => sendMessage("Gjør svaret mer empatisk"))
+  useHotkeys("O", () => sendMessage("Oversett til engelsk"), { enabled: !!conversationId })
+  useHotkeys("P", () => sendMessage("Gjør om svaret til punktliste"), { enabled: !!conversationId })
+  useHotkeys("E", () => sendMessage("Gjør svaret mer empatisk"), { enabled: !!conversationId })
 
   return (
     <div
@@ -178,7 +182,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           onPaste={handlePaste}
-          tabIndex={0}
+          tabIndex={1}
           onFocus={() => {
             setIsFocused(true)
           }}
