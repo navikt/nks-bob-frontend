@@ -28,9 +28,9 @@ const DarkModeToggle = () => {
     })
   }
 
-  const tooltip = dark ? "Endre til lys modus ( Alt+Ctrl+D )" : "Endre til mørk modus ( Alt+Ctrl+D )"
+  const tooltip = dark ? "Endre til lys modus ( D )" : "Endre til mørk modus ( D )"
 
-  useHotkeys("alt+ctrl+d", () => darkModeHandler())
+  useHotkeys("D", () => darkModeHandler())
 
   return (
     <Tooltip content={tooltip}>
@@ -40,9 +40,11 @@ const DarkModeToggle = () => {
           id='darkmode-checkbox'
           checked={dark}
           onChange={darkModeHandler}
+          aria-label='Mørk modus'
         />
         <label
           htmlFor='darkmode-checkbox'
+          aria-label='Mørk modus'
           className='slider round'
         />
       </div>

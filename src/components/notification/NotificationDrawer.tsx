@@ -53,7 +53,7 @@ export const NotificationToggle = () => {
     }
   }, [initialOpen, setInitialOpen, hasUnread])
 
-  useHotkeys("alt+ctrl+v", () => setInitialOpen((prev) => !prev))
+  useHotkeys("V", () => setInitialOpen((prev) => !prev))
 
   return (
     <Dropdown
@@ -65,9 +65,10 @@ export const NotificationToggle = () => {
         setInitialOpen(open)
       }}
     >
-      <Tooltip content='Vis varsler ( Alt+Ctrl+V )'>
+      <Tooltip content='Vis varsler ( V )'>
         <Button
           variant='tertiary'
+          aria-label='Vis varsler'
           size='medium'
           icon={
             <div className='relative'>
