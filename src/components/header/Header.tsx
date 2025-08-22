@@ -30,7 +30,7 @@ function Header({ conversation }: HeaderProps) {
     setStartGuide(true)
   }
 
-  useHotkeys("alt+ctrl+i", () => showGuide())
+  useHotkeys("I", () => showGuide())
 
   return (
     <div className='header'>
@@ -60,9 +60,10 @@ function Header({ conversation }: HeaderProps) {
             </>
           )}
           <NotificationToggle />
-          <Tooltip content='Informasjon og tips ( Alt+Ctrl+I )'>
+          <Tooltip content='Informasjon og tips ( I )'>
             <Button
               variant='tertiary'
+              aria-label='Informasjon og tips'
               size='medium'
               onClick={showGuide}
               icon={<InformationSquareIcon aria-hidden />}

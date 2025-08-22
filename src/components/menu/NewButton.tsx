@@ -23,7 +23,7 @@ export const NewButton = ({
     requestAnimationFrame(() => primaryBtnRef.current?.focus())
   }, [newConversationRef])
 
-  useHotkeys("Alt+Ctrl+N", openModal)
+  useHotkeys("N", openModal)
 
   const startNew = () => {
     setInputValue("")
@@ -33,12 +33,13 @@ export const NewButton = ({
   return (
     <>
       <div className='flex self-center'>
-        <Tooltip content='Start ny samtale ( Alt+Ctrl+N )'>
+        <Tooltip content='Start ny samtale ( N )'>
           <Button
             variant='tertiary'
             size='medium'
             icon={<NotePencilIcon aria-hidden />}
             onClick={openModal}
+            aria-label='Start ny samtale'
           />
         </Tooltip>
       </div>
@@ -77,6 +78,7 @@ export const NewButton = ({
             Start ny samtale
           </Button>
           <Button
+            aria-label='Avbryt'
             variant='tertiary-neutral'
             onClick={() => newConversationRef.current?.close()}
           >
