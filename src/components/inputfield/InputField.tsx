@@ -79,14 +79,14 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     textareaRef.current?.blur()
   }
 
-  const handlePaste = (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
-    e.preventDefault()
-    const pastedText = e.clipboardData.getData("text/plain")
-    const trimmedText = pastedText.trim()
-    setInputValue(trimmedText)
-    analytics.tekstInnholdLimtInn()
-    setIsSensitiveInfoAlert(true)
-  }
+  // const handlePaste = (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
+  //   e.preventDefault()
+  //   const pastedText = e.clipboardData.getData("text/plain")
+  //   const trimmedText = pastedText.trim()
+  //   setInputValue(trimmedText)
+  //   analytics.tekstInnholdLimtInn()
+  //   setIsSensitiveInfoAlert(true)
+  // }
 
   function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setInputValue(e.target.value)
@@ -177,7 +177,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           value={inputValue}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
-          onPaste={handlePaste}
+          // onPaste={handlePaste}
           tabIndex={0}
           onFocus={() => {
             setIsFocused(true)
