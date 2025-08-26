@@ -31,6 +31,9 @@ spec:
         groups:
           - id: "dcb5ec4c-8027-428c-9dfd-15852388001c" # Administratorgruppe
           - id: "1a7b1fec-44c3-40c1-bf1d-f462b5a90a26" # Brukergruppe
+      replyUrls:
+        - https://bob.ansatt.dev.nav.no/oauth2/callback
+        - http://localhost:4000/oauth2/callback
     sidecar:
       enabled: true
       autoLogin: true
