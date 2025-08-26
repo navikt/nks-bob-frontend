@@ -202,6 +202,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           className='absolute right-[0.2%] top-[2%] h-full max-h-[2.5rem] w-full max-w-[2.3rem]'
           onClick={handleButtonClick}
           disabled={sendDisabled}
+          tabIndex={-1}
         />
       </div>
       <Detail

@@ -38,6 +38,7 @@ function Header({ conversation }: HeaderProps) {
         <Link
           to='https://www.nav.no/'
           target='_blank'
+          tabIndex={-1}
         >
           <NAVLogo />
         </Link>
