@@ -31,6 +31,12 @@ spec:
         groups:
           - id: "dcb5ec4c-8027-428c-9dfd-15852388001c" # Administratorgruppe
           - id: "1a7b1fec-44c3-40c1-bf1d-f462b5a90a26" # Brukergruppe
+      replyURLs:
+        - https://bob.ansatt.dev.nav.no/oauth2/callback
+        - https://page-fun-594--c.scratch.container.force.com
+        - https://page-fun-594--c.scratch.container.force.com/auth/success
+        - https://page-fun-594.scratch.lightning.force.com/auth/success
+      singlePageApplication: true
     sidecar:
       enabled: true
       autoLogin: true
@@ -45,6 +51,8 @@ spec:
       value: {{{commit}}}
     - name: MILJO
       value: dev
+    - name: SALESFORCE_DOMAINS
+      value: https://app-connect-7729--c.scratch.container.force.com,app-connect-7729.scratch.lightning.force.com,https://app-connect-7729.scratch.lightning.force.com,https://app-connect-7729.scratch.my.salesforce-setup.com,https://bob.ansatt.dev.nav.no,https://page-fun-594--c.scratch.container.force.com,https://page-fun-594.scratch.lightning.force.com
   observability:
     autoInstrumentation:
       enabled: true
