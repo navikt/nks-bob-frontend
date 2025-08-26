@@ -164,7 +164,7 @@ const MessageContent = ({
   }
 
   return (
-    <VStack gap='5'>
+    <div className='flex flex-col gap-5'>
       <Heading
         size='small'
         className='sr-only top-0'
@@ -172,41 +172,39 @@ const MessageContent = ({
       >
         Svar fra Bob:
       </Heading>
-      <BodyLong className='fade-in'>
-        <Markdown
-          className='markdown'
-          remarkPlugins={[md.remarkCitations]}
-          rehypePlugins={[rehypeRaw]}
-          components={{
-            a: ({ ...props }) => (
-              <a
-                {...props}
-                target='_blank'
-                rel='noopener noreferrer'
-              />
-            ),
-            span: (props: CitationSpanProps) => {
-              const dataCitation = props["data-citation"]
-              const dataPosition = props["data-position"]
-              if (dataCitation && dataPosition) {
-                const citationId = parseInt(dataCitation, 10)
-                addCitation(citationId, parseInt(dataPosition, 10))
-                return (
-                  <CitationNumber
-                    citations={citations}
-                    citationId={citationId}
-                    context={message.context}
-                  />
-                )
-              }
-              return <span {...props} />
-            },
-          }}
-        >
-          {message.content}
-        </Markdown>
-      </BodyLong>
-    </VStack>
+      <Markdown
+        className='markdown'
+        remarkPlugins={[md.remarkCitations]}
+        rehypePlugins={[rehypeRaw]}
+        components={{
+          a: ({ ...props }) => (
+            <a
+              {...props}
+              target='_blank'
+              rel='noopener noreferrer'
+            />
+          ),
+          span: (props: CitationSpanProps) => {
+            const dataCitation = props["data-citation"]
+            const dataPosition = props["data-position"]
+            if (dataCitation && dataPosition) {
+              const citationId = parseInt(dataCitation, 10)
+              addCitation(citationId, parseInt(dataPosition, 10))
+              return (
+                <CitationNumber
+                  citations={citations}
+                  citationId={citationId}
+                  context={message.context}
+                />
+              )
+            }
+            return <span {...props} />
+          },
+        }}
+      >
+        {message.content}
+      </Markdown>
+    </div>
   )
 }
 

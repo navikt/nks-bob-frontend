@@ -1,10 +1,12 @@
 import { Message } from "../../../../types/Message.ts"
 
 import { PencilWritingIcon } from "@navikt/aksel-icons"
-import { BodyLong, Button, Heading, Tooltip } from "@navikt/ds-react"
+import { Button, Heading, Tooltip } from "@navikt/ds-react"
 import { memo } from "react"
 import Markdown from "react-markdown"
 import rehypeRaw from "rehype-raw"
+import remarkBreaks from "remark-breaks"
+import remarkGfm from "remark-gfm"
 import analytics from "../../../../utils/analytics.ts"
 import { useInputFieldStore } from "../../../inputfield/InputField.tsx"
 import "./ChatBubbles.css"
@@ -15,7 +17,8 @@ interface UserChatBubbleProps {
 
 const UserQuestionBubble = memo(
   ({ userQuestion }: UserChatBubbleProps) => {
-    const question = userQuestion?.content.replace(/\n/g, "<br>")
+    const raw = userQuestion?.content?.trimEnd() ?? ""
+    // const question = userQuestion?.content.replace(/\n/g, "<br>")
 
     const { setInputValue, focusTextarea } = useInputFieldStore()
 
@@ -28,7 +31,7 @@ const UserQuestionBubble = memo(
     }
 
     return (
-      <div className='questionhover mb-2 flex w-fit flex-row items-end gap-1 self-end'>
+      <div className='questionhover mb-4 flex w-fit flex-row items-end gap-1 self-end'>
         <div className='hide-show-edit fade-in hidden'>
           <Tooltip
             content='Rediger spørsmålet'
@@ -51,9 +54,12 @@ const UserQuestionBubble = memo(
           >
             Du spurte:
           </Heading>
-          <BodyLong>
-            <Markdown rehypePlugins={[rehypeRaw]}>{question}</Markdown>
-          </BodyLong>
+          <Markdown
+            remarkPlugins={[remarkGfm, remarkBreaks]}
+            rehypePlugins={[rehypeRaw]}
+          >
+            {raw}
+          </Markdown>
         </div>
       </div>
     )

@@ -1,12 +1,5 @@
 import { ExternalLinkIcon } from "@navikt/aksel-icons"
-import {
-  BodyLong,
-  BodyShort,
-  Detail,
-  Label,
-  Link,
-  Tooltip,
-} from "@navikt/ds-react"
+import { BodyLong, BodyShort, Detail, Label, Link, Tooltip } from "@navikt/ds-react"
 import Markdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import { KunnskapsbasenIcon } from "../../../../assets/icons/KunnskapsbasenIcon.tsx"
@@ -46,16 +39,13 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
 
 export default BobAnswerCitations
 
-const SingleCitation = ({
-  citation,
-  context,
-}: {
-  citation: Citation
-  context: Context | undefined
-}) => {
+const SingleCitation = ({ citation, context }: { citation: Citation; context: Context | undefined }) => {
   return (
     <div className='mb-2 flex flex-col'>
-      <Label size='small' className='mb-1'>
+      <Label
+        size='small'
+        className='mb-1'
+      >
         {context ? (
           <div className='flex flex-wrap gap-2'>
             <CitationLink
@@ -65,18 +55,23 @@ const SingleCitation = ({
             <SourceIcon source={context.source} />
           </div>
         ) : (
-          <BodyShort size='medium'>
-            Kunne ikke finne lenke til artikkelen.
-          </BodyShort>
+          <BodyShort size='medium'>Kunne ikke finne lenke til artikkelen.</BodyShort>
         )}
       </Label>
-      <BodyLong size='small' className='mt-1 italic'>
+      <BodyLong
+        size='small'
+        className='mt-1 italic'
+      >
         <Markdown
           className='markdown'
           remarkPlugins={[remarkGfm]}
           components={{
             a: ({ ...props }) => (
-              <a {...props} target='_blank' rel='noopener noreferrer' />
+              <a
+                {...props}
+                target='_blank'
+                rel='noopener noreferrer'
+              />
             ),
           }}
         >
@@ -101,10 +96,16 @@ const MultiCitation = ({
   const articleLink = contexts.at(citations[0]!.sourceId)!.url
   return (
     <div className='mb-2 flex flex-col'>
-      <Label size='small' className='mb-1'>
+      <Label
+        size='small'
+        className='mb-1'
+      >
         <div className='flex flex-wrap gap-2'>
           <Tooltip content='Åpner artikkelen i ny fane'>
-            <Link href={articleLink} target='_blank'>
+            <Link
+              href={articleLink}
+              target='_blank'
+            >
               {title}
               <ExternalLinkIcon />
             </Link>
@@ -121,7 +122,11 @@ const MultiCitation = ({
                 remarkPlugins={[remarkGfm]}
                 components={{
                   a: ({ ...props }) => (
-                    <a {...props} target='_blank' rel='noopener noreferrer' />
+                    <a
+                      {...props}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                    />
                   ),
                 }}
               >
@@ -165,19 +170,13 @@ const CitationLink = ({
 
   // Encoding for RFC3986 - making text fragments to work for citations with unreserved marks //
   function encodeFragment(text: string) {
-    return encodeURIComponent(text).replace(
-      /[-!'()*#]/g,
-      (c) => `%${c.charCodeAt(0).toString(16).toUpperCase()}`,
-    )
+    return encodeURIComponent(text).replace(/[-!'()*#]/g, (c) => `%${c.charCodeAt(0).toString(16).toUpperCase()}`)
   }
 
   // Expands all panels on the nav.no-page //
-  const expandAll =
-    matchingContextCitationData?.source === "navno" ? "?expandall=true" : ""
+  const expandAll = matchingContextCitationData?.source === "navno" ? "?expandall=true" : ""
 
-  const useAnchor = matchingContextCitationData?.url.includes(
-    "/saksbehandlingstider",
-  )
+  const useAnchor = matchingContextCitationData?.url.includes("/saksbehandlingstider")
 
   return (
     <Tooltip content='Åpner artikkelen i ny fane'>

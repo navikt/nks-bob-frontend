@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState } from "react"
+import React, { Fragment, useEffect, useRef, useState } from "react"
 import { useSearchParams } from "react-router"
 import { Message, NewMessage } from "../../../types/Message.ts"
 import { BobAnswerBubble } from "./chatbubbles/answerbubble/BobAnswerBubble.tsx"
@@ -45,8 +45,18 @@ function ChatContainer({ messages, onSend, isLoading }: ChatDialogProps) {
     prevMessagesLength.current = messages.length
   }, [messages, lastMessageRef, selectedMessageRef])
 
+  const handleCopy: React.ClipboardEventHandler<HTMLDivElement> = (e) => {
+    const sel = window.getSelection()?.toString()
+    if (!sel) return
+    e.preventDefault()
+    e.clipboardData.setData("text/plain", sel.trimEnd())
+  }
+
   return (
-    <div className='dialogcontent h-auto grow flex-col px-4 pt-4'>
+    <div
+      className='dialogcontent h-auto grow flex-col px-4 pt-4'
+      onCopy={handleCopy}
+    >
       {messages.map((message, index) =>
         message.messageRole === "human" ? (
           <Fragment key={message.id}>
