@@ -108,7 +108,7 @@ function ConversationContent() {
     })
   }
 
-  useHotkeys("B", () => scrollToBottom())
+  useHotkeys("alt+ctrl+B", () => scrollToBottom())
 
   return (
     <div className='conversation-content'>
@@ -130,7 +130,7 @@ function ConversationContent() {
           )}
         </div>
         {showScrollButton && (
-          <Tooltip content='Scroll til bunnen ( B )'>
+          <Tooltip content='Scroll til bunnen ( Alt+Ctrl+B )'>
             <Button
               icon={<ArrowDownIcon />}
               className='fixed left-1/2 -translate-x-1/2'

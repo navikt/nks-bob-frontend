@@ -135,9 +135,9 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     setSendDisabled(disabled || inputContainsFnr || hasErrors)
   }, [inputValue, disabled, hasErrors])
 
-  useHotkeys("O", () => sendMessage("Oversett til engelsk"), { enabled: !!conversationId })
-  useHotkeys("P", () => sendMessage("Gjør om svaret til punktliste"), { enabled: !!conversationId })
-  useHotkeys("E", () => sendMessage("Gjør svaret mer empatisk"), { enabled: !!conversationId })
+  useHotkeys("Alt+Ctrl+O", () => sendMessage("Oversett til engelsk"), { enabled: !!conversationId })
+  useHotkeys("Alt+Ctrl+P", () => sendMessage("Gjør om svaret til punktliste"), { enabled: !!conversationId })
+  useHotkeys("Alt+Ctrl+E", () => sendMessage("Gjør svaret mer empatisk"), { enabled: !!conversationId })
 
   return (
     <div
@@ -180,6 +180,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           onPaste={handlePaste}
+          autoFocus={true}
           tabIndex={1}
           onFocus={() => {
             setIsFocused(true)

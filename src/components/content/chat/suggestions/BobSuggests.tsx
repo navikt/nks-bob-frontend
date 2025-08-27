@@ -56,11 +56,11 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
     return navigator.clipboard.write([data])
   }
 
-  useHotkeys("C", () => new Promise((resolve) => setTimeout(resolve, 100)).then(() => copyMessageContent()))
+  useHotkeys("alt+ctrl+c", () => new Promise((resolve) => setTimeout(resolve, 100)).then(() => copyMessageContent()))
 
   return (
     <div className='fade-in background-color ml-[-0.3rem] flex h-fit w-fit flex-wrap items-center justify-start rounded'>
-      <Tooltip content={`${isLastMessage ? "Kopier svaret ( C )" : "Kopier svaret"}`}>
+      <Tooltip content={`${isLastMessage ? "Kopier svaret ( Alt+Ctrl+C )" : "Kopier svaret"}`}>
         <CopyButton
           copyText=''
           size='small'
@@ -72,11 +72,10 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
           }}
         />
       </Tooltip>
-      {/*<GiveUsFeedback message={message} />*/}
       <FeedbackOnAnswer message={message} />
 
       <MessageStar message={message} />
-      <Tooltip content={`${isLastMessage ? "Oversett til engelsk ( O )" : "Oversett til engelsk"}`}>
+      <Tooltip content={`${isLastMessage ? "Oversett til engelsk ( Alt+Ctrl+O )" : "Oversett til engelsk"}`}>
         <Button
           variant='tertiary-neutral'
           size='small'
@@ -85,7 +84,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
           onClick={handleTranslate}
         />
       </Tooltip>
-      <Tooltip content={`${isLastMessage ? "Gjør om til punktliste ( P )" : "Gjør om til punktliste"}`}>
+      <Tooltip content={`${isLastMessage ? "Gjør om til punktliste ( Alt+Ctrl+P )" : "Gjør om til punktliste"}`}>
         <Button
           variant='tertiary-neutral'
           size='small'
@@ -94,7 +93,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
           onClick={handleBulletList}
         />
       </Tooltip>
-      <Tooltip content={`${isLastMessage ? "Gjør mer empatisk ( E )" : "Gjør mer empatisk"}`}>
+      <Tooltip content={`${isLastMessage ? "Gjør mer empatisk ( Alt+Ctrl+E )" : "Gjør mer empatisk"}`}>
         <Button
           variant='tertiary-neutral'
           size='small'

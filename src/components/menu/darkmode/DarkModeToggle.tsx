@@ -28,9 +28,9 @@ const DarkModeToggle = () => {
     })
   }
 
-  const tooltip = dark ? "Endre til lys modus ( D )" : "Endre til mørk modus ( D )"
+  const tooltip = dark ? "Endre til lys modus ( Alt+Ctrl+D )" : "Endre til mørk modus ( Alt+Ctrl+D )"
 
-  useHotkeys("D", () => darkModeHandler())
+  useHotkeys("alt+ctrl+d", () => darkModeHandler())
 
   return (
     <Tooltip content={tooltip}>
