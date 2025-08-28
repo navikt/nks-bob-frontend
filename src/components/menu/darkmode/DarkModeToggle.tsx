@@ -1,4 +1,6 @@
+import { Tooltip } from "@navikt/ds-react"
 import { useEffect, useState } from "react"
+import { useHotkeys } from "react-hotkeys-hook"
 import analytics from "../../../utils/analytics"
 import "./DarkModeToggle.css"
 
@@ -26,25 +28,29 @@ const DarkModeToggle = () => {
     })
   }
 
-  const tooltip = dark ? "Bytt til lys modus" : "Bytt til mørk modus"
+  const tooltip = dark ? "Endre til lys modus ( Alt+Ctrl+D )" : "Endre til mørk modus ( Alt+Ctrl+D )"
 
-  // useHotkeys("ctrl+d", () => darkModeHandler())
+  useHotkeys("alt+ctrl+d", () => darkModeHandler(), {
+    enableOnFormTags: true,
+  })
 
   return (
-    <div className='darkmode-toggle'>
-      <input
-        type='checkbox'
-        id='darkmode-checkbox'
-        title={tooltip}
-        checked={dark}
-        onChange={darkModeHandler}
-      />
-      <label
-        htmlFor='darkmode-checkbox'
-        className='slider round'
-        title={tooltip}
-      />
-    </div>
+    <Tooltip content={tooltip}>
+      <div className='darkmode-toggle'>
+        <input
+          type='checkbox'
+          id='darkmode-checkbox'
+          checked={dark}
+          onChange={darkModeHandler}
+          aria-label='Mørk modus'
+        />
+        <label
+          htmlFor='darkmode-checkbox'
+          aria-label='Mørk modus'
+          className='slider round'
+        />
+      </div>
+    </Tooltip>
   )
 }
 

@@ -4,6 +4,8 @@ import { PaperplaneIcon } from "@navikt/aksel-icons"
 import { forwardRef, useEffect, useState } from "react"
 
 import * as React from "react"
+import { useHotkeys } from "react-hotkeys-hook"
+import { useParams } from "react-router"
 import { create } from "zustand"
 import { createJSONStorage, persist } from "zustand/middleware"
 import { useAlerts } from "../../api/api.ts"
@@ -59,24 +61,23 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
   const [sendDisabled, setSendDisabled] = useState<boolean>(disabled)
   const [isFocused, setIsFocused] = useState(false)
 
+  const { conversationId } = useParams()
+
   const { inputValue, setInputValue, textareaRef } = useInputFieldStore()
 
   const { alerts } = useAlerts()
   const hasErrors = alerts.at(0)?.notificationType === "Error"
 
-  function sendMessage(messageContent?: string) {
-    if (sendDisabled) {
-      return
-    }
+  function sendMessage(messageContent?: string, opts: { clear?: boolean; blur?: boolean } = {}) {
+    const { clear = true, blur = true } = opts
+    if (sendDisabled) return
 
-    const message: NewMessage = {
-      content: messageContent ?? inputValue,
-    }
+    const message: NewMessage = { content: messageContent ?? inputValue }
     if (message.content.trim() !== "") {
       onSend(message)
     }
-    setInputValue("")
-    textareaRef.current?.blur()
+    if (clear) setInputValue("")
+    if (blur) textareaRef.current?.blur()
   }
 
   function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -105,7 +106,6 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
         if (!sendDisabled) {
           analytics.meldingSendt("enter")
           sendMessage()
-          setInputValue("")
           setIsSensitiveInfoAlert(false)
         }
       }
@@ -116,7 +116,6 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     if (inputValue.trim() !== "") {
       analytics.meldingSendt("knapp")
       sendMessage()
-      setInputValue("")
     }
   }
 
@@ -131,9 +130,18 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     setSendDisabled(disabled || inputContainsFnr || hasErrors)
   }, [inputValue, disabled, hasErrors])
 
-  // useHotkeys("ctrl+o", () => sendMessage("Oversett til engelsk"))
-  // useHotkeys("ctrl+p", () => sendMessage("Gjør om svaret til punktliste"))
-  // useHotkeys("ctrl+e", () => sendMessage("Gjør svaret mer empatisk"))
+  useHotkeys("Alt+Ctrl+O", () => sendMessage("Oversett til engelsk", { clear: false, blur: false }), {
+    enabled: !!conversationId,
+    enableOnFormTags: true,
+  })
+  useHotkeys("Alt+Ctrl+P", () => sendMessage("Gjør om svaret til punktliste", { clear: false, blur: false }), {
+    enabled: !!conversationId,
+    enableOnFormTags: true,
+  })
+  useHotkeys("Alt+Ctrl+E", () => sendMessage("Gjør svaret mer empatisk", { clear: false, blur: false }), {
+    enabled: !!conversationId,
+    enableOnFormTags: true,
+  })
 
   return (
     <div
@@ -176,7 +184,8 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           onPaste={handlePaste}
-          tabIndex={0}
+          autoFocus={true}
+          tabIndex={1}
           onFocus={() => {
             setIsFocused(true)
           }}
@@ -198,6 +207,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           className='absolute right-[0.2%] top-[2%] h-full max-h-[2.5rem] w-full max-w-[2.3rem]'
           onClick={handleButtonClick}
           disabled={sendDisabled}
+          tabIndex={-1}
         />
       </div>
       <Detail

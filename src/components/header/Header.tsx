@@ -1,6 +1,7 @@
 import { InformationSquareIcon } from "@navikt/aksel-icons"
 import { Button, Tooltip } from "@navikt/ds-react"
 import { useRef, useState } from "react"
+import { useHotkeys } from "react-hotkeys-hook"
 import { Link } from "react-router"
 import { useUserConfig } from "../../api/api.ts"
 import analytics from "../../utils/analytics.ts"
@@ -29,7 +30,9 @@ function Header({ conversation }: HeaderProps) {
     setStartGuide(true)
   }
 
-  // useHotkeys("ctrl+i", () => showGuide())
+  useHotkeys("Alt+Ctrl+I", () => showGuide(), {
+    enableOnFormTags: true,
+  })
 
   return (
     <div className='header'>
@@ -37,6 +40,7 @@ function Header({ conversation }: HeaderProps) {
         <Link
           to='https://www.nav.no/'
           target='_blank'
+          tabIndex={-1}
         >
           <NAVLogo />
         </Link>
@@ -59,9 +63,10 @@ function Header({ conversation }: HeaderProps) {
             </>
           )}
           <NotificationToggle />
-          <Tooltip content='Informasjon og tips'>
+          <Tooltip content='Informasjon og tips ( Alt+Ctrl+I )'>
             <Button
               variant='tertiary'
+              aria-label='Informasjon og tips'
               size='medium'
               onClick={showGuide}
               icon={<InformationSquareIcon aria-hidden />}
