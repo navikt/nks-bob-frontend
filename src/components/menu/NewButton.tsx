@@ -23,7 +23,9 @@ export const NewButton = ({
     requestAnimationFrame(() => primaryBtnRef.current?.focus())
   }, [newConversationRef])
 
-  useHotkeys("Alt+Ctrl+N", openModal)
+  useHotkeys("Alt+Ctrl+N", openModal, {
+    enableOnFormTags: true,
+  })
 
   const startNew = () => {
     setInputValue("")

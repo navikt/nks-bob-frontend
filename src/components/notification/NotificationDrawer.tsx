@@ -53,7 +53,9 @@ export const NotificationToggle = () => {
     }
   }, [initialOpen, setInitialOpen, hasUnread])
 
-  useHotkeys("Alt+Ctrl+V", () => setInitialOpen((prev) => !prev))
+  useHotkeys("Alt+Ctrl+V", () => setInitialOpen((prev) => !prev), {
+    enableOnFormTags: true,
+  })
 
   return (
     <Dropdown

@@ -30,7 +30,9 @@ function Header({ conversation }: HeaderProps) {
     setStartGuide(true)
   }
 
-  useHotkeys("Alt+Ctrl+I", () => showGuide())
+  useHotkeys("Alt+Ctrl+I", () => showGuide(), {
+    enableOnFormTags: true,
+  })
 
   return (
     <div className='header'>

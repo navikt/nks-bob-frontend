@@ -68,19 +68,16 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
   const { alerts } = useAlerts()
   const hasErrors = alerts.at(0)?.notificationType === "Error"
 
-  function sendMessage(messageContent?: string) {
-    if (sendDisabled) {
-      return
-    }
+  function sendMessage(messageContent?: string, opts: { clear?: boolean; blur?: boolean } = {}) {
+    const { clear = true, blur = true } = opts
+    if (sendDisabled) return
 
-    const message: NewMessage = {
-      content: messageContent ?? inputValue,
-    }
+    const message: NewMessage = { content: messageContent ?? inputValue }
     if (message.content.trim() !== "") {
       onSend(message)
     }
-    setInputValue("")
-    textareaRef.current?.blur()
+    if (clear) setInputValue("")
+    if (blur) textareaRef.current?.blur()
   }
 
   function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -109,7 +106,6 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
         if (!sendDisabled) {
           analytics.meldingSendt("enter")
           sendMessage()
-          setInputValue("")
           setIsSensitiveInfoAlert(false)
         }
       }
@@ -120,7 +116,6 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     if (inputValue.trim() !== "") {
       analytics.meldingSendt("knapp")
       sendMessage()
-      setInputValue("")
     }
   }
 
@@ -135,9 +130,18 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     setSendDisabled(disabled || inputContainsFnr || hasErrors)
   }, [inputValue, disabled, hasErrors])
 
-  useHotkeys("Alt+Ctrl+O", () => sendMessage("Oversett til engelsk"), { enabled: !!conversationId })
-  useHotkeys("Alt+Ctrl+P", () => sendMessage("Gjør om svaret til punktliste"), { enabled: !!conversationId })
-  useHotkeys("Alt+Ctrl+E", () => sendMessage("Gjør svaret mer empatisk"), { enabled: !!conversationId })
+  useHotkeys("Alt+Ctrl+O", () => sendMessage("Oversett til engelsk", { clear: false, blur: false }), {
+    enabled: !!conversationId,
+    enableOnFormTags: true,
+  })
+  useHotkeys("Alt+Ctrl+P", () => sendMessage("Gjør om svaret til punktliste", { clear: false, blur: false }), {
+    enabled: !!conversationId,
+    enableOnFormTags: true,
+  })
+  useHotkeys("Alt+Ctrl+E", () => sendMessage("Gjør svaret mer empatisk", { clear: false, blur: false }), {
+    enabled: !!conversationId,
+    enableOnFormTags: true,
+  })
 
   return (
     <div

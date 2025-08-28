@@ -56,7 +56,9 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
     return navigator.clipboard.write([data])
   }
 
-  useHotkeys("alt+ctrl+c", () => new Promise((resolve) => setTimeout(resolve, 100)).then(() => copyMessageContent()))
+  useHotkeys("alt+ctrl+c", () => new Promise((resolve) => setTimeout(resolve, 100)).then(() => copyMessageContent()), {
+    enableOnFormTags: true,
+  })
 
   return (
     <div className='fade-in background-color ml-[-0.3rem] flex h-fit w-fit flex-wrap items-center justify-start rounded'>

@@ -108,7 +108,9 @@ function ConversationContent() {
     })
   }
 
-  useHotkeys("alt+ctrl+B", () => scrollToBottom())
+  useHotkeys("alt+ctrl+B", () => scrollToBottom(), {
+    enableOnFormTags: true,
+  })
 
   return (
     <div className='conversation-content'>
