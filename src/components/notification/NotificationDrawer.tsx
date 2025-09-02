@@ -1,6 +1,7 @@
 import { BellIcon } from "@navikt/aksel-icons"
 import { BodyLong, BodyShort, Button, Detail, Dropdown, Heading, Tabs, Tooltip } from "@navikt/ds-react"
 import { useEffect, useState } from "react"
+import { useHotkeys } from "react-hotkeys-hook"
 import Markdown from "react-markdown"
 import { useNewsNotifications } from "../../api/api"
 import { NewsNotification } from "../../types/Notifications"
@@ -52,7 +53,9 @@ export const NotificationToggle = () => {
     }
   }, [initialOpen, setInitialOpen, hasUnread])
 
-  // useHotkeys("ctrl+shift+v", () => setInitialOpen((prev) => !prev))
+  useHotkeys("Alt+Ctrl+V", () => setInitialOpen((prev) => !prev), {
+    enableOnFormTags: true,
+  })
 
   return (
     <Dropdown
@@ -64,9 +67,10 @@ export const NotificationToggle = () => {
         setInitialOpen(open)
       }}
     >
-      <Tooltip content='Vis varsler'>
+      <Tooltip content='Vis varsler ( Alt+Ctrl+V )'>
         <Button
           variant='tertiary'
+          aria-label='Vis varsler'
           size='medium'
           icon={
             <div className='relative'>

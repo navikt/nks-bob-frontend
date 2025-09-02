@@ -1,6 +1,8 @@
 import { NotePencilIcon } from "@navikt/aksel-icons"
 import { BodyShort, Button, Modal, Tooltip, VStack } from "@navikt/ds-react"
-import { Link } from "react-router"
+import { useCallback, useRef } from "react"
+import { useHotkeys } from "react-hotkeys-hook"
+import { useNavigate } from "react-router"
 import FeedbackThumbs from "../content/chat/feedback/FeedbackThumbs"
 import { useInputFieldStore } from "../inputfield/InputField"
 
@@ -12,29 +14,46 @@ export const NewButton = ({
   newConversationRef: React.RefObject<HTMLDialogElement | null>
 }) => {
   const { setInputValue } = useInputFieldStore()
+  const navigate = useNavigate()
+  const primaryBtnRef = useRef<HTMLButtonElement | null>(null)
 
-  // useHotkeys("ctrl+n", () => newConversationRef.current?.showModal())
+  const openModal = useCallback(() => {
+    if (!newConversationRef.current) return
+    newConversationRef.current.showModal()
+    requestAnimationFrame(() => primaryBtnRef.current?.focus())
+  }, [newConversationRef])
+
+  useHotkeys("Alt+Ctrl+N", openModal, {
+    enableOnFormTags: true,
+  })
+
+  const startNew = () => {
+    setInputValue("")
+    navigate("/")
+  }
 
   return (
     <>
       <div className='flex self-center'>
-        <Tooltip content='Start ny samtale'>
+        <Tooltip content='Start ny samtale ( Alt+Ctrl+N )'>
           <Button
             variant='tertiary'
             size='medium'
             icon={<NotePencilIcon aria-hidden />}
-            onClick={() => newConversationRef.current?.showModal()}
+            onClick={openModal}
+            aria-label='Start ny samtale'
           />
         </Tooltip>
       </div>
       <Modal
         ref={newConversationRef}
         header={{
-          heading: "Før du starter en ny samtale",
+          heading: "Før du går videre",
           size: "small",
+          closeButton: false,
         }}
         onClose={() => newConversationRef.current?.close()}
-        closeOnBackdropClick={true}
+        closeOnBackdropClick
         className='modal-styling'
       >
         <Modal.Body>
@@ -45,30 +64,28 @@ export const NewButton = ({
             <BodyShort weight='semibold'>Hva synes du om samtalen?</BodyShort>
             <FeedbackThumbs conversationId={conversationId} />
           </VStack>
-          <div className='flex flex-col gap-1 pt-8'>
+          <div className='flex flex-col pt-4'>
             <BodyShort>Når du starter en ny samtale vil du miste innholdet fra denne. Ønsker du å fortsette?</BodyShort>
           </div>
         </Modal.Body>
         <Modal.Footer className='justify-end'>
           <Button
+            ref={primaryBtnRef}
+            type='button'
+            variant='danger'
+            size='medium'
+            onClick={startNew}
+            aria-label='Start ny samtale'
+          >
+            Start ny samtale
+          </Button>
+          <Button
+            aria-label='Avbryt'
             variant='tertiary-neutral'
             onClick={() => newConversationRef.current?.close()}
           >
-            Tilbake
+            Avbryt
           </Button>
-          <Link
-            to='/'
-            className='w-fit'
-          >
-            <Button
-              type='button'
-              variant='danger'
-              size='medium'
-              onClick={() => setInputValue("")}
-            >
-              Start ny samtale
-            </Button>
-          </Link>
         </Modal.Footer>
       </Modal>
     </>

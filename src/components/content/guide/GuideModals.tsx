@@ -1,25 +1,9 @@
 import { XMarkIcon } from "@navikt/aksel-icons"
-import {
-  BodyLong,
-  BodyShort,
-  Button,
-  Heading,
-  HStack,
-  Link,
-  VStack,
-} from "@navikt/ds-react"
+import { BodyLong, BodyShort, Button, Heading, HStack, Link, VStack } from "@navikt/ds-react"
 import { useState } from "react"
 import { useUpdateUserConfig } from "../../../api/api.ts"
-import {
-  BobTheGuide1,
-  BobTheGuide2,
-  BobThePirate,
-} from "../../../assets/illustrations/BobTheGuide.tsx"
-import {
-  SitaterFraKB,
-  SitaterFraNavno,
-  VisAlleKilder,
-} from "../../../assets/illustrations/ChipsIllustrations.tsx"
+import { BobTheGuide1, BobTheGuide2, BobThePirate } from "../../../assets/illustrations/BobTheGuide.tsx"
+import { SitaterFraKB, SitaterFraNavno, VisAlleKilder } from "../../../assets/illustrations/ChipsIllustrations.tsx"
 import { StepSelect } from "./StepSelect.tsx"
 
 export const NewConceptMessage = () => {
@@ -42,20 +26,23 @@ export const NewConceptMessage = () => {
           <div className='self-center'>
             <BobTheGuide1 />
           </div>
-          <VStack className='modal-container' gap='4'>
-            <Heading size='small' level='2'>
+          <VStack
+            className='modal-container'
+            gap='4'
+          >
+            <Heading
+              size='small'
+              level='2'
+            >
               Møt den nye Bob!
             </Heading>
             <BodyLong>
-              Bob har fått et nytt utseende! Nå møter du en smart, liten robot
-              som lærer og utvikler seg for å gi deg enda bedre støtte. Vi har
-              endret hvordan Bob fremstilles for å unngå personifisering av
-              kunstig intelligens.
+              Bob har fått et nytt utseende! Nå møter du en smart, liten robot som lærer og utvikler seg for å gi deg
+              enda bedre støtte. Vi har endret hvordan Bob fremstilles for å unngå personifisering av kunstig
+              intelligens.
             </BodyLong>
             <BodyLong>Les mer om endringen i nyhetssaken.</BodyLong>
-            <BodyLong className='mb-4'>
-              Samme Bob – ny drakt. La oss komme i gang!
-            </BodyLong>
+            <BodyLong className='mb-4'>Samme Bob – ny drakt. La oss komme i gang!</BodyLong>
             <Button
               variant='primary-neutral'
               className='w-fit'
@@ -70,20 +57,23 @@ export const NewConceptMessage = () => {
   )
 }
 
-export const WelcomeMessage = ({
-  onNext,
-  onClose,
-}: {
-  onNext: () => void
-  onClose: () => void
-}) => (
+export const WelcomeMessage = ({ onNext, onClose }: { onNext: () => void; onClose: () => void }) => (
   <div className='guide-modal fade-in items-center gap-4'>
     <div className='self-center'>
       <BobTheGuide1 />
     </div>
-    <VStack className='modal-container' gap='4'>
-      <HStack align='center' justify='space-between'>
-        <Heading size='small' level='2'>
+    <VStack
+      className='modal-container'
+      gap='4'
+    >
+      <HStack
+        align='center'
+        justify='space-between'
+      >
+        <Heading
+          size='small'
+          level='2'
+        >
           Velkommen
         </Heading>
         <Button
@@ -94,14 +84,24 @@ export const WelcomeMessage = ({
         />
       </HStack>
       <BodyLong>
-        Du er nok ivrig etter å starte. Men ta en rask titt på denne guiden før
-        du starter – det hjelper deg å få bedre svar.
+        Du er nok ivrig etter å starte. Men ta en rask titt på denne guiden før du starter – det hjelper deg å få bedre
+        svar.
       </BodyLong>
-      <HStack align='stretch' gap='2' justify='end'>
-        <Button onClick={onClose} variant='tertiary-neutral'>
+      <HStack
+        align='stretch'
+        gap='2'
+        justify='end'
+      >
+        <Button
+          onClick={onClose}
+          variant='tertiary-neutral'
+        >
           Jeg trenger ikke opplæring
         </Button>
-        <Button onClick={onNext} variant='primary-neutral'>
+        <Button
+          onClick={onNext}
+          variant='primary-neutral'
+        >
           Videre
         </Button>
       </HStack>
@@ -123,9 +123,18 @@ export const Step1 = ({
     <div className='self-center'>
       <BobTheGuide1 />
     </div>
-    <VStack className='modal-container' gap='4'>
-      <HStack align='center' justify='space-between'>
-        <Heading size='small' level='2'>
+    <VStack
+      className='modal-container'
+      gap='4'
+    >
+      <HStack
+        align='center'
+        justify='space-between'
+      >
+        <Heading
+          size='small'
+          level='2'
+        >
           Om tjenesten
         </Heading>
         <Button
@@ -133,12 +142,12 @@ export const Step1 = ({
           variant='tertiary-neutral'
           icon={<XMarkIcon />}
           onClick={onClose}
+          autoFocus={true}
         />
       </HStack>
       <BodyLong>
-        Jeg er en kunstig intelligens, altså et dataprogram designet for å
-        hjelpe deg med spørsmål og informasjon spesifikt om tjenestene Nav
-        tilbyr.
+        Jeg er en kunstig intelligens, altså et dataprogram designet for å hjelpe deg med spørsmål og informasjon
+        spesifikt om tjenestene Nav tilbyr.
       </BodyLong>
       <BodyLong>
         Svarene du mottar baserer seg kun på informasjonen fra{" "}
@@ -149,7 +158,10 @@ export const Step1 = ({
           NKS Kunnskapsbasen
         </Link>
         {" og "}
-        <Link href='https://nav.no/' target='_blank'>
+        <Link
+          href='https://nav.no/'
+          target='_blank'
+        >
           nav.no
         </Link>
         .
@@ -160,9 +172,15 @@ export const Step1 = ({
         justify='space-between'
         className='items-center'
       >
-        <StepSelect step={1} onChange={handleSelectChange} />
+        <StepSelect
+          step={1}
+          onChange={handleSelectChange}
+        />
 
-        <Button onClick={onNext} variant='primary-neutral'>
+        <Button
+          onClick={onNext}
+          variant='primary-neutral'
+        >
           Neste
         </Button>
       </HStack>
@@ -187,9 +205,18 @@ export const Step2 = ({
     <div className='flex translate-y-[16px] justify-start'>
       <BobTheGuide2 />
     </div>
-    <VStack className='modal-container' gap='4'>
-      <HStack align='center' justify='space-between'>
-        <Heading size='small' level='2'>
+    <VStack
+      className='modal-container'
+      gap='4'
+    >
+      <HStack
+        align='center'
+        justify='space-between'
+      >
+        <Heading
+          size='small'
+          level='2'
+        >
           Når du stiller spørsmål
         </Heading>
         <Button
@@ -200,8 +227,7 @@ export const Step2 = ({
         />
       </HStack>
       <BodyLong>
-        Du tar i bruk tjenesten ved å spørre meg om noe nav-relatert i
-        tekstfeltet.
+        Du tar i bruk tjenesten ved å spørre meg om noe nav-relatert i tekstfeltet.
         <ul className='mb-6'>
           <li>Still hele spørsmål, ikke bare stikkord.</li>
           <li>Vær detaljert og tydelig.</li>
@@ -211,22 +237,33 @@ export const Step2 = ({
         Og husk:
         <ul className='my-2 gap-1'>
           <li>
-            Ikke del <strong>personlige opplysninger</strong> når du sender meg
-            spørsmål.
+            Ikke del <strong>personlige opplysninger</strong> når du sender meg spørsmål.
           </li>
           <li>
-            <strong>Kontroller kilden</strong> om du er usikker på om svaret er
-            korrekt.
+            <strong>Kontroller kilden</strong> om du er usikker på om svaret er korrekt.
           </li>
         </ul>
       </BodyLong>
-      <HStack align='stretch' gap='2' justify='space-between'>
-        <StepSelect step={step} onChange={handleSelectChange} />
+      <HStack
+        align='stretch'
+        gap='2'
+        justify='space-between'
+      >
+        <StepSelect
+          step={step}
+          onChange={handleSelectChange}
+        />
         <HStack gap='4'>
-          <Button onClick={onPrevious} variant='tertiary-neutral'>
+          <Button
+            onClick={onPrevious}
+            variant='tertiary-neutral'
+          >
             Forrige
           </Button>
-          <Button onClick={onNext} variant='primary-neutral'>
+          <Button
+            onClick={onNext}
+            variant='primary-neutral'
+          >
             Neste
           </Button>
         </HStack>
@@ -252,9 +289,18 @@ export const Step3 = ({
     <div className='flex translate-y-[60px] justify-center'>
       <BobTheGuide2 />
     </div>
-    <VStack className='modal-container sticky z-[1000]' gap='4'>
-      <HStack align='center' justify='space-between'>
-        <Heading size='small' level='2'>
+    <VStack
+      className='modal-container sticky z-[1000]'
+      gap='4'
+    >
+      <HStack
+        align='center'
+        justify='space-between'
+      >
+        <Heading
+          size='small'
+          level='2'
+        >
           Om svaret fra Bob
         </Heading>
         <Button
@@ -265,9 +311,8 @@ export const Step3 = ({
         />
       </HStack>
       <BodyLong className='mb-2'>
-        Hver gang du mottar et svar fra Bob baserer det seg på informasjon
-        hentet fra Kunnskapsbasen og Nav.no. Hen velger det som er mest relevant
-        for spørsmålet ditt.
+        Hver gang du mottar et svar fra Bob baserer det seg på informasjon hentet fra Kunnskapsbasen og Nav.no. Hen
+        velger det som er mest relevant for spørsmålet ditt.
       </BodyLong>
       <VStack>
         <HStack className='mb-2'>
@@ -275,8 +320,8 @@ export const Step3 = ({
           <SitaterFraNavno />
         </HStack>
         <BodyLong className='mb-3'>
-          Under svaret finner du sitater fra relevante artikler. Disse hjelper
-          deg med å raskt sjekke at informasjonen stemmer.
+          Under svaret finner du sitater fra relevante artikler. Disse hjelper deg med å raskt sjekke at informasjonen
+          stemmer.
         </BodyLong>
       </VStack>
       <VStack>
@@ -284,18 +329,30 @@ export const Step3 = ({
           <VisAlleKilder />
         </div>
         <BodyLong>
-          Bob viser også en liste over alle kildene han har vurdert. Det betyr
-          ikke at alle artiklene er brukt i svaret, men at han har sett på dem
-          for å finne relevant informasjon.
+          Bob viser også en liste over alle kildene han har vurdert. Det betyr ikke at alle artiklene er brukt i svaret,
+          men at han har sett på dem for å finne relevant informasjon.
         </BodyLong>
       </VStack>
-      <HStack align='stretch' gap='2' justify='space-between'>
-        <StepSelect step={step} onChange={handleSelectChange} />
+      <HStack
+        align='stretch'
+        gap='2'
+        justify='space-between'
+      >
+        <StepSelect
+          step={step}
+          onChange={handleSelectChange}
+        />
         <HStack gap='4'>
-          <Button onClick={onPrevious} variant='tertiary-neutral'>
+          <Button
+            onClick={onPrevious}
+            variant='tertiary-neutral'
+          >
             Forrige
           </Button>
-          <Button onClick={onNext} variant='primary-neutral'>
+          <Button
+            onClick={onNext}
+            variant='primary-neutral'
+          >
             Neste
           </Button>
         </HStack>
@@ -319,9 +376,19 @@ export const Step4 = ({
     <div className='flex translate-y-[60px] justify-end'>
       <BobThePirate />
     </div>
-    <VStack className='modal-container sticky z-[1000]' gap='0'>
-      <HStack align='center' justify='space-between' className='mb-6'>
-        <Heading size='small' level='2'>
+    <VStack
+      className='modal-container sticky z-[1000]'
+      gap='0'
+    >
+      <HStack
+        align='center'
+        justify='space-between'
+        className='mb-6'
+      >
+        <Heading
+          size='small'
+          level='2'
+        >
           Misfornøyd med svaret? Prøv dette:
         </Heading>
         <Button
@@ -331,9 +398,7 @@ export const Step4 = ({
           onClick={onClose}
         />
       </HStack>
-      <BodyLong spacing>
-        Husk at du kan be om svaret akkurat slik du ønsker det.
-      </BodyLong>
+      <BodyLong spacing>Husk at du kan be om svaret akkurat slik du ønsker det.</BodyLong>
       <BodyShort>For eksempel kan du be Bob om å:</BodyShort>
       <ul className='mb-6'>
         <li>Oversette til engelsk eller nynorsk</li>
@@ -341,8 +406,8 @@ export const Step4 = ({
         <li>Forenkle forklaringen</li>
       </ul>
       <BodyLong spacing>
-        Du kan til og med be Bob om å skrive svaret som en pirat, eller på en
-        annen kreativ måte. Mulighetene er mange – du bestemmer!
+        Du kan til og med be Bob om å skrive svaret som en pirat, eller på en annen kreativ måte. Mulighetene er mange –
+        du bestemmer!
       </BodyLong>
       <HStack
         align='stretch'
@@ -350,12 +415,21 @@ export const Step4 = ({
         justify='space-between'
         className='items-center'
       >
-        <StepSelect step={step} onChange={handleSelectChange} />
+        <StepSelect
+          step={step}
+          onChange={handleSelectChange}
+        />
         <HStack gap='4'>
-          <Button onClick={onPrevious} variant='tertiary-neutral'>
+          <Button
+            onClick={onPrevious}
+            variant='tertiary-neutral'
+          >
             Forrige
           </Button>
-          <Button onClick={onClose} variant='primary-neutral'>
+          <Button
+            onClick={onClose}
+            variant='primary-neutral'
+          >
             Takk, Bob!
           </Button>
         </HStack>
