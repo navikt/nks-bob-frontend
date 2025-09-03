@@ -1,5 +1,6 @@
 import { Box } from "@navikt/ds-react"
 import React, { useRef, useState } from "react"
+import analytics from "../../utils/analytics.ts"
 
 interface HoverCardProps {
   children: React.ReactNode
@@ -24,6 +25,10 @@ export const HoverCard = ({ children, content }: HoverCardProps) => {
       clearTimeout(timeoutRef.current)
     }
 
+    if (!isOpen) {
+      analytics.åpnetFotnote()
+    }
+
     if (triggerRef.current) {
       const rect = triggerRef.current.getBoundingClientRect()
       const viewportHeight = window.innerHeight
@@ -36,8 +41,7 @@ export const HoverCard = ({ children, content }: HoverCardProps) => {
       const minRequiredHeight = 150 // Minimum space needed to show card
 
       // Determine if we should show above or below
-      const showAbove =
-        spaceBelow < minRequiredHeight && spaceAbove > spaceBelow
+      const showAbove = spaceBelow < minRequiredHeight && spaceAbove > spaceBelow
 
       let maxHeight: number
       let yPosition: number
@@ -111,9 +115,7 @@ export const HoverCard = ({ children, content }: HoverCardProps) => {
           style={{
             left: position.x,
             top: position.showAbove ? undefined : position.y,
-            bottom: position.showAbove
-              ? `${window.innerHeight - position.y}px`
-              : undefined,
+            bottom: position.showAbove ? `${window.innerHeight - position.y}px` : undefined,
             transform: "translateX(-50%)",
             maxHeight: position.maxHeight,
             width: position.width,

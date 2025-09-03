@@ -29,10 +29,7 @@ const createAmpltiudeInstance = (): AmplitudeInstance => {
 }
 
 const mockedAmplitude = (): AmplitudeInstance => ({
-  logEvent: (
-    eventInput: Types.BaseEvent | string,
-    eventProperties?: Record<string, any>,
-  ) => {
+  logEvent: (eventInput: Types.BaseEvent | string, eventProperties?: Record<string, any>) => {
     console.group("Mocked amplitude-event")
     console.table({ eventInput, ...eventProperties })
     console.groupEnd()
@@ -46,10 +43,7 @@ const mockedAmplitude = (): AmplitudeInstance => ({
       ),
     }
   },
-  identify(
-    identify: Types.IIdentify,
-    _?: Types.EventOptions,
-  ): Types.AmplitudeReturn<Types.Result> {
+  identify(identify: Types.IIdentify, _?: Types.EventOptions): Types.AmplitudeReturn<Types.Result> {
     console.group("Mocked amplitude-identify")
     console.table(identify)
     console.groupEnd()
@@ -65,10 +59,7 @@ const mockedAmplitude = (): AmplitudeInstance => ({
   },
 })
 
-const instance =
-  window.location.hostname === "localhost"
-    ? mockedAmplitude()
-    : createAmpltiudeInstance()
+const instance = window.location.hostname === "localhost" ? mockedAmplitude() : createAmpltiudeInstance()
 
 interface Umami {
   track(payload: unknown): void
@@ -96,21 +87,17 @@ const logEvent = (event: string, data?: Record<string, unknown>) => {
   umamiTrack(event, data)
 }
 
-const svarKopiert = (meldingsId: string) =>
-  logEvent("Svar kopiert", { meldingsId })
+const svarKopiert = (meldingsId: string) => logEvent("Svar kopiert", { meldingsId })
 
-const svarEndret = (endring: "oversett" | "punktliste" | "forenkle") =>
-  logEvent("Svar endret", { endring })
+const svarEndret = (endring: "oversett" | "punktliste" | "forenkle") => logEvent("Svar endret", { endring })
 
 const feilMeldt = (meldingsId: string) => logEvent("Feil meldt", { meldingsId })
 
 const infoÅpnet = () => logEvent("Info modal åpnet")
 
-const mørkModusByttet = (modus: "lys" | "mørk") =>
-  logEvent("Mørk modus byttet", { modus })
+const mørkModusByttet = (modus: "lys" | "mørk") => logEvent("Mørk modus byttet", { modus })
 
-const meldingSendt = (trigger: "knapp" | "enter") =>
-  logEvent("Melding sendt", { trigger })
+const meldingSendt = (trigger: "knapp" | "enter") => logEvent("Melding sendt", { trigger })
 
 const kildeAccordionÅpnet = () => logEvent("Kilde accordion åpnet")
 
@@ -126,6 +113,8 @@ const visAlleKilderÅpnet = () => logEvent("Vis alle kilder åpnet")
 
 const spørsmålRedigert = () => logEvent("Rediger spørsmål trykket")
 
+const åpnetFotnote = () => logEvent("Fotnote åpnet")
+
 export default {
   svarKopiert,
   svarEndret,
@@ -140,4 +129,5 @@ export default {
   forslagTrykket,
   visAlleKilderÅpnet,
   spørsmålRedigert,
+  åpnetFotnote,
 }
