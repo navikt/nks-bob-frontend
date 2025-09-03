@@ -331,7 +331,7 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
         <VStack gap='2'>
           <Label size='small'>Hva er galt med svaret?</Label>
           {feedback.options.map((option) => (
-            <VStack gap='2'>
+            <VStack gap='4'>
               <HStack gap='2'>
                 <FeedbackOptionTag
                   key={`${feedback.id}-${option}`}
@@ -347,7 +347,7 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
         </VStack>
         <form onSubmit={submit}>
           <HStack
-            gap='2'
+            gap='4'
             align='end'
           >
             <Select
