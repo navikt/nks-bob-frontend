@@ -330,15 +330,20 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
         </HStack>
         <VStack gap='2'>
           <Label size='small'>Hva er galt med svaret?</Label>
-          <HStack gap='2'>
-            {feedback.options.map((option) => (
-              <FeedbackOptionTag
-                key={`${feedback.id}-${option}`}
-                option={option}
-                comment={feedback.comment}
-              />
-            ))}
-          </HStack>
+          {feedback.options.map((option) => (
+            <VStack gap='2'>
+              <HStack gap='2'>
+                <FeedbackOptionTag
+                  key={`${feedback.id}-${option}`}
+                  option={option}
+                />
+              </HStack>
+              <VStack gap='2'>
+                <Label size='small'>Kommentar: </Label>
+                <BodyShort size='small'>{feedback.comment}</BodyShort>
+              </VStack>
+            </VStack>
+          ))}
         </VStack>
         <form onSubmit={submit}>
           <HStack
@@ -412,10 +417,10 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
   )
 }
 
-const FeedbackOptionTag = ({ option, comment }: { option: string; comment: string | null }) => {
-  if (option === "Annet") {
-    return <BodyShort>Annet: {comment}</BodyShort>
-  }
+const FeedbackOptionTag = ({ option }: { option: string }) => {
+  // if (option === "Annet") {
+  //   return <BodyShort>Annet: {comment}</BodyShort>
+  // }
 
   return (
     <Tag
@@ -423,7 +428,6 @@ const FeedbackOptionTag = ({ option, comment }: { option: string; comment: strin
       size='small'
     >
       {option}
-      {comment}
     </Tag>
   )
 }
