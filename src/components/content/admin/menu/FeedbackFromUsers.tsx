@@ -1,8 +1,4 @@
-import {
-  ChatExclamationmarkIcon,
-  CheckmarkCircleIcon,
-  FilterIcon,
-} from "@navikt/aksel-icons"
+import { ChatExclamationmarkIcon, CheckmarkCircleIcon, FilterIcon } from "@navikt/aksel-icons"
 import {
   ActionMenu,
   BodyShort,
@@ -18,21 +14,9 @@ import {
   VStack,
 } from "@navikt/ds-react"
 import { format } from "date-fns"
-import {
-  Dispatch,
-  FormEvent,
-  RefObject,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from "react"
+import { Dispatch, FormEvent, RefObject, SetStateAction, useEffect, useRef, useState } from "react"
 import { useNavigate, useSearchParams } from "react-router"
-import {
-  preloadFeedbacks,
-  useFeedbacks,
-  useUpdateFeedback,
-} from "../../../../api/admin"
+import { preloadFeedbacks, useFeedbacks, useUpdateFeedback } from "../../../../api/admin"
 import { Feedback } from "../../../../types/Message"
 
 export const FeedbackFromUsers = () => {
@@ -70,9 +54,11 @@ export const FeedbackFromUsers = () => {
 
 const FeedbackDescription = () => {
   return (
-    <Box padding='4' position='sticky'>
-      Her finner du tilbakemeldinger som veilederne sender oss når de ser at noe
-      er galt med svaret.
+    <Box
+      padding='4'
+      position='sticky'
+    >
+      Her finner du tilbakemeldinger som veilederne sender oss når de ser at noe er galt med svaret.
     </Box>
   )
 }
@@ -112,17 +98,33 @@ const FeedbackHeader = ({
 }) => {
   const { total } = useFeedbacks(activeFilter)
   return (
-    <Box className='bg-[#F5F6F7]' padding='4' position='sticky'>
-      <HStack align='center' justify='space-between'>
-        <HStack gap='2' align='center'>
+    <Box
+      className='bg-[#F5F6F7]'
+      padding='4'
+      position='sticky'
+    >
+      <HStack
+        align='center'
+        justify='space-between'
+      >
+        <HStack
+          gap='2'
+          align='center'
+        >
           <ChatExclamationmarkIcon />
-          <BodyShort size='medium' textColor='subtle'>
+          <BodyShort
+            size='medium'
+            textColor='subtle'
+          >
             Alle tilbakemeldinger {total > 0 && `(${total})`}
           </BodyShort>
         </HStack>
         <ActionMenu rootElement={menuRef.current}>
           <ActionMenu.Trigger>
-            <Button variant='tertiary-neutral' icon={<FilterIcon />} />
+            <Button
+              variant='tertiary-neutral'
+              icon={<FilterIcon />}
+            />
           </ActionMenu.Trigger>
           <ActionMenu.Content>
             <ActionMenu.RadioGroup
@@ -182,16 +184,9 @@ const FeedbackList = ({
   pageSize: number
   onPageChange: (page: number) => void
 }) => {
-  const { feedbacks, total, isLoading } = useFeedbacks(
-    activeFilter,
-    currentPage - 1,
-    pageSize,
-    sort,
-  )
+  const { feedbacks, total, isLoading } = useFeedbacks(activeFilter, currentPage - 1, pageSize, sort)
   const [searchParams] = useSearchParams()
-  const [selectedMessageId, setSelectedMessageId] = useState<string | null>(
-    null,
-  )
+  const [selectedMessageId, setSelectedMessageId] = useState<string | null>(null)
 
   const totalPages = Math.ceil(total / pageSize)
 
@@ -221,9 +216,7 @@ const FeedbackList = ({
   }
 
   if (!feedbacks) {
-    return (
-      <BodyShort textColor='subtle'>Fant ingen tilbakemeldinger.</BodyShort>
-    )
+    return <BodyShort textColor='subtle'>Fant ingen tilbakemeldinger.</BodyShort>
   }
 
   return (
@@ -237,7 +230,10 @@ const FeedbackList = ({
       ))}
 
       {totalPages > 1 && (
-        <HStack padding='4' justify='center'>
+        <HStack
+          padding='4'
+          justify='center'
+        >
           <Pagination
             page={currentPage}
             onPageChange={(page) => {
@@ -270,13 +266,7 @@ const CATEGORY_OPTIONS = {
 
 type CategoryOptionsValue = keyof typeof CATEGORY_OPTIONS
 
-const SingleFeedback = ({
-  feedback,
-  isSelected,
-}: {
-  feedback: Feedback
-  isSelected: boolean
-}) => {
+const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelected: boolean }) => {
   const navigate = useNavigate()
   const [category, setCategory] = useState<CategoryOptionsValue | "">(
     (feedback.resolvedCategory as CategoryOptionsValue) ?? "",
@@ -325,20 +315,16 @@ const SingleFeedback = ({
       paddingInline='4'
       borderWidth='0 0 1 0'
       borderColor='border-subtle'
-      onClick={() =>
-        navigate(
-          `/admin/${feedback.conversationId}?messageId=${feedback.messageId}`,
-        )
-      }
+      onClick={() => navigate(`/admin/${feedback.conversationId}?messageId=${feedback.messageId}`)}
       className={`cursor-pointer hover:bg-[#F1F7FF] ${isSelected ? "bg-[#F5F6F7]" : ""}`}
     >
       <VStack gap='4'>
         <HStack justify='space-between'>
-          <Label size='medium'>
-            Feil innmeldt:{" "}
-            {format(new Date(feedback.createdAt), "dd.MM.yy (HH:mm)")}
-          </Label>
-          <Tag variant='neutral-moderate' size='xsmall'>
+          <Label size='medium'>Feil innmeldt: {format(new Date(feedback.createdAt), "dd.MM.yy (HH:mm)")}</Label>
+          <Tag
+            variant='neutral-moderate'
+            size='xsmall'
+          >
             {feedback.id.substring(30)}
           </Tag>
         </HStack>
@@ -355,20 +341,24 @@ const SingleFeedback = ({
           </HStack>
         </VStack>
         <form onSubmit={submit}>
-          <HStack gap='2' align='end'>
+          <HStack
+            gap='2'
+            align='end'
+          >
             <Select
               label='Marker som'
               size='small'
               className='max-w-32'
-              onChange={(event) =>
-                setCategory(event.target.value as CategoryOptionsValue | "")
-              }
+              onChange={(event) => setCategory(event.target.value as CategoryOptionsValue | "")}
               value={category}
               disabled={isResolved}
             >
               <option value=''>Velg</option>
               {Object.entries(CATEGORY_OPTIONS).map(([value, label]) => (
-                <option key={`feedback-category-option-${value}`} value={value}>
+                <option
+                  key={`feedback-category-option-${value}`}
+                  value={value}
+                >
                   {label}
                 </option>
               ))}
@@ -377,9 +367,7 @@ const SingleFeedback = ({
               label='Viktighet'
               size='small'
               className='max-w-32'
-              onChange={(event) =>
-                setImportance(event.target.value as ImportanceOptionsValue | "")
-              }
+              onChange={(event) => setImportance(event.target.value as ImportanceOptionsValue | "")}
               value={importance}
               disabled={isResolved}
             >
@@ -424,20 +412,18 @@ const SingleFeedback = ({
   )
 }
 
-const FeedbackOptionTag = ({
-  option,
-  comment,
-}: {
-  option: string
-  comment: string | null
-}) => {
+const FeedbackOptionTag = ({ option, comment }: { option: string; comment: string | null }) => {
   if (option === "Annet") {
     return <BodyShort>Annet: {comment}</BodyShort>
   }
 
   return (
-    <Tag variant='neutral' size='small'>
+    <Tag
+      variant='neutral'
+      size='small'
+    >
       {option}
+      {comment}
     </Tag>
   )
 }
