@@ -1,9 +1,8 @@
 import { ExternalLinkIcon } from "@navikt/aksel-icons"
 import { BodyLong, BodyShort, HStack, Label, Link, Tag, VStack } from "@navikt/ds-react"
 import Markdown from "react-markdown"
-import rehypeRaw from "rehype-raw"
+import remarkGfm from "remark-gfm"
 import { Context } from "../../../../../types/Message.ts"
-import { md } from "../../../../../utils/markdown.ts"
 import { HoverCard } from "../../../../ui/HoverCard.tsx"
 import { SourceIcon } from "../BobAnswerCitations.tsx"
 
@@ -57,8 +56,7 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
       <BodyLong size='small'>
         <Markdown
           className='markdown'
-          remarkPlugins={[md.remarkCitations]}
-          rehypePlugins={[rehypeRaw]}
+          remarkPlugins={[remarkGfm]}
           components={{
             a: ({ ...props }) => (
               <a
