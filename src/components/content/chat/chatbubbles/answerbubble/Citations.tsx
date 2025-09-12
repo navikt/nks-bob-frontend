@@ -45,25 +45,28 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
             className='ml-1'
           />
         </Link>
-      </VStack>
-      <Label size='small'>
-        <Markdown
-          className='markdown'
-          remarkPlugins={[md.remarkCitations]}
-          rehypePlugins={[rehypeRaw]}
-          components={{
-            a: ({ ...props }) => (
-              <a
-                {...props}
-                target='_blank'
-                rel='noopener noreferrer'
-              />
-            ),
-          }}
+        <BodyLong
+          size='small'
+          weight='semibold'
         >
-          {source.ingress}
-        </Markdown>
-      </Label>
+          <Markdown
+            className='markdown'
+            remarkPlugins={[md.remarkCitations]}
+            rehypePlugins={[rehypeRaw]}
+            components={{
+              a: ({ ...props }) => (
+                <a
+                  {...props}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                />
+              ),
+            }}
+          >
+            {source.ingress}
+          </Markdown>
+        </BodyLong>
+      </VStack>
       <BodyLong size='small'>
         <Markdown
           className='markdown'
