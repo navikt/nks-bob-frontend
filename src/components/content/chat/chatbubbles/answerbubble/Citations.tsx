@@ -1,5 +1,5 @@
 import { ExternalLinkIcon } from "@navikt/aksel-icons"
-import { BodyLong, BodyShort, HStack, Label, Link, Tag, VStack } from "@navikt/ds-react"
+import { BodyShort, HStack, Label, Link, Tag, VStack } from "@navikt/ds-react"
 import Markdown from "react-markdown"
 import rehypeRaw from "rehype-raw"
 import { Context } from "../../../../../types/Message.ts"
@@ -45,46 +45,23 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
             className='ml-1'
           />
         </Link>
-        <BodyLong
-          size='small'
-          weight='semibold'
-        >
-          <Markdown
-            className='markdown'
-            remarkPlugins={[md.remarkCitations]}
-            rehypePlugins={[rehypeRaw]}
-            components={{
-              a: ({ ...props }) => (
-                <a
-                  {...props}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                />
-              ),
-            }}
-          >
-            {source.ingress}
-          </Markdown>
-        </BodyLong>
       </VStack>
-      <BodyLong size='small'>
-        <Markdown
-          className='markdown'
-          remarkPlugins={[md.remarkCitations]}
-          rehypePlugins={[rehypeRaw]}
-          components={{
-            a: ({ ...props }) => (
-              <a
-                {...props}
-                target='_blank'
-                rel='noopener noreferrer'
-              />
-            ),
-          }}
-        >
-          {source.content}
-        </Markdown>
-      </BodyLong>
+      <Markdown
+        className='markdown'
+        remarkPlugins={[md.remarkCitations]}
+        rehypePlugins={[rehypeRaw]}
+        components={{
+          a: ({ ...props }) => (
+            <a
+              {...props}
+              target='_blank'
+              rel='noopener noreferrer'
+            />
+          ),
+        }}
+      >
+        {`${source.ingress}\n\n${source.content}`}
+      </Markdown>
     </div>
   )
 
