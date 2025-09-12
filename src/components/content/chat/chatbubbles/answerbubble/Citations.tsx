@@ -1,5 +1,5 @@
 import { ExternalLinkIcon } from "@navikt/aksel-icons"
-import { BodyLong, BodyShort, Heading, HStack, Label, Link, Tag, VStack } from "@navikt/ds-react"
+import { BodyLong, BodyShort, HStack, Label, Link, Tag, VStack } from "@navikt/ds-react"
 import Markdown from "react-markdown"
 import rehypeRaw from "rehype-raw"
 import { Context } from "../../../../../types/Message.ts"
@@ -46,7 +46,7 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
           />
         </Link>
       </VStack>
-      <Heading size='xsmall'>
+      <Label size='small'>
         <Markdown
           className='markdown'
           remarkPlugins={[md.remarkCitations]}
@@ -63,7 +63,7 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
         >
           {source.ingress}
         </Markdown>
-      </Heading>
+      </Label>
       <BodyLong size='small'>
         <Markdown
           className='markdown'
