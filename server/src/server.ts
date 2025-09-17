@@ -20,6 +20,8 @@ import require from "./esm-require.js"
 const apiMetricsMiddleware = require("prometheus-api-metrics")
 const { createProxyMiddleware } = httpProxyMiddleware
 
+require("dotenv").config()
+
 const CALL_ID = "nav-call-id"
 
 export const {
@@ -36,6 +38,7 @@ const audience =
   {
     dev: "api://dev-gcp.nks-aiautomatisering.nks-bob-api/.default",
     prod: "api://prod-gcp.nks-aiautomatisering.nks-bob-api/.default",
+    localnais: "api://dev-gcp.nks-aiautomatisering.nks-bob-api/.default",
   }[MILJO] ?? "localaudience"
 
 const logEventsCounter = new Prometheus.Counter({
@@ -207,7 +210,7 @@ const main = async () => {
     }),
   )
 
-  app.use((req, res, next) => {
+  app.use((_req, res, next) => {
     const originalSend = res.send
     // @ts-ignore - override send method to add custom header
     res.send = function (body) {
@@ -238,6 +241,7 @@ const main = async () => {
         dev: "http://nks-bob-api",
         prod: "http://nks-bob-api",
         local: "http://localhost:8080",
+        localnais: "http://localhost:8989",
       }[MILJO]!,
       pathRewrite: (path: string) => path.replace(/bob-api/, ""),
       on: {
@@ -258,6 +262,7 @@ const main = async () => {
       dev: "ws://nks-bob-api",
       prod: "ws://nks-bob-api",
       local: "ws://localhost:8080",
+      localnais: "ws://localhost:8989",
     }[MILJO]!,
   })
 
@@ -274,10 +279,27 @@ const main = async () => {
     const referer = (req.query.referer as string | undefined) ?? "/"
     log.info(`redirecting to login with referer ${referer}`)
 
-    target.searchParams.set("redirect", referer!)
-    res.setHeader("Referer", referer!)
+    target.searchParams.set("redirect", referer)
+    res.setHeader("Referer", referer)
 
     res.redirect(target.href)
+  })
+
+  app.use((req, res, next) => {
+    if (MILJO !== "localnais") {
+      next()
+      return
+    }
+
+    // redirect back to vite served frontend
+    const redirects = req.headersDistinct["referer"] ?? [undefined]
+    const redirect = redirects[0]
+    if (!redirect) {
+      next()
+      return
+    }
+
+    res.redirect(redirect)
   })
 
   app.use(
