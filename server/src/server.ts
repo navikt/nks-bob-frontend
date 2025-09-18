@@ -299,7 +299,7 @@ const main = async () => {
       return
     }
 
-    res.redirect(redirect)
+    res.redirect(`${redirect.replace(/\/$/, "")}${req.originalUrl}`)
   })
 
   app.use(
