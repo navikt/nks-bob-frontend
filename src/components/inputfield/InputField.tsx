@@ -179,7 +179,6 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           className='fade-in mb-2'
         >
           <Heading
-            spacing
             size='xsmall'
             level='3'
           >
