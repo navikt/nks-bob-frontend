@@ -1,4 +1,4 @@
-import { Alert, Button, Detail, Textarea } from "@navikt/ds-react"
+import { Alert, Button, Detail, Heading, Textarea, VStack } from "@navikt/ds-react"
 
 import { PaperplaneIcon } from "@navikt/aksel-icons"
 import { forwardRef, useEffect, useState } from "react"
@@ -178,14 +178,23 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           onClose={() => setNewMessageAlert(false)}
           className='fade-in mb-2'
         >
-          Du har vært lenge i denne samtalen. Husk å starte en ny samtale når du får en ny henvendelse – da unngår du at
-          Bob blander temaer.
-          <Button
-            variant='secondary-neutral'
+          <Heading
+            spacing
             size='small'
+            level='3'
           >
-            Start ny samtale
-          </Button>
+            Psst!
+          </Heading>
+          <VStack>
+            Du har vært lenge i denne samtalen. Husk å starte en ny samtale når du får en ny henvendelse – da unngår du
+            at Bob blander temaer.
+            <Button
+              variant='secondary-neutral'
+              size='small'
+            >
+              Start ny samtale
+            </Button>
+          </VStack>
         </Alert>
       )}
       <div className='inputfield relative flex max-w-[48rem] flex-col items-center justify-end'>
