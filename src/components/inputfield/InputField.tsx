@@ -179,6 +179,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           className='fade-in mb-2'
         >
           <Heading
+            spacing
             size='xsmall'
             level='3'
           >
@@ -190,7 +191,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
             <Button
               variant='secondary-neutral'
               size='small'
-              className='grow-0'
+              className='flex-grow-0'
             >
               Start ny samtale
             </Button>
