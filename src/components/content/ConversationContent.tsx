@@ -32,6 +32,7 @@ function ConversationContent() {
 
   const inputContainerRef = useRef<HTMLDivElement | null>(null)
   const [inputHeight, setInputHeight] = useState(0)
+  const [newMessageAlert, setNewMessageAlert] = useState(true)
 
   useEffect(() => {
     if (!isLoadingExistingMessages && !isLoading) {
@@ -143,6 +144,18 @@ function ConversationContent() {
               aria-label='Scroll til bunnen'
             />
           </Tooltip>
+        )}
+        {newMessageAlert && (
+          <AlertComponent
+            variant='info'
+            size='small'
+            closeButton={true}
+            onClose={() => setNewMessageAlert(false)}
+            className='fade-in mb-2'
+          >
+            Du har vært lenge i denne samtalen. Husk å starte en ny samtale når du får en ny henvendelse – da unngår du
+            at Bob blander temaer.
+          </AlertComponent>
         )}
         <InputField
           onSend={handleUserMessage}
