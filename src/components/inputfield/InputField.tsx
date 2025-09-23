@@ -144,6 +144,23 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     enableOnFormTags: true,
   })
 
+  useEffect(() => {
+    let timer: NodeJS.Timeout | null = null
+    if (conversationId) {
+      timer = setTimeout(
+        () => {
+          setNewMessageAlert(true)
+        },
+        5 * 60 * 1000,
+      )
+    } else {
+      setNewMessageAlert(false)
+    }
+    return () => {
+      if (timer) clearTimeout(timer)
+    }
+  }, [conversationId])
+
   return (
     <div
       className='dialogcontent sticky bottom-0 h-auto flex-col self-center px-4'
