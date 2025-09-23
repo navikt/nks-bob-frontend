@@ -179,18 +179,18 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           className='fade-in mb-2'
         >
           <Heading
-            spacing
-            size='small'
+            size='xsmall'
             level='3'
           >
             Psst!
           </Heading>
-          <VStack>
+          <VStack gap='2'>
             Du har vært lenge i denne samtalen. Husk å starte en ny samtale når du får en ny henvendelse – da unngår du
             at Bob blander temaer.
             <Button
               variant='secondary-neutral'
               size='small'
+              className='grow-0'
             >
               Start ny samtale
             </Button>
