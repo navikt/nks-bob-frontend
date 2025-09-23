@@ -60,6 +60,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
   const [containsFnr, setContainsFnr] = useState<boolean>(false)
   const [sendDisabled, setSendDisabled] = useState<boolean>(disabled)
   const [isFocused, setIsFocused] = useState(false)
+  const [newMessageAlert, setNewMessageAlert] = useState(true)
 
   const { conversationId } = useParams()
 
@@ -167,6 +168,24 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           className='fade-in mb-2'
         >
           Du har skrevet inn noe som ligner på et fødselsnummer. Derfor får du ikke sendt meldingen.
+        </Alert>
+      )}
+      {newMessageAlert && (
+        <Alert
+          variant='info'
+          size='small'
+          closeButton={true}
+          onClose={() => setNewMessageAlert(false)}
+          className='fade-in mb-2'
+        >
+          Du har vært lenge i denne samtalen. Husk å starte en ny samtale når du får en ny henvendelse – da unngår du at
+          Bob blander temaer.
+          <Button
+            variant='secondary-neutral'
+            size='small'
+          >
+            Start ny samtale
+          </Button>
         </Alert>
       )}
       <div className='inputfield relative flex max-w-[48rem] flex-col items-center justify-end'>
