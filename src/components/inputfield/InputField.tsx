@@ -191,7 +191,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
             <Button
               variant='secondary-neutral'
               size='small'
-              className='flex-grow-0'
+              className='w-fit'
             >
               Start ny samtale
             </Button>
