@@ -5,7 +5,7 @@ import { forwardRef, useEffect, useState } from "react"
 
 import * as React from "react"
 import { useHotkeys } from "react-hotkeys-hook"
-import { useParams } from "react-router"
+import { useNavigate, useParams } from "react-router"
 import { create } from "zustand"
 import { createJSONStorage, persist } from "zustand/middleware"
 import { useAlerts } from "../../api/api.ts"
@@ -60,7 +60,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
   const [containsFnr, setContainsFnr] = useState<boolean>(false)
   const [sendDisabled, setSendDisabled] = useState<boolean>(disabled)
   const [isFocused, setIsFocused] = useState(false)
-  const [newMessageAlert, setNewMessageAlert] = useState(true)
+  const [newMessageAlert, setNewMessageAlert] = useState(false)
 
   const { conversationId } = useParams()
 
@@ -145,21 +145,21 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
   })
 
   useEffect(() => {
-    let timer: NodeJS.Timeout | null = null
-    if (conversationId) {
-      timer = setTimeout(
-        () => {
-          setNewMessageAlert(true)
-        },
-        5 * 60 * 1000,
-      )
-    } else {
-      setNewMessageAlert(false)
-    }
-    return () => {
-      if (timer) clearTimeout(timer)
-    }
+    const timer = setTimeout(
+      () => {
+        setNewMessageAlert(true)
+      },
+      5 * 60 * 1000,
+    )
+    return () => clearTimeout(timer)
   }, [conversationId])
+
+  const navigate = useNavigate()
+
+  const startNew = () => {
+    setInputValue("")
+    navigate("/")
+  }
 
   return (
     <div
@@ -208,6 +208,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
               variant='secondary-neutral'
               size='small'
               className='w-fit'
+              onClick={startNew}
             >
               Start ny samtale
             </Button>
