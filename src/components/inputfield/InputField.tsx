@@ -60,7 +60,6 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
   const [containsFnr, setContainsFnr] = useState<boolean>(false)
   const [sendDisabled, setSendDisabled] = useState<boolean>(disabled)
   const [isFocused, setIsFocused] = useState(false)
-  const [newMessageAlert, setNewMessageAlert] = useState(false)
 
   const { conversationId } = useParams()
 
@@ -144,23 +143,6 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     enableOnFormTags: true,
   })
 
-  useEffect(() => {
-    const timer = setTimeout(
-      () => {
-        setNewMessageAlert(true)
-      },
-      5 * 60 * 1000,
-    )
-    return () => clearTimeout(timer)
-  }, [conversationId])
-
-  const navigate = useNavigate()
-
-  const startNew = () => {
-    setInputValue("")
-    navigate("/")
-  }
-
   return (
     <div
       className='dialogcontent sticky bottom-0 h-auto flex-col self-center px-4'
@@ -187,34 +169,10 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           Du har skrevet inn noe som ligner på et fødselsnummer. Derfor får du ikke sendt meldingen.
         </Alert>
       )}
-      {newMessageAlert && (
-        <Alert
-          variant='info'
-          size='small'
-          closeButton={true}
-          onClose={() => setNewMessageAlert(false)}
-          className='fade-in mb-2'
-        >
-          <Heading
-            size='xsmall'
-            level='3'
-          >
-            Psst!
-          </Heading>
-          <VStack gap='2'>
-            Du har vært lenge i denne samtalen. Husk å starte en ny samtale når du får en ny henvendelse – da unngår du
-            at Bob blander temaer.
-            <Button
-              variant='secondary-neutral'
-              size='small'
-              className='w-fit'
-              onClick={startNew}
-            >
-              Start ny samtale
-            </Button>
-          </VStack>
-        </Alert>
-      )}
+      <NewMessageAlert
+        setInputValue={setInputValue}
+        conversationId={conversationId}
+      />
       <div className='inputfield relative flex max-w-[48rem] flex-col items-center justify-end'>
         <Textarea
           resize={isFocused ? "vertical" : false}
@@ -267,3 +225,62 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
 })
 
 export default InputField
+
+interface NewMessageAlertProps {
+  setInputValue: (newMessage: string) => void
+  conversationId: string | undefined
+}
+
+const NewMessageAlert = ({ setInputValue, conversationId }: NewMessageAlertProps) => {
+  const [newMessageAlert, setNewMessageAlert] = useState(false)
+
+  useEffect(() => {
+    if (!conversationId) return
+
+    const timer = setTimeout(
+      () => {
+        setNewMessageAlert(true)
+      },
+      5 * 60 * 1000,
+    )
+    return () => clearTimeout(timer)
+  }, [conversationId])
+
+  const navigate = useNavigate()
+
+  const startNew = () => {
+    setInputValue("")
+    navigate("/")
+  }
+
+  return (
+    newMessageAlert && (
+      <Alert
+        variant='info'
+        size='small'
+        closeButton={true}
+        onClose={() => setNewMessageAlert(false)}
+        className='fade-in mb-2'
+      >
+        <Heading
+          size='xsmall'
+          level='3'
+        >
+          Psst!
+        </Heading>
+        <VStack gap='2'>
+          Du har vært lenge i denne samtalen. Husk å starte en ny samtale når du får en ny henvendelse – da unngår du at
+          Bob blander temaer.
+          <Button
+            variant='secondary-neutral'
+            size='small'
+            className='w-fit'
+            onClick={startNew}
+          >
+            Start ny samtale
+          </Button>
+        </VStack>
+      </Alert>
+    )
+  )
+}
