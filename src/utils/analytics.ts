@@ -115,6 +115,10 @@ const spørsmålRedigert = () => logEvent("Rediger spørsmål trykket")
 
 const åpnetFotnote = () => logEvent("Fotnote åpnet")
 
+const nySamtalePgaVarsel = () => logEvent("Startet ny samtale pga varsel")
+
+const lukketNySamtaleVarsel = () => logEvent("Lukket ny samtale varsel")
+
 export default {
   svarKopiert,
   svarEndret,
@@ -130,4 +134,6 @@ export default {
   visAlleKilderÅpnet,
   spørsmålRedigert,
   åpnetFotnote,
+  nySamtalePgaVarsel,
+  lukketNySamtaleVarsel,
 }
