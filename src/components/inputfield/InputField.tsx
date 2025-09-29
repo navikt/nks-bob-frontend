@@ -253,11 +253,13 @@ const NewMessageAlert = ({ setInputValue, conversationId }: NewMessageAlertProps
   const navigate = useNavigate()
 
   const startNew = () => {
+    analytics.nySamtalePgaVarsel()
     setInputValue("")
     navigate("/")
   }
 
   const handleClose = () => {
+    analytics.lukketNySamtaleVarsel()
     setNewMessageAlert(false)
     if (reopenWarning.current) clearTimeout(reopenWarning.current)
     reopenWarning.current = setTimeout(
