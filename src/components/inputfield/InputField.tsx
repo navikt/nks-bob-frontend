@@ -1,7 +1,7 @@
 import { Alert, Button, Detail, Heading, Textarea, VStack } from "@navikt/ds-react"
 
 import { PaperplaneIcon } from "@navikt/aksel-icons"
-import { forwardRef, useEffect, useState } from "react"
+import { forwardRef, useEffect, useRef, useState } from "react"
 
 import * as React from "react"
 import { useHotkeys } from "react-hotkeys-hook"
@@ -233,6 +233,7 @@ interface NewMessageAlertProps {
 
 const NewMessageAlert = ({ setInputValue, conversationId }: NewMessageAlertProps) => {
   const [newMessageAlert, setNewMessageAlert] = useState(false)
+  const reopenWarning = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
     if (!conversationId) return
@@ -243,7 +244,10 @@ const NewMessageAlert = ({ setInputValue, conversationId }: NewMessageAlertProps
       },
       5 * 60 * 1000,
     )
-    return () => clearTimeout(timer)
+    return () => {
+      clearTimeout(timer)
+      if (reopenWarning.current) clearTimeout(reopenWarning.current)
+    }
   }, [conversationId])
 
   const navigate = useNavigate()
@@ -253,22 +257,34 @@ const NewMessageAlert = ({ setInputValue, conversationId }: NewMessageAlertProps
     navigate("/")
   }
 
+  const handleClose = () => {
+    setNewMessageAlert(false)
+    if (reopenWarning.current) clearTimeout(reopenWarning.current)
+    reopenWarning.current = setTimeout(
+      () => {
+        setNewMessageAlert(true)
+      },
+      5 * 60 * 1000,
+    )
+  }
+
   return (
     newMessageAlert && (
       <Alert
         variant='info'
         size='small'
         closeButton={true}
-        onClose={() => setNewMessageAlert(false)}
+        onClose={handleClose}
         className='fade-in mb-2'
       >
         <Heading
           size='xsmall'
           level='3'
+          className='mb-2'
         >
           Psst!
         </Heading>
-        <VStack gap='2'>
+        <VStack gap='3'>
           Du har vært lenge i denne samtalen. Husk å starte en ny samtale når du får en ny henvendelse – da unngår du at
           Bob blander temaer.
           <Button

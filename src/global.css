@@ -324,7 +324,6 @@ body.dark {
   /*  Feedback buttons  */
   --ac-button-tertiary-neutral-text: var(--darkmode-button-neutral-text-default);
   --ac-button-tertiary-neutral-hover-text: var(--button-neutral-hover-text);
-  --ac-button-tertiary-neutral-hover-bg: var(--button-neutral-hover-bg);
 
   /*  Copy button */
   --ac-copybutton-neutral-text: var(--darkmode-button-neutral-text-default);
@@ -409,6 +408,9 @@ body.dark {
 
   --a-text-default: var(--darkmode-text-default);
 
+    --ac-button-secondary-neutral-border: rgba(119, 127, 141, 1);
+    --ac-button-secondary-neutral-hover-bg: rgba(215, 222, 250, 0.11);
+    --ac-button-tertiary-neutral-hover-bg: rgba(215, 222, 250, 0.11);
 
 
 }
