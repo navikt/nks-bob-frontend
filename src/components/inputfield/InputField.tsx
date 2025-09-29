@@ -1,11 +1,11 @@
-import { Alert, Button, Detail, Textarea } from "@navikt/ds-react"
+import { Alert, Button, Detail, Heading, Textarea, VStack } from "@navikt/ds-react"
 
 import { PaperplaneIcon } from "@navikt/aksel-icons"
-import { forwardRef, useEffect, useState } from "react"
+import { forwardRef, useEffect, useRef, useState } from "react"
 
 import * as React from "react"
 import { useHotkeys } from "react-hotkeys-hook"
-import { useParams } from "react-router"
+import { useNavigate, useParams } from "react-router"
 import { create } from "zustand"
 import { createJSONStorage, persist } from "zustand/middleware"
 import { useAlerts } from "../../api/api.ts"
@@ -169,6 +169,10 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           Du har skrevet inn noe som ligner på et fødselsnummer. Derfor får du ikke sendt meldingen.
         </Alert>
       )}
+      <NewMessageAlert
+        setInputValue={setInputValue}
+        conversationId={conversationId}
+      />
       <div className='inputfield relative flex max-w-[48rem] flex-col items-center justify-end'>
         <Textarea
           resize={isFocused ? "vertical" : false}
@@ -221,3 +225,78 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
 })
 
 export default InputField
+
+interface NewMessageAlertProps {
+  setInputValue: (newMessage: string) => void
+  conversationId: string | undefined
+}
+
+const NewMessageAlert = ({ setInputValue, conversationId }: NewMessageAlertProps) => {
+  const [newMessageAlert, setNewMessageAlert] = useState(false)
+  const reopenWarning = useRef<NodeJS.Timeout | null>(null)
+
+  useEffect(() => {
+    if (!conversationId) return
+
+    const timer = setTimeout(
+      () => {
+        setNewMessageAlert(true)
+      },
+      5 * 60 * 1000,
+    )
+    return () => {
+      clearTimeout(timer)
+      if (reopenWarning.current) clearTimeout(reopenWarning.current)
+    }
+  }, [conversationId])
+
+  const navigate = useNavigate()
+
+  const startNew = () => {
+    setInputValue("")
+    navigate("/")
+  }
+
+  const handleClose = () => {
+    setNewMessageAlert(false)
+    if (reopenWarning.current) clearTimeout(reopenWarning.current)
+    reopenWarning.current = setTimeout(
+      () => {
+        setNewMessageAlert(true)
+      },
+      5 * 60 * 1000,
+    )
+  }
+
+  return (
+    newMessageAlert && (
+      <Alert
+        variant='info'
+        size='small'
+        closeButton={true}
+        onClose={handleClose}
+        className='fade-in mb-2'
+      >
+        <Heading
+          size='xsmall'
+          level='3'
+          className='mb-2'
+        >
+          Psst!
+        </Heading>
+        <VStack gap='3'>
+          Du har vært lenge i denne samtalen. Husk å starte en ny samtale når du får en ny henvendelse – da unngår du at
+          Bob blander temaer.
+          <Button
+            variant='secondary-neutral'
+            size='small'
+            className='w-fit'
+            onClick={startNew}
+          >
+            Start ny samtale
+          </Button>
+        </VStack>
+      </Alert>
+    )
+  )
+}
