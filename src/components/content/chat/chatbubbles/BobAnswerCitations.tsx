@@ -1,4 +1,4 @@
-import { ExternalLinkIcon } from "@navikt/aksel-icons"
+import { ChevronRightDoubleIcon } from "@navikt/aksel-icons"
 import { BodyLong, BodyShort, CopyButton, Detail, HStack, Label, Link, Tooltip } from "@navikt/ds-react"
 import Markdown from "react-markdown"
 import remarkGfm from "remark-gfm"
@@ -47,13 +47,25 @@ const SingleCitation = ({ citation, context }: { citation: Citation; context: Co
         className='mb-1'
       >
         {context ? (
-          <div className='flex flex-wrap gap-2'>
-            <CitationLink
-              citation={citation}
-              matchingContextCitationData={context}
-            />
+          <HStack
+            align='center'
+            gap='3'
+          >
+            <HStack
+              align='center'
+              gap='1'
+            >
+              <CitationLink
+                citation={citation}
+                matchingContextCitationData={context}
+              />
+              <CopyButton
+                copyText={context.title}
+                size='xsmall'
+              />
+            </HStack>
             <SourceIcon source={context.source} />
-          </div>
+          </HStack>
         ) : (
           <BodyShort size='medium'>Kunne ikke finne lenke til artikkelen.</BodyShort>
         )}
@@ -94,6 +106,7 @@ const MultiCitation = ({
   contexts: Context[]
 }) => {
   const articleLink = contexts.at(citations[0]!.sourceId)!.url
+
   return (
     <div className='mb-2 flex flex-col'>
       <Label
@@ -101,25 +114,27 @@ const MultiCitation = ({
         className='mb-1'
       >
         <HStack align='center'>
-          <Tooltip content='Kopier tittelen'>
-            <CopyButton
-              copyText={title}
-              size='xsmall'
-            />
-          </Tooltip>
           <HStack
             align='center'
-            gap='4'
+            gap='3'
           >
-            <Tooltip content='Åpner artikkelen i ny fane'>
-              <Link
-                href={articleLink}
-                target='_blank'
-              >
-                {title}
-                <ExternalLinkIcon fontSize={14} />
-              </Link>
-            </Tooltip>
+            <HStack
+              align='center'
+              gap='1'
+            >
+              <Tooltip content='Åpne artikkelen i ny fane'>
+                <Link
+                  href={articleLink}
+                  target='_blank'
+                >
+                  {title}
+                </Link>
+              </Tooltip>
+              <CopyButton
+                copyText={title}
+                size='xsmall'
+              />
+            </HStack>
             <SourceIcon source={source} />
           </HStack>
         </HStack>
@@ -191,13 +206,7 @@ const CitationLink = ({
 
   return (
     <HStack align='center'>
-      <Tooltip content='Kopier tittelen'>
-        <CopyButton
-          copyText={title ?? matchingContextCitationData.title}
-          size='xsmall'
-        />
-      </Tooltip>
-      <Tooltip content='Åpner artikkelen i ny fane'>
+      <Tooltip content='Åpne artikkelen i ny fane'>
         <Link
           href={
             useAnchor
@@ -211,7 +220,11 @@ const CitationLink = ({
           className={`${className} navds-body-short--small`}
         >
           {title ?? matchingContextCitationData.title}
-          <ExternalLinkIcon fontSize={14} />
+          {title === "" ? (
+            <>
+              Les mer <ChevronRightDoubleIcon />
+            </>
+          ) : null}
         </Link>
       </Tooltip>
     </HStack>

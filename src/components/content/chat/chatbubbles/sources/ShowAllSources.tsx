@@ -1,5 +1,5 @@
-import { ChevronDownIcon, ChevronUpIcon, ExternalLinkIcon, XMarkIcon } from "@navikt/aksel-icons"
-import { BodyLong, BodyShort, Button, Heading, HStack, Label, Link, VStack } from "@navikt/ds-react"
+import { ChevronDownIcon, ChevronUpIcon, XMarkIcon } from "@navikt/aksel-icons"
+import { BodyLong, BodyShort, Button, CopyButton, Heading, HStack, Label, Link, VStack } from "@navikt/ds-react"
 import { useState } from "react"
 import Markdown from "react-markdown"
 import remarkGfm from "remark-gfm"
@@ -91,15 +91,21 @@ export const ShowAllSources = () => {
 const NksSource = ({ context }: { context: Context }) => {
   return (
     <VStack className='sourcepanel gap-3'>
-      <Label size='small'>
+      <HStack
+        align='center'
+        gap='1'
+      >
         <Link
           href={`${context.url}#${context.anchor}`}
           target='_blank'
         >
-          {context.title}
-          <ExternalLinkIcon title='Åpne artikkelen i ny fane' />
+          <Label size='small'>{context.title}</Label>
         </Link>
-      </Label>
+        <CopyButton
+          copyText={context.title}
+          size='xsmall'
+        />
+      </HStack>
       <UtdragDropDown context={context} />
     </VStack>
   )
@@ -108,15 +114,23 @@ const NksSource = ({ context }: { context: Context }) => {
 const NavSource = ({ context }: { context: Context }) => {
   return (
     <VStack className='sourcepanel gap-3'>
-      <Label size='small'>
+      <HStack
+        align='center'
+        gap='1'
+      >
         <Link
           href={`${context.url}#${context.anchor}`}
           target='_blank'
         >
-          {context.title} / {context.anchor}
-          <ExternalLinkIcon title='Åpne artikkelen i ny fane' />
+          <Label size='small'>
+            {context.title} / {context.anchor}
+          </Label>
         </Link>
-      </Label>
+        <CopyButton
+          copyText={context.title}
+          size='xsmall'
+        />
+      </HStack>
       <UtdragDropDown context={context} />
     </VStack>
   )
