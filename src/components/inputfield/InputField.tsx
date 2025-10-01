@@ -242,7 +242,7 @@ const NewMessageAlert = ({ setInputValue, conversationId }: NewMessageAlertProps
       () => {
         setNewMessageAlert(true)
       },
-      5 * 60 * 1000,
+      15 * 60 * 1000,
     )
     return () => {
       clearTimeout(timer)
@@ -266,7 +266,7 @@ const NewMessageAlert = ({ setInputValue, conversationId }: NewMessageAlertProps
       () => {
         setNewMessageAlert(true)
       },
-      5 * 60 * 1000,
+      15 * 60 * 1000,
     )
   }
 
