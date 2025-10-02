@@ -60,7 +60,7 @@ const SingleCitation = ({ citation, context }: { citation: Citation; context: Co
                 matchingContextCitationData={context}
               />
               <CopyButton
-                copyText={context.title}
+                copyText={context.source === "nks" ? context.title : context.url}
                 size='xsmall'
               />
             </HStack>
@@ -131,7 +131,7 @@ const MultiCitation = ({
                 </Link>
               </Tooltip>
               <CopyButton
-                copyText={title}
+                copyText={source === "nks" ? title : articleLink}
                 size='xsmall'
               />
             </HStack>
@@ -209,11 +209,13 @@ const CitationLink = ({
       <Tooltip content='Åpne artikkelen i ny fane'>
         <Link
           href={
-            useAnchor
-              ? `${matchingContextCitationData.url}${expandAll}#${matchingContextCitationData.anchor}`
-              : numWords < 1
-                ? `${matchingContextCitationData.url}`
-                : `${matchingContextCitationData.url}${expandAll}#:~:text=${encodeFragment(textStart)},${encodeFragment(textEnd)}`
+            title === "" && matchingContextCitationData.source === "navno"
+              ? `${matchingContextCitationData.url}#${matchingContextCitationData.anchor}`
+              : useAnchor
+                ? `${matchingContextCitationData.url}${expandAll}#${matchingContextCitationData.anchor}`
+                : numWords < 1
+                  ? `${matchingContextCitationData.url}`
+                  : `${matchingContextCitationData.url}${expandAll}#:~:text=${encodeFragment(textStart)},${encodeFragment(textEnd)}`
           }
           target='_blank'
           inlineText

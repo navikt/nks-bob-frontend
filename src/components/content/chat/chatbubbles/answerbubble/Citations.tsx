@@ -45,7 +45,7 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
             </Label>
           </Link>
           <CopyButton
-            copyText={title}
+            copyText={source.source === "nks" ? source.title : `${source.url}#${source.anchor}`}
             size='xsmall'
           />
         </HStack>
