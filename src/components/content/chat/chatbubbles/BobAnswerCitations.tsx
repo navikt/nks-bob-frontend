@@ -1,5 +1,5 @@
-import { ExternalLinkIcon } from "@navikt/aksel-icons"
-import { BodyLong, BodyShort, Detail, Label, Link, Tooltip } from "@navikt/ds-react"
+import { ChevronRightDoubleIcon } from "@navikt/aksel-icons"
+import { BodyLong, BodyShort, CopyButton, Detail, HStack, Label, Link, Tooltip } from "@navikt/ds-react"
 import Markdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import { KunnskapsbasenIcon } from "../../../../assets/icons/KunnskapsbasenIcon.tsx"
@@ -47,13 +47,25 @@ const SingleCitation = ({ citation, context }: { citation: Citation; context: Co
         className='mb-1'
       >
         {context ? (
-          <div className='flex flex-wrap gap-2'>
-            <CitationLink
-              citation={citation}
-              matchingContextCitationData={context}
-            />
+          <HStack
+            align='center'
+            gap='3'
+          >
+            <HStack
+              align='center'
+              gap='1'
+            >
+              <CitationLink
+                citation={citation}
+                matchingContextCitationData={context}
+              />
+              <CopyButton
+                copyText={context.source === "nks" ? context.title : context.url}
+                size='xsmall'
+              />
+            </HStack>
             <SourceIcon source={context.source} />
-          </div>
+          </HStack>
         ) : (
           <BodyShort size='medium'>Kunne ikke finne lenke til artikkelen.</BodyShort>
         )}
@@ -94,24 +106,38 @@ const MultiCitation = ({
   contexts: Context[]
 }) => {
   const articleLink = contexts.at(citations[0]!.sourceId)!.url
+
   return (
     <div className='mb-2 flex flex-col'>
       <Label
         size='small'
         className='mb-1'
       >
-        <div className='flex flex-wrap gap-2'>
-          <Tooltip content='Åpner artikkelen i ny fane'>
-            <Link
-              href={articleLink}
-              target='_blank'
+        <HStack align='center'>
+          <HStack
+            align='center'
+            gap='3'
+          >
+            <HStack
+              align='center'
+              gap='1'
             >
-              {title}
-              <ExternalLinkIcon />
-            </Link>
-          </Tooltip>
-          <SourceIcon source={source} />
-        </div>
+              <Tooltip content='Åpne artikkelen i ny fane'>
+                <Link
+                  href={articleLink}
+                  target='_blank'
+                >
+                  {title}
+                </Link>
+              </Tooltip>
+              <CopyButton
+                copyText={source === "nks" ? title : articleLink}
+                size='xsmall'
+              />
+            </HStack>
+            <SourceIcon source={source} />
+          </HStack>
+        </HStack>
       </Label>
       <div className='flex flex-col gap-2'>
         {citations.map((citation) => (
@@ -179,23 +205,31 @@ const CitationLink = ({
   const useAnchor = matchingContextCitationData?.url.includes("/saksbehandlingstider")
 
   return (
-    <Tooltip content='Åpner artikkelen i ny fane'>
-      <Link
-        href={
-          useAnchor
-            ? `${matchingContextCitationData.url}${expandAll}#${matchingContextCitationData.anchor}`
-            : numWords < 1
-              ? `${matchingContextCitationData.url}`
-              : `${matchingContextCitationData.url}${expandAll}#:~:text=${encodeFragment(textStart)},${encodeFragment(textEnd)}`
-        }
-        target='_blank'
-        inlineText
-        className={`${className} navds-body-short--small`}
-      >
-        {title ?? matchingContextCitationData.title}
-        <ExternalLinkIcon fontSize={18} />
-      </Link>
-    </Tooltip>
+    <HStack align='center'>
+      <Tooltip content='Åpne artikkelen i ny fane'>
+        <Link
+          href={
+            title === "" && matchingContextCitationData.source === "navno"
+              ? `${matchingContextCitationData.url}#${matchingContextCitationData.anchor}`
+              : useAnchor
+                ? `${matchingContextCitationData.url}${expandAll}#${matchingContextCitationData.anchor}`
+                : numWords < 1
+                  ? `${matchingContextCitationData.url}`
+                  : `${matchingContextCitationData.url}${expandAll}#:~:text=${encodeFragment(textStart)},${encodeFragment(textEnd)}`
+          }
+          target='_blank'
+          inlineText
+          className={`${className} navds-body-short--small`}
+        >
+          {title ?? matchingContextCitationData.title}
+          {title === "" ? (
+            <>
+              Les mer <ChevronRightDoubleIcon />
+            </>
+          ) : null}
+        </Link>
+      </Tooltip>
+    </HStack>
   )
 }
 

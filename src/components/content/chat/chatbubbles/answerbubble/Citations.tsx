@@ -1,5 +1,5 @@
 import { ExternalLinkIcon } from "@navikt/aksel-icons"
-import { BodyLong, BodyShort, HStack, Label, Link, Tag, VStack } from "@navikt/ds-react"
+import { BodyLong, BodyShort, CopyButton, HStack, Label, Link, Tag, VStack } from "@navikt/ds-react"
 import Markdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import { Context } from "../../../../../types/Message.ts"
@@ -28,22 +28,27 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
         <div className='mb-2 border-b border-border-subtle pb-3'>
           <SourceIcon source={source.source} />
         </div>
-        <Link
-          href={`${source.url}#${source.anchor}`}
-          target='_blank'
-          title='Åpne artikkelen i ny fane'
+        <HStack
+          align='center'
+          gap='1'
         >
-          <Label
-            size='medium'
-            className='inline cursor-pointer'
+          <Link
+            href={`${source.url}#${source.anchor}`}
+            target='_blank'
+            title='Åpne artikkelen i ny fane'
           >
-            {title}
-          </Label>
-          <ExternalLinkIcon
-            fontSize={18}
-            className='ml-1'
+            <Label
+              size='small'
+              className='inline cursor-pointer'
+            >
+              {title}
+            </Label>
+          </Link>
+          <CopyButton
+            copyText={source.source === "nks" ? source.title : `${source.url}#${source.anchor}`}
+            size='xsmall'
           />
-        </Link>
+        </HStack>
         {source.source === "navno" && (
           <BodyLong
             size='small'

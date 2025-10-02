@@ -20,6 +20,24 @@ Deretter starte development server:
 
 Dette vil starte en lokal utviklingsserver som du får tilgang til via nettleser på http://localhost:3000.
 
+# Lokal utvikling mot dev-gcp
+
+```
+# Før aller første gang:
+> chmod +x hent-og-lagre-miljøvariabler.sh
+
+# Sjekk at du er koblet til naisdevice, deretter kjør:
+> nais login
+> ./hent-og-lagre-miljøvariabler.sh
+> kubectl port-forward --cluster dev-gcp --namespace nks-aiautomatisering deployment/nks-bob-api 8989:8080
+
+> docker-compose up
+
+> npm run localnais
+
+# gå til http://localhost:5173/
+```
+
 ---
 
 # Henvendelser

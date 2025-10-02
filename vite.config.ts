@@ -98,8 +98,17 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
-      "/bob-api": "http://localhost:3030",
-      "/bob-api-ws": "ws://localhost:3030",
+      "/bob-api": {
+        target: "http://localhost:4000/",
+        changeOrigin: true,
+      },
+      "/bob-api-ws": {
+        target: "ws://localhost:3030",
+      },
+      "/login": {
+        target: "http://localhost:4000/",
+        changeOrigin: true,
+      },
     },
   },
   build: {
