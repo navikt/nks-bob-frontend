@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useUpdateUserConfig, useUserConfig } from "../../../api/api.ts"
-import { Step1, Step2, Step3, Step4, WelcomeMessage } from "./GuideModals.tsx"
+import { Step1, Step2, Step3, Step4, Step5, WelcomeMessage } from "./GuideModals.tsx"
 import "./GuideStyling.css"
 
 const Guide = ({ startGuide, setStartGuide }: { startGuide: boolean; setStartGuide: (value: boolean) => void }) => {
@@ -83,6 +83,15 @@ const Guide = ({ startGuide, setStartGuide }: { startGuide: boolean; setStartGui
       )}
       {isWelcomeShown && step === 4 && (
         <Step4
+          onPrevious={handlePrevious}
+          step={step}
+          handleSelectChange={handleSelectChange}
+          onClose={handleClose}
+          onNext={handleNext}
+        />
+      )}
+      {isWelcomeShown && step === 5 && (
+        <Step5
           onPrevious={handlePrevious}
           step={step}
           handleSelectChange={handleSelectChange}

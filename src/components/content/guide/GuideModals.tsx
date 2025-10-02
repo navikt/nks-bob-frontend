@@ -170,7 +170,7 @@ export const Step1 = ({
         align='stretch'
         gap='2'
         justify='space-between'
-        className='items-center'
+        className='mt-4 items-end'
       >
         <StepSelect
           step={1}
@@ -180,6 +180,7 @@ export const Step1 = ({
         <Button
           onClick={onNext}
           variant='primary-neutral'
+          size='medium'
         >
           Neste
         </Button>
@@ -234,7 +235,7 @@ export const Step2 = ({
           <li>Forklar situasjonen eller gi mer kontekst.</li>
           <li>Still oppfølgingsspørsmål hvis noe mangler.</li>
         </ul>
-        Og husk:
+        Spesielt viktig:
         <ul className='my-2 gap-1'>
           <li>
             Ikke del <strong>personlige opplysninger</strong> når du sender meg spørsmål.
@@ -242,12 +243,17 @@ export const Step2 = ({
           <li>
             <strong>Kontroller kilden</strong> om du er usikker på om svaret er korrekt.
           </li>
+          <li>
+            Husk å <strong>starte en ny samtale</strong> når du får en ny henvendelse – da unngår du at Bob blander
+            temaer.
+          </li>
         </ul>
       </BodyLong>
       <HStack
         align='stretch'
         gap='2'
         justify='space-between'
+        className='mt-4 items-end'
       >
         <StepSelect
           step={step}
@@ -257,12 +263,14 @@ export const Step2 = ({
           <Button
             onClick={onPrevious}
             variant='tertiary-neutral'
+            size='medium'
           >
             Forrige
           </Button>
           <Button
             onClick={onNext}
             variant='primary-neutral'
+            size='medium'
           >
             Neste
           </Button>
@@ -337,6 +345,7 @@ export const Step3 = ({
         align='stretch'
         gap='2'
         justify='space-between'
+        className='mt-4 items-end'
       >
         <StepSelect
           step={step}
@@ -366,9 +375,11 @@ export const Step4 = ({
   handleSelectChange,
   onClose,
   onPrevious,
+  onNext,
 }: {
   step: number
   onClose: () => void
+  onNext: () => void
   onPrevious: () => void
   handleSelectChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
 }) => (
@@ -413,7 +424,7 @@ export const Step4 = ({
         align='stretch'
         gap='6'
         justify='space-between'
-        className='items-center'
+        className='mt-4 items-end'
       >
         <StepSelect
           step={step}
@@ -427,8 +438,103 @@ export const Step4 = ({
             Forrige
           </Button>
           <Button
+            onClick={onNext}
+            variant='primary-neutral'
+          >
+            Neste
+          </Button>
+        </HStack>
+      </HStack>
+    </VStack>
+  </div>
+)
+
+export const Step5 = ({
+  step,
+  handleSelectChange,
+  onClose,
+  onPrevious,
+}: {
+  step: number
+  onClose: () => void
+  onPrevious: () => void
+  handleSelectChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
+}) => (
+  <div className='fixed left-1/2 top-1/2 z-[1000] w-[calc(100%-32px)] max-w-[700px] -translate-x-1/2 -translate-y-1/2 transform flex-col'>
+    <div className='flex translate-y-[16px] justify-start'>
+      <BobTheGuide2 />
+    </div>{" "}
+    <VStack
+      className='modal-container sticky z-[1000]'
+      gap='0'
+    >
+      <HStack
+        align='center'
+        justify='space-between'
+        className='mb-6'
+      >
+        <Heading
+          size='small'
+          level='2'
+        >
+          Hurtigtaster
+        </Heading>
+        <Button
+          size='small'
+          variant='tertiary-neutral'
+          icon={<XMarkIcon />}
+          onClick={onClose}
+        />
+      </HStack>
+      <BodyLong>Følgende hurtigtaster kan du benytte deg av:</BodyLong>
+      <ul className='mb-6'>
+        <li>
+          Ny samtale: <strong>Ctrl+Alt+N</strong>
+        </li>
+        <li>
+          Vis varsler: <strong>Ctrl+Alt+V</strong>
+        </li>
+        <li>
+          Darkmode av/på: <strong>Ctrl+Alt+D</strong>
+        </li>
+        <li>
+          Kopier siste svar: <strong>Ctrl+Alt+C</strong>
+        </li>
+        <li>
+          Oversett siste svar til engelsk: <strong>Ctrl+Alt+O</strong>
+        </li>
+        <li>
+          Lag siste svar som punktliste: <strong>Ctrl+Alt+P</strong>
+        </li>
+        <li>
+          Lag siste svar mer empatisk: <strong>Ctrl+Alt+E</strong>
+        </li>
+        <li>
+          Scroll til bunnen: <strong>Ctrl+Alt+B</strong>
+        </li>
+      </ul>
+      <HStack
+        align='stretch'
+        gap='6'
+        justify='space-between'
+        className='mt-2 items-end'
+      >
+        <StepSelect
+          step={step}
+          onChange={handleSelectChange}
+        />
+        <HStack gap='4'>
+          <Button
+            onClick={onPrevious}
+            variant='tertiary-neutral'
+            size='medium'
+          >
+            Forrige
+          </Button>
+          <Button
             onClick={onClose}
             variant='primary-neutral'
+            size='medium'
           >
             Takk, Bob!
           </Button>
