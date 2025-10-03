@@ -6,6 +6,9 @@ import { resolve } from "path"
 
 config()
 
+const isLocalNais = process.env.MILJO === "localnais"
+const proxyPort = isLocalNais ? 4000 : 3030
+
 // Custom plugin to enhance HTML with preconnect and preload
 const optimizeHtml = (): Plugin => {
   return {
@@ -99,14 +102,14 @@ export default defineConfig({
     port: 5173,
     proxy: {
       "/bob-api": {
-        target: "http://localhost:4000/",
+        target: `http://localhost:${proxyPort}/`,
         changeOrigin: true,
       },
       "/bob-api-ws": {
-        target: "ws://localhost:3030",
+        target: `ws://localhost:${proxyPort}/`,
       },
       "/login": {
-        target: "http://localhost:4000/",
+        target: `http://localhost:${proxyPort}/`,
         changeOrigin: true,
       },
     },
