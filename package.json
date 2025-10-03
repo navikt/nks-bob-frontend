@@ -7,7 +7,7 @@
     "dev:frontend": "vite",
     "dev:server": "npm run dev --prefix server",
     "dev": "npm run dev:frontend & npm run dev:server",
-    "localnais": "vite --host & MILJO=localnais npm run dev:server",
+    "localnais": "MILJO=localnais vite --host & MILJO=localnais npm run dev:server",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",

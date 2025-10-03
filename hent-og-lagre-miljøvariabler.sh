@@ -37,7 +37,7 @@ cat << EOF > .login.env
 EOF
 
 # Write the variables into the .env file
-cat << EOF > .env
+cat << EOF > server/.env
 # Denne filen er generert automatisk ved å kjøre \`hent-og-lagre-miljøvariabler.sh\`
 
 COOKIE_KEY1='$COOKIE_KEY1'
