@@ -149,6 +149,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
       className='dialogcontent sticky bottom-0 h-auto flex-col self-center px-4'
       ref={containerRef}
     >
+      <RegretNewButton />
       {isSensitiveInfoAlert && (
         <Alert
           variant='info'
@@ -215,7 +216,6 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           tabIndex={-1}
         />
       </div>
-      <RegretNewButton />
       <Detail
         align='center'
         className='detailcolor pb-2'
