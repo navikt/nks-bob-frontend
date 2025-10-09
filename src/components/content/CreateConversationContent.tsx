@@ -5,9 +5,9 @@ import { NewConversation, NewMessage } from "../../types/Message.ts"
 import { messageStore } from "../../types/messageStore.ts"
 import Header from "../header/Header.tsx"
 import InputField, { useInputFieldStore } from "../inputfield/InputField.tsx"
+import { useSourcesStore } from "./chat/chatbubbles/sources/ShowAllSources.tsx"
 import { BobPlaceholder } from "./placeholders/Placeholders.tsx"
 import CreateConversationWrapper from "./wrappers/CreateConversationWrapper.tsx"
-import { useSourcesStore } from "./chat/chatbubbles/sources/ShowAllSources.tsx"
 
 const CreateConversationContent = () => {
   const navigate = useNavigate()
@@ -34,10 +34,7 @@ const CreateConversationContent = () => {
 
     createConversation(newConversation)
       .then((conversation) => {
-        navigate(
-          `/samtaler/${conversation.id}?initialMessage=${initialMessage}`,
-          {},
-        )
+        navigate(`/samtaler/${conversation.id}?initialMessage=${initialMessage}`, {})
       })
 
       .catch((error) => {
@@ -49,7 +46,10 @@ const CreateConversationContent = () => {
     <CreateConversationWrapper>
       <Header conversation={undefined} />
       <BobPlaceholder />
-      <InputField onSend={handleUserMessage} disabled={false} />
+      <InputField
+        onSend={handleUserMessage}
+        disabled={false}
+      />
     </CreateConversationWrapper>
   )
 }

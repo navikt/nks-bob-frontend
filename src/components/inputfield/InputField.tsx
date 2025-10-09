@@ -12,6 +12,7 @@ import { useAlerts } from "../../api/api.ts"
 import { NewMessage } from "../../types/Message.ts"
 import analytics from "../../utils/analytics.ts"
 import "./InputField.css"
+import RegretNewButton from "./regretbutton/RegretNewConversationButton.tsx"
 
 type InputFieldState = {
   inputValue: string
@@ -214,6 +215,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           tabIndex={-1}
         />
       </div>
+      <RegretNewButton />
       <Detail
         align='center'
         className='detailcolor pb-2'

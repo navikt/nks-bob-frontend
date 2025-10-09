@@ -1,6 +1,6 @@
 import { InformationSquareIcon } from "@navikt/aksel-icons"
 import { Button, Tooltip } from "@navikt/ds-react"
-import { useRef, useState } from "react"
+import { useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import { Link } from "react-router"
 import { useUserConfig } from "../../api/api.ts"
@@ -23,7 +23,6 @@ function Header({ conversation }: HeaderProps) {
   const [startGuide, setStartGuide] = useState(false)
   const { userConfig } = useUserConfig()
   const coachMarkKey = "coachMarkShownHeader"
-  const newConversationRef = useRef<HTMLDialogElement>(null)
 
   const showGuide = () => {
     analytics.infoÅpnet()
@@ -56,10 +55,7 @@ function Header({ conversation }: HeaderProps) {
               >
                 <MainButtonsExplanation />
               </CoachMark>
-              <NewButton
-                conversationId={conversation}
-                newConversationRef={newConversationRef}
-              />
+              <NewButton conversationId={conversation} />
             </>
           )}
           <NotificationToggle />
