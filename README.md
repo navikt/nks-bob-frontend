@@ -22,15 +22,18 @@ Dette vil starte en lokal utviklingsserver som du får tilgang til via nettleser
 
 # Lokal utvikling mot dev-gcp
 
-```
+```sh
+# Installer just om du ikke allerede har det
+> brew install just
+
 # Før aller første gang:
 > chmod +x hent-og-lagre-miljøvariabler.sh
 
 # Sett opp miljø (logger inn til nais og henter miljøvariabler):
-> make setup
+> just setup
 
 # Kjør tjenester for lokal utvikling
-> make localnais
+> just localnais
 
 # gå til http://localhost:5173/
 ```
