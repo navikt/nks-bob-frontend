@@ -1,13 +1,14 @@
 import { ChevronLeftDoubleIcon } from "@navikt/aksel-icons"
 import { Button } from "@navikt/ds-react"
-import { useLocation } from "react-router"
+import { useLocation, useNavigate } from "react-router"
 
 const RegretNewButton = () => {
   const location = useLocation()
   const fromConversationId = location.state?.from
+  const navigate = useNavigate()
 
   const handleClick = () => {
-    window.history.back()
+    navigate(`/samtaler/${fromConversationId}`, { replace: false })
   }
 
   return (
