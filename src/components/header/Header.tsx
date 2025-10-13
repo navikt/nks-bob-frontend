@@ -14,6 +14,7 @@ import DarkModeToggle from "../menu/darkmode/DarkModeToggle.tsx"
 import { NotificationToggle } from "../notification/NotificationDrawer.tsx"
 import "./Header.css"
 import { NAVLogo } from "./nav-logo.tsx"
+import RegretNewButton from "./regretbutton/RegretNewConversationButton.tsx"
 
 interface HeaderProps {
   conversation: string | undefined
@@ -34,47 +35,50 @@ function Header({ conversation }: HeaderProps) {
   })
 
   return (
-    <div className='header'>
-      <div className='flex max-w-24'>
-        <Link
-          to='https://www.nav.no/'
-          target='_blank'
-          tabIndex={-1}
-        >
-          <NAVLogo />
-        </Link>
-      </div>
-      <div className='max-h-30 flex h-full gap-3'>
-        <div className='flex items-center justify-center align-middle'>
-          {conversation && (
-            <>
-              <CoachMark
-                title='Her finner du overordnede valg'
-                buttonText='Den er grei!'
-                coachMarkKey={coachMarkKey}
-              >
-                <MainButtonsExplanation />
-              </CoachMark>
-              <NewButton conversationId={conversation} />
-            </>
-          )}
-          <NotificationToggle />
-          <Tooltip content='Informasjon og tips ( Alt+Ctrl+I )'>
-            <Button
-              variant='tertiary'
-              aria-label='Informasjon og tips'
-              size='medium'
-              onClick={showGuide}
-              icon={<InformationSquareIcon aria-hidden />}
-            />
-          </Tooltip>
-          <Guide
-            startGuide={startGuide}
-            setStartGuide={setStartGuide}
-          />
-          {userConfig?.showNewConceptInfo && <NewConceptMessage />}
+    <div className='w-full flex-col'>
+      <div className='header'>
+        <div className='flex max-w-24'>
+          <Link
+            to='https://www.nav.no/'
+            target='_blank'
+            tabIndex={-1}
+          >
+            <NAVLogo />
+          </Link>
         </div>
-        <DarkModeToggle />
+        <div className='max-h-30 flex h-full gap-3'>
+          <div className='flex items-center justify-center align-middle'>
+            {conversation && (
+              <>
+                <CoachMark
+                  title='Her finner du overordnede valg'
+                  buttonText='Den er grei!'
+                  coachMarkKey={coachMarkKey}
+                >
+                  <MainButtonsExplanation />
+                </CoachMark>
+                <NewButton conversationId={conversation} />
+              </>
+            )}
+            <RegretNewButton />
+            <NotificationToggle />
+            <Tooltip content='Informasjon og tips ( Alt+Ctrl+I )'>
+              <Button
+                variant='tertiary'
+                aria-label='Informasjon og tips'
+                size='medium'
+                onClick={showGuide}
+                icon={<InformationSquareIcon aria-hidden />}
+              />
+            </Tooltip>
+            <Guide
+              startGuide={startGuide}
+              setStartGuide={setStartGuide}
+            />
+            {userConfig?.showNewConceptInfo && <NewConceptMessage />}
+          </div>
+          <DarkModeToggle />
+        </div>
       </div>
     </div>
   )

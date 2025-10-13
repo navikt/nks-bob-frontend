@@ -12,7 +12,6 @@ import { useAlerts } from "../../api/api.ts"
 import { NewMessage } from "../../types/Message.ts"
 import analytics from "../../utils/analytics.ts"
 import "./InputField.css"
-import RegretNewButton from "./regretbutton/RegretNewConversationButton.tsx"
 
 type InputFieldState = {
   inputValue: string
@@ -149,7 +148,6 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
       className='dialogcontent sticky bottom-0 h-auto flex-col self-center px-4'
       ref={containerRef}
     >
-      <RegretNewButton />
       {isSensitiveInfoAlert && (
         <Alert
           variant='info'
