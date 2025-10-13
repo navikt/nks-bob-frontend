@@ -11,7 +11,7 @@ const RegretNewButton = () => {
 
   useEffect(() => {
     if (fromConversationId) {
-      const timer = setTimeout(() => setShowText(false), 1500)
+      const timer = setTimeout(() => setShowText(false), 2000)
       return () => clearTimeout(timer)
     }
   }, [fromConversationId])
