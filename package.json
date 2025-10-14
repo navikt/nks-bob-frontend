@@ -7,7 +7,7 @@
     "dev:frontend": "vite",
     "dev:server": "npm run dev --prefix server",
     "dev": "npm run dev:frontend & npm run dev:server",
-    "localnais": "vite --host & MILJO=localnais npm run dev:server",
+    "localnais": "MILJO=localnais vite --host & MILJO=localnais npm run dev:server",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@amplitude/analytics-browser": "^2.17.8",
-    "@navikt/aksel-icons": "^7.22.0",
+    "@navikt/aksel-icons": "^7.32.1",
     "@navikt/ds-css": "^7.22.0",
     "@navikt/ds-react": "^7.22.0",
     "@navikt/ds-tailwind": "^7.22.0",
