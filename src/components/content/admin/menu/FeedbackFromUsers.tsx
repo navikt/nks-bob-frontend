@@ -22,14 +22,14 @@ import { Feedback } from "../../../../types/Message"
 export const FeedbackFromUsers = () => {
   const menuRef = useRef<HTMLDivElement>(null)
   const [sort, setSort] = useState<SortValue>("CREATED_AT_DESC")
-  const [activeFilter, setActiveFilter] = useState<FilterValue>("nye")
+  const [activeFilters, setActiveFilters] = useState<FilterValue[]>(["nye"])
   const [currentPage, setCurrentPage] = useState(1)
   const pageSize = 4
 
   // Reset to page 1 when filter changes
   useEffect(() => {
     setCurrentPage(1)
-  }, [activeFilter])
+  }, [activeFilters])
 
   return (
     <VStack ref={menuRef}>
@@ -38,12 +38,12 @@ export const FeedbackFromUsers = () => {
         menuRef={menuRef}
         sort={sort}
         setSort={setSort}
-        activeFilter={activeFilter}
-        setActiveFilter={setActiveFilter}
+        activeFilters={activeFilters}
+        setActiveFilters={setActiveFilters}
       />
       <FeedbackList
         sort={sort}
-        activeFilter={activeFilter}
+        activeFilters={activeFilters}
         currentPage={currentPage}
         pageSize={pageSize}
         onPageChange={setCurrentPage}
@@ -86,7 +86,7 @@ const FILTERS = {
   "blander-ytelser": "Blander ytelser",
   "finner-ikke-sitatet-i-artikkelen": "Finner ikke sitatet i artikkelen",
   "mangler-kilder": "Mangler kilder",
-  "annet": "Annet",
+  annet: "Annet",
 }
 
 type FilterValue = keyof typeof FILTERS
@@ -95,16 +95,23 @@ const FeedbackHeader = ({
   menuRef,
   sort,
   setSort,
-  activeFilter,
-  setActiveFilter,
+  activeFilters,
+  setActiveFilters,
 }: {
   menuRef: RefObject<HTMLDivElement | null>
   sort: SortValue
   setSort: Dispatch<SetStateAction<SortValue>>
-  activeFilter: FilterValue
-  setActiveFilter: Dispatch<SetStateAction<FilterValue>>
+  activeFilters: FilterValue[]
+  setActiveFilters: Dispatch<SetStateAction<FilterValue[]>>
 }) => {
-  const { total } = useFeedbacks(activeFilter)
+  const { total } = useFeedbacks(activeFilters)
+
+  const handleCheckboxChange = (value: FilterValue) => {
+    setActiveFilters(
+      activeFilters.includes(value) ? activeFilters.filter((filter) => filter !== value) : [...activeFilters, value],
+    )
+  }
+
   return (
     <Box
       className='bg-[#F5F6F7]'
@@ -135,24 +142,22 @@ const FeedbackHeader = ({
             />
           </ActionMenu.Trigger>
           <ActionMenu.Content>
-            <ActionMenu.RadioGroup
+            <ActionMenu.Group
               label='Filtrer'
-              defaultValue='nye'
-              value={activeFilter as string}
-              onValueChange={(value) => setActiveFilter(value as FilterValue)}
               onClick={(e) => {
                 e.stopPropagation()
               }}
             >
               {Object.entries(FILTERS).map(([value, label]) => (
-                <ActionMenu.RadioItem
+                <ActionMenu.CheckboxItem
                   key={`feedback-filter-item-${value}`}
-                  value={value}
+                  checked={activeFilters.includes(value as FilterValue)}
+                  onCheckedChange={() => handleCheckboxChange(value as FilterValue)}
                 >
                   {label}
-                </ActionMenu.RadioItem>
+                </ActionMenu.CheckboxItem>
               ))}
-            </ActionMenu.RadioGroup>
+            </ActionMenu.Group>
             <ActionMenu.Divider />
             <ActionMenu.RadioGroup
               label='Sorter'
@@ -181,18 +186,18 @@ const FeedbackHeader = ({
 
 const FeedbackList = ({
   sort,
-  activeFilter,
+  activeFilters,
   currentPage,
   pageSize,
   onPageChange,
 }: {
   sort: SortValue
-  activeFilter: FilterValue
+  activeFilters: FilterValue[]
   currentPage: number
   pageSize: number
   onPageChange: (page: number) => void
 }) => {
-  const { feedbacks, total, isLoading } = useFeedbacks(activeFilter, currentPage - 1, pageSize, sort)
+  const { feedbacks, total, isLoading } = useFeedbacks(activeFilters, currentPage - 1, pageSize, sort)
   const [searchParams] = useSearchParams()
   const [selectedMessageId, setSelectedMessageId] = useState<string | null>(null)
 
@@ -204,8 +209,8 @@ const FeedbackList = ({
     const prevPage = Math.max(0, page - 2)
     const nextPage = Math.min(totalPages - 1, page)
 
-    preloadFeedbacks(activeFilter, prevPage, pageSize, sort)
-    preloadFeedbacks(activeFilter, nextPage, pageSize, sort)
+    preloadFeedbacks(activeFilters, prevPage, pageSize, sort)
+    preloadFeedbacks(activeFilters, nextPage, pageSize, sort)
   }
 
   useEffect(() => {

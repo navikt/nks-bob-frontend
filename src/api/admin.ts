@@ -20,22 +20,22 @@ export const useAdminMessages = (conversationId: string) => {
 type SortType = "CREATED_AT_ASC" | "CREATED_AT_DESC"
 
 export const useFeedbacks = (
-  filter: string | null,
+  filters: string[],
   page: number = 0,
   size: number = 4,
   sort: SortType = "CREATED_AT_DESC",
 ) => {
   const params = new URLSearchParams()
-  if (filter) params.append("filter", filter)
+  filters.forEach((value) => params.append("filter", value))
   params.append("page", page.toString())
   params.append("size", size.toString())
   params.append("sort", sort)
 
   const queryString = params.toString()
-  const { data, isLoading, error } = useSWR<
-    { data: Feedback[]; total: number },
-    ApiError
-  >(`/api/v1/admin/feedbacks?${queryString}`, fetcher)
+  const { data, isLoading, error } = useSWR<{ data: Feedback[]; total: number }, ApiError>(
+    `/api/v1/admin/feedbacks?${queryString}`,
+    fetcher,
+  )
 
   const feedbacks = data?.data ?? []
   const total = data?.total ?? 0
@@ -49,13 +49,13 @@ export const useFeedbacks = (
 }
 
 export const preloadFeedbacks = (
-  filter: string | null,
+  filters: string[],
   page: number = 0,
   size: number = 4,
   sort: SortType = "CREATED_AT_DESC",
 ) => {
   const params = new URLSearchParams()
-  if (filter) params.append("filter", filter)
+  filters.forEach((value) => params.append("filter", value))
   params.append("page", page.toString())
   params.append("size", size.toString())
   params.append("sort", sort)
@@ -65,17 +65,11 @@ export const preloadFeedbacks = (
 }
 
 export const useUpdateFeedback = (feedbackId: string) => {
-  const { trigger, isMutating } = useSWRMutation(
-    `/api/v1/admin/feedbacks/${feedbackId}`,
-    request("PUT"),
-  )
+  const { trigger, isMutating } = useSWRMutation(`/api/v1/admin/feedbacks/${feedbackId}`, request("PUT"))
 
   return {
     updateFeedback: trigger as (
-      feedback: Omit<
-        Feedback,
-        "id" | "messageId" | "conversationId" | "createdAt"
-      >,
+      feedback: Omit<Feedback, "id" | "messageId" | "conversationId" | "createdAt">,
     ) => Promise<Feedback>,
     isLoading: isMutating,
   }
@@ -86,10 +80,7 @@ type CreateAlert = Omit<Alert, "id" | "createdAt" | "notificationType"> & {
 }
 
 export const useCreateAlert = () => {
-  const { trigger, isMutating } = useSWRMutation(
-    `/api/v1/admin/notifications`,
-    request("POST"),
-  )
+  const { trigger, isMutating } = useSWRMutation(`/api/v1/admin/notifications`, request("POST"))
 
   const createAlert = (alert: CreateAlert): Promise<Notification> => {
     return trigger(alert, {
@@ -104,10 +95,7 @@ export const useCreateAlert = () => {
 }
 
 export const useUpdateAlert = (id: string) => {
-  const { trigger, isMutating } = useSWRMutation(
-    `/api/v1/admin/notifications/${id}`,
-    request("PUT"),
-  )
+  const { trigger, isMutating } = useSWRMutation(`/api/v1/admin/notifications/${id}`, request("PUT"))
 
   const updateAlert = (alert: CreateAlert): Promise<Notification> => {
     return trigger(alert, {
@@ -122,10 +110,7 @@ export const useUpdateAlert = (id: string) => {
 }
 
 export const useDeleteAlert = (id: string) => {
-  const { trigger, isMutating } = useSWRMutation(
-    `/api/v1/admin/notifications/${id}`,
-    request("DELETE"),
-  )
+  const { trigger, isMutating } = useSWRMutation(`/api/v1/admin/notifications/${id}`, request("DELETE"))
 
   return {
     deleteAlert: trigger,
@@ -136,10 +121,7 @@ export const useDeleteAlert = (id: string) => {
 type CreateNews = Omit<NewsNotification, "id" | "createdAt">
 
 export const useCreateNews = () => {
-  const { trigger, isMutating } = useSWRMutation(
-    `/api/v1/admin/notifications`,
-    request("POST"),
-  )
+  const { trigger, isMutating } = useSWRMutation(`/api/v1/admin/notifications`, request("POST"))
 
   const createNews = (news: CreateNews): Promise<Notification> => {
     return trigger(
