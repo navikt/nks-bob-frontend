@@ -8,6 +8,7 @@ import {
   Label,
   Loader,
   Pagination,
+  Popover,
   Select,
   Tag,
   Textarea,
@@ -22,14 +23,14 @@ import { Feedback } from "../../../../types/Message"
 export const FeedbackFromUsers = () => {
   const menuRef = useRef<HTMLDivElement>(null)
   const [sort, setSort] = useState<SortValue>("CREATED_AT_DESC")
-  const [activeFilter, setActiveFilter] = useState<FilterValue>("nye")
+  const [activeFilters, setActiveFilters] = useState<FilterValue[]>(["nye"])
   const [currentPage, setCurrentPage] = useState(1)
   const pageSize = 4
 
   // Reset to page 1 when filter changes
   useEffect(() => {
     setCurrentPage(1)
-  }, [activeFilter])
+  }, [activeFilters])
 
   return (
     <VStack ref={menuRef}>
@@ -38,12 +39,12 @@ export const FeedbackFromUsers = () => {
         menuRef={menuRef}
         sort={sort}
         setSort={setSort}
-        activeFilter={activeFilter}
-        setActiveFilter={setActiveFilter}
+        activeFilters={activeFilters}
+        setActiveFilters={setActiveFilters}
       />
       <FeedbackList
         sort={sort}
-        activeFilter={activeFilter}
+        activeFilters={activeFilters}
         currentPage={currentPage}
         pageSize={pageSize}
         onPageChange={setCurrentPage}
@@ -79,6 +80,14 @@ const FILTERS = {
   "særskilt-viktige": "Særskilt viktige",
   brukerfeil: "Brukerfeil",
   "ki-feil": "KI-feil",
+  "hele-deler-av-svaret-er-feil": "Hele-/deler av svaret er feil",
+  "mangler-vesentlige-detaljer": "Mangler vesentlige detaljer",
+  "benytter-ikke-forventede-artikler": "Benytter ikke forventede artikler",
+  "forholder-seg-ikke-til-kontekst": "Forholder seg ikke til kontekst",
+  "blander-ytelser": "Blander ytelser",
+  "finner-ikke-sitatet-i-artikkelen": "Finner ikke sitatet i artikkelen",
+  "mangler-kilder": "Mangler kilder",
+  annet: "Annet",
 }
 
 type FilterValue = keyof typeof FILTERS
@@ -87,16 +96,23 @@ const FeedbackHeader = ({
   menuRef,
   sort,
   setSort,
-  activeFilter,
-  setActiveFilter,
+  activeFilters,
+  setActiveFilters,
 }: {
   menuRef: RefObject<HTMLDivElement | null>
   sort: SortValue
   setSort: Dispatch<SetStateAction<SortValue>>
-  activeFilter: FilterValue
-  setActiveFilter: Dispatch<SetStateAction<FilterValue>>
+  activeFilters: FilterValue[]
+  setActiveFilters: Dispatch<SetStateAction<FilterValue[]>>
 }) => {
-  const { total } = useFeedbacks(activeFilter)
+  const { total } = useFeedbacks(activeFilters)
+
+  const handleCheckboxChange = (value: FilterValue) => {
+    setActiveFilters(
+      activeFilters.includes(value) ? activeFilters.filter((filter) => filter !== value) : [...activeFilters, value],
+    )
+  }
+
   return (
     <Box
       className='bg-[#F5F6F7]'
@@ -127,24 +143,22 @@ const FeedbackHeader = ({
             />
           </ActionMenu.Trigger>
           <ActionMenu.Content>
-            <ActionMenu.RadioGroup
+            <ActionMenu.Group
               label='Filtrer'
-              defaultValue='nye'
-              value={activeFilter as string}
-              onValueChange={(value) => setActiveFilter(value as FilterValue)}
               onClick={(e) => {
                 e.stopPropagation()
               }}
             >
               {Object.entries(FILTERS).map(([value, label]) => (
-                <ActionMenu.RadioItem
+                <ActionMenu.CheckboxItem
                   key={`feedback-filter-item-${value}`}
-                  value={value}
+                  checked={activeFilters.includes(value as FilterValue)}
+                  onCheckedChange={() => handleCheckboxChange(value as FilterValue)}
                 >
                   {label}
-                </ActionMenu.RadioItem>
+                </ActionMenu.CheckboxItem>
               ))}
-            </ActionMenu.RadioGroup>
+            </ActionMenu.Group>
             <ActionMenu.Divider />
             <ActionMenu.RadioGroup
               label='Sorter'
@@ -173,18 +187,18 @@ const FeedbackHeader = ({
 
 const FeedbackList = ({
   sort,
-  activeFilter,
+  activeFilters,
   currentPage,
   pageSize,
   onPageChange,
 }: {
   sort: SortValue
-  activeFilter: FilterValue
+  activeFilters: FilterValue[]
   currentPage: number
   pageSize: number
   onPageChange: (page: number) => void
 }) => {
-  const { feedbacks, total, isLoading } = useFeedbacks(activeFilter, currentPage - 1, pageSize, sort)
+  const { feedbacks, total, isLoading } = useFeedbacks(activeFilters, currentPage - 1, pageSize, sort)
   const [searchParams] = useSearchParams()
   const [selectedMessageId, setSelectedMessageId] = useState<string | null>(null)
 
@@ -196,8 +210,8 @@ const FeedbackList = ({
     const prevPage = Math.max(0, page - 2)
     const nextPage = Math.min(totalPages - 1, page)
 
-    preloadFeedbacks(activeFilter, prevPage, pageSize, sort)
-    preloadFeedbacks(activeFilter, nextPage, pageSize, sort)
+    preloadFeedbacks(activeFilters, prevPage, pageSize, sort)
+    preloadFeedbacks(activeFilters, nextPage, pageSize, sort)
   }
 
   useEffect(() => {
@@ -225,7 +239,7 @@ const FeedbackList = ({
         <SingleFeedback
           key={`single-feedback-${feedback.id}`}
           feedback={feedback}
-          isSelected={feedback.messageId === selectedMessageId}
+          isSelected={feedback.messageId !== null && feedback.messageId === selectedMessageId}
         />
       ))}
 
@@ -278,6 +292,9 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
   const [isResolved, setIsResolved] = useState(feedback.resolved)
   const { updateFeedback, isLoading } = useUpdateFeedback(feedback.id)
 
+  const boxRef = useRef(null)
+  const [popoverOpen, setPopoverOpen] = useState(false)
+
   const submit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (category === "" || !CATEGORY_OPTIONS[category]) {
@@ -311,13 +328,29 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
 
   return (
     <Box
+      ref={boxRef}
       paddingBlock='7'
       paddingInline='4'
       borderWidth='0 0 1 0'
       borderColor='border-subtle'
-      onClick={() => navigate(`/admin/${feedback.conversationId}?messageId=${feedback.messageId}`)}
+      onClick={() =>
+        feedback.messageId === null
+          ? setPopoverOpen(true)
+          : navigate(`/admin/${feedback.conversationId}?messageId=${feedback.messageId}`)
+      }
       className={`cursor-pointer hover:bg-[#F1F7FF] ${isSelected ? "bg-[#F5F6F7]" : ""}`}
     >
+      <Popover
+        anchorEl={boxRef.current}
+        open={popoverOpen}
+        onClose={() => setPopoverOpen(false)}
+        offset={0}
+        className="max-w-[90%]"
+      >
+        <Popover.Content>
+          Denne meldingen finnes ikke. Den har sannsynligvis blitt slettet hvis den er over 30 dager gammel.
+        </Popover.Content>
+      </Popover>
       <VStack gap='4'>
         <HStack justify='space-between'>
           <Label size='medium'>Feil innmeldt: {format(new Date(feedback.createdAt), "dd.MM.yy (HH:mm)")}</Label>
@@ -338,12 +371,12 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
                   option={option}
                 />
               </HStack>
-              <VStack gap='2'>
-                <Label size='small'>Kommentar: </Label>
-                <BodyShort size='small'>{feedback.comment}</BodyShort>
-              </VStack>
             </VStack>
           ))}
+          <VStack gap='2'>
+            <Label size='small'>Kommentar: </Label>
+            <BodyShort size='small'>{feedback.comment}</BodyShort>
+          </VStack>
         </VStack>
         <form onSubmit={submit}>
           <HStack

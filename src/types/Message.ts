@@ -61,8 +61,8 @@ export type Conversation = {
 export type Feedback = {
   id: string
   createdAt: string
-  messageId: string
-  conversationId: string
+  messageId: string | null
+  conversationId: string | null
   options: string[]
   comment: string | null
   resolved: boolean
