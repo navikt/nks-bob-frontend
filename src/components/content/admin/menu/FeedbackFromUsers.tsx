@@ -79,6 +79,14 @@ const FILTERS = {
   "særskilt-viktige": "Særskilt viktige",
   brukerfeil: "Brukerfeil",
   "ki-feil": "KI-feil",
+  "hele-deler-av-svaret-er-feil": "Hele-/deler av svaret er feil",
+  "mangler-vesentlige-detaljer": "Mangler vesentlige detaljer",
+  "benytter-ikke-forventede-artikler": "Benytter ikke forventede artikler",
+  "forholder-seg-ikke-til-kontekst": "Forholder seg ikke til kontekst",
+  "blander-ytelser": "Blander ytelser",
+  "finner-ikke-sitatet-i-artikkelen": "Finner ikke sitatet i artikkelen",
+  "mangler-kilder": "Mangler kilder",
+  "annet": "Annet",
 }
 
 type FilterValue = keyof typeof FILTERS
