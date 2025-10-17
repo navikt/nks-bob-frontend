@@ -8,6 +8,7 @@ import {
   Label,
   Loader,
   Pagination,
+  Popover,
   Select,
   Tag,
   Textarea,
@@ -238,7 +239,7 @@ const FeedbackList = ({
         <SingleFeedback
           key={`single-feedback-${feedback.id}`}
           feedback={feedback}
-          isSelected={feedback.messageId === selectedMessageId}
+          isSelected={feedback.messageId !== null && feedback.messageId === selectedMessageId}
         />
       ))}
 
@@ -291,6 +292,9 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
   const [isResolved, setIsResolved] = useState(feedback.resolved)
   const { updateFeedback, isLoading } = useUpdateFeedback(feedback.id)
 
+  const boxRef = useRef(null)
+  const [popoverOpen, setPopoverOpen] = useState(false)
+
   const submit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (category === "" || !CATEGORY_OPTIONS[category]) {
@@ -324,13 +328,29 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
 
   return (
     <Box
+      ref={boxRef}
       paddingBlock='7'
       paddingInline='4'
       borderWidth='0 0 1 0'
       borderColor='border-subtle'
-      onClick={() => navigate(`/admin/${feedback.conversationId}?messageId=${feedback.messageId}`)}
+      onClick={() =>
+        feedback.messageId === null
+          ? setPopoverOpen(true)
+          : navigate(`/admin/${feedback.conversationId}?messageId=${feedback.messageId}`)
+      }
       className={`cursor-pointer hover:bg-[#F1F7FF] ${isSelected ? "bg-[#F5F6F7]" : ""}`}
     >
+      <Popover
+        anchorEl={boxRef.current}
+        open={popoverOpen}
+        onClose={() => setPopoverOpen(false)}
+        offset={0}
+        className="max-w-[90%]"
+      >
+        <Popover.Content>
+          Denne meldingen finnes ikke. Den har sannsynligvis blitt slettet hvis den er over 30 dager gammel.
+        </Popover.Content>
+      </Popover>
       <VStack gap='4'>
         <HStack justify='space-between'>
           <Label size='medium'>Feil innmeldt: {format(new Date(feedback.createdAt), "dd.MM.yy (HH:mm)")}</Label>
@@ -353,10 +373,10 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
               </HStack>
             </VStack>
           ))}
-        <VStack gap='2'>
-          <Label size='small'>Kommentar: </Label>
-          <BodyShort size='small'>{feedback.comment}</BodyShort>
-        </VStack>
+          <VStack gap='2'>
+            <Label size='small'>Kommentar: </Label>
+            <BodyShort size='small'>{feedback.comment}</BodyShort>
+          </VStack>
         </VStack>
         <form onSubmit={submit}>
           <HStack
