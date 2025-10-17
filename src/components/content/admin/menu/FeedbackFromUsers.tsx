@@ -351,12 +351,12 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
                   option={option}
                 />
               </HStack>
-              <VStack gap='2'>
-                <Label size='small'>Kommentar: </Label>
-                <BodyShort size='small'>{feedback.comment}</BodyShort>
-              </VStack>
             </VStack>
           ))}
+        <VStack gap='2'>
+          <Label size='small'>Kommentar: </Label>
+          <BodyShort size='small'>{feedback.comment}</BodyShort>
+        </VStack>
         </VStack>
         <form onSubmit={submit}>
           <HStack
