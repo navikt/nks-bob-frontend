@@ -255,7 +255,7 @@ const NewMessageAlert = ({ setInputValue, conversationId }: NewMessageAlertProps
   const startNew = () => {
     analytics.nySamtalePgaVarsel()
     setInputValue("")
-    navigate("/")
+    navigate("/", { state: { from: conversationId } })
   }
 
   const handleClose = () => {
