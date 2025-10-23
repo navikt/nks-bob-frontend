@@ -112,6 +112,13 @@ const NksSource = ({ context }: { context: Context }) => {
 }
 
 const NavSource = ({ context }: { context: Context }) => {
+  const title =
+    context.source === "nks"
+      ? context.title
+      : context.anchor !== null
+        ? `${context.title} / ${context.anchor}`
+        : context.title
+
   return (
     <VStack className='sourcepanel gap-3'>
       <HStack
@@ -122,9 +129,7 @@ const NavSource = ({ context }: { context: Context }) => {
           href={`${context.url}#${context.anchor}`}
           target='_blank'
         >
-          <Label size='small'>
-            {context.title} / {context.anchor}
-          </Label>
+          <Label size='small'>{title}</Label>
         </Link>
         <CopyButton
           copyText={context.title}

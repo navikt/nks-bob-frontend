@@ -46,7 +46,8 @@ body.dark .all-sources-container {
 }
 
 .sourceheading {
-    padding: 16px;
+    padding-inline: 16px;
+    padding-block: 10px;
     background: rgba(245, 246, 247, 1);
 }
 

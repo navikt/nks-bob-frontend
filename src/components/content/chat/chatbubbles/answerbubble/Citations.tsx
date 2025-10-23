@@ -18,7 +18,12 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
     return null
   }
 
-  const title = source.source === "nks" ? source.title : `${source.title} / ${source.anchor}`
+  const title =
+    source.source === "nks"
+      ? source.title
+      : source.anchor !== null
+        ? `${source.title} / ${source.anchor}`
+        : source.title
 
   const displayId = citations.findIndex((citation) => citation.citationId === citationId) + 1
 
@@ -129,7 +134,12 @@ const CitationLink = ({ citations, citationId, context }: CitationLinkProps) => 
     return null
   }
 
-  const title = source.source === "nks" ? source.title : `${source.title} / ${source.anchor}`
+  const title =
+    source.source === "nks"
+      ? source.title
+      : source.anchor !== null
+        ? `${source.title} / ${source.anchor}`
+        : source.title
 
   const displayId = citations.findIndex((citation) => citation.citationId === citationId) + 1
 
