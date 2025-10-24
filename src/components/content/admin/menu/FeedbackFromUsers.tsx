@@ -335,11 +335,6 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
       return
     }
 
-    if (domain === "" || !DOMAIN_OPTIONS[domain]) {
-      console.error(`Invalid domain value "${domain}"`)
-      return
-    }
-
     const updatedFeedback = {
       options: feedback.options,
       comment: feedback.comment,
@@ -347,7 +342,7 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
       resolvedCategory: category,
       resolvedImportance: importance,
       resolvedNote: note,
-      domain: domain,
+      domain: domain === "" ? null : domain,
     }
 
     updateFeedback(updatedFeedback).then(({ resolved }) => {
