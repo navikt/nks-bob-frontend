@@ -88,6 +88,17 @@ const FILTERS = {
   "finner-ikke-sitatet-i-artikkelen": "Finner ikke sitatet i artikkelen",
   "mangler-kilder": "Mangler kilder",
   annet: "Annet",
+  arbeid: "Arbeid",
+  helse: "Helse",
+  familie: "Familie",
+  pleiepenger: "Pleiepenger",
+  gjeldsveiledning: "Gjeldsveiledning",
+  "sosiale-tjenester": "Sosiale tjenester",
+  pensjon: "Pensjon",
+  uforetrygd: "Uføretrygd",
+  arbeidsgiver: "Arbeidsgiver",
+  internasjonalt: "Internasjonalt",
+  fellesrutinene: "Fellesrutinene",
 }
 
 type FilterValue = keyof typeof FILTERS
@@ -280,6 +291,22 @@ const CATEGORY_OPTIONS = {
 
 type CategoryOptionsValue = keyof typeof CATEGORY_OPTIONS
 
+const DOMAIN_OPTIONS = {
+  arbeid: "Arbeid",
+  helse: "Helse",
+  familie: "Familie",
+  pleiepenger: "Pleiepenger",
+  gjeldsveiledning: "Gjeldsveiledning",
+  "sosiale-tjenester": "Sosiale tjenester",
+  pensjon: "Pensjon",
+  uforetrygd: "Uføretrygd",
+  arbeidsgiver: "Arbeidsgiver",
+  internasjonalt: "Internasjonalt",
+  fellesrutinene: "Fellesrutinene",
+}
+
+type DomainOptionsValue = keyof typeof DOMAIN_OPTIONS
+
 const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelected: boolean }) => {
   const navigate = useNavigate()
   const [category, setCategory] = useState<CategoryOptionsValue | "">(
@@ -288,6 +315,7 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
   const [importance, setImportance] = useState<ImportanceOptionsValue | "">(
     (feedback.resolvedImportance as ImportanceOptionsValue) ?? "",
   )
+  const [domain, setDomain] = useState<DomainOptionsValue | "">((feedback.domain as DomainOptionsValue) ?? "")
   const [note, setNote] = useState<string>(feedback.resolvedNote ?? "")
   const [isResolved, setIsResolved] = useState(feedback.resolved)
   const { updateFeedback, isLoading } = useUpdateFeedback(feedback.id)
@@ -314,6 +342,7 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
       resolvedCategory: category,
       resolvedImportance: importance,
       resolvedNote: note,
+      domain: domain === "" ? null : domain,
     }
 
     updateFeedback(updatedFeedback).then(({ resolved }) => {
@@ -345,7 +374,7 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
         open={popoverOpen}
         onClose={() => setPopoverOpen(false)}
         offset={0}
-        className="max-w-[90%]"
+        className='max-w-[90%]'
       >
         <Popover.Content>
           Denne meldingen finnes ikke. Den har sannsynligvis blitt slettet hvis den er over 30 dager gammel.
@@ -413,6 +442,24 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
               {Object.entries(IMPORTANCE_OPTIONS).map(([value, label]) => (
                 <option
                   key={`feedback-importance-option-${value}`}
+                  value={value}
+                >
+                  {label}
+                </option>
+              ))}
+            </Select>
+            <Select
+              label='Fagområde'
+              size='small'
+              className='max-w-32'
+              onChange={(event) => setDomain(event.target.value as DomainOptionsValue | "")}
+              value={domain}
+              disabled={isResolved}
+            >
+              <option value=''>Velg</option>
+              {Object.entries(DOMAIN_OPTIONS).map(([value, label]) => (
+                <option
+                  key={`feedback-domain-option-${value}`}
                   value={value}
                 >
                   {label}
