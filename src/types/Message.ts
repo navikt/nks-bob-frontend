@@ -69,4 +69,5 @@ export type Feedback = {
   resolvedCategory: string | null
   resolvedImportance: string | null
   resolvedNote: string | null
+  domain: string | null
 }
