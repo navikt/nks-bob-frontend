@@ -5,6 +5,7 @@ import remarkGfm from "remark-gfm"
 import { KunnskapsbasenIcon } from "../../../../assets/icons/KunnskapsbasenIcon.tsx"
 import { NavNoIcon } from "../../../../assets/icons/NavNoIcon.tsx"
 import { Citation, Context } from "../../../../types/Message.ts"
+import { isValidArticleColumn } from "../../../../utils/articleColumnTransformer.ts"
 
 interface BobAnswerCitationProps {
   citation: { title: string; source: "navno" | "nks"; citations: Citation[] }
@@ -204,6 +205,8 @@ const CitationLink = ({
 
   const useAnchor = matchingContextCitationData?.url.includes("/saksbehandlingstider")
 
+  const shouldUseArticleColumn = isValidArticleColumn(matchingContextCitationData.articleColumn)
+
   return (
     <HStack align='center'>
       <Tooltip content='Åpne artikkelen i ny fane'>
@@ -215,7 +218,9 @@ const CitationLink = ({
                 ? `${matchingContextCitationData.url}${expandAll}#${matchingContextCitationData.anchor}`
                 : numWords < 1
                   ? `${matchingContextCitationData.url}`
-                  : `${matchingContextCitationData.url}${expandAll}#:~:text=${encodeFragment(textStart)},${encodeFragment(textEnd)}`
+                  : shouldUseArticleColumn
+                    ? `${matchingContextCitationData.url}${expandAll}#${matchingContextCitationData.articleColumn}:~:text=${encodeFragment(textStart)},${encodeFragment(textEnd)}`
+                    : `${matchingContextCitationData.url}${expandAll}#:~:text=${encodeFragment(textStart)},${encodeFragment(textEnd)}`
           }
           target='_blank'
           inlineText
