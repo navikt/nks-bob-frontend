@@ -21,14 +21,3 @@ export const transformArticleColumnArray = <T extends { articleColumn: string }>
 export const tranformArticleColumnValue = (articleColumn: string): string => {
     return ARTICLE_COLUMN_MAPPING[articleColumn] || articleColumn
 }
-
-export const validTransformedArticleColumns = [
-    "arbeidsgiver_1",
-    "internasjonalt_1",
-    "lege-og-behandler_1"
-] 
-
-export const isValidArticleColumn = (articleColumn: string | null | undefined): boolean => {
-    if (!articleColumn) return false
-    return validTransformedArticleColumns.includes(articleColumn)
-}
