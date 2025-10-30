@@ -1,6 +1,8 @@
 import { create } from "zustand"
 import { MessageEvent as ConversationEvent } from "../api/sse"
 import { Message } from "./Message"
+import { transformNksUrlsArray } from "../utils/nksUrlTransformer"
+import { transformArticleColumnArray } from "../utils/articleColumnTransformer"
 
 // Type guard functions for MessageEvent types
 function isNewMessage(event: ConversationEvent): event is { type: "NewMessage", id: string, message: Message } {
@@ -42,6 +44,16 @@ type MessageState = {
   resetMessages: () => void
 }
 
+const transformContextData = <T extends { url: string; articleColumn?: string | null }>(contexts: T[]): T[] => {
+    let transformed = transformNksUrlsArray(contexts)
+
+    if (contexts.length > 0 && 'articleColumn' in contexts[0]) {
+      transformed = transformArticleColumnArray(transformed as any) as T[]
+    }
+
+    return transformed
+}
+
 export const messageStore = create<MessageState>()((set) => {
   const byDate: ((a: Message, b: Message) => number) | undefined = (a, b) =>
     new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
@@ -65,11 +77,16 @@ export const messageStore = create<MessageState>()((set) => {
       }
     })
 
-  const addMessage = (message: Message) =>
+ const addMessage = (message: Message) =>
     set((state) => {
+      const transformedMessage = {
+        ...message,
+        context: transformContextData(message.context)
+      }
+
       const messageMap = {
         ...state.messageMap,
-        [message.id]: message,
+        [transformedMessage.id]: transformedMessage,
       }
 
       return {
@@ -81,7 +98,12 @@ export const messageStore = create<MessageState>()((set) => {
 
   const setMessages = (messages: Message[]) =>
     set((state) => {
-      const messageMap: MessageMap = messages.reduce(
+      const transformedMessages = messages.map(message => ({
+        ...message,
+        context: transformContextData(message.context)
+      }))
+
+      const messageMap: MessageMap = transformedMessages.reduce(
         (map, message) => Object.assign(map, { [message.id]: message }),
         {},
       )
@@ -109,7 +131,10 @@ const getMessage = (
   messages: MessageMap,
 ): Message | undefined => {
   if (isNewMessage(event)) {
-    return event.message
+    return {
+      ...event.message,
+    context: transformContextData(event.message.context)
+    }
   }
 
   const message = messages[event.id]
@@ -134,12 +159,15 @@ const getMessage = (
   if (isContextUpdated(event)) {
     return {
       ...message,
-      context: event.context,
+      context: transformContextData(event.context),
     }
   }
 
   if (isPendingUpdated(event)) {
-    return event.message
+    return {
+      ...event.message,
+      context: transformContextData(event.message.context)
+    }
   }
 
   if (isStatusUpdate(event)) {
