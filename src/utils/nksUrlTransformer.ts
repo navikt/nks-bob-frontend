@@ -1,7 +1,4 @@
-const isDev = process.env.MILJO === 'dev'
-
 export const transfromNksUrls = <T extends {url: string}>(context: T): T => {
-    if (!isDev) return context;
     return {
         ...context,
         url: context.url.replace(
