@@ -227,8 +227,13 @@ const CitationLink = ({
       .filter((word) => !/https?/.test(word) && word.length > 0)
 
     const totalWords = citeWords.length
-    let numWords
 
+    if (totalWords <= 6) {
+      const textStart = citeWords.join(" ")
+      return buildLinkWithTextFragments(textStart, "")
+    }
+
+    let numWords
     if (totalWords <= 10) {
       numWords = Math.max(Math.min(totalWords - 2, 8), 3)
     } else if (totalWords <= 20) {
@@ -268,6 +273,8 @@ const CitationLink = ({
     const expandAll = matchingContextCitationData?.source === "navno" ? "?expandall=true" : ""
     const useAnchor = matchingContextCitationData?.url.includes("/saksbehandlingstider")
 
+    const textFragment = end && end.trim() ? `${encodeFragment(start)},${encodeFragment(end)}` : encodeFragment(start)
+
     return (
       <HStack align='center'>
         <Tooltip content='Åpne artikkelen i ny fane'>
@@ -280,8 +287,8 @@ const CitationLink = ({
                   : !start || start.trim().length === 0
                     ? `${matchingContextCitationData.url}`
                     : matchingContextCitationData.articleColumn
-                      ? `${matchingContextCitationData.url}${expandAll}#${matchingContextCitationData.articleColumn}:~:text=${encodeFragment(start)},${encodeFragment(end)}`
-                      : `${matchingContextCitationData.url}${expandAll}#:~:text=${encodeFragment(start)},${encodeFragment(end)}`
+                      ? `${matchingContextCitationData.url}${expandAll}#${matchingContextCitationData.articleColumn}:~:text=${textFragment}`
+                      : `${matchingContextCitationData.url}${expandAll}#:~:text=${textFragment}`
             }
             target='_blank'
             inlineText
