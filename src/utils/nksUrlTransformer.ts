@@ -1,4 +1,7 @@
+const isDev = window.environment?.MILJO === 'dev' || window.environment?.MILJO === 'localnais' 
+
 export const transfromNksUrls = <T extends {url: string}>(context: T): T => {
+    if (!isDev) return context
     return {
         ...context,
         url: context.url.replace(

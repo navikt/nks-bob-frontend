@@ -70,6 +70,11 @@ interface Umami {
 declare global {
   interface Window {
     umami?: Umami
+    environment?: {
+      MILJO: string;
+      NAIS_APP_IMAGE: string;
+      GIT_COMMIT: string;
+    }
   }
 }
 
