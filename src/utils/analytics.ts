@@ -70,8 +70,8 @@ interface Umami {
 declare global {
   interface Window {
     umami?: Umami
+    }
   }
-}
 
 async function umamiTrack(event: string, data?: Record<string, unknown>) {
   if (window.location.hostname === "localhost") {
