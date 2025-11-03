@@ -1,7 +1,9 @@
-const isDev = window.environment?.MILJO === 'dev' || window.environment?.MILJO === 'localnais' 
+const isLocalDev = ['bob.ansatt.dev.nav.no', 'localhost'].some((url) => {
+   window.location.href.includes(url)
+})
 
 export const transfromNksUrls = <T extends {url: string}>(context: T): T => {
-    if (!isDev) return context
+     if (!isLocalDev) return context
     return {
         ...context,
         url: context.url.replace(
