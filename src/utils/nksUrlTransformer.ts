@@ -1,5 +1,5 @@
 const isLocalDev = ['bob.ansatt.dev.nav.no', 'localhost'].some((url) => {
-   window.location.href.includes(url)
+   return window.location.href.includes(url)
 })
 
 export const transfromNksUrls = <T extends {url: string}>(context: T): T => {
