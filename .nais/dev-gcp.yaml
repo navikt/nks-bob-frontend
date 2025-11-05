@@ -7,6 +7,8 @@ metadata:
     team: nks-aiautomatisering
   annotations:
     texas.nais.io/enabled: "true"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
 spec:
   image: {{{image}}}
   port: 3030
