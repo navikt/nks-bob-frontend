@@ -1,13 +1,6 @@
 import useSWR, { mutate, preload } from "swr"
 import useSWRMutation from "swr/mutation"
-import {
-  Conversation,
-  ConversationFeedback,
-  Feedback,
-  Message,
-  NewConversation,
-  NewMessage,
-} from "../types/Message"
+import { Conversation, ConversationFeedback, Feedback, Message, NewConversation, NewMessage } from "../types/Message"
 import { Alert, NewsNotification } from "../types/Notifications"
 import { UserConfig } from "../types/User"
 
@@ -19,10 +12,7 @@ export type ApiError = {
   data: any
 }
 
-export async function fetcher<T>(
-  input: RequestInfo,
-  init?: RequestInit,
-): Promise<T> {
+export async function fetcher<T>(input: RequestInfo, init?: RequestInit): Promise<T> {
   const res = await fetch(`${API_URL}${input}`, {
     ...init,
     credentials: "include",
@@ -46,10 +36,7 @@ export async function fetcher<T>(
 }
 
 export const request = (method: "POST" | "PUT" | "PATCH" | "DELETE") =>
-  async function <Body, Response>(
-    url: string,
-    options?: { arg: Body },
-  ): Promise<Response> {
+  async function <Body, Response>(url: string, options?: { arg: Body }): Promise<Response> {
     const body = options && JSON.stringify(options.arg)
     return fetcher(url, {
       method,
@@ -62,10 +49,7 @@ export const request = (method: "POST" | "PUT" | "PATCH" | "DELETE") =>
   }
 
 export const useSendMessage = (conversationId: string) => {
-  const { trigger, isMutating } = useSWRMutation(
-    `/api/v1/conversations/${conversationId}/messages`,
-    request("POST"),
-  )
+  const { trigger, isMutating } = useSWRMutation(`/api/v1/conversations/${conversationId}/messages`, request("POST"))
 
   return {
     sendMessage: trigger,
@@ -85,10 +69,7 @@ export const useSendMessagePost = (conversationId: string) => {
 }
 
 export const useSendFeedback = (message: Message) => {
-  const { trigger, isMutating } = useSWRMutation(
-    `/api/v1/messages/${message.id}/feedback`,
-    request("POST"),
-  )
+  const { trigger, isMutating } = useSWRMutation(`/api/v1/messages/${message.id}/feedback`, request("POST"))
 
   return {
     sendFeedback: trigger as (feedback: Feedback) => Promise<Feedback>,
@@ -97,25 +78,16 @@ export const useSendFeedback = (message: Message) => {
 }
 
 export const useSendConversationFeedback = (conversationId: string) => {
-  const { trigger, isMutating } = useSWRMutation(
-    `/api/v1/conversations/${conversationId}/feedback`,
-    request("POST"),
-  )
+  const { trigger, isMutating } = useSWRMutation(`/api/v1/conversations/${conversationId}/feedback`, request("POST"))
 
   return {
-    sendFeedback: trigger as (
-      feedback: ConversationFeedback,
-    ) => Promise<Feedback>,
+    sendFeedback: trigger as (feedback: ConversationFeedback) => Promise<Feedback>,
     isLoading: isMutating,
   }
 }
 
 export const useConversations = () => {
-  const {
-    data: conversations,
-    isLoading,
-    error,
-  } = useSWR<Conversation[]>(`/api/v1/conversations`, fetcher)
+  const { data: conversations, isLoading, error } = useSWR<Conversation[]>(`/api/v1/conversations`, fetcher)
 
   return {
     conversations,
@@ -125,10 +97,7 @@ export const useConversations = () => {
 }
 
 export const useCreateConversation = () => {
-  const { trigger, isMutating } = useSWRMutation(
-    `/api/v1/conversations`,
-    request("POST"),
-  )
+  const { trigger, isMutating } = useSWRMutation(`/api/v1/conversations`, request("POST"))
 
   return {
     createConversation: trigger as (
@@ -140,13 +109,10 @@ export const useCreateConversation = () => {
 }
 
 export const useDeleteConversation = (conversation: Conversation) => {
-  const { trigger, isMutating } = useSWRMutation(
-    `/api/v1/conversations/${conversation.id}`,
-    async (url) => {
-      await request("DELETE")(url)
-      await mutate(`/api/v1/conversations`)
-    },
-  )
+  const { trigger, isMutating } = useSWRMutation(`/api/v1/conversations/${conversation.id}`, async (url) => {
+    await request("DELETE")(url)
+    await mutate(`/api/v1/conversations`)
+  })
   return {
     deleteConversation: trigger,
     isLoading: isMutating,
@@ -174,15 +140,11 @@ export const preloadUserConfig = () => {
 }
 
 export const useUserConfig = () => {
-  const { data, isLoading, error } = useSWR<UserConfig, ApiError>(
-    "/api/v1/user/config",
-    fetcher,
-    {
-      revalidateIfStale: false,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    },
-  )
+  const { data, isLoading, error } = useSWR<UserConfig, ApiError>("/api/v1/user/config", fetcher, {
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+  })
 
   return {
     userConfig: data,
@@ -192,25 +154,17 @@ export const useUserConfig = () => {
 }
 
 export const useUpdateUserConfig = () => {
-  const { trigger, isMutating, error } = useSWRMutation(
-    "/api/v1/user/config",
-    request("PATCH"),
-  )
+  const { trigger, isMutating, error } = useSWRMutation("/api/v1/user/config", request("PATCH"))
 
   return {
-    updateUserConfig: trigger as (
-      userConfig: Partial<UserConfig>,
-    ) => Promise<UserConfig>,
+    updateUserConfig: trigger as (userConfig: Partial<UserConfig>) => Promise<UserConfig>,
     isLoading: isMutating,
     error,
   }
 }
 
 export const useStarMessage = (messageId: string) => {
-  const { trigger, isMutating } = useSWRMutation(
-    `/api/v1/messages/${messageId}`,
-    request("PUT"),
-  )
+  const { trigger, isMutating } = useSWRMutation(`/api/v1/messages/${messageId}`, request("PUT"))
 
   const starMessage = (starred: boolean) =>
     trigger({
@@ -222,10 +176,7 @@ export const useStarMessage = (messageId: string) => {
 }
 
 export const useNewsNotifications = () => {
-  const { data, isLoading, error } = useSWR<NewsNotification[], ApiError>(
-    "/api/v1/notifications/news",
-    fetcher,
-  )
+  const { data, isLoading, error } = useSWR<NewsNotification[], ApiError>("/api/v1/notifications/news", fetcher)
 
   const byDate: (a: NewsNotification, b: NewsNotification) => number = (a, b) =>
     new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
@@ -238,10 +189,7 @@ export const useNewsNotifications = () => {
 }
 
 export const useAlerts = () => {
-  const { data, isLoading, error } = useSWR<Alert[], ApiError>(
-    "/api/v1/notifications/errors",
-    fetcher,
-  )
+  const { data, isLoading, error } = useSWR<Alert[], ApiError>("/api/v1/notifications/errors", fetcher)
 
   return {
     alerts: data ?? [],
@@ -259,13 +207,9 @@ export const preloadAlerts = () => {
 }
 
 export const useAddFeedback = (messageId: string) => {
-  const { trigger, isMutating } = useSWRMutation(
-    `/api/v1/messages/${messageId}/feedback`,
-    request("POST"),
-  )
+  const { trigger, isMutating } = useSWRMutation(`/api/v1/messages/${messageId}/feedback`, request("POST"))
 
-  const addFeedback = (body: { options: string[]; comment: string | null }) =>
-    trigger(body)
+  const addFeedback = (body: { options: string[]; comment: string | null }) => trigger(body)
 
   return {
     addFeedback,
@@ -282,4 +226,30 @@ export const triggerReAuth = () => {
   loginUrl.searchParams.set("referer", window.location.href)
 
   window.location.href = loginUrl.toString()
+}
+
+export const log = async (level: "error" | "warn" | "info", message: string) => {
+  const body = JSON.stringify({ level, message })
+  const res = await fetch(`${import.meta.env.BASE_URL}bff/log`, {
+    credentials: "include",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body,
+  })
+  if (res.status === 204) {
+    return true
+  }
+
+  if (res.status >= 400) {
+    throw {
+      status: res.status,
+      message: res.statusText,
+      data: await res.json(),
+    } as ApiError
+  }
+
+  return false
 }
