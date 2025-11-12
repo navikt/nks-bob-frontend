@@ -1,35 +1,19 @@
 import { StrictMode, lazy, Suspense } from "react"
 import { createRoot } from "react-dom/client"
-import {
-  createBrowserRouter,
-  createRoutesFromElements,
-  Route,
-  RouterProvider,
-} from "react-router"
+import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router"
 import { SWRConfig } from "swr"
 import { createHead, UnheadProvider } from "@unhead/react/client"
 import App from "./App.tsx"
-import {
-  preloadAlerts,
-  preloadNewsNotifications,
-  preloadUserConfig,
-  triggerReAuth,
-} from "./api/api.ts"
+import { preloadAlerts, preloadNewsNotifications, preloadUserConfig, triggerReAuth } from "./api/api.ts"
 import "./global.css"
 import { AnalyticsProvider } from "./utils/AnalyticsProvider.tsx"
 
 const head = createHead()
 
 // Lazy load components to reduce initial bundle size
-const CreateConversationContent = lazy(
-  () => import("./components/content/CreateConversationContent.tsx"),
-)
-const ConversationContent = lazy(
-  () => import("./components/content/ConversationContent.tsx"),
-)
-const ConversationAdminContent = lazy(
-  () => import("./components/content/ConversationAdminContent.tsx"),
-)
+const CreateConversationContent = lazy(() => import("./components/content/CreateConversationContent.tsx"))
+const ConversationContent = lazy(() => import("./components/content/ConversationContent.tsx"))
+const ConversationAdminContent = lazy(() => import("./components/content/ConversationAdminContent.tsx"))
 
 // Loading component for suspense fallback
 const LoadingFallback = () => (
@@ -44,7 +28,10 @@ preloadAlerts()
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path='/' element={<App />}>
+    <Route
+      path='/'
+      element={<App />}
+    >
       <Route
         index
         element={

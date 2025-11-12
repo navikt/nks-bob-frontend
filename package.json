@@ -26,6 +26,7 @@
     "mdast-util-find-and-replace": "^3.0.2",
     "react": "19.1.0",
     "react-dom": "19.1.0",
+    "react-error-boundary": "^6.0.0",
     "react-hotkeys-hook": "^5.1.0",
     "react-markdown": "^9.1.0",
     "react-router": "^7.6.2",

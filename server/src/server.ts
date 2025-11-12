@@ -1,3 +1,5 @@
+import * as oasis from "@navikt/oasis"
+import bodyParser from "body-parser"
 import compression from "compression"
 import { randomUUID } from "crypto"
 import express from "express"
@@ -90,8 +92,7 @@ const loggerPlugin: HpmPlugin = (proxyServer) => {
   proxyServer.on("error", (err: any, req: any, res: any, target: any) => {
     const hostname = req?.headers?.host
     // target is undefined when websocket errors
-    const errReference =
-      "https://nodejs.org/api/errors.html#errors_common_system_errors" // link to Node Common Systems Errors page
+    const errReference = "https://nodejs.org/api/errors.html#errors_common_system_errors" // link to Node Common Systems Errors page
     proxyEventsCounter.inc({
       target: target?.host,
       proxystatus: undefined,
@@ -99,10 +100,7 @@ const loggerPlugin: HpmPlugin = (proxyServer) => {
       errcode: err.code || "unknown",
     })
     const level =
-      /HPE_INVALID/.test(err.code) ||
-      ["ECONNRESET", "ENOTFOUND", "ECONNREFUSED", "ETIMEDOUT"].includes(
-        err.code,
-      )
+      /HPE_INVALID/.test(err.code) || ["ECONNRESET", "ENOTFOUND", "ECONNREFUSED", "ETIMEDOUT"].includes(err.code)
         ? "warn"
         : "error"
     log.log(
@@ -154,18 +152,15 @@ const callIdPlugin: HpmPlugin = (proxyServer) => {
 
 let BUILD_PATH = path.join(process.cwd(), "../dist")
 
-const indexHtml = Mustache.render(
-  readFileSync(path.join(BUILD_PATH, "index.html")).toString(),
-  {
-    SETTINGS: `
+const indexHtml = Mustache.render(readFileSync(path.join(BUILD_PATH, "index.html")).toString(), {
+  SETTINGS: `
     window.environment = {
         MILJO: '${MILJO}',
         NAIS_APP_IMAGE: '${NAIS_APP_IMAGE}',
         GIT_COMMIT: '${GIT_COMMIT}',
     }
   `,
-  },
-)
+})
 
 const proxyOptions: Partial<Options> = {
   logger: log,
@@ -231,6 +226,59 @@ const main = async () => {
       metricsPath: "/internal/metrics",
     }),
   )
+
+  /// Get info about the user based on the token
+  app.get("/bff/userinfo", (req, res) => {
+    const token = oasis.getToken(req)
+    if (!token) {
+      log.warn("No token found")
+      res.status(401).send({ message: "No token found" })
+      return
+    }
+
+    const result = oasis.parseAzureUserToken(token)
+    if (!result.ok) {
+      log.error("Unable to parse user token")
+      res.status(500).send({ message: "Unable to parse user token" })
+      return
+    }
+
+    if (!result.name || !result.name.includes(", ")) {
+      log.error("Invalid name in supplied token")
+      res.status(500).send({ message: "Invalid name in supplied token" })
+      return
+    }
+
+    const [lastName, firstName] = result.name.split(", ")
+    res.status(200).send({
+      fullnameInverted: result.name,
+      fullname: `${firstName} ${lastName}`,
+      firstName,
+      lastName,
+      email: result.preferred_username,
+    })
+  })
+
+  const jsonParser = bodyParser.json()
+
+  type LogLevel = "error" | "warn" | "info"
+  const loggers: { [L in LogLevel]: LeveledLogMethod } = {
+    error: log.error,
+    warn: log.warn,
+    info: log.info,
+  }
+
+  app.post("/bff/log", jsonParser, (req, res) => {
+    const { level, message } = req.body as { level: LogLevel; message: string }
+    try {
+      const logger = loggers[level]
+      logger(message)
+      res.status(204).send()
+    } catch (e) {
+      log.warn("Invalid log level supplied")
+      res.status(400).send({ message: "Invalid log level" })
+    }
+  })
 
   app.use(
     "/bob-api",
@@ -313,15 +361,10 @@ const main = async () => {
         if (path.endsWith(".html")) {
           // HTML files - no caching
           res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate")
-        } else if (
-          path.match(/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff2|woff|ttf|eot)$/)
-        ) {
+        } else if (path.match(/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff2|woff|ttf|eot)$/)) {
           // Assets with hash in filename - cache for 1 year
           if (path.match(/[a-f0-9]{8,}\.(js|css|png|jpg|jpeg|gif|svg)$/)) {
-            res.setHeader(
-              "Cache-Control",
-              "public, max-age=31536000, immutable",
-            )
+            res.setHeader("Cache-Control", "public, max-age=31536000, immutable")
           } else {
             // Assets without hash - cache for 1 day
             res.setHeader("Cache-Control", "public, max-age=86400")
