@@ -80,6 +80,7 @@ const FILTERS = {
   "særskilt-viktige": "Særskilt viktige",
   brukerfeil: "Brukerfeil",
   "ki-feil": "KI-feil",
+  "dato-utgatt": "Utgått dato",
   "hele-deler-av-svaret-er-feil": "Hele-/deler av svaret er feil",
   "mangler-vesentlige-detaljer": "Mangler vesentlige detaljer",
   "benytter-ikke-forventede-artikler": "Benytter ikke forventede artikler",
@@ -287,6 +288,7 @@ type ImportanceOptionsValue = keyof typeof IMPORTANCE_OPTIONS
 const CATEGORY_OPTIONS = {
   "ki-feil": "KI-feil",
   brukerfeil: "Brukerfeil",
+  "dato-utgatt": "Utgått dato",
 }
 
 type CategoryOptionsValue = keyof typeof CATEGORY_OPTIONS
