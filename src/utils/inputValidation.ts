@@ -9,7 +9,6 @@ export type ValidationOk = { status: "ok" }
 export type ValidationWarning = {
   status: "warning"
   message: string
-  // values: string[]
   matches: ValidationMatch[]
   validationType: ValidationType
 }
@@ -17,7 +16,6 @@ export type ValidationWarning = {
 export type ValidationError = {
   status: "error"
   message: string
-  // values: string[]
   matches: ValidationMatch[]
   validationType: ValidationType
 }
@@ -76,7 +74,7 @@ export function validateFnr(input: string): ValidationResult {
   return error("Tekst som ligner på et fødselsnummer:", "fnr", matches)
 }
 
-const nameRegex = /[A-ZÆØÅ]\w*\s+?[A-ZÆØÅ]\w*/g
+const nameRegex = /[A-ZÆØÅ]\w*[^\S\r\n]+?[A-ZÆØÅ]\w*/g
 export function validateName(input: string): ValidationResult {
   if (!input.match(nameRegex)) {
     return ok()
