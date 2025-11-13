@@ -1,7 +1,8 @@
-import { Alert, BodyShort, Button, Detail, Heading, Textarea, VStack } from "@navikt/ds-react"
+import { Alert, BodyShort, Box, Button, Detail, Heading, Link, Textarea, VStack } from "@navikt/ds-react"
 
 import { PaperplaneIcon } from "@navikt/aksel-icons"
 import { forwardRef, useEffect, useRef, useState } from "react"
+import reactStringReplace from "react-string-replace"
 
 import * as React from "react"
 import { useHotkeys } from "react-hotkeys-hook"
@@ -12,6 +13,17 @@ import { useAlerts } from "../../api/api.ts"
 import { NewMessage } from "../../types/Message.ts"
 import analytics from "../../utils/analytics.ts"
 import "./InputField.css"
+import {
+  isError,
+  isNotOk,
+  isWarning,
+  validateFnr,
+  validateName,
+  validateTlf,
+  ValidationError,
+  ValidationWarning,
+  Validator,
+} from "../../utils/inputValidation.ts"
 
 type InputFieldState = {
   inputValue: string
@@ -57,16 +69,21 @@ interface InputFieldProps {
 const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputField({ onSend, disabled }, containerRef) {
   const placeholderText = "Spør Bob om noe Nav-relatert"
   const [isSensitiveInfoAlert, setIsSensitiveInfoAlert] = useState<boolean>(false)
-  const [containsFnr, setContainsFnr] = useState<boolean>(false)
   const [sendDisabled, setSendDisabled] = useState<boolean>(disabled)
   const [isFocused, setIsFocused] = useState(false)
+
+  const [validationWarnings, setValidationWarnings] = useState<ValidationWarning[]>([])
+  const [validationErrors, setValidationErrors] = useState<ValidationError[]>([])
+  const [highlightedInput, setHighlightedInput] = useState<React.ReactNode[]>([])
+  const [hideTextArea, setHideTextArea] = useState(false)
+  const [warningShown, setWarningShown] = useState(false)
 
   const { conversationId } = useParams()
 
   const { inputValue, setInputValue, textareaRef } = useInputFieldStore()
 
   const { alerts } = useAlerts()
-  const hasErrors = alerts.at(0)?.notificationType === "Error"
+  const hasAlertErrors = alerts.at(0)?.notificationType === "Error"
 
   function sendMessage(messageContent?: string, opts: { clear?: boolean; blur?: boolean } = {}) {
     const { clear = true, blur = true } = opts
@@ -99,10 +116,6 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     e.preventDefault()
   }
 
-  function checkContainsFnr(value: string) {
-    return /(\d{6}(|.)\d{5})/.test(value)
-  }
-
   function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     if (e.key === "Enter") {
       if (!e.shiftKey) {
@@ -124,16 +137,63 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     }
   }
 
-  useEffect(() => {
-    const inputContainsFnr = checkContainsFnr(inputValue)
+  const validators: Validator[] = [validateFnr, validateName, validateTlf]
 
-    if (inputContainsFnr) {
+  useEffect(() => {
+    const validationResults = validators.map((validator) => validator.call(null, inputValue)).filter(isNotOk)
+
+    setValidationWarnings(validationResults.filter(isWarning))
+    setValidationErrors(validationResults.filter(isError))
+
+    if (validationResults.length) {
+      setHideTextArea(true)
+    }
+
+    if (validationErrors.length) {
+      setWarningShown(false)
+    } else if (!warningShown && validationWarnings.length) {
+      setWarningShown(true)
+    }
+
+    // TODO more analytics
+    const containsFnr = validationResults.filter(isError).some((v) => v.validationType === "fnr")
+    if (containsFnr) {
       analytics.tekstInneholderFnr()
     }
 
-    setContainsFnr(inputContainsFnr)
-    setSendDisabled(disabled || inputContainsFnr || hasErrors)
-  }, [inputValue, disabled, hasErrors])
+    const validationError = validationResults.some(isError)
+    setSendDisabled(disabled || validationError || hasAlertErrors)
+  }, [inputValue, disabled, hasAlertErrors, warningShown])
+
+  useEffect(() => {
+    const highlightOnClick = (start: number, end: number) => {
+      setHideTextArea(false)
+
+      // Small timeout to wait for the ref to be non-null.
+      setTimeout(() => {
+        textareaRef.current?.setSelectionRange(start, end)
+      }, 10)
+    }
+
+    const inputNodes = reactStringReplace(inputValue, "\n", () => <br />)
+    setHighlightedInput(
+      [...validationErrors, ...validationWarnings]
+        .flatMap(({ status, matches }) => matches.map((match) => ({ status, match })))
+        .reduce(
+          (prevNodes, { status, match }) =>
+            reactStringReplace(prevNodes, match.value, () => (
+              <span
+                onClick={() => highlightOnClick(match.start, match.end)}
+                className={`highlight-${status}`}
+              >
+                {match.value}
+              </span>
+            )),
+          // inputValue as unknown as React.ReactNode[],
+          inputNodes,
+        ),
+    )
+  }, [validationErrors, validationWarnings])
 
   useHotkeys("Alt+Ctrl+O", () => sendMessage("Oversett til engelsk", { clear: false, blur: false }), {
     enabled: !!conversationId,
@@ -173,14 +233,35 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           <BodyShort>Vi jobber aktivt med å finne en løsning.</BodyShort>
         </Alert>
       )}
-      {containsFnr && (
+      {validationWarnings.length > 0 && (
+        <Alert
+          variant='warning'
+          size='small'
+          className='fade-in mb-2'
+        >
+          <BodyShort
+            size='small'
+            spacing
+          >
+            Det ser ut som spørsmålet inneholder personopplysninger. Kontroller den markerte teksten før du sender.
+          </BodyShort>
+          <Link href='#'>Hvilke opplysninger skal man ikke sende til Bob?</Link>
+        </Alert>
+      )}
+      {validationErrors.length > 0 && (
         <Alert
           variant='error'
           size='small'
-          onClose={() => setContainsFnr(false)}
           className='fade-in mb-2'
         >
-          Du har skrevet inn noe som ligner på et fødselsnummer. Derfor får du ikke sendt meldingen.
+          <BodyShort
+            size='small'
+            spacing
+          >
+            Teksten ser ut til å inneholde personopplysninger. Du må fjerne eller anonymisere det som er markert før du
+            kan sende spørsmålet.
+          </BodyShort>
+          <Link href='#'>Hvilke opplysninger skal man ikke sende til Bob?</Link>
         </Alert>
       )}
       <NewMessageAlert
@@ -188,37 +269,57 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
         conversationId={conversationId}
       />
       <div className='inputfield relative flex max-w-[48rem] flex-col items-center justify-end'>
-        <Textarea
-          resize={isFocused ? "vertical" : false}
-          ref={textareaRef}
-          size='medium'
-          label=''
-          hideLabel
-          className='dialogcontent mb-3 min-h-[43px] truncate [&_textarea]:max-h-[450px] [&_textarea]:min-h-[43px] focus:[&_textarea]:min-h-[50px]'
-          minRows={1}
-          maxRows={15}
-          placeholder={placeholderText}
-          value={inputValue}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyDown}
-          onPaste={handlePaste}
-          autoFocus={true}
-          tabIndex={1}
-          onDrop={handleDrop}
-          onFocus={() => {
-            setIsFocused(true)
-          }}
-          onBlur={() => {
-            setIsFocused(false)
+        {hideTextArea && !warningShown ? (
+          <Box
+            background='surface-default'
+            padding='space-8'
+            borderRadius='medium'
+            borderColor='border-default'
+            borderWidth='1'
+            className='mb-3 max-h-[450px] min-h-[43px] w-[100%] max-w-[48rem] overflow-auto focus:min-h-[50px]'
+            onClick={() => {
+              setHideTextArea(false)
+            }}
+          >
+            {highlightedInput}
+          </Box>
+        ) : (
+          <Textarea
+            resize={isFocused ? "vertical" : false}
+            ref={textareaRef}
+            size='medium'
+            label=''
+            hideLabel
+            className='dialogcontent mb-3 min-h-[43px] truncate [&_textarea]:max-h-[450px] [&_textarea]:min-h-[43px] focus:[&_textarea]:min-h-[50px]'
+            minRows={1}
+            maxRows={15}
+            placeholder={placeholderText}
+            value={inputValue}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
+            onPaste={handlePaste}
+            autoFocus={true}
+            tabIndex={1}
+            onDrop={handleDrop}
+            onFocus={() => {
+              setIsFocused(true)
+            }}
+            onBlur={() => {
+              setIsFocused(false)
 
-            const ta = textareaRef.current
+              if (validationErrors.length + validationWarnings.length > 0) {
+                setHideTextArea(true)
+              }
 
-            if (ta) {
-              ta.style.height = ""
-              ta.style.width = ""
-            }
-          }}
-        />
+              const ta = textareaRef.current
+
+              if (ta) {
+                ta.style.height = ""
+                ta.style.width = ""
+              }
+            }}
+          />
+        )}
         <Button
           icon={<PaperplaneIcon title='Send melding' />}
           variant='tertiary'
