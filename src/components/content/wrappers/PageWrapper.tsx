@@ -1,11 +1,11 @@
-import { ReactNode } from "react"
-import { LoginBoundary } from "../../LoginBoundary"
-import { ErrorBoundary } from "react-error-boundary"
-import Header from "../../header/Header"
-import embarressedBob from "../../../assets/illustrations/EmbarrassedBob.svg"
-import { BodyShort, Button, Heading, HStack, VStack } from "@navikt/ds-react"
 import { ArrowsCirclepathIcon } from "@navikt/aksel-icons"
+import { BodyShort, Button, Heading, HStack, VStack } from "@navikt/ds-react"
+import { ReactNode } from "react"
+import { ErrorBoundary } from "react-error-boundary"
 import * as api from "../../../api/api"
+import embarressedBob from "../../../assets/illustrations/EmbarrassedBob.svg"
+import Header from "../../header/Header"
+import { LoginBoundary } from "../../LoginBoundary"
 
 const ErrorComponent = ({ error }: { error: any; resetErrorBoundary: (...args: any[]) => void }) => {
   console.log({ error })

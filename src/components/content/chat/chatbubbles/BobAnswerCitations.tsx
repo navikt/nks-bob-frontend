@@ -5,6 +5,7 @@ import remarkGfm from "remark-gfm"
 import { KunnskapsbasenIcon } from "../../../../assets/icons/KunnskapsbasenIcon.tsx"
 import { NavNoIcon } from "../../../../assets/icons/NavNoIcon.tsx"
 import { Citation, Context } from "../../../../types/Message.ts"
+import analytics from "../../../../utils/analytics.ts"
 
 interface BobAnswerCitationProps {
   citation: { title: string; source: "navno" | "nks"; citations: Citation[] }
@@ -40,6 +41,14 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
 export default BobAnswerCitations
 
 const SingleCitation = ({ citation, context }: { citation: Citation; context: Context | undefined }) => {
+  function handleClick() {
+    if (context?.source === "nks") {
+      analytics.kbSitatLenkeKlikket()
+    } else if (context?.source === "navno") {
+      analytics.navSitatLenkeKlikket()
+    }
+  }
+
   return (
     <div className='mb-2 flex flex-col'>
       <Label
@@ -58,10 +67,18 @@ const SingleCitation = ({ citation, context }: { citation: Citation; context: Co
               <CitationLink
                 citation={citation}
                 matchingContextCitationData={context}
+                onClick={handleClick}
               />
               <CopyButton
                 copyText={context.source === "nks" ? context.title : context.url}
                 size='xsmall'
+                onClick={() => {
+                  if (context.source === "nks") {
+                    analytics.kbSitatTittelKopiert()
+                  } else if (context.source === "navno") {
+                    analytics.navSitatLenkeKopiert()
+                  }
+                }}
               />
             </HStack>
             <SourceIcon source={context.source} />
@@ -107,6 +124,23 @@ const MultiCitation = ({
 }) => {
   const articleLink = contexts.at(citations[0]!.sourceId)!.url
 
+  function handleMainLinkClick() {
+    if (source === "nks") {
+      analytics.kbSitatLenkeKlikket()
+    } else if (source === "navno") {
+      analytics.navSitatLenkeKlikket()
+    }
+  }
+
+  function handleCitationLinkClick(citation: Citation) {
+    const context = contexts.at(citation.sourceId)
+    if (context?.source === "nks") {
+      analytics.kbSitatLenkeKlikket()
+    } else if (context?.source === "navno") {
+      analytics.navSitatLenkeKlikket()
+    }
+  }
+
   return (
     <div className='mb-2 flex flex-col'>
       <Label
@@ -126,6 +160,7 @@ const MultiCitation = ({
                 <Link
                   href={articleLink}
                   target='_blank'
+                  onClick={handleMainLinkClick}
                 >
                   {title}
                 </Link>
@@ -133,6 +168,13 @@ const MultiCitation = ({
               <CopyButton
                 copyText={source === "nks" ? title : articleLink}
                 size='xsmall'
+                onClick={() => {
+                  if (source === "nks") {
+                    analytics.kbSitatTittelKopiert()
+                  } else if (source === "navno") {
+                    analytics.navSitatLenkeKopiert()
+                  }
+                }}
               />
             </HStack>
             <SourceIcon source={source} />
@@ -163,6 +205,7 @@ const MultiCitation = ({
                 matchingContextCitationData={contexts.at(citation.sourceId)!}
                 title=''
                 className='inline'
+                onClick={() => handleCitationLinkClick(citation)}
               />
             </div>
           </>
@@ -177,11 +220,13 @@ const CitationLink = ({
   matchingContextCitationData,
   title,
   className,
+  onClick,
 }: {
   citation: Citation
   matchingContextCitationData: Context
   title?: string
   className?: string
+  onClick?: () => void
 }) => {
   function processTextForBlocks(text: string) {
     const blockSeparators = [/\n\s*\n/g, /\n\s*[-•·‣⁃*]\s*/g, /\n\s*\d+\.\s*/g, /\n\s*#{1,6}\s*/g, /\n\s*>\s*/g]
@@ -293,6 +338,7 @@ const CitationLink = ({
             target='_blank'
             inlineText
             className={`${className} navds-body-short--small`}
+            onClick={onClick}
           >
             {title ?? matchingContextCitationData.title}
             {title === "" ? (

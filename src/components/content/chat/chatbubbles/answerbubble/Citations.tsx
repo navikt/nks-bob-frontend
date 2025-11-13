@@ -3,6 +3,7 @@ import { BodyLong, BodyShort, CopyButton, HStack, Label, Link, Tag, VStack } fro
 import Markdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import { Context } from "../../../../../types/Message.ts"
+import analytics from "../../../../../utils/analytics.ts"
 import { HoverCard } from "../../../../ui/HoverCard.tsx"
 import { SourceIcon } from "../BobAnswerCitations.tsx"
 
@@ -41,6 +42,13 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
             href={`${source.url}#${source.anchor}`}
             target='_blank'
             title='Åpne artikkelen i ny fane'
+            onClick={() => {
+              if (source.source === "nks") {
+                analytics.kbModalLenkeKlikket()
+              } else if (source.source === "navno") {
+                analytics.navModalLenkeKlikket()
+              }
+            }}
           >
             <Label
               size='small'
@@ -52,6 +60,13 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
           <CopyButton
             copyText={source.source === "nks" ? source.title : `${source.url}#${source.anchor}`}
             size='xsmall'
+            onClick={() => {
+              if (source.source === "nks") {
+                analytics.kbModalLenkeKopiert()
+              } else if (source.source === "navno") {
+                analytics.navModalLenkeKopiert()
+              }
+            }}
           />
         </HStack>
         {source.source === "navno" && (
