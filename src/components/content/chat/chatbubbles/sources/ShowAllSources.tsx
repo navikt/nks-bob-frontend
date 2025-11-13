@@ -98,12 +98,14 @@ const NksSource = ({ context }: { context: Context }) => {
         <Link
           href={`${context.url}#${context.anchor}`}
           target='_blank'
+          onClick={analytics.kbVisAlleKilderLenkeKlikket}
         >
           <Label size='small'>{context.title}</Label>
         </Link>
         <CopyButton
           copyText={context.title}
           size='xsmall'
+          onClick={analytics.kbVisAlleKilderLenkeKopiert}
         />
       </HStack>
       <UtdragDropDown context={context} />
@@ -128,12 +130,14 @@ const NavSource = ({ context }: { context: Context }) => {
         <Link
           href={`${context.url}#${context.anchor}`}
           target='_blank'
+          onClick={analytics.navVisAlleKilderLenkeKlikket}
         >
           <Label size='small'>{title}</Label>
         </Link>
         <CopyButton
           copyText={context.title}
           size='xsmall'
+          onClick={analytics.navVisAlleKilderLenkeKopiert}
         />
       </HStack>
       <UtdragDropDown context={context} />

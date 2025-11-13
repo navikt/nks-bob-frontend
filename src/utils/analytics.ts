@@ -119,6 +119,32 @@ const nySamtalePgaVarsel = () => logEvent("Startet ny samtale pga varsel")
 
 const lukketNySamtaleVarsel = () => logEvent("Lukket ny samtale varsel")
 
+const kbSitatLenkeKlikket = () => logEvent("KB-sitat-lenke åpnet")
+
+const kbSitatTittelKopiert = () => logEvent("KB-sitat-tittel kopiert")
+
+const navSitatLenkeKlikket = () => logEvent("Nav-sitat-lenke åpnet")
+
+const navSitatLenkeKopiert = () => logEvent("KB-sitat-lenke kopiert")
+
+const navModalLenkeKlikket = () => logEvent("Nav-lenke i modal klikket")
+
+const navModalLenkeKopiert = () => logEvent("Nav-lenke i modal kopiert")
+
+const kbModalLenkeKlikket = () => logEvent("KB-lenke i modal klikket")
+
+const kbModalLenkeKopiert = () => logEvent("KB-lenke i modal kopiert")
+
+const navVisAlleKilderLenkeKlikket = () => logEvent("Nav-lenke under 'alle kilder' klikket")
+
+const navVisAlleKilderLenkeKopiert = () => logEvent("Nav-lenke under 'alle kilder' kopiert")
+
+const kbVisAlleKilderLenkeKlikket = () => logEvent("KB-lenke under 'alle kilder' klikket")
+
+const kbVisAlleKilderLenkeKopiert = () => logEvent("KB-lenke under 'all kilder' kopiert")
+
+
+
 export default {
   svarKopiert,
   svarEndret,
@@ -136,4 +162,17 @@ export default {
   åpnetFotnote,
   nySamtalePgaVarsel,
   lukketNySamtaleVarsel,
+  kbSitatLenkeKlikket,
+  navSitatLenkeKlikket,
+  kbSitatTittelKopiert,
+  navSitatLenkeKopiert,
+  navModalLenkeKlikket,
+  navModalLenkeKopiert,
+  kbModalLenkeKlikket,
+  kbModalLenkeKopiert,
+  navVisAlleKilderLenkeKlikket,
+  navVisAlleKilderLenkeKopiert,
+  kbVisAlleKilderLenkeKlikket,
+  kbVisAlleKilderLenkeKopiert,
+
 }
