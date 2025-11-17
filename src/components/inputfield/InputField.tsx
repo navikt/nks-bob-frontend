@@ -1,8 +1,7 @@
-import { Alert, BodyShort, Box, Button, Detail, Heading, Link, Textarea, VStack } from "@navikt/ds-react"
+import { Alert, BodyShort, Button, Detail, Heading, Link, List, Textarea, Tooltip, VStack } from "@navikt/ds-react"
 
 import { PaperplaneIcon } from "@navikt/aksel-icons"
 import { forwardRef, useEffect, useRef, useState } from "react"
-import reactStringReplace from "react-string-replace"
 
 import * as React from "react"
 import { useHotkeys } from "react-hotkeys-hook"
@@ -74,9 +73,6 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
 
   const [validationWarnings, setValidationWarnings] = useState<ValidationWarning[]>([])
   const [validationErrors, setValidationErrors] = useState<ValidationError[]>([])
-  const [highlightedInput, setHighlightedInput] = useState<React.ReactNode[]>([])
-  const [hideTextArea, setHideTextArea] = useState(false)
-  const [warningShown, setWarningShown] = useState(false)
 
   const { conversationId } = useParams()
 
@@ -145,16 +141,6 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     setValidationWarnings(validationResults.filter(isWarning))
     setValidationErrors(validationResults.filter(isError))
 
-    if (validationResults.length) {
-      setHideTextArea(true)
-    }
-
-    if (validationErrors.length) {
-      setWarningShown(false)
-    } else if (!warningShown && validationWarnings.length) {
-      setWarningShown(true)
-    }
-
     // TODO more analytics
     const containsFnr = validationResults.filter(isError).some((v) => v.validationType === "fnr")
     if (containsFnr) {
@@ -163,37 +149,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
 
     const validationError = validationResults.some(isError)
     setSendDisabled(disabled || validationError || hasAlertErrors)
-  }, [inputValue, disabled, hasAlertErrors, warningShown])
-
-  useEffect(() => {
-    const highlightOnClick = (start: number, end: number) => {
-      setHideTextArea(false)
-
-      // Small timeout to wait for the ref to be non-null.
-      setTimeout(() => {
-        textareaRef.current?.setSelectionRange(start, end)
-      }, 10)
-    }
-
-    const inputNodes = reactStringReplace(inputValue, "\n", () => <br />)
-    setHighlightedInput(
-      [...validationErrors, ...validationWarnings]
-        .flatMap(({ status, matches }) => matches.map((match) => ({ status, match })))
-        .reduce(
-          (prevNodes, { status, match }) =>
-            reactStringReplace(prevNodes, match.value, () => (
-              <span
-                onClick={() => highlightOnClick(match.start, match.end)}
-                className={`highlight-${status}`}
-              >
-                {match.value}
-              </span>
-            )),
-          // inputValue as unknown as React.ReactNode[],
-          inputNodes,
-        ),
-    )
-  }, [validationErrors, validationWarnings])
+  }, [inputValue, disabled, hasAlertErrors])
 
   useHotkeys("Alt+Ctrl+O", () => sendMessage("Oversett til engelsk", { clear: false, blur: false }), {
     enabled: !!conversationId,
@@ -245,6 +201,29 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           >
             Det ser ut som spørsmålet inneholder personopplysninger. Kontroller den markerte teksten før du sender.
           </BodyShort>
+          <List
+            size='small'
+            className='max-h-36 overflow-scroll'
+          >
+            {validationWarnings.flatMap(({ matches }, i) =>
+              matches.map(({ value, start, end }, j) => (
+                <List.Item key={`warning-list-${i}-${j}`}>
+                  <Tooltip content='Marker tekst'>
+                    <span
+                      className='cursor-pointer underline'
+                      onClick={() => {
+                        if (textareaRef.current) {
+                          scrollToSelection(textareaRef.current, start, end)
+                        }
+                      }}
+                    >
+                      {value}
+                    </span>
+                  </Tooltip>
+                </List.Item>
+              )),
+            )}
+          </List>
           <Link href='#'>Hvilke opplysninger skal man ikke sende til Bob?</Link>
         </Alert>
       )}
@@ -259,8 +238,30 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
             spacing
           >
             Teksten ser ut til å inneholde personopplysninger. Du må fjerne eller anonymisere det som er markert før du
-            kan sende spørsmålet.
           </BodyShort>
+          <List
+            size='small'
+            className='max-h-36 overflow-scroll'
+          >
+            {validationErrors.flatMap(({ matches }, i) =>
+              matches.map(({ value, start, end }, j) => (
+                <List.Item key={`error-list-${i}-${j}`}>
+                  <Tooltip content='Marker tekst'>
+                    <span
+                      className='cursor-pointer underline'
+                      onClick={() => {
+                        if (textareaRef.current) {
+                          scrollToSelection(textareaRef.current, start, end)
+                        }
+                      }}
+                    >
+                      {value}
+                    </span>
+                  </Tooltip>
+                </List.Item>
+              )),
+            )}
+          </List>
           <Link href='#'>Hvilke opplysninger skal man ikke sende til Bob?</Link>
         </Alert>
       )}
@@ -269,57 +270,36 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
         conversationId={conversationId}
       />
       <div className='inputfield relative flex max-w-[48rem] flex-col items-center justify-end'>
-        {hideTextArea && !warningShown ? (
-          <Box
-            background='surface-default'
-            padding='space-8'
-            borderRadius='medium'
-            borderColor='border-default'
-            borderWidth='1'
-            className='mb-3 max-h-[450px] min-h-[43px] w-[100%] max-w-[48rem] overflow-auto focus:min-h-[50px]'
-            onClick={() => {
-              setHideTextArea(false)
-            }}
-          >
-            {highlightedInput}
-          </Box>
-        ) : (
-          <Textarea
-            resize={isFocused ? "vertical" : false}
-            ref={textareaRef}
-            size='medium'
-            label=''
-            hideLabel
-            className='dialogcontent mb-3 min-h-[43px] truncate [&_textarea]:max-h-[450px] [&_textarea]:min-h-[43px] focus:[&_textarea]:min-h-[50px]'
-            minRows={1}
-            maxRows={15}
-            placeholder={placeholderText}
-            value={inputValue}
-            onChange={handleInputChange}
-            onKeyDown={handleKeyDown}
-            onPaste={handlePaste}
-            autoFocus={true}
-            tabIndex={1}
-            onDrop={handleDrop}
-            onFocus={() => {
-              setIsFocused(true)
-            }}
-            onBlur={() => {
-              setIsFocused(false)
+        <Textarea
+          resize={isFocused ? "vertical" : false}
+          ref={textareaRef}
+          size='medium'
+          label=''
+          hideLabel
+          className='dialogcontent mb-3 min-h-[43px] truncate [&_textarea]:max-h-[450px] [&_textarea]:min-h-[43px] focus:[&_textarea]:min-h-[50px]'
+          minRows={1}
+          maxRows={15}
+          placeholder={placeholderText}
+          value={inputValue}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
+          onPaste={handlePaste}
+          autoFocus={true}
+          tabIndex={1}
+          onDrop={handleDrop}
+          onFocus={() => {
+            setIsFocused(true)
+          }}
+          onBlur={() => {
+            setIsFocused(false)
 
-              if (validationErrors.length + validationWarnings.length > 0) {
-                setHideTextArea(true)
-              }
-
-              const ta = textareaRef.current
-
-              if (ta) {
-                ta.style.height = ""
-                ta.style.width = ""
-              }
-            }}
-          />
-        )}
+            const ta = textareaRef.current
+            if (ta) {
+              ta.style.height = ""
+              ta.style.width = ""
+            }
+          }}
+        />
         <Button
           icon={<PaperplaneIcon title='Send melding' />}
           variant='tertiary'
@@ -341,6 +321,16 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
 })
 
 export default InputField
+
+function scrollToSelection(textArea: HTMLTextAreaElement, selectionStart: number, selectionEnd: number) {
+  const fullText = textArea.value
+  textArea.value = fullText.substring(0, selectionEnd)
+  textArea.focus()
+  textArea.scrollTop = textArea.scrollHeight
+  textArea.value = fullText
+  textArea.setSelectionRange(selectionStart, selectionEnd)
+  textArea.focus()
+}
 
 interface NewMessageAlertProps {
   setInputValue: (newMessage: string) => void
