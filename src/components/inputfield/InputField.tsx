@@ -1,4 +1,4 @@
-import { Alert, BodyShort, Button, Detail, Heading, Link, List, Textarea, Tooltip, VStack } from "@navikt/ds-react"
+import { Alert, BodyShort, Button, Detail, Heading, HStack, Link, List, Textarea, VStack } from "@navikt/ds-react"
 
 import { PaperplaneIcon } from "@navikt/aksel-icons"
 import { forwardRef, useEffect, useRef, useState } from "react"
@@ -73,6 +73,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
 
   const [validationWarnings, setValidationWarnings] = useState<ValidationWarning[]>([])
   const [validationErrors, setValidationErrors] = useState<ValidationError[]>([])
+  const [ignoredValidations, setIgnoredValidations] = useState<string[]>([])
 
   const { conversationId } = useParams()
 
@@ -84,6 +85,10 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
   function sendMessage(messageContent?: string, opts: { clear?: boolean; blur?: boolean } = {}) {
     const { clear = true, blur = true } = opts
     if (sendDisabled) return
+    if (validateInput(ignoredValidations).length > 0) {
+      console.log({ validationWarnings })
+      return
+    }
 
     const message: NewMessage = { content: messageContent ?? inputValue }
     if (message.content.trim() !== "") {
@@ -135,11 +140,26 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
 
   const validators: Validator[] = [validateFnr, validateName, validateTlf]
 
-  useEffect(() => {
-    const validationResults = validators.map((validator) => validator.call(null, inputValue)).filter(isNotOk)
+  function validateInput(ignoredWarnings: string[]) {
+    setIgnoredValidations(ignoredWarnings)
+    console.log({ ignoredWarnings })
 
-    setValidationWarnings(validationResults.filter(isWarning))
-    setValidationErrors(validationResults.filter(isError))
+    const validationResults = validators.map((validator) => validator.call(null, inputValue)).filter(isNotOk)
+    console.log({ validationResults })
+
+    const warnings = validationResults
+      .filter(isWarning)
+      .flatMap((validation) => ({
+        ...validation,
+        matches: validation.matches.filter((match) => !ignoredWarnings.some((v) => v === match.value)),
+      }))
+      .filter((validation) => validation.matches.length > 0)
+
+    console.log({ warnings })
+    setValidationWarnings(warnings)
+
+    const errors = validationResults.filter(isError)
+    setValidationErrors(errors)
 
     // TODO more analytics
     const containsFnr = validationResults.filter(isError).some((v) => v.validationType === "fnr")
@@ -147,7 +167,17 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
       analytics.tekstInneholderFnr()
     }
 
-    const validationError = validationResults.some(isError)
+    return [...warnings, ...errors]
+  }
+
+  useEffect(() => {
+    const validationError = validationErrors.length > 0
+    const validationWarning = validationWarnings.length > 0
+
+    if (validationError || validationWarning) {
+      validateInput(ignoredValidations)
+    }
+
     setSendDisabled(disabled || validationError || hasAlertErrors)
   }, [inputValue, disabled, hasAlertErrors])
 
@@ -207,19 +237,36 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           >
             {validationWarnings.flatMap(({ matches }, i) =>
               matches.map(({ value, start, end }, j) => (
-                <List.Item key={`warning-list-${i}-${j}`}>
-                  <Tooltip content='Marker tekst'>
-                    <span
-                      className='cursor-pointer underline'
+                <List.Item
+                  key={`warning-list-${i}-${j}`}
+                  className='items-center'
+                >
+                  <HStack
+                    gap='2'
+                    align='center'
+                  >
+                    <span className='font-bold'>{value}</span>
+                    <Button
+                      variant='tertiary-neutral'
+                      size='small'
+                      onClick={() => {
+                        validateInput([...ignoredValidations, value])
+                      }}
+                    >
+                      Ignorer
+                    </Button>
+                    <Button
+                      variant='tertiary-neutral'
+                      size='small'
                       onClick={() => {
                         if (textareaRef.current) {
                           scrollToSelection(textareaRef.current, start, end)
                         }
                       }}
                     >
-                      {value}
-                    </span>
-                  </Tooltip>
+                      Endre
+                    </Button>
+                  </HStack>
                 </List.Item>
               )),
             )}
@@ -245,19 +292,27 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           >
             {validationErrors.flatMap(({ matches }, i) =>
               matches.map(({ value, start, end }, j) => (
-                <List.Item key={`error-list-${i}-${j}`}>
-                  <Tooltip content='Marker tekst'>
-                    <span
-                      className='cursor-pointer underline'
+                <List.Item
+                  key={`error-list-${i}-${j}`}
+                  className='items-center'
+                >
+                  <HStack
+                    gap='2'
+                    align='center'
+                  >
+                    <span className='font-bold'>{value}</span>
+                    <Button
+                      variant='tertiary-neutral'
+                      size='small'
                       onClick={() => {
                         if (textareaRef.current) {
                           scrollToSelection(textareaRef.current, start, end)
                         }
                       }}
                     >
-                      {value}
-                    </span>
-                  </Tooltip>
+                      Endre
+                    </Button>
+                  </HStack>
                 </List.Item>
               )),
             )}
