@@ -16,7 +16,7 @@ import {
   isError,
   isNotOk,
   isWarning,
-  validateFnr,
+  validatePersonnummer,
   validateName,
   validateTlf,
   ValidationError,
@@ -138,7 +138,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     }
   }
 
-  const validators: Validator[] = [validateFnr, validateName, validateTlf]
+  const validators: Validator[] = [validatePersonnummer, validateName, validateTlf]
 
   function validateInput(ignoredWarnings: string[]) {
     setIgnoredValidations(ignoredWarnings)

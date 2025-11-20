@@ -62,15 +62,16 @@ function getMatches(regex: RegExp, input: string): ValidationMatch[] {
   }))
 }
 
-// TODO støtte d-nummer også
-// const fnrRegex = /\d{6}(|.)\d{5}/g
-const fnrRegex = /(0[1-9]|[1-2][0-9]|31(?!(?:0[2469]|11))|30(?!02))(0[1-9]|1[0-2])(\d{2})( ?)(\d{5})/g
-export function validateFnr(input: string): ValidationResult {
-  if (!input.match(fnrRegex)) {
+const fnrRegex = /([0-2][0-9]|31(?!(?:0[2469]|11))|30(?!02))(0[1-9]|1[0-2])(\d{2})( ?)(\d{5})/
+const dnrRegex = /([4-6][0-9]|71(?!(?:0[2469]|11))|70(?!02))(0[1-9]|1[0-2])(\d{2})( ?)(\d{5})/
+const hnrRegex = /([0-2][0-9]|31(?!(?:4[2469]|51))|30(?!02))(4[1-9]|5[0-2])(\d{2})( ?)(\d{5})/
+const personnummerRegex = new RegExp([fnrRegex, dnrRegex, hnrRegex].map(({ source }) => source).join("|"), "g")
+export function validatePersonnummer(input: string): ValidationResult {
+  if (!input.match(personnummerRegex)) {
     return ok()
   }
 
-  const matches = getMatches(fnrRegex, input)
+  const matches = getMatches(personnummerRegex, input)
   return error("Tekst som ligner på et fødselsnummer:", "fnr", matches)
 }
 
