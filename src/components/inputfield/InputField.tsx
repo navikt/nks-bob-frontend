@@ -22,6 +22,7 @@ import {
   ValidationError,
   ValidationWarning,
   Validator,
+  validateEmail,
 } from "../../utils/inputValidation.ts"
 
 type InputFieldState = {
@@ -138,7 +139,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     }
   }
 
-  const validators: Validator[] = [validatePersonnummer, validateName, validateTlf]
+  const validators: Validator[] = [validatePersonnummer, validateName, validateTlf, validateEmail]
 
   function validateInput(ignoredWarnings: string[]) {
     setIgnoredValidations(ignoredWarnings)

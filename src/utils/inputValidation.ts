@@ -1,6 +1,6 @@
 export type ValidationResult = ValidationOk | ValidationWarning | ValidationError
 
-export type ValidationType = "fnr" | "name" | "tlf"
+export type ValidationType = "fnr" | "name" | "tlf" | "email"
 
 export type ValidationMatch = { value: string; start: number; end: number }
 
@@ -66,7 +66,7 @@ const fnrRegex = /([0-2][0-9]|31(?!(?:0[2469]|11))|30(?!02))(0[1-9]|1[0-2])(\d{2
 const dnrRegex = /([4-6][0-9]|71(?!(?:0[2469]|11))|70(?!02))(0[1-9]|1[0-2])(\d{2})( ?)(\d{5})/
 const hnrRegex = /([0-2][0-9]|31(?!(?:4[2469]|51))|30(?!02))(4[1-9]|5[0-2])(\d{2})( ?)(\d{5})/
 const personnummerRegex = new RegExp([fnrRegex, dnrRegex, hnrRegex].map(({ source }) => source).join("|"), "g")
-export function validatePersonnummer(input: string): ValidationResult {
+export const validatePersonnummer: Validator = (input: string): ValidationResult => {
   if (!input.match(personnummerRegex)) {
     return ok()
   }
@@ -76,7 +76,7 @@ export function validatePersonnummer(input: string): ValidationResult {
 }
 
 const nameRegex = /[A-ZÆØÅ]\w*[^\S\r\n]+?[A-ZÆØÅ]\w*/g
-export function validateName(input: string): ValidationResult {
+export const validateName: Validator = (input: string): ValidationResult => {
   if (!input.match(nameRegex)) {
     return ok()
   }
@@ -86,7 +86,7 @@ export function validateName(input: string): ValidationResult {
 }
 
 const tlfRegex = /((0047)?|(\+47)?)[4|9]\d{7}/g
-export function validateTlf(input: string): ValidationResult {
+export const validateTlf: Validator = (input: string): ValidationResult => {
   if (!input.match(tlfRegex)) {
     return ok()
   }
@@ -95,5 +95,12 @@ export function validateTlf(input: string): ValidationResult {
   return warning("Tekst som ligner på et telefonnummer:", "tlf", matches)
 }
 
-// TODO validator for "Sluttbruker NAVN"? eller evt "Sluttbruker NAVN • 15. oktober 2025, kl. 20.17"
-// TODO Dato
+const emailRegex = /[\w\.]+@([\w-]+\.)+[\w-]{2,4}/g
+export const validateEmail: Validator = (input: string): ValidationResult => {
+  if (!input.match(emailRegex)) {
+    return ok()
+  }
+
+  const matches = getMatches(emailRegex, input)
+  return warning("Tekst som ligner på en epost-adresse:", "email", matches)
+}
