@@ -87,7 +87,6 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     const { clear = true, blur = true } = opts
     if (sendDisabled) return
     if (validateInput(ignoredValidations).length > 0) {
-      console.log({ validationWarnings })
       return
     }
 
@@ -143,10 +142,8 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
 
   function validateInput(ignoredWarnings: string[]) {
     setIgnoredValidations(ignoredWarnings)
-    console.log({ ignoredWarnings })
 
     const validationResults = validators.map((validator) => validator.call(null, inputValue)).filter(isNotOk)
-    console.log({ validationResults })
 
     const warnings = validationResults
       .filter(isWarning)
@@ -156,7 +153,6 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
       }))
       .filter((validation) => validation.matches.length > 0)
 
-    console.log({ warnings })
     setValidationWarnings(warnings)
 
     const errors = validationResults.filter(isError)
