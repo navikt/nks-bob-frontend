@@ -33,7 +33,7 @@ const infoÅpnet = () => logEvent("Info modal åpnet")
 
 const mørkModusByttet = (modus: "lys" | "mørk") => logEvent("Mørk modus byttet", { modus })
 
-const meldingSendt = (trigger: "knapp" | "enter") => logEvent("Melding sendt", { trigger })
+const meldingSendt = (trigger: "knapp" | "enter" | "hotkey") => logEvent("Melding sendt", { trigger })
 
 const kildeAccordionÅpnet = () => logEvent("Kilde accordion åpnet")
 

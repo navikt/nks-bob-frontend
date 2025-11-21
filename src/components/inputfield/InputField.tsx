@@ -83,9 +83,16 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
   const { alerts } = useAlerts()
   const hasAlertErrors = alerts.at(0)?.notificationType === "Error"
 
-  function sendMessage(messageContent?: string, opts: { clear?: boolean; blur?: boolean } = {}) {
+  function sendMessage(
+    trigger: "knapp" | "enter" | "hotkey",
+    messageContent?: string,
+    opts: { clear?: boolean; blur?: boolean } = {},
+  ) {
     const { clear = true, blur = true } = opts
-    if (sendDisabled) return
+    if (sendDisabled) {
+      return
+    }
+
     if (validateInput(ignoredValidations).length > 0) {
       return
     }
@@ -94,8 +101,16 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     if (message.content.trim() !== "") {
       onSend(message)
     }
-    if (clear) setInputValue("")
-    if (blur) textareaRef.current?.blur()
+
+    if (clear) {
+      setInputValue("")
+    }
+
+    if (blur) {
+      textareaRef.current?.blur()
+    }
+
+    analytics.meldingSendt(trigger)
   }
 
   function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -123,8 +138,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
         e.preventDefault()
 
         if (!sendDisabled) {
-          analytics.meldingSendt("enter")
-          sendMessage()
+          sendMessage("enter")
           setIsSensitiveInfoAlert(false)
         }
       }
@@ -133,8 +147,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
 
   function handleButtonClick() {
     if (inputValue.trim() !== "") {
-      analytics.meldingSendt("knapp")
-      sendMessage()
+      sendMessage("knapp")
     }
   }
 
@@ -178,15 +191,19 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     setSendDisabled(disabled || validationError || hasAlertErrors)
   }, [inputValue, disabled, hasAlertErrors])
 
-  useHotkeys("Alt+Ctrl+O", () => sendMessage("Oversett til engelsk", { clear: false, blur: false }), {
+  useHotkeys("Alt+Ctrl+O", () => sendMessage("hotkey", "Oversett til engelsk", { clear: false, blur: false }), {
     enabled: !!conversationId,
     enableOnFormTags: true,
   })
-  useHotkeys("Alt+Ctrl+P", () => sendMessage("Gjør om svaret til punktliste", { clear: false, blur: false }), {
-    enabled: !!conversationId,
-    enableOnFormTags: true,
-  })
-  useHotkeys("Alt+Ctrl+E", () => sendMessage("Gjør svaret mer empatisk", { clear: false, blur: false }), {
+  useHotkeys(
+    "Alt+Ctrl+P",
+    () => sendMessage("hotkey", "Gjør om svaret til punktliste", { clear: false, blur: false }),
+    {
+      enabled: !!conversationId,
+      enableOnFormTags: true,
+    },
+  )
+  useHotkeys("Alt+Ctrl+E", () => sendMessage("hotkey", "Gjør svaret mer empatisk", { clear: false, blur: false }), {
     enabled: !!conversationId,
     enableOnFormTags: true,
   })
