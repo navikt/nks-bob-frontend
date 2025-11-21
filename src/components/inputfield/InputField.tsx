@@ -93,7 +93,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
       return
     }
 
-    if (validateInput(ignoredValidations).length > 0) {
+    if (validateInput().length > 0) {
       return
     }
 
@@ -124,7 +124,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     const pasted = e.clipboardData.getData("text")
     if (pasted.trim().length > 0) {
       setIsSensitiveInfoAlert(true)
-      validateInput(ignoredValidations)
+      validateInput()
     }
   }
 
@@ -149,8 +149,12 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
 
   const validators: Validator[] = [validatePersonnummer, validateName, validateTlf, validateEmail]
 
-  function validateInput(ignoredWarnings: string[]) {
-    setIgnoredValidations(ignoredWarnings)
+  function validateInput(ignoredWarnings?: string[]) {
+    if (ignoredWarnings) {
+      setIgnoredValidations(ignoredWarnings)
+    } else {
+      ignoredWarnings = ignoredValidations
+    }
 
     const validationResults = validators.map((validator) => validator.call(null, inputValue)).filter(isNotOk)
 
@@ -167,11 +171,13 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     const errors = validationResults.filter(isError)
     setValidationErrors(errors)
 
-    // TODO more analytics
     const containsFnr = validationResults.filter(isError).some((v) => v.validationType === "fnr")
     if (containsFnr) {
       analytics.tekstInneholderFnr()
     }
+
+    warnings.forEach(({ validationType }) => analytics.valideringsfeil("warning", validationType))
+    errors.forEach(({ validationType }) => analytics.valideringsfeil("error", validationType))
 
     return [...warnings, ...errors]
   }
@@ -181,7 +187,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     const validationWarning = validationWarnings.length > 0
 
     if (validationError || validationWarning) {
-      validateInput(ignoredValidations)
+      validateInput()
     }
 
     setSendDisabled(disabled || validationError || hasAlertErrors)
