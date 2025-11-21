@@ -107,6 +107,8 @@ const tekstInnholdLimtInn = () => logEvent("Tekstinnhold limt inn")
 
 const tekstInneholderFnr = () => logEvent("Tekst inneholder fnr")
 
+const valideringsfeil = (level: "warning" | "error", type: string) => logEvent("Valideringsfeil", { level, type })
+
 const forslagTrykket = () => logEvent("Forslag trykket")
 
 const visAlleKilderÅpnet = () => logEvent("Vis alle kilder åpnet")
@@ -130,6 +132,7 @@ export default {
   kildeAccordionSkjult,
   tekstInnholdLimtInn,
   tekstInneholderFnr,
+  valideringsfeil,
   forslagTrykket,
   visAlleKilderÅpnet,
   spørsmålRedigert,
