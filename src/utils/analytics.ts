@@ -70,8 +70,8 @@ interface Umami {
 declare global {
   interface Window {
     umami?: Umami
-    }
   }
+}
 
 async function umamiTrack(event: string, data?: Record<string, unknown>) {
   if (window.location.hostname === "localhost") {
@@ -97,7 +97,7 @@ const infoÅpnet = () => logEvent("Info modal åpnet")
 
 const mørkModusByttet = (modus: "lys" | "mørk") => logEvent("Mørk modus byttet", { modus })
 
-const meldingSendt = (trigger: "knapp" | "enter") => logEvent("Melding sendt", { trigger })
+const meldingSendt = (trigger: "knapp" | "enter" | "hotkey") => logEvent("Melding sendt", { trigger })
 
 const kildeAccordionÅpnet = () => logEvent("Kilde accordion åpnet")
 
@@ -106,6 +106,8 @@ const kildeAccordionSkjult = () => logEvent("Kilde accordion skjult")
 const tekstInnholdLimtInn = () => logEvent("Tekstinnhold limt inn")
 
 const tekstInneholderFnr = () => logEvent("Tekst inneholder fnr")
+
+const valideringsfeil = (level: "warning" | "error", type: string) => logEvent("Valideringsfeil", { level, type })
 
 const forslagTrykket = () => logEvent("Forslag trykket")
 
@@ -156,6 +158,7 @@ export default {
   kildeAccordionSkjult,
   tekstInnholdLimtInn,
   tekstInneholderFnr,
+  valideringsfeil,
   forslagTrykket,
   visAlleKilderÅpnet,
   spørsmålRedigert,
