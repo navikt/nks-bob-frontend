@@ -1,12 +1,13 @@
-import { useParams, useSearchParams } from "react-router"
+import { Link, useParams, useSearchParams } from "react-router"
 import { useSendMessage } from "../../api/sse.ts"
 
-import { ArrowDownIcon } from "@navikt/aksel-icons"
-import { Alert as AlertComponent, Button, Heading, Tooltip } from "@navikt/ds-react"
+import { ErrorBoundary } from "react-error-boundary"
+import { ArrowDownIcon, NotePencilIcon } from "@navikt/aksel-icons"
+import { Alert as AlertComponent, BodyShort, Button, Heading, HStack, Tooltip, VStack } from "@navikt/ds-react"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import Markdown from "react-markdown"
-import { useAlerts, useMessages } from "../../api/api.ts"
+import { isApiError, useAlerts, useMessages } from "../../api/api.ts"
 import { NewMessage } from "../../types/Message.ts"
 import { messageStore } from "../../types/messageStore.ts"
 import { Alert } from "../../types/Notifications.ts"
@@ -17,6 +18,7 @@ import { ShowAllSources } from "./chat/chatbubbles/sources/ShowAllSources.tsx"
 import ChatContainer from "./chat/ChatContainer.tsx"
 import { WhitespacePlaceholder } from "./placeholders/Placeholders.tsx"
 import DialogWrapper from "./wrappers/DialogWrapper.tsx"
+import embarressedBob from "../../assets/illustrations/EmbarrassedBob.svg"
 
 function ConversationContent() {
   const containerRef = useRef<HTMLDivElement | null>(null)
@@ -183,4 +185,60 @@ const ErrorBanner = ({ alerts }: { alerts: Alert[] }) => {
   )
 }
 
-export default ConversationContent
+const ConversationNotFound = () => {
+  const { conversationId } = useParams()
+  return (
+    <div className='conversation-content'>
+      <div className="flex flex-col h-full w-full justify-between" >
+        <Header conversation={conversationId} />
+          <HStack
+            gap='16'
+            align='center'
+            justify='center'
+          >
+            <img
+              src={embarressedBob}
+              alt='Embarresed Bob'
+              width='200px'
+            />
+            <VStack
+              className='max-w-[30%]'
+              gap='4'
+            >
+              <Heading size='medium'>Samtalen ble ikke funnet</Heading>
+              <BodyShort>Hvis samtalen er over 30 dager gammel så kan den ha blitt slettet.</BodyShort>
+              <Link to='/'>
+                <Button
+                  size='small'
+                  className='max-w-64'
+                  icon={<NotePencilIcon />}
+                  as='a'
+                >
+                  Start en ny samtale
+                </Button>
+              </Link>
+            </VStack>
+          </HStack>
+        <InputField
+          onSend={() => {}}
+          disabled={true}
+        />
+      </div>
+    </div>
+  )
+}
+
+export default () => {
+  return (
+    <ErrorBoundary
+      FallbackComponent={ConversationNotFound}
+      onError={(error: Error) => {
+        if (isApiError(error) && error.status !== 404) {
+          throw error
+        }
+      }}
+    >
+      <ConversationContent />
+    </ErrorBoundary>
+  )
+}

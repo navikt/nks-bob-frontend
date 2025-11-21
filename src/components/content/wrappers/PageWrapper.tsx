@@ -55,7 +55,14 @@ function PageWrapper({ children }: PageWrapperProps) {
     <div className='pagewrapper'>
       <ErrorBoundary
         FallbackComponent={ErrorComponent}
-        onError={(error: Error) => api.log("error", error.message)}
+        onError={(error: Error) => {
+          if (error.message === "network error") {
+            // Vanlig feil som oppstår om man åpner en fane med en utlogget sesjon
+            return api.log("warn", error.message)
+          }
+
+          return api.log("error", error.message)
+        }}
       >
         <LoginBoundary>{children}</LoginBoundary>
       </ErrorBoundary>
