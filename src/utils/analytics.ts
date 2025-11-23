@@ -145,7 +145,7 @@ const kbVisAlleKilderLenkeKlikket = () => logEvent("KB-lenke under 'alle kilder'
 
 const kbVisAlleKilderLenkeKopiert = () => logEvent("KB-lenke under 'all kilder' kopiert")
 
-
+const svartekstMarkert = () => logEvent("Svartekst markert og kopiert")
 
 export default {
   svarKopiert,
@@ -177,5 +177,5 @@ export default {
   navVisAlleKilderLenkeKopiert,
   kbVisAlleKilderLenkeKlikket,
   kbVisAlleKilderLenkeKopiert,
-
+  svartekstMarkert,
 }

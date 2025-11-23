@@ -10,6 +10,7 @@ import BobSuggests from "../../suggestions/BobSuggests.tsx"
 import BobAnswerCitations from "../BobAnswerCitations.tsx"
 import ToggleCitations from "../citations/ToggleCitations.tsx"
 import { CitationLinks, CitationNumber } from "./Citations.tsx"
+import analytics from "../../../../../utils/analytics.ts"
 
 interface BobAnswerBubbleProps {
   message: Message
@@ -144,6 +145,12 @@ const MessageContent = ({
     >
   >
 }) => {
+  const divRef = React.useRef<HTMLDivElement>(null)
+  divRef.current?.addEventListener("copy", (e) => {
+    analytics.svartekstMarkert()
+    e.stopImmediatePropagation()
+  })
+
   const addCitation = (citationId: number, position: number) => {
     let existingCitations = citations
     const newCitation = { citationId, position }
@@ -164,7 +171,7 @@ const MessageContent = ({
   }
 
   return (
-    <div className='flex flex-col gap-5'>
+    <div className='flex flex-col gap-5' ref={divRef}>
       <Heading
         size='small'
         className='sr-only top-0'
