@@ -86,6 +86,8 @@ const versjonOppdatert = (gammelVersjon: string, nyVersjon: string) =>
 
 const versjonLagret = (versjon: string) => logEvent("Versjon av Bob brukt", { versjon })
 
+const svartekstMarkert = () => logEvent("Svartekst markert og kopiert")
+
 export default {
   svarKopiert,
   svarEndret,
@@ -118,4 +120,5 @@ export default {
   kbVisAlleKilderLenkeKopiert,
   versjonOppdatert,
   versjonLagret,
+  svartekstMarkert,
 }
