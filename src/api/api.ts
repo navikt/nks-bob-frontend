@@ -12,6 +12,10 @@ export type ApiError = {
   data: any
 }
 
+export function isApiError(error: any): error is ApiError {
+  return typeof error.status === "number" && typeof error.message === "string"
+}
+
 export async function fetcher<T>(input: RequestInfo, init?: RequestInit): Promise<T> {
   const res = await fetch(`${API_URL}${input}`, {
     ...init,
@@ -127,6 +131,10 @@ export const useMessages = (conversationId: string) => {
       revalidateOnFocus: false,
     },
   )
+
+  if (error) {
+    throw error
+  }
 
   return {
     messages: data ?? [],
