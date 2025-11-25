@@ -6,7 +6,7 @@
   "main": "src/server.ts",
   "dependencies": {
     "@navikt/oasis": "3.8.0",
-    "body-parser": "^2.2.0",
+    "body-parser": "^2.2.1",
     "compression": "^1.8.0",
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
