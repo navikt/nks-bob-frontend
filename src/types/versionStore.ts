@@ -17,8 +17,8 @@ export const versionStore = create<VersionState>()((set) => {
       }
 
       if (state.currentVersion !== upstreamVersion) {
-        // TODO reload
         console.error("Old Bob version detected")
+        window.location.reload()
       }
 
       return state
