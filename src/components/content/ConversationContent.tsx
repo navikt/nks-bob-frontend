@@ -1,4 +1,4 @@
-import { Link, useParams, useSearchParams } from "react-router"
+import { Link, useLocation, useNavigate, useParams } from "react-router"
 import { useSendMessage } from "../../api/sse.ts"
 
 import { ErrorBoundary } from "react-error-boundary"
@@ -25,9 +25,14 @@ function ConversationContent() {
   const [showScrollButton, setShowScrollButton] = useState<boolean>(false)
 
   const { conversationId } = useParams()
-  const [searchParams, setSearchParams] = useSearchParams()
+  const location = useLocation()
+  const navigate = useNavigate()
 
-  const { messages: existingMessages, isLoading: isLoadingExistingMessages } = useMessages(conversationId!)
+  const {
+    messages: existingMessages,
+    isLoading: isLoadingExistingMessages,
+    isValidating,
+  } = useMessages(conversationId!)
   const { sendMessage, isLoading } = useSendMessage(conversationId!)
   const { messages, setMessages } = messageStore()
   const { alerts } = useAlerts()
@@ -44,17 +49,15 @@ function ConversationContent() {
   }, [existingMessages, isLoadingExistingMessages, isLoading, setMessages])
 
   useEffect(() => {
-    if (searchParams.has("initialMessage")) {
-      const initialMessage = searchParams.get("initialMessage")!
+    if (location.state?.initialMessage && !isValidating) {
+      const initialMessage = location.state.initialMessage
 
       if (messages.length === 0) {
         sendMessage({ content: initialMessage })
+        navigate(location.pathname, { replace: true, state: null })
       }
-
-      searchParams.delete("initialMessage")
-      setSearchParams({ ...searchParams })
     }
-  }, [searchParams, messages])
+  }, [location, messages, navigate, isValidating])
 
   function handleUserMessage(message: NewMessage) {
     sendMessage(message)
@@ -189,36 +192,36 @@ const ConversationNotFound = () => {
   const { conversationId } = useParams()
   return (
     <div className='conversation-content'>
-      <div className="flex flex-col h-full w-full justify-between" >
+      <div className='flex h-full w-full flex-col justify-between'>
         <Header conversation={conversationId} />
-          <HStack
-            gap='16'
-            align='center'
-            justify='center'
+        <HStack
+          gap='16'
+          align='center'
+          justify='center'
+        >
+          <img
+            src={embarressedBob}
+            alt='Embarresed Bob'
+            width='200px'
+          />
+          <VStack
+            className='max-w-[30%]'
+            gap='4'
           >
-            <img
-              src={embarressedBob}
-              alt='Embarresed Bob'
-              width='200px'
-            />
-            <VStack
-              className='max-w-[30%]'
-              gap='4'
-            >
-              <Heading size='medium'>Samtalen ble ikke funnet</Heading>
-              <BodyShort>Hvis samtalen er over 30 dager gammel så kan den ha blitt slettet.</BodyShort>
-              <Link to='/'>
-                <Button
-                  size='small'
-                  className='max-w-64'
-                  icon={<NotePencilIcon />}
-                  as='a'
-                >
-                  Start en ny samtale
-                </Button>
-              </Link>
-            </VStack>
-          </HStack>
+            <Heading size='medium'>Samtalen ble ikke funnet</Heading>
+            <BodyShort>Hvis samtalen er over 30 dager gammel så kan den ha blitt slettet.</BodyShort>
+            <Link to='/'>
+              <Button
+                size='small'
+                className='max-w-64'
+                icon={<NotePencilIcon />}
+                as='a'
+              >
+                Start en ny samtale
+              </Button>
+            </Link>
+          </VStack>
+        </HStack>
         <InputField
           onSend={() => {}}
           disabled={true}
