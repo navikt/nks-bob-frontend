@@ -3,6 +3,7 @@ import useSWRMutation from "swr/mutation"
 import { Conversation, ConversationFeedback, Feedback, Message, NewConversation, NewMessage } from "../types/Message"
 import { Alert, NewsNotification } from "../types/Notifications"
 import { UserConfig } from "../types/User"
+import { versionStore } from "../types/versionStore"
 
 export const API_URL = `${import.meta.env.BASE_URL}bob-api`
 
@@ -261,4 +262,36 @@ export const log = async (level: "error" | "warn" | "info", message: string) => 
   }
 
   return false
+}
+
+export async function appVersionFetcher(): Promise<{ version: string }> {
+  const res = await fetch(`${import.meta.env.BASE_URL}bff/version`, {
+    credentials: "include",
+    method: "GET",
+  })
+
+  if (res.status >= 400) {
+    throw {
+      status: res.status,
+      message: res.statusText,
+      data: await res.json(),
+    } as ApiError
+  }
+
+  return res.json()
+}
+
+export const useAppVersionCheck = () => {
+  const { registerVersion } = versionStore()
+
+  useSWR("/api/version", appVersionFetcher, {
+    refreshInterval: 300000,
+    revalidateOnFocus: true,
+    onSuccess: (response) => {
+      registerVersion(response.version)
+    },
+    onError: (err) => {
+      console.error("Error checking app version:", err.message)
+    },
+  })
 }

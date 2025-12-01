@@ -218,6 +218,7 @@ const main = async () => {
 
   app.use("/{*splat}", (_req, res, next) => {
     res.setHeader("NAIS_APP_IMAGE", NAIS_APP_IMAGE)
+    res.setHeader("VERSION", GIT_COMMIT)
     next()
   })
 
@@ -257,6 +258,10 @@ const main = async () => {
       lastName,
       email: result.preferred_username,
     })
+  })
+
+  app.get("/bff/version", (_req, res) => {
+    res.status(200).send({ version: GIT_COMMIT })
   })
 
   const jsonParser = bodyParser.json()
