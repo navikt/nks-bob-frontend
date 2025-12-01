@@ -30,11 +30,9 @@ const CreateConversationContent = () => {
       initialMessage: null,
     }
 
-    const initialMessage = encodeURIComponent(message.content)
-
     createConversation(newConversation)
       .then((conversation) => {
-        navigate(`/samtaler/${conversation.id}?initialMessage=${initialMessage}`, {})
+        navigate(`/samtaler/${conversation.id}`, { state: { initialMessage: message.content } })
       })
 
       .catch((error) => {

@@ -124,7 +124,7 @@ export const useDeleteConversation = (conversation: Conversation) => {
 }
 
 export const useMessages = (conversationId: string) => {
-  const { data, isLoading, error } = useSWR<Message[], ApiError>(
+  const { data, isLoading, error, isValidating } = useSWR<Message[], ApiError>(
     `/api/v1/conversations/${conversationId}/messages`,
     fetcher,
     {
@@ -139,6 +139,7 @@ export const useMessages = (conversationId: string) => {
   return {
     messages: data ?? [],
     isLoading,
+    isValidating,
     error,
   }
 }
