@@ -16,6 +16,7 @@ export const AnalyticsProvider = () => (
       data-host-url='https://umami.nav.no'
       data-website-id={websiteId}
       data-domains={domains}
+      data-auto-track="false"
     />
   </Head>
 )
