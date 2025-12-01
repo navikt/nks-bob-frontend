@@ -18,6 +18,7 @@ export const versionStore = create<VersionState>()((set) => {
 
       if (state.currentVersion !== upstreamVersion) {
         console.error("Old Bob version detected")
+        window.alert("Du kjører en utdatert versjon av Bob. Siden lastes på nytt.")
         window.location.reload()
       }
 
