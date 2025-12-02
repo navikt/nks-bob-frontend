@@ -95,6 +95,10 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     }
   }
 
+  function handleDrop(e: React.DragEvent<HTMLTextAreaElement>) {
+    e.preventDefault()
+  }
+
   function checkContainsFnr(value: string) {
     return /(\d{6}(|.)\d{5})/.test(value)
   }
@@ -191,6 +195,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           onPaste={handlePaste}
           autoFocus={true}
           tabIndex={1}
+          onDrop={handleDrop}
           onFocus={() => {
             setIsFocused(true)
           }}
