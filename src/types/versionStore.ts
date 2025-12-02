@@ -1,4 +1,5 @@
 import { create } from "zustand"
+import analytics from "../utils/analytics"
 
 type VersionState = {
   currentVersion: string | null
@@ -13,12 +14,15 @@ export const versionStore = create<VersionState>()((set) => {
       }
 
       if (state.currentVersion === null) {
+        analytics.versjonLagret(upstreamVersion)
         return { ...state, currentVersion: upstreamVersion }
       }
 
       if (state.currentVersion !== upstreamVersion) {
         console.error("Gammel versjon av Bob oppdatet.")
         window.alert("Du kjører en utdatert versjon av Bob. Siden lastes på nytt.")
+
+        analytics.versjonOppdatert(state.currentVersion, upstreamVersion)
         window.location.reload()
       }
 

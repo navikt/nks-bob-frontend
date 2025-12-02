@@ -79,6 +79,11 @@ const kbVisAlleKilderLenkeKlikket = () => logEvent("KB-lenke under 'alle kilder'
 
 const kbVisAlleKilderLenkeKopiert = () => logEvent("KB-lenke under 'all kilder' kopiert")
 
+const versjonOppdatert = (gammelVersjon: string, nyVersjon: string) =>
+  logEvent("Bob versjon oppdatert", { gammelVersjon, nyVersjon })
+
+const versjonLagret = (versjon: string) => logEvent("Versjon av Bob brukt", { versjon })
+
 export default {
   svarKopiert,
   svarEndret,
@@ -108,4 +113,6 @@ export default {
   navVisAlleKilderLenkeKopiert,
   kbVisAlleKilderLenkeKlikket,
   kbVisAlleKilderLenkeKopiert,
+  versjonOppdatert,
+  versjonLagret,
 }
