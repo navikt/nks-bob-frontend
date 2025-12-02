@@ -15,10 +15,12 @@ import {
   VStack,
 } from "@navikt/ds-react"
 import { format } from "date-fns"
-import { Dispatch, FormEvent, RefObject, SetStateAction, useEffect, useRef, useState } from "react"
+import { Dispatch, FormEvent, RefObject, SetStateAction, useCallback, useEffect, useRef, useState } from "react"
 import { useNavigate, useSearchParams } from "react-router"
+import { debounce } from "ts-debounce"
 import { preloadFeedbacks, useFeedbacks, useUpdateFeedback } from "../../../../api/admin"
 import { Feedback } from "../../../../types/Message"
+import {  useSWRConfig } from "swr"
 
 export const FeedbackFromUsers = () => {
   const menuRef = useRef<HTMLDivElement>(null)
@@ -324,6 +326,7 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
 
   const boxRef = useRef(null)
   const [popoverOpen, setPopoverOpen] = useState(false)
+  const { mutate } = useSWRConfig()
 
   const submit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -340,7 +343,7 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
     const updatedFeedback = {
       options: feedback.options,
       comment: feedback.comment,
-      resolved: true,
+      resolved: !isResolved,
       resolvedCategory: category,
       resolvedImportance: importance,
       resolvedNote: note,
@@ -349,8 +352,43 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
 
     updateFeedback(updatedFeedback).then(({ resolved }) => {
       setIsResolved(resolved)
+      mutate("/api/v1/admin/feedbacks")
     })
   }
+
+  const feedbackChanged = (prevFeedback: Feedback, newFeedback: Partial<Feedback>): boolean =>
+    prevFeedback.resolved !== newFeedback.resolved ||
+    prevFeedback.resolvedCategory !== newFeedback.resolvedCategory ||
+    prevFeedback.resolvedImportance !== newFeedback.resolvedImportance ||
+    prevFeedback.resolvedNote !== newFeedback.resolvedNote ||
+    prevFeedback.domain !== newFeedback.domain
+
+  const debouncedUpdate = useCallback(
+    debounce((updatedFeedback: Omit<Feedback, "id" | "messageId" | "conversationId" | "createdAt">) => {
+      updateFeedback(updatedFeedback).then(() => {
+        mutate((key) => typeof key === "string" && key.startsWith("/api/v1/admin/feedbacks"))
+      })
+    }, 500),
+    [],
+  )
+
+  useEffect(() => {
+    const updatedFeedback = {
+      options: feedback.options,
+      comment: feedback.comment,
+      resolved: false,
+      resolvedCategory: category === "" ? null : category,
+      resolvedImportance: importance === "" ? null : importance,
+      resolvedNote: note === "" ? null : note,
+      domain: domain === "" ? null : domain,
+    }
+
+    if (feedbackChanged(feedback, updatedFeedback)) {
+      debouncedUpdate(updatedFeedback)
+    }
+
+    return () => debouncedUpdate.cancel("replaced")
+  }, [category, importance, note, domain, debouncedUpdate])
 
   const buttonLabel = isResolved ? "Ferdigstilt" : "Ferdigstill"
   const buttonStyle = isResolved ? "bg-[#00893C] text-white" : ""
@@ -370,6 +408,7 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
           : navigate(`/admin/${feedback.conversationId}?messageId=${feedback.messageId}`)
       }
       className={`cursor-pointer hover:bg-[#F1F7FF] ${isSelected ? "bg-[#F5F6F7]" : ""}`}
+      key={`single-feedback-${feedback.id}`}
     >
       <Popover
         anchorEl={boxRef.current}
@@ -394,8 +433,8 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
         </HStack>
         <VStack gap='2'>
           <Label size='small'>Hva er galt med svaret?</Label>
-          {feedback.options.map((option) => (
-            <VStack gap='4'>
+          {feedback.options.map((option, i) => (
+            <VStack gap='4' key={`feedback-option-${option}-${i}`}>
               <HStack gap='2'>
                 <FeedbackOptionTag
                   key={`${feedback.id}-${option}`}
@@ -487,7 +526,6 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
                 icon={<CheckmarkCircleIcon />}
                 loading={isLoading}
                 className={buttonStyle}
-                disabled={isResolved}
               >
                 {buttonLabel}
               </Button>
@@ -500,10 +538,6 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
 }
 
 const FeedbackOptionTag = ({ option }: { option: string }) => {
-  // if (option === "Annet") {
-  //   return <BodyShort>Annet: {comment}</BodyShort>
-  // }
-
   return (
     <Tag
       variant='neutral'
