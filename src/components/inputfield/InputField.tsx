@@ -157,7 +157,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           onClose={() => setIsSensitiveInfoAlert(false)}
           className='fade-in mb-2'
         >
-          Innliming av tekst er dessverre ikke tillatt i Bob.
+          Innliming av tekst er ikke tillatt
         </Alert>
       )}
       {containsFnr && (
