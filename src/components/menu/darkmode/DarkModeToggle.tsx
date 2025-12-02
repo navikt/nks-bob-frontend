@@ -13,16 +13,15 @@ const DarkModeToggle = () => {
   useEffect(() => {
     if (dark) {
       document.body.classList.add("dark")
-      analytics.mørkModusByttet("mørk")
     } else {
       document.body.classList.remove("dark")
-      analytics.mørkModusByttet("lys")
     }
   }, [dark])
 
   const darkModeHandler = () => {
     setDark((prevDark: boolean) => {
       const newDark = !prevDark
+      analytics.mørkModusByttet(newDark ? "mørk" : "lys")
       localStorage.setItem("darkMode", JSON.stringify(newDark))
       return newDark
     })

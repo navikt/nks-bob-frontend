@@ -91,6 +91,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     const pasted = e.clipboardData.getData("text")
     if (pasted.trim().length > 0) {
       setIsSensitiveInfoAlert(true)
+      e.preventDefault()
     }
   }
 
@@ -150,13 +151,13 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     >
       {isSensitiveInfoAlert && (
         <Alert
-          variant='info'
+          variant='warning'
           size='small'
           closeButton={true}
           onClose={() => setIsSensitiveInfoAlert(false)}
           className='fade-in mb-2'
         >
-          Pass på å ikke dele personopplysninger når du limer inn tekst.
+          Innliming av tekst er ikke tillatt
         </Alert>
       )}
       {containsFnr && (
