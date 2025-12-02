@@ -343,7 +343,7 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
     const updatedFeedback = {
       options: feedback.options,
       comment: feedback.comment,
-      resolved: true,
+      resolved: !isResolved,
       resolvedCategory: category,
       resolvedImportance: importance,
       resolvedNote: note,
@@ -526,7 +526,6 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
                 icon={<CheckmarkCircleIcon />}
                 loading={isLoading}
                 className={buttonStyle}
-                disabled={isResolved}
               >
                 {buttonLabel}
               </Button>
