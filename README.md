@@ -12,11 +12,11 @@ For å kjøre applikasjonen lokalt, kan du først installere dependencies:
 
 For å kjøre applikasjonen lokalt, kan du først installere dependencies:
 
-- npm install
+- pnpm install
 
 Deretter starte development server:
 
-- npm start
+- pnpm start
 
 Dette vil starte en lokal utviklingsserver som du får tilgang til via nettleser på http://localhost:3000.
 

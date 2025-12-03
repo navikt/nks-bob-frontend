@@ -30,4 +30,4 @@ wonderwall:
 
 [private]
 localnais-serve:
-	npm run localnais
+	pnpm run localnais
