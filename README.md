@@ -6,11 +6,21 @@ NKS-Bob er en "språkgenereringsmodell", eller "språkbehandlingsassistent" som 
 
 # Komme i gang
 
-For å kjøre applikasjonen lokalt, kan du først installere dependencies:
+Vi bruker `pnpm` for håndtering av pakker. Den må først installeres hvis du allerede ikke har den. Det kan gjøres på en av følgende måter:
 
-# Komme i gang
+```sh
+# med asdf (installerer automatisk versjon satt i .tool-versions)
+asdf plugin add pnpm
+asdf install pnpm
 
-For å kjøre applikasjonen lokalt, kan du først installere dependencies:
+# med npm
+npm install -g pnpm@<versjon>
+
+# med homebrew
+brew install pnpm
+```
+
+For å kjøre applikasjonen lokalt, må du først installere dependencies:
 
 - pnpm install
 
