@@ -170,10 +170,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           <BodyShort spacing>
             Årsaken er at det ved flere anledninger har blitt delt personopplysninger ved innliming.
           </BodyShort>
-          <BodyShort>
-            Vi skjønner at dette er frustrerende for de fleste, men vi kan forsikre om at vi jobber aktivt med å finne
-            en løsning.
-          </BodyShort>
+          <BodyShort>Vi jobber aktivt med å finne en løsning.</BodyShort>
         </Alert>
       )}
       {containsFnr && (
