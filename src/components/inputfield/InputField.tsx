@@ -1,4 +1,4 @@
-import { Alert, Button, Detail, Heading, Textarea, VStack } from "@navikt/ds-react"
+import { Alert, BodyShort, Button, Detail, Heading, Textarea, VStack } from "@navikt/ds-react"
 
 import { PaperplaneIcon } from "@navikt/aksel-icons"
 import { forwardRef, useEffect, useRef, useState } from "react"
@@ -161,7 +161,19 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           onClose={() => setIsSensitiveInfoAlert(false)}
           className='fade-in mb-2'
         >
-          Innliming av tekst er ikke tillatt
+          <Heading
+            size='xsmall'
+            spacing
+          >
+            Vi har midlertidig slått av muligheten for å lime inn tekst
+          </Heading>
+          <BodyShort spacing>
+            Årsaken er at det ved flere anledninger har blitt delt personopplysninger ved innliming.
+          </BodyShort>
+          <BodyShort>
+            Vi skjønner at dette er frustrerende for de fleste, men vi kan forsikre om at vi jobber aktivt med å finne
+            en løsning.
+          </BodyShort>
         </Alert>
       )}
       {containsFnr && (
