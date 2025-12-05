@@ -17,43 +17,34 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Read .tool-versions
+        uses: marocchino/tool-versions-action@v1
+        id: versions
+
+      - name: Install pnpm ${{ steps.versions.outputs.pnpm }}
+        uses: pnpm/action-setup@v4
         with:
-          node-version: 22
+          version: ${{ steps.versions.outputs.pnpm }}
+
+      - name: Use Node.js ${{ steps.versions.outputs.nodejs }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ steps.versions.outputs.nodejs }}
           registry-url: 'https://npm.pkg.github.com'
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
 
-      - run: npm install
+      - run: pnpm install --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
-      - run: npm run build
-
-      - run: npm install
-        working-directory: server
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
-
-      - run: npm run build
-        working-directory: server
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
-
-      - run: npx @cyclonedx/cyclonedx-npm --package-lock-only --ignore-npm-errors  --output-file sbom1.json
-
-      - run: npx @cyclonedx/cyclonedx-npm --package-lock-only --omit dev --ignore-npm-errors  --output-file sbom2.json server/package.json
-
-      - run: jq -s '.[0] * .[1]' sbom1.json sbom2.json > sbom.merged.json
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: ${{ github.sha }}.bom.json
-          path: sbom.merged.json
+      - run: pnpm run --stream build
 
       - uses: nais/docker-build-push@v0
         id: gar-push
         with:
           team: nks-aiautomatisering
-          salsa: false
+          salsa: true
           tag: ${{ github.sha }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
@@ -70,30 +61,6 @@ jobs:
     outputs:
       image: ${{ steps.gar-push.outputs.image }}
       digest: ${{ steps.gar-push.outputs.digest }}
-
-  salsa:
-    name: attest and sign image
-    needs: [ build ]
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-    steps:
-      - uses: nais/login@v0
-        id: login
-        with:
-          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
-          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
-          team: nks-aiautomatisering
-
-      - uses: actions/download-artifact@v4
-        with:
-          name: ${{ github.sha }}.bom.json
-          path: ./
-
-      - uses: nais/attest-sign@v1
-        with:
-          image_ref: ${{ needs.build.outputs.image }}@${{ needs.build.outputs.digest }}
-          sbom: sbom.merged.json
 
   deploy-prod-gcp:
     needs: [ build ]
