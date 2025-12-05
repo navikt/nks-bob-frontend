@@ -5,18 +5,17 @@ import { remark } from "remark"
 import remarkRehype from "remark-rehype"
 import remarkStringify, { Options } from "remark-stringify"
 import stripMarkdown from "strip-markdown"
-import { Plugin } from "unified"
 import { visit } from "unist-util-visit"
 
 // Remove all citations ([0]) from the text
-const removeCitations: Plugin<[], Root> = () => {
+function removeCitations(): (tree: Root) => void {
   return (tree) => {
-    findAndReplace(tree, [/\s?\[\d\]/g])
+    findAndReplace(tree as any, [/\s?\[\d\]/g])
   }
 }
 
 // Convert all citations to a span with citation number and position as properties
-const remarkCitations: Plugin<[], Root> = () => {
+function remarkCitations(): (tree: Root) => void {
   return (tree) => {
     visit(tree, "text", (node: Text, index, parent) => {
       if (!parent) return
@@ -59,13 +58,9 @@ const remarkCitations: Plugin<[], Root> = () => {
   }
 }
 
-const htmlProcessor = remark()
-  .use(removeCitations)
-  .use(remarkRehype)
-  .use(rehypeStringify)
+const htmlProcessor = remark().use(removeCitations).use(remarkRehype).use(rehypeStringify)
 
-const toHtml = (markdown: string): string =>
-  htmlProcessor.processSync(markdown).toString()
+const toHtml = (markdown: string): string => htmlProcessor.processSync(markdown).toString()
 
 // Convert markdown to plaintext, but keep formatting for lists
 // and transform links to just the url.
@@ -79,8 +74,7 @@ const plaintextProcessor = remark()
   } as Options)
   .use(removeCitations)
 
-const toPlaintext = (markdown: string) =>
-  plaintextProcessor.processSync(markdown).toString()
+const toPlaintext = (markdown: string) => plaintextProcessor.processSync(markdown).toString()
 
 const md = { toHtml, toPlaintext, remarkCitations }
 
