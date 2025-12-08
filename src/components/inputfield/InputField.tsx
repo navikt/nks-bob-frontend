@@ -1,4 +1,16 @@
-import { Alert, BodyShort, Button, Detail, Heading, HStack, Link, List, Textarea, VStack } from "@navikt/ds-react"
+import {
+  Alert,
+  BodyShort,
+  Button,
+  Detail,
+  Heading,
+  HStack,
+  Link,
+  List,
+  Textarea,
+  Tooltip,
+  VStack,
+} from "@navikt/ds-react"
 
 import { PaperplaneIcon } from "@navikt/aksel-icons"
 import { forwardRef, useEffect, useRef, useState } from "react"
@@ -11,19 +23,20 @@ import { createJSONStorage, persist } from "zustand/middleware"
 import { useAlerts } from "../../api/api.ts"
 import { NewMessage } from "../../types/Message.ts"
 import analytics from "../../utils/analytics.ts"
-import "./InputField.css"
 import {
   isError,
   isNotOk,
   isWarning,
-  validatePersonnummer,
+  validateEmail,
   validateName,
+  validateNumberSequence,
+  validatePersonnummer,
   validateTlf,
   ValidationError,
   ValidationWarning,
   Validator,
-  validateEmail,
 } from "../../utils/inputValidation.ts"
+import "./InputField.css"
 
 type InputFieldState = {
   inputValue: string
@@ -151,7 +164,13 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     }
   }
 
-  const validators: Validator[] = [validatePersonnummer, validateName, validateTlf, validateEmail]
+  const validators: Validator[] = [
+    validatePersonnummer,
+    validateName,
+    validateTlf,
+    validateEmail,
+    validateNumberSequence,
+  ]
 
   function validateInput(ignoredWarnings?: string[]) {
     if (ignoredWarnings) {
@@ -245,11 +264,8 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           size='small'
           className='fade-in mb-2'
         >
-          <BodyShort
-            size='small'
-            spacing
-          >
-            Det ser ut som spørsmålet inneholder personopplysninger. Kontroller den markerte teksten før du sender.
+          <BodyShort size='small'>
+            Det ser ut som spørsmålet inneholder personopplysninger. Kontroller følgende før du sender:
           </BodyShort>
           <List
             size='small'
@@ -265,33 +281,32 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
                     gap='2'
                     align='center'
                   >
-                    <span className='font-bold'>{value}</span>
+                    <Tooltip content='Endre'>
+                      <Link
+                        onClick={() => {
+                          if (textareaRef.current) {
+                            scrollToSelection(textareaRef.current, start, end)
+                          }
+                        }}
+                      >
+                        <span className='cursor-pointer font-bold'>{value}</span>
+                      </Link>
+                    </Tooltip>
+
                     <Button
                       variant='tertiary-neutral'
-                      size='small'
+                      size='xsmall'
                       onClick={() => {
                         validateInput([...ignoredValidations, value])
                       }}
                     >
                       Ignorer
                     </Button>
-                    <Button
-                      variant='tertiary-neutral'
-                      size='small'
-                      onClick={() => {
-                        if (textareaRef.current) {
-                          scrollToSelection(textareaRef.current, start, end)
-                        }
-                      }}
-                    >
-                      Endre
-                    </Button>
                   </HStack>
                 </List.Item>
               )),
             )}
           </List>
-          <Link href='#'>Hvilke opplysninger skal man ikke sende til Bob?</Link>
         </Alert>
       )}
       {validationErrors.length > 0 && (
@@ -300,11 +315,8 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           size='small'
           className='fade-in mb-2'
         >
-          <BodyShort
-            size='small'
-            spacing
-          >
-            Teksten ser ut til å inneholde personopplysninger. Du må fjerne eller anonymisere det som er markert før du
+          <BodyShort size='small'>
+            Det ser ut som spørsmålet inneholder fødselsnummer. Fjern eller anonymiser følgende før du sender:
           </BodyShort>
           <List
             size='small'
@@ -320,24 +332,20 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
                     gap='2'
                     align='center'
                   >
-                    <span className='font-bold'>{value}</span>
-                    <Button
-                      variant='tertiary-neutral'
-                      size='small'
+                    <Link
                       onClick={() => {
                         if (textareaRef.current) {
                           scrollToSelection(textareaRef.current, start, end)
                         }
                       }}
                     >
-                      Endre
-                    </Button>
+                      <span className='cursor-pointer font-bold'>{value}</span>
+                    </Link>
                   </HStack>
                 </List.Item>
               )),
             )}
           </List>
-          <Link href='#'>Hvilke opplysninger skal man ikke sende til Bob?</Link>
         </Alert>
       )}
       <NewMessageAlert
