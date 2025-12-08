@@ -1,6 +1,8 @@
+import { countryCodePattern } from "./inputvalidation/countryCodes";
+
 export type ValidationResult = ValidationOk | ValidationWarning | ValidationError
 
-export type ValidationType = "fnr" | "name" | "tlf" | "email"
+export type ValidationType = "fnr" | "name" | "tlf" | "email" | "number"
 
 export type ValidationMatch = { value: string; start: number; end: number }
 
@@ -96,18 +98,45 @@ const fnrRegex = /([0-2][0-9]|31(?!(?:0[2469]|11))|30(?!02))(0[1-9]|1[0-2])(\d{2
 const dnrRegex = /([4-6][0-9]|71(?!(?:0[2469]|11))|70(?!02))(0[1-9]|1[0-2])(\d{2})(.?)(\d{3})(.?)(\d{2})/
 const hnrRegex = /([0-2][0-9]|31(?!(?:4[2469]|51))|30(?!02))(4[1-9]|5[0-2])(\d{2})(.?)(\d{3})(.?)(\d{2})/
 const personnummerRegex = new RegExp([fnrRegex, dnrRegex, hnrRegex].map(({ source }) => source).join("|"), "g")
-export const validatePersonnummer = createValidator(
-  personnummerRegex,
-  error,
-  "Tekst som ligner på et fødselsnummer:",
-  "fnr",
-)
+
+const tlfRegex = new RegExp(`(\\+|00)(${countryCodePattern})\\s*\\d{6,14}`, 'g')
+
+
+export const validatePersonnummer = (input: string): ValidationResult => {
+  if (input.match(tlfRegex)) {
+    return ok()
+  }
+  
+  return createValidator(
+    personnummerRegex,
+    error,
+    "Tekst som ligner på et fødselsnummer:",
+    "fnr",
+  )(input)
+}
 
 const nameRegex = /[A-ZÆØÅ]\w*[^\S\r\n]+?[A-ZÆØÅ]\w*/g
 export const validateName = createValidator(nameRegex, warning, "Tekst som ligner på et navn:", "name")
 
-const tlfRegex = /((0047)?|(\+47)?)[4|9]\d{7}/g
 export const validateTlf = createValidator(tlfRegex, warning, "Tekst som ligner på et telefonnummer:", "tlf")
 
-const emailRegex = /[\w\.]+@([\w-]+\.)+[\w-]{2,4}/g
+const emailRegex = /\S+@\S+/g
 export const validateEmail = createValidator(emailRegex, warning, "Tekst som ligner på en epost-adresse:", "email")
+
+const numberSequenceRegex = /\d+[\s\-.]*\d+[\s\-.]*\d+[\s\-.]*\d+[\s\-.]*\d+[\s\-.]*\d+[\s\-.]*\d*/g 
+
+
+export const validateNumberSequence = (input: string): ValidationResult => {
+  if (input.match(personnummerRegex)) {
+    return ok()
+  }
+
+  return createValidator(
+    numberSequenceRegex, 
+    warning, 
+    "Tekst som ligner på en tallsekvens:", 
+    "number")(input)
+}
+
+
+
