@@ -1,8 +1,8 @@
-import { countryCodePattern } from "./inputvalidation/countryCodes";
+import { countryCodePattern, whitelistNumbers } from "./inputvalidation/tlfValidationAddons";
 
 export type ValidationResult = ValidationOk | ValidationWarning | ValidationError
 
-export type ValidationType = "fnr" | "name" | "tlf" | "email" | "number"
+export type ValidationType = "fnr" | "name" | "tlf" | "email" | "accountnumber" | "fnr"
 
 export type ValidationMatch = { value: string; start: number; end: number }
 
@@ -99,14 +99,13 @@ const dnrRegex = /([4-6][0-9]|71(?!(?:0[2469]|11))|70(?!02))(0[1-9]|1[0-2])(\d{2
 const hnrRegex = /([0-2][0-9]|31(?!(?:4[2469]|51))|30(?!02))(4[1-9]|5[0-2])(\d{2})(.?)(\d{3})(.?)(\d{2})/
 const personnummerRegex = new RegExp([fnrRegex, dnrRegex, hnrRegex].map(({ source }) => source).join("|"), "g")
 
-const tlfRegex = new RegExp(`(\\+|00)(${countryCodePattern})\\s*\\d{6,14}`, 'g')
-
+const tlfRegex = new RegExp(
+  `((\\+|00)(${countryCodePattern})\\s*(?:\\d[ -]?){5,10}\\d)|\\b(?:\\d[ -]?){7,10}\\d\\b`,
+  'g'
+)
 
 export const validatePersonnummer = (input: string): ValidationResult => {
-  if (input.match(tlfRegex)) {
-    return ok()
-  }
-  
+
   return createValidator(
     personnummerRegex,
     error,
@@ -118,25 +117,50 @@ export const validatePersonnummer = (input: string): ValidationResult => {
 const nameRegex = /[A-ZÆØÅ]\w*[^\S\r\n]+?[A-ZÆØÅ]\w*/g
 export const validateName = createValidator(nameRegex, warning, "Tekst som ligner på et navn:", "name")
 
-export const validateTlf = createValidator(tlfRegex, warning, "Tekst som ligner på et telefonnummer:", "tlf")
+const dateLikeFnrRegex = /\b(0[1-9]|[12][0-9]|3[01])[.-](0[1-9]|1[0-2])[.-](\d{4})\b/g
+export const validateFnr = createValidator(dateLikeFnrRegex, warning, "Tekst som ligner på for spesifikk dato:", "fnr")
 
-const emailRegex = /\S+@\S+/g
-export const validateEmail = createValidator(emailRegex, warning, "Tekst som ligner på en epost-adresse:", "email")
+export const validateTlf = (input: string): ValidationResult => {
+  if (input.match(dateLikeFnrRegex)) {
+    return ok()
+  }
 
-const numberSequenceRegex = /\d+[\s\-.]*\d+[\s\-.]*\d+[\s\-.]*\d+[\s\-.]*\d+[\s\-.]*\d+[\s\-.]*\d*/g 
-
-
-export const validateNumberSequence = (input: string): ValidationResult => {
   if (input.match(personnummerRegex)) {
     return ok()
   }
 
-  return createValidator(
-    numberSequenceRegex, 
-    warning, 
-    "Tekst som ligner på en tallsekvens:", 
-    "number")(input)
+  const stripped = input.replace(/[ -]/g, '')
+  const intlMatch = stripped.match(new RegExp(`^(?:\\+|00)(${countryCodePattern})\\s*(\\d+)$`))
+
+  const cleanedInput =
+    intlMatch?.[2] 
+      ?? input.replace(/\D/g, '')
+
+  if (whitelistNumbers.includes(cleanedInput)) {
+    return ok()
+  }
+
+  return createValidator(tlfRegex, warning, "Tekst som ligner på et telefonnummer:", "tlf")(input)
 }
+
+const emailRegex = /\S+@\S+/g
+export const validateEmail = createValidator(emailRegex, warning, "Tekst som ligner på en epost-adresse:", "email")
+
+const accountNumberRegex = /\b\d{4}[\s.-]?\d{2}[\s.-]?\d{5}\b|\b\d{11}\b/g
+
+export const validateAccountNumber = (input: string): ValidationResult => {
+  if (input.match(personnummerRegex)) {
+    return ok()
+  }
+
+  return createValidator(accountNumberRegex, warning, "Tekst som ligner på et kontonummer", "accountnumber")(input)
+
+}
+
+
+
+
+
 
 
 
