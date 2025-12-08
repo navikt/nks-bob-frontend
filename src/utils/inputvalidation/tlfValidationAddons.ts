@@ -225,3 +225,94 @@ const countryCodes = [
 export const countryCodePattern = countryCodes
   .map(code => code.replace(' ', '\\s?'))
   .join('|')
+
+export const whitelistNumbers = [ 
+
+// NAV Hovednummer 
+"55553333",
+
+// Hjelpemiddelsentralen 
+"55551111",
+
+// Bilsenter
+"40002048",
+
+// Nav økonomi stønad (NØS) 
+"40003700",
+
+// Regnskap 
+"41338217",
+
+// KS Internasjonalt (Utland) 
+"21073700",
+
+// Nav kontroll (eksternt) 
+"22822000",
+
+// Beredskapskontaktsenter  
+"21052106",
+
+// Klageinstans 
+"21071730",
+
+// Eksterne tjenester 
+"48055666", 
+
+// Arkivverket / Riksarkivet 
+"75006000", 
+
+// Altinn 
+"73199700", 
+
+// Arbeidstilsynet 
+"22451000", 
+
+// Digdir (Digitaliseringsdirektorat) 
+"80080000", 
+
+// Sentralbordtjenester og interne tjenester 
+"4525", 
+
+// Nav kontroll forvaltning (internt) 
+"4500", 
+
+// Nav kontroll styringsenhet (internt) 
+"40649113", 
+
+// Nav tipstelefon 
+"48507350",
+
+// Arbeidsgiver og lege (samhandler) 
+"55553336",
+
+// Lokale Nav-kontor (utvalg) 
+"47794409", 
+
+// Nav Ås, vakttelefon sosiale tjenester 
+"47618448", 
+
+// Nav Ås, vakttelefon fastleger 
+"41271769", 
+
+// Nav Midtre Namdal, vakttelefon 
+"90282457", 
+
+// Nav Rana, vakttelefon 
+"47781437", 
+
+// Nav Nittedal, vakttelefon 
+"95941068", 
+
+// Nav Nittedal, arbeidsgivertelefon 
+"47670309", 
+
+// Kontaktpersoner sjøfartsbok (Rogaland) 
+"55553333", 
+
+// Nav Madla 
+"90754280", 
+"94987076", 
+"45396215", 
+"41282935"  
+
+];

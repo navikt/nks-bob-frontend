@@ -27,9 +27,10 @@ import {
   isError,
   isNotOk,
   isWarning,
+  validateAccountNumber,
   validateEmail,
+  validateFnr,
   validateName,
-  validateNumberSequence,
   validatePersonnummer,
   validateTlf,
   ValidationError,
@@ -169,7 +170,8 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     validateName,
     validateTlf,
     validateEmail,
-    validateNumberSequence,
+    validateAccountNumber,
+    validateFnr,
   ]
 
   function validateInput(ignoredWarnings?: string[]) {
