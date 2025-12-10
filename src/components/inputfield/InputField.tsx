@@ -204,17 +204,13 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
   }
 
   useEffect(() => {
-    validateInput()
+    const results = validateInput()
 
-    const validationError = validationErrors.length > 0
-    const validationWarning = validationWarnings.length > 0
+    const hasValidationError = results.some(isError)
+    const hasValidationWarning = results.some(isWarning)
 
-    if (validationError || validationWarning) {
-      validateInput()
-    }
-
-    setSendDisabled(disabled || validationError || hasAlertErrors)
-  }, [inputValue, disabled, hasAlertErrors])
+    setSendDisabled(disabled || hasAlertErrors || hasValidationError || hasValidationWarning)
+  }, [inputValue, disabled, hasAlertErrors, ignoredValidations])
 
   useHotkeys("Alt+Ctrl+O", () => sendMessage("hotkey", "Oversett til engelsk", { clear: false, blur: false }), {
     enabled: !!conversationId,
