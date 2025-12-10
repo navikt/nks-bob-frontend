@@ -114,8 +114,21 @@ export const validatePersonnummer = (input: string): ValidationResult => {
   )(input)
 }
 
-const nameRegex = /\p{Lu}[\p{L}.'-]*[ \t-](?:\p{Lu}[\p{L}.'-]*[ \t]+)?\p{Lu}[\p{L}.'-]*/gu
+const nameRegex = /\p{Lu}[\p{L}.'-]*[ \t-]+(?:\p{Lu}[\p{L}.'-]*[ \t-]+)?\p{Lu}[\p{L}.'-]*/gu
 export const validateName = createValidator(nameRegex, warning, "Tekst som ligner på et navn:", "name")
+
+/*
+nameRegex fanger opp følgende kombinasjoner av navn:
+
+1) Fornavn + Etternavn
+2) Fornavn + Mellomnavn + Etternavn  (mellomnavn er valgfritt)
+3) Separasjon mellom navnedeler kan være 1 eller flere:
+   - mellomrom (space/tab)
+   - bindestrek (-)
+4) Hver navnedel må starte med stor bokstav (\p{Lu}),
+   og kan inneholde bokstaver, punktum, apostrof eller bindestrek.
+
+*/
 
 const dateLikeFnrRegex = /\b(0[1-9]|[12][0-9]|3[01])[.-](0[1-9]|1[0-2])[.-](\d{4})\b/g
 export const validateFnr = createValidator(dateLikeFnrRegex, warning, "Tekst som ligner på for spesifikk dato:", "fnr")
