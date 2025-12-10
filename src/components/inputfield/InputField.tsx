@@ -212,6 +212,16 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     setSendDisabled(disabled || hasAlertErrors || hasValidationError || hasValidationWarning)
   }, [inputValue, disabled, hasAlertErrors, ignoredValidations])
 
+  const prevSendDisabledRef = useRef<boolean>(true)
+  useEffect(() => {
+    if (prevSendDisabledRef.current && !sendDisabled) {
+      if (inputValue.trim().length > 0) {
+        textareaRef.current?.focus()
+      }
+    }
+    prevSendDisabledRef.current = sendDisabled
+  }, [sendDisabled, inputValue, textareaRef])
+
   useHotkeys("Alt+Ctrl+O", () => sendMessage("hotkey", "Oversett til engelsk", { clear: false, blur: false }), {
     enabled: !!conversationId,
     enableOnFormTags: true,
