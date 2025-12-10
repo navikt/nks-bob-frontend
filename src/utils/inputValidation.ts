@@ -2,7 +2,7 @@ import { countryCodePattern, whitelistNumbers } from "./inputvalidation/tlfValid
 
 export type ValidationResult = ValidationOk | ValidationWarning | ValidationError
 
-export type ValidationType = "fnr" | "name" | "tlf" | "email" | "accountnumber" | "fnr"
+export type ValidationType = "fnr" | "name" | "tlf" | "email" | "accountnumber" | "dob"
 
 export type ValidationMatch = { value: string; start: number; end: number }
 
@@ -99,11 +99,6 @@ const dnrRegex = /([4-6][0-9]|71(?!(?:0[2469]|11))|70(?!02))(0[1-9]|1[0-2])(\d{2
 const hnrRegex = /([0-2][0-9]|31(?!(?:4[2469]|51))|30(?!02))(4[1-9]|5[0-2])(\d{2})(.?)(\d{3})(.?)(\d{2})/
 const personnummerRegex = new RegExp([fnrRegex, dnrRegex, hnrRegex].map(({ source }) => source).join("|"), "g")
 
-const tlfRegex = new RegExp(
-  `((\\+|00)(${countryCodePattern})\\s*(?:\\d[ -]?){5,10}\\d)|\\b(?:\\d[ -]?){7,10}\\d\\b`,
-  'g'
-)
-
 export const validatePersonnummer = (input: string): ValidationResult => {
 
   return createValidator(
@@ -130,11 +125,16 @@ nameRegex fanger opp følgende kombinasjoner av navn:
 
 */
 
-const dateLikeFnrRegex = /\b(0[1-9]|[12][0-9]|3[01])[.-](0[1-9]|1[0-2])[.-](\d{4})\b/g
-export const validateFnr = createValidator(dateLikeFnrRegex, warning, "Tekst som ligner på for spesifikk dato:", "fnr")
+const dateOfBirthRegex = /\b(?:[0]?[1-9]|[12]\d|3[01])[-./,]+?(?:[0]?[1-9]|[12]\d|3[01])[-./,]+?\d{2,4}\b/g
+export const validateDateOfBirth = createValidator(dateOfBirthRegex, warning, "Tekst som ligner på fødselsdato:", "dob")
 
+
+const tlfRegex = new RegExp(
+  `((\\+|00)(${countryCodePattern})\\s*(?:\\d[ -]?){5,10}\\d)|\\b(?:\\d[ -]?){7,10}\\d\\b`,
+  'g'
+)
 export const validateTlf = (input: string): ValidationResult => {
-  if (input.match(dateLikeFnrRegex)) {
+  if (input.match(dateOfBirthRegex)) {
     return ok()
   }
 

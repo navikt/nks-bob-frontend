@@ -28,8 +28,8 @@ import {
   isNotOk,
   isWarning,
   validateAccountNumber,
+  validateDateOfBirth,
   validateEmail,
-  validateFnr,
   validateName,
   validatePersonnummer,
   validateTlf,
@@ -107,10 +107,6 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
       return
     }
 
-    if (validateInput().length > 0) {
-      return
-    }
-
     const message: NewMessage = { content: messageContent ?? inputValue }
     if (message.content.trim() !== "") {
       onSend(message)
@@ -171,7 +167,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     validateTlf,
     validateEmail,
     validateAccountNumber,
-    validateFnr,
+    validateDateOfBirth,
   ]
 
   function validateInput(ignoredWarnings?: string[]) {
@@ -208,6 +204,8 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
   }
 
   useEffect(() => {
+    validateInput()
+
     const validationError = validationErrors.length > 0
     const validationWarning = validationWarnings.length > 0
 
