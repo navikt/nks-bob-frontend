@@ -114,7 +114,7 @@ export const validatePersonnummer = (input: string): ValidationResult => {
   )(input)
 }
 
-const nameRegex = /[A-ZÆØÅ]\w*[^\S\r\n]+?[A-ZÆØÅ]\w*/g
+const nameRegex = /\p{Lu}[\p{L}.'-]*[ \t-](?:\p{Lu}[\p{L}.'-]*[ \t]+)?\p{Lu}[\p{L}.'-]*/gu
 export const validateName = createValidator(nameRegex, warning, "Tekst som ligner på et navn:", "name")
 
 const dateLikeFnrRegex = /\b(0[1-9]|[12][0-9]|3[01])[.-](0[1-9]|1[0-2])[.-](\d{4})\b/g
