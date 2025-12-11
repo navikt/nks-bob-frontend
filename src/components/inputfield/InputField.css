@@ -15,23 +15,3 @@
 body.dark .detailcolor {
   color: rgba(118, 126, 140, 1);
 }
-
-.highlight-warning {
-  line-height: 1.75rem;
-  text-decoration: underline;
-  background-color: rgb(255, 245, 228);
-  color: rgb(201, 81, 0);
-  padding: 0 0.25rem 0 0.25rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.highlight-error {
-  line-height: 1.75rem;
-  text-decoration: underline;
-  background-color: rgb(255, 232, 240);
-  color: rgb(188, 0, 42);
-  padding: 0 0.25rem 0 0.25rem;
-  font-weight: 600;
-  cursor: pointer;
-}
