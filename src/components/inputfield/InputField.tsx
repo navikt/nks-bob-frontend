@@ -255,13 +255,22 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           <Heading
             size='xsmall'
             spacing
+            className='mt-0.5 text-[16px]'
           >
             Vi har midlertidig slått av muligheten for å lime inn tekst
           </Heading>
-          <BodyShort spacing>
+          <BodyShort
+            size='small'
+            spacing
+          >
             Årsaken er at det ved flere anledninger har blitt delt personopplysninger ved innliming.
           </BodyShort>
-          <BodyShort>Vi jobber aktivt med å finne en løsning.</BodyShort>
+          <BodyShort
+            size='small'
+            spacing
+          >
+            Vi jobber aktivt med å finne en løsning.
+          </BodyShort>
         </Alert>
       )}
       {validationWarnings.length > 0 && (
