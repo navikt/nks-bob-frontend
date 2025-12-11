@@ -30,9 +30,10 @@ import {
   validateAccountNumber,
   validateDateOfBirth,
   validateEmail,
+  validateGlobalPhoneNumber,
   validateName,
+  validateNorwegianMobileNumber,
   validatePersonnummer,
-  validateTlf,
   ValidationError,
   ValidationWarning,
   Validator,
@@ -164,10 +165,11 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
   const validators: Validator[] = [
     validatePersonnummer,
     validateName,
-    validateTlf,
     validateEmail,
     validateAccountNumber,
     validateDateOfBirth,
+    validateNorwegianMobileNumber,
+    validateGlobalPhoneNumber,
   ]
 
   function validateInput(ignoredWarnings?: string[]) {
@@ -331,7 +333,8 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           className='fade-in mb-2'
         >
           <BodyShort size='small'>
-            Det ser ut som spørsmålet inneholder fødselsnummer. Fjern eller anonymiser følgende før du sender:
+            Det ser ut som spørsmålet inneholder fødselsnummer/d-nummer/hnr. Fjern eller anonymiser følgende før du
+            sender:
           </BodyShort>
           <List
             size='small'

@@ -1,8 +1,8 @@
-import { countryCodePattern, whitelistNumbers } from "./inputvalidation/tlfValidationAddons";
+import { countryCodePattern } from "./inputvalidation/tlfValidationAddons";
 
 export type ValidationResult = ValidationOk | ValidationWarning | ValidationError
 
-export type ValidationType = "fnr" | "name" | "tlf" | "email" | "accountnumber" | "dob"
+export type ValidationType = "fnr" | "name" | "tlf" | "email" | "accountnumber" | "dob" | "mobnr"
 
 export type ValidationMatch = { value: string; start: number; end: number }
 
@@ -94,20 +94,27 @@ function createValidator(
   }
 }
 
-const fnrRegex = /([0-2][0-9]|31(?!(?:0[2469]|11))|30(?!02))(0[1-9]|1[0-2])(\d{2})(.?)(\d{3})(.?)(\d{2})/
-const dnrRegex = /([4-6][0-9]|71(?!(?:0[2469]|11))|70(?!02))(0[1-9]|1[0-2])(\d{2})(.?)(\d{3})(.?)(\d{2})/
-const hnrRegex = /([0-2][0-9]|31(?!(?:4[2469]|51))|30(?!02))(4[1-9]|5[0-2])(\d{2})(.?)(\d{3})(.?)(\d{2})/
-const personnummerRegex = new RegExp([fnrRegex, dnrRegex, hnrRegex].map(({ source }) => source).join("|"), "g")
+const fnrRegex = /\b(0[1-9]|[12]\d|3[01])(0[1-9]|1[0-2])\d{2}[ .-]*?\d{3}[ .-]*\d{2}\b/
+// fnrRegex fanger opp fødselsnummer på formatet DDMMÅÅIIIKK, med dag 01–31, måned 01–12 og valgfri separator.
 
-export const validatePersonnummer = (input: string): ValidationResult => {
+const dnrRegex = /\b(4[1-9]|[56]\d|7[01])(0[1-9]|1[0-2])\d{2}[ .-]*?\d{3}[ .-]*\d{2}\b/
+// dnrRegex fanger opp D-nummer der dagfeltet er fødselsdag + 40 (41–71), etterfulgt av måned 01–12 og resten av nummeret.
 
-  return createValidator(
+const hnrRegex = /\b(0[1-9]|[12]\d|3[01])(4[1-9]|5[0-2])\d{2}[ .-]*?\d{3}\d{2}\b/
+// hnrRegex fanger opp H-nummer der månedfeltet er fødselsmåned + 40 (41–52), mens dag og resten av nummeret følger vanlig struktur.
+
+
+const personnummerRegex = new RegExp(
+  [fnrRegex, dnrRegex, hnrRegex].map(({ source }) => source).join("|"),
+  "g"
+)
+
+export const validatePersonnummer = createValidator(
     personnummerRegex,
     error,
     "Tekst som ligner på et fødselsnummer:",
     "fnr",
-  )(input)
-}
+  )
 
 const nameRegex = /\p{Lu}[\p{L}.'-]*[ \t-]+(?:\p{Lu}[\p{L}.'-]*[ \t-]+)?\p{Lu}[\p{L}.'-]*/gu
 export const validateName = createValidator(nameRegex, warning, "Tekst som ligner på et navn:", "name")
@@ -125,55 +132,38 @@ nameRegex fanger opp følgende kombinasjoner av navn:
 
 */
 
+
 const dateOfBirthRegex = /\b(?:[0]?[1-9]|[12]\d|3[01])[-./,]+?(?:[0]?[1-9]|[12]\d|3[01])[-./,]+?\d{2,4}\b/g
 export const validateDateOfBirth = createValidator(dateOfBirthRegex, warning, "Tekst som ligner på fødselsdato:", "dob")
 
+// dateOfBirthRegex fanger opp datoer skrevet som dd.mm.yy eller dd.mm.yyyy (f.eks. 01/02/1990), med ulike skilletegn som -, ., / eller , mellom tallene.
 
-const tlfRegex = new RegExp(
-  `((\\+|00)(${countryCodePattern})\\s*(?:\\d[ -]?){5,10}\\d)|\\b(?:\\d[ -]?){7,10}\\d\\b`,
-  'g'
+
+const globalPhoneNumberRegex = new RegExp(
+  `(?:\\+|00)(?:${countryCodePattern})[ -]*(?:\\d[ -]*){5,14}\\d`,
+  "g"
 )
-export const validateTlf = (input: string): ValidationResult => {
-  if (input.match(dateOfBirthRegex)) {
-    return ok()
-  }
 
-  if (input.match(personnummerRegex)) {
-    return ok()
-  }
+export const validateGlobalPhoneNumber= createValidator(globalPhoneNumberRegex, warning, "Tekst som ligner på et norsk mobilnummer:", "mobnr")
 
-  const stripped = input.replace(/[ -]/g, '')
-  const intlMatch = stripped.match(new RegExp(`^(?:\\+|00)(${countryCodePattern})\\s*(\\d+)$`))
+// globalPhoneNumberRegex fanger opp alle telefonnumre som starter med + eller 00 etterfulgt av landekode og 6–15 sifre, med valgfri bruk av mellomrom eller bindestrek.
 
-  const cleanedInput =
-    intlMatch?.[2] 
-      ?? input.replace(/\D/g, '')
 
-  if (whitelistNumbers.includes(cleanedInput)) {
-    return ok()
-  }
 
-  return createValidator(tlfRegex, warning, "Tekst som ligner på et telefonnummer:", "tlf")(input)
-}
+const norwegianMobileNumberRegex = /(?<!0047[ -]*)(?<!\+47[ -]*)\b[49](?:[ -]?\d){7}\b/g
+export const validateNorwegianMobileNumber = createValidator(norwegianMobileNumberRegex, warning, "Tekst som ligner på et norsk mobilnummer:", "mobnr")
+
+// norwegianMobileNumberRegex fanger opp norske mobilnumre på 8 siffer som starter med 4 eller 9, med valgfri bruk av mellomrom eller bindestrek.
+
 
 const emailRegex = /\S+@\S+/g
 export const validateEmail = createValidator(emailRegex, warning, "Tekst som ligner på en epost-adresse:", "email")
 
-const accountNumberRegex = /\b\d{4}[\s.-]?\d{2}[\s.-]?\d{5}\b|\b\d{11}\b/g
-
-export const validateAccountNumber = (input: string): ValidationResult => {
-  if (input.match(personnummerRegex)) {
-    return ok()
-  }
-
-  return createValidator(accountNumberRegex, warning, "Tekst som ligner på et kontonummer", "accountnumber")(input)
-
-}
+// emailRegex fanger opp en e-post ved å søke etter tekst med formen "noe@noe" uten mellomrom.
 
 
+const accountNumberRegex = /\b\d{4}[ .-]+\d{2}[ .-]+\d{5}\b/g
 
+export const validateAccountNumber = createValidator(accountNumberRegex, warning, "Tekst som ligner på et kontonummer", "accountnumber")
 
-
-
-
-
+// accountNumberRegex fanger opp norske kontonumre i formatet 4-2-5 siffer, med mellomrom, punktum eller bindestrek som skilletegn.
