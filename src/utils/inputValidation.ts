@@ -116,7 +116,7 @@ export const validatePersonnummer = createValidator(
     "fnr",
   )
 
-const nameRegex = /(?:(?:\p{Lu}[\p{L}.'-]*[ \t-]+(?:\p{Lu}[\p{L}.'-]*[ \t-]+)?\p{Lu}[\p{L}.'-]*)|(?:(?<!^)(?<![\p{P}\n]\s*)\b\p{Lu}\p{Ll}+\b))/gu
+const nameRegex = /(?:(?:\p{Lu}[\p{L}'-]*[ \t-]+(?:\p{Lu}[\p{L}'-]*[ \t-]+)?\p{Lu}[\p{L}'-]*)|(?:(?<!^)(?<![\p{P}\n]\s*)\b\p{Lu}\p{Ll}+\b))/gu
 export const validateName = createValidator(nameRegex, warning, "Tekst som ligner på et navn:", "name")
 
 /*
