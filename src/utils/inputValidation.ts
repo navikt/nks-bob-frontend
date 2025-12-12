@@ -2,7 +2,7 @@ import { countryCodePattern } from "./inputvalidation/tlfValidationAddons";
 
 export type ValidationResult = ValidationOk | ValidationWarning | ValidationError
 
-export type ValidationType = "fnr" | "name" | "tlf" | "email" | "accountnumber" | "dob" | "mobnr"
+export type ValidationType = "fnr" | "name" | "tlf" | "email" | "accountnumber" | "dob"  
 
 export type ValidationMatch = { value: string; start: number; end: number }
 
@@ -116,19 +116,27 @@ export const validatePersonnummer = createValidator(
     "fnr",
   )
 
-const nameRegex = /\p{Lu}[\p{L}.'-]*[ \t-]+(?:\p{Lu}[\p{L}.'-]*[ \t-]+)?\p{Lu}[\p{L}.'-]*/gu
+const nameRegex = /(?:(?:\p{Lu}[\p{L}.'-]*[ \t-]+(?:\p{Lu}[\p{L}.'-]*[ \t-]+)?\p{Lu}[\p{L}.'-]*)|(?:(?<!^)(?<![\p{P}\n]\s*)\b\p{Lu}\p{Ll}+\b))/gu
 export const validateName = createValidator(nameRegex, warning, "Tekst som ligner på et navn:", "name")
 
 /*
-nameRegex fanger opp følgende kombinasjoner av navn:
+Fanger opp tekst som ligner på personnavn.
 
-1) Fornavn + Etternavn
-2) Fornavn + Mellomnavn + Etternavn  (mellomnavn er valgfritt)
-3) Separasjon mellom navnedeler kan være 1 eller flere:
-   - mellomrom (space/tab)
-   - bindestrek (-)
-4) Hver navnedel må starte med stor bokstav (\p{Lu}),
-   og kan inneholde bokstaver, punktum, apostrof eller bindestrek.
+Matcher to typer:
+1) Fullt navn med to eller tre navnedeler
+2) Enkelt navn i tekst
+
+For fullt navn:
+- Består av fornavn og etternavn
+- Mellomnavn er valgfritt
+- Navnedeler kan separeres med mellomrom, tab eller bindestrek
+- Hver navnedel ma starte med stor bokstav (\p{Lu})
+- Navnedeler kan inneholde Unicode-bokstaver (\p{L}), punktum, apostrof eller bindestrek
+
+For enkelt navn:
+- Ord med stor forbokstav i teksten
+- Matcher ikke første ord i teksten
+- Matcher ikke ord etter tegnsetting eller linjeskift
 
 */
 
@@ -144,14 +152,14 @@ const globalPhoneNumberRegex = new RegExp(
   "g"
 )
 
-export const validateGlobalPhoneNumber= createValidator(globalPhoneNumberRegex, warning, "Tekst som ligner på et norsk mobilnummer:", "mobnr")
+export const validateGlobalPhoneNumber= createValidator(globalPhoneNumberRegex, warning, "Tekst som ligner på et norsk mobilnummer:", "tlf")
 
 // globalPhoneNumberRegex fanger opp alle telefonnumre som starter med + eller 00 etterfulgt av landekode og 6–15 sifre, med valgfri bruk av mellomrom eller bindestrek.
 
 
 
 const norwegianMobileNumberRegex = /(?<!0047[ -]*)(?<!\+47[ -]*)\b[49](?:[ -]?\d){7}\b/g
-export const validateNorwegianMobileNumber = createValidator(norwegianMobileNumberRegex, warning, "Tekst som ligner på et norsk mobilnummer:", "mobnr")
+export const validateNorwegianMobileNumber = createValidator(norwegianMobileNumberRegex, warning, "Tekst som ligner på et norsk mobilnummer:", "tlf")
 
 // norwegianMobileNumberRegex fanger opp norske mobilnumre på 8 siffer som starter med 4 eller 9, med valgfri bruk av mellomrom eller bindestrek.
 

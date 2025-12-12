@@ -281,9 +281,14 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           size='small'
           className='fade-in mb-2'
         >
-          <BodyShort size='small'>
-            Det ser ut som spørsmålet inneholder personopplysninger. Kontroller følgende før du sender:
-          </BodyShort>
+          <Heading
+            size='xsmall'
+            spacing
+            className='mt-0.5 text-[16px]'
+          >
+            Spørsmålet ser ut til å inneholde personopplysninger
+          </Heading>
+          <BodyShort size='small'>Vurder om følgende er nødvendig for å få svar på spørsmålet:</BodyShort>
           <List
             size='small'
             className='max-h-36 overflow-scroll'
@@ -332,10 +337,14 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           size='small'
           className='fade-in mb-2'
         >
-          <BodyShort size='small'>
-            Det ser ut som spørsmålet inneholder fødselsnummer/d-nummer/hnr. Fjern eller anonymiser følgende før du
-            sender:
-          </BodyShort>
+          <Heading
+            size='xsmall'
+            spacing
+            className='mt-0.5 text-[16px]'
+          >
+            Spørsmålet inneholder fødselsnummer/d-nummer/hnr
+          </Heading>
+          <BodyShort size='small'>Fjern eller anonymiser følgende før du sender:</BodyShort>
           <List
             size='small'
             className='max-h-36 overflow-scroll'
