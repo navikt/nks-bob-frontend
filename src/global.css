@@ -412,6 +412,10 @@ body.dark {
     --ac-button-secondary-neutral-hover-bg: rgba(215, 222, 250, 0.11);
     --ac-button-tertiary-neutral-hover-bg: rgba(215, 222, 250, 0.11);
 
+    /* List Item */
+
+    --ac-list-marker-ul-color: var(--darkmode-text-default)
+
 
 }
 

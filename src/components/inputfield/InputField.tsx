@@ -1,4 +1,16 @@
-import { Alert, BodyShort, Button, Detail, Heading, Textarea, VStack } from "@navikt/ds-react"
+import {
+  Alert,
+  BodyShort,
+  Button,
+  Detail,
+  Heading,
+  HStack,
+  Link,
+  List,
+  Textarea,
+  Tooltip,
+  VStack,
+} from "@navikt/ds-react"
 
 import { PaperplaneIcon } from "@navikt/aksel-icons"
 import { forwardRef, useEffect, useRef, useState } from "react"
@@ -11,6 +23,21 @@ import { createJSONStorage, persist } from "zustand/middleware"
 import { useAlerts } from "../../api/api.ts"
 import { NewMessage } from "../../types/Message.ts"
 import analytics from "../../utils/analytics.ts"
+import {
+  isError,
+  isNotOk,
+  isWarning,
+  validateAccountNumber,
+  validateDateOfBirth,
+  validateEmail,
+  validateGlobalPhoneNumber,
+  validateName,
+  validateNorwegianMobileNumber,
+  validatePersonnummer,
+  ValidationError,
+  ValidationWarning,
+  Validator,
+} from "../../utils/inputValidation.ts"
 import "./InputField.css"
 
 type InputFieldState = {
@@ -57,27 +84,44 @@ interface InputFieldProps {
 const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputField({ onSend, disabled }, containerRef) {
   const placeholderText = "Spør Bob om noe Nav-relatert"
   const [isSensitiveInfoAlert, setIsSensitiveInfoAlert] = useState<boolean>(false)
-  const [containsFnr, setContainsFnr] = useState<boolean>(false)
   const [sendDisabled, setSendDisabled] = useState<boolean>(disabled)
   const [isFocused, setIsFocused] = useState(false)
+
+  const [validationWarnings, setValidationWarnings] = useState<ValidationWarning[]>([])
+  const [validationErrors, setValidationErrors] = useState<ValidationError[]>([])
+  const [ignoredValidations, setIgnoredValidations] = useState<string[]>([])
 
   const { conversationId } = useParams()
 
   const { inputValue, setInputValue, textareaRef } = useInputFieldStore()
 
   const { alerts } = useAlerts()
-  const hasErrors = alerts.at(0)?.notificationType === "Error"
+  const hasAlertErrors = alerts.at(0)?.notificationType === "Error"
 
-  function sendMessage(messageContent?: string, opts: { clear?: boolean; blur?: boolean } = {}) {
+  function sendMessage(
+    trigger: "knapp" | "enter" | "hotkey",
+    messageContent?: string,
+    opts: { clear?: boolean; blur?: boolean } = {},
+  ) {
     const { clear = true, blur = true } = opts
-    if (sendDisabled) return
+    if (sendDisabled) {
+      return
+    }
 
     const message: NewMessage = { content: messageContent ?? inputValue }
     if (message.content.trim() !== "") {
       onSend(message)
     }
-    if (clear) setInputValue("")
-    if (blur) textareaRef.current?.blur()
+
+    if (clear) {
+      setInputValue("")
+    }
+
+    if (blur) {
+      textareaRef.current?.blur()
+    }
+
+    analytics.meldingSendt(trigger)
   }
 
   function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -99,18 +143,13 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     e.preventDefault()
   }
 
-  function checkContainsFnr(value: string) {
-    return /(\d{6}(|.)\d{5})/.test(value)
-  }
-
   function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     if (e.key === "Enter") {
       if (!e.shiftKey) {
         e.preventDefault()
 
         if (!sendDisabled) {
-          analytics.meldingSendt("enter")
-          sendMessage()
+          sendMessage("enter")
           setIsSensitiveInfoAlert(false)
         }
       }
@@ -119,31 +158,85 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
 
   function handleButtonClick() {
     if (inputValue.trim() !== "") {
-      analytics.meldingSendt("knapp")
-      sendMessage()
+      sendMessage("knapp")
     }
   }
 
-  useEffect(() => {
-    const inputContainsFnr = checkContainsFnr(inputValue)
+  const validators: Validator[] = [
+    validatePersonnummer,
+    validateName,
+    validateEmail,
+    validateAccountNumber,
+    validateDateOfBirth,
+    validateNorwegianMobileNumber,
+    validateGlobalPhoneNumber,
+  ]
 
-    if (inputContainsFnr) {
+  function validateInput(ignoredWarnings?: string[]) {
+    if (ignoredWarnings) {
+      setIgnoredValidations(ignoredWarnings)
+    } else {
+      ignoredWarnings = ignoredValidations
+    }
+
+    const validationResults = validators.map((validator) => validator.call(null, inputValue)).filter(isNotOk)
+
+    const warnings = validationResults
+      .filter(isWarning)
+      .flatMap((validation) => ({
+        ...validation,
+        matches: validation.matches.filter((match) => !ignoredWarnings.some((v) => v === match.value)),
+      }))
+      .filter((validation) => validation.matches.length > 0)
+
+    setValidationWarnings(warnings)
+
+    const errors = validationResults.filter(isError)
+    setValidationErrors(errors)
+
+    const containsFnr = validationResults.filter(isError).some((v) => v.validationType === "fnr")
+    if (containsFnr) {
       analytics.tekstInneholderFnr()
     }
 
-    setContainsFnr(inputContainsFnr)
-    setSendDisabled(disabled || inputContainsFnr || hasErrors)
-  }, [inputValue, disabled, hasErrors])
+    warnings.forEach(({ validationType }) => analytics.valideringsfeil("warning", validationType))
+    errors.forEach(({ validationType }) => analytics.valideringsfeil("error", validationType))
 
-  useHotkeys("Alt+Ctrl+O", () => sendMessage("Oversett til engelsk", { clear: false, blur: false }), {
+    return [...warnings, ...errors]
+  }
+
+  useEffect(() => {
+    const results = validateInput()
+
+    const hasValidationError = results.some(isError)
+    const hasValidationWarning = results.some(isWarning)
+
+    setSendDisabled(disabled || hasAlertErrors || hasValidationError || hasValidationWarning)
+  }, [inputValue, disabled, hasAlertErrors, ignoredValidations])
+
+  const prevSendDisabledRef = useRef<boolean>(true)
+  useEffect(() => {
+    if (prevSendDisabledRef.current && !sendDisabled) {
+      if (inputValue.trim().length > 0) {
+        textareaRef.current?.focus()
+      }
+    }
+    prevSendDisabledRef.current = sendDisabled
+  }, [sendDisabled, inputValue, textareaRef])
+
+  useHotkeys("Alt+Ctrl+O", () => sendMessage("hotkey", "Oversett til engelsk", { clear: false, blur: false }), {
     enabled: !!conversationId,
     enableOnFormTags: true,
   })
-  useHotkeys("Alt+Ctrl+P", () => sendMessage("Gjør om svaret til punktliste", { clear: false, blur: false }), {
-    enabled: !!conversationId,
-    enableOnFormTags: true,
-  })
-  useHotkeys("Alt+Ctrl+E", () => sendMessage("Gjør svaret mer empatisk", { clear: false, blur: false }), {
+  useHotkeys(
+    "Alt+Ctrl+P",
+    () => sendMessage("hotkey", "Gjør om svaret til punktliste", { clear: false, blur: false }),
+    {
+      enabled: !!conversationId,
+      enableOnFormTags: true,
+    },
+  )
+  useHotkeys("Alt+Ctrl+E", () => sendMessage("hotkey", "Gjør svaret mer empatisk", { clear: false, blur: false }), {
     enabled: !!conversationId,
     enableOnFormTags: true,
   })
@@ -164,23 +257,122 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           <Heading
             size='xsmall'
             spacing
+            className='mt-0.5 text-[16px]'
           >
             Vi har midlertidig slått av muligheten for å lime inn tekst
           </Heading>
-          <BodyShort spacing>
+          <BodyShort
+            size='small'
+            spacing
+          >
             Årsaken er at det ved flere anledninger har blitt delt personopplysninger ved innliming.
           </BodyShort>
-          <BodyShort>Vi jobber aktivt med å finne en løsning.</BodyShort>
+          <BodyShort
+            size='small'
+            spacing
+          >
+            Vi jobber aktivt med å finne en løsning.
+          </BodyShort>
         </Alert>
       )}
-      {containsFnr && (
+      {validationWarnings.length > 0 && (
+        <Alert
+          variant='warning'
+          size='small'
+          className='fade-in mb-2'
+        >
+          <Heading
+            size='xsmall'
+            spacing
+            className='mt-0.5 text-[16px]'
+          >
+            Spørsmålet ser ut til å inneholde personopplysninger
+          </Heading>
+          <BodyShort size='small'>Vurder om følgende er nødvendig for å få svar på spørsmålet:</BodyShort>
+          <List
+            size='small'
+            className='max-h-36 overflow-scroll'
+          >
+            {validationWarnings.flatMap(({ matches }, i) =>
+              matches.map(({ value, start, end }, j) => (
+                <List.Item
+                  key={`warning-list-${i}-${j}`}
+                  className='items-center'
+                >
+                  <HStack
+                    gap='2'
+                    align='center'
+                  >
+                    <Tooltip content='Endre'>
+                      <Link
+                        onClick={() => {
+                          if (textareaRef.current) {
+                            scrollToSelection(textareaRef.current, start, end)
+                          }
+                        }}
+                      >
+                        <span className='cursor-pointer font-bold'>{value}</span>
+                      </Link>
+                    </Tooltip>
+
+                    <Button
+                      variant='tertiary-neutral'
+                      size='xsmall'
+                      onClick={() => {
+                        validateInput([...ignoredValidations, value])
+                      }}
+                    >
+                      Ignorer
+                    </Button>
+                  </HStack>
+                </List.Item>
+              )),
+            )}
+          </List>
+        </Alert>
+      )}
+      {validationErrors.length > 0 && (
         <Alert
           variant='error'
           size='small'
-          onClose={() => setContainsFnr(false)}
           className='fade-in mb-2'
         >
-          Du har skrevet inn noe som ligner på et fødselsnummer. Derfor får du ikke sendt meldingen.
+          <Heading
+            size='xsmall'
+            spacing
+            className='mt-0.5 text-[16px]'
+          >
+            Spørsmålet inneholder fødselsnummer/d-nummer/hnr
+          </Heading>
+          <BodyShort size='small'>Fjern eller anonymiser følgende før du sender:</BodyShort>
+          <List
+            size='small'
+            className='max-h-36 overflow-scroll'
+          >
+            {validationErrors.flatMap(({ matches }, i) =>
+              matches.map(({ value, start, end }, j) => (
+                <List.Item
+                  key={`error-list-${i}-${j}`}
+                  className='items-center'
+                >
+                  <HStack
+                    gap='2'
+                    align='center'
+                  >
+                    <Link
+                      onClick={() => {
+                        if (textareaRef.current) {
+                          scrollToSelection(textareaRef.current, start, end)
+                        }
+                      }}
+                    >
+                      <span className='cursor-pointer font-bold'>{value}</span>
+                    </Link>
+                  </HStack>
+                </List.Item>
+              )),
+            )}
+          </List>
         </Alert>
       )}
       <NewMessageAlert
@@ -212,7 +404,6 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
             setIsFocused(false)
 
             const ta = textareaRef.current
-
             if (ta) {
               ta.style.height = ""
               ta.style.width = ""
@@ -240,6 +431,16 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
 })
 
 export default InputField
+
+function scrollToSelection(textArea: HTMLTextAreaElement, selectionStart: number, selectionEnd: number) {
+  const fullText = textArea.value
+  textArea.value = fullText.substring(0, selectionEnd)
+  textArea.focus()
+  textArea.scrollTop = textArea.scrollHeight
+  textArea.value = fullText
+  textArea.setSelectionRange(selectionStart, selectionEnd)
+  textArea.focus()
+}
 
 interface NewMessageAlertProps {
   setInputValue: (newMessage: string) => void
