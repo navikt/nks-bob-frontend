@@ -8,6 +8,7 @@ import InputField, { useInputFieldStore } from "../inputfield/InputField.tsx"
 import { useSourcesStore } from "./chat/chatbubbles/sources/ShowAllSources.tsx"
 import { BobPlaceholder } from "./placeholders/Placeholders.tsx"
 import CreateConversationWrapper from "./wrappers/CreateConversationWrapper.tsx"
+import analytics from "../../utils/analytics.ts"
 
 const CreateConversationContent = () => {
   const navigate = useNavigate()
@@ -32,6 +33,7 @@ const CreateConversationContent = () => {
 
     createConversation(newConversation)
       .then((conversation) => {
+        analytics.nySamtaleOpprettet(conversation.id)
         navigate(`/samtaler/${conversation.id}`, { state: { initialMessage: message.content } })
       })
 

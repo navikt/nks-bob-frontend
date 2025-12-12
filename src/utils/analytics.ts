@@ -84,6 +84,8 @@ const versjonOppdatert = (gammelVersjon: string, nyVersjon: string) =>
 
 const versjonLagret = (versjon: string) => logEvent("Versjon av Bob brukt", { versjon })
 
+const nySamtaleOpprettet = (samtaleId: string) => logEvent("Ny samtale opprettet", { samtaleId })
+
 export default {
   svarKopiert,
   svarEndret,
@@ -115,4 +117,5 @@ export default {
   kbVisAlleKilderLenkeKopiert,
   versjonOppdatert,
   versjonLagret,
+  nySamtaleOpprettet,
 }
