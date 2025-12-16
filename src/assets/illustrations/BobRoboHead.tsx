@@ -250,7 +250,7 @@ export const BobRoboHead = () => {
 export const BobSantaHead = () => {
   return (
     <svg
-      width='40'
+      width='30'
       height='auto'
       viewBox='0 0 785 838'
       fill='none'
