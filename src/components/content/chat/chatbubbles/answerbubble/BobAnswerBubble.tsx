@@ -2,7 +2,7 @@ import { BodyLong, Heading, Skeleton, Tag, VStack } from "@navikt/ds-react"
 import React, { memo, useState } from "react"
 import Markdown from "react-markdown"
 import rehypeRaw from "rehype-raw"
-import { BobRoboHead } from "../../../../../assets/illustrations/BobRoboHead.tsx"
+import { BobSantaHead } from "../../../../../assets/illustrations/BobRoboHead.tsx"
 import { Citation, Message, NewMessage } from "../../../../../types/Message.ts"
 import { md } from "../../../../../utils/markdown.ts"
 import { FollowUpQuestions } from "../../../followupquestions/FollowUpQuestions.tsx"
@@ -48,7 +48,7 @@ export const BobAnswerBubble = memo(
           width='full'
         >
           <div className='pt-1'>
-            <BobRoboHead />
+            {/* <BobRoboHead /> */} <BobSantaHead />
           </div>
           <div className='flex w-full flex-col pt-3'>
             <div className={`overflow-wrap mb-2 flex w-full ${isHighlighted ? "bg-[#FFF5E4] p-2" : ""} `}>
