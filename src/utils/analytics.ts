@@ -33,7 +33,7 @@ const infoÅpnet = () => logEvent("Info modal åpnet")
 
 const mørkModusByttet = (modus: "lys" | "mørk") => logEvent("Mørk modus byttet", { modus })
 
-const meldingSendt = (trigger: "knapp" | "enter") => logEvent("Melding sendt", { trigger })
+const meldingSendt = (trigger: "knapp" | "enter" | "hotkey") => logEvent("Melding sendt", { trigger })
 
 const kildeAccordionÅpnet = () => logEvent("Kilde accordion åpnet")
 
@@ -42,6 +42,8 @@ const kildeAccordionSkjult = () => logEvent("Kilde accordion skjult")
 const tekstInnholdLimtInn = () => logEvent("Tekstinnhold limt inn")
 
 const tekstInneholderFnr = () => logEvent("Tekst inneholder fnr")
+
+const valideringsfeil = (level: "warning" | "error", type: string) => logEvent("Valideringsfeil", { level, type })
 
 const forslagTrykket = () => logEvent("Forslag trykket")
 
@@ -84,6 +86,8 @@ const versjonOppdatert = (gammelVersjon: string, nyVersjon: string) =>
 
 const versjonLagret = (versjon: string) => logEvent("Versjon av Bob brukt", { versjon })
 
+const svartekstMarkert = () => logEvent("Svartekst markert og kopiert")
+
 export default {
   svarKopiert,
   svarEndret,
@@ -95,6 +99,7 @@ export default {
   kildeAccordionSkjult,
   tekstInnholdLimtInn,
   tekstInneholderFnr,
+  valideringsfeil,
   forslagTrykket,
   visAlleKilderÅpnet,
   spørsmålRedigert,
@@ -115,4 +120,5 @@ export default {
   kbVisAlleKilderLenkeKopiert,
   versjonOppdatert,
   versjonLagret,
+  svartekstMarkert,
 }
