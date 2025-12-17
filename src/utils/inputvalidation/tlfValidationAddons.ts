@@ -316,3 +316,13 @@ export const whitelistNumbers = [
 "41282935"  
 
 ];
+
+export const whitelistNames = [ 
+  "Na",
+  "Nav",
+  "Bo",
+  "Bob",
+  "Hei B",
+  "Hei Bo",
+  "Hei Bob",
+]

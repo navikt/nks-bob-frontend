@@ -1,4 +1,4 @@
-import { countryCodePattern } from "./inputvalidation/tlfValidationAddons";
+import { countryCodePattern, whitelistNames } from "./inputvalidation/tlfValidationAddons";
 
 export type ValidationResult = ValidationOk | ValidationWarning | ValidationError
 
@@ -94,6 +94,30 @@ function createValidator(
   }
 }
 
+function createValidatorWithWhitelist(
+  regex: RegExp,
+  constructor: ValidationResultConstructor,
+  message: string,
+  type: ValidationType,
+  whitelist: string[],
+): Validator {
+  return (input: string) => {
+    if (!input.match(regex)) {
+      return ok()
+    }
+
+    const matches = getMatches(regex, input).filter(
+      (match) => !whitelist.includes(match.value)
+    )
+
+    if (matches.length === 0) {
+      return ok()
+    }
+
+    return constructor(message, type, matches)
+  }
+}
+
 const fnrRegex = /\b(0[1-9]|[12]\d|3[01])(0[1-9]|1[0-2])\d{2}[ .-]*?\d{3}[ .-]*\d{2}\b/
 // fnrRegex fanger opp fødselsnummer på formatet DDMMÅÅIIIKK, med dag 01–31, måned 01–12 og valgfri separator.
 
@@ -117,7 +141,13 @@ export const validatePersonnummer = createValidator(
   )
 
 const nameRegex = /(?:(?:\p{Lu}[\p{L}'-]*[ \t-]+(?:\p{Lu}[\p{L}'-]*[ \t-]+)?\p{Lu}[\p{L}'-]*)|(?:(?<!^)(?<![\p{P}\n]\s*)\b\p{Lu}\p{Ll}+\b))/gu
-export const validateName = createValidator(nameRegex, warning, "Tekst som ligner på et navn:", "name")
+export const validateName = createValidatorWithWhitelist(
+  nameRegex,
+  warning,
+  "Tekst som ligner på et navn:",
+  "name",
+  whitelistNames
+)
 
 /*
 Fanger opp tekst som ligner på personnavn.
