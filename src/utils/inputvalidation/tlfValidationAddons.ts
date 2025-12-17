@@ -317,8 +317,9 @@ export const whitelistNumbers = [
 
 ];
 
-
 export const whitelistNames = [ 
+  "Na",
   "Nav",
+  "Bo",
   "Bob",
 ]
