@@ -322,4 +322,7 @@ export const whitelistNames = [
   "Nav",
   "Bo",
   "Bob",
+  "Hei B",
+  "Hei Bo",
+  "Hei Bob",
 ]
