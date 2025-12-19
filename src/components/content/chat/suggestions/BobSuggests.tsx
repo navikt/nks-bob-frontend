@@ -112,6 +112,15 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
           onClick={handleEmpathetic}
         />
       </Tooltip>
+      <Tooltip content={`${isLastMessage ? "Gjør mer empatisk ( Alt+Ctrl+E )" : "Gjør mer empatisk"}`}>
+        <Button
+          variant='tertiary-neutral'
+          size='small'
+          aria-label='Gjør svaret mer empatisk'
+          icon={<HandShakeHeartIcon />}
+          onClick={handleEmpathetic}
+        />
+      </Tooltip>
       <div className='mx-2 flex'>
         <CoachMark
           title='Disse knappene lar deg:'
