@@ -22,7 +22,7 @@ fetch-env:
 
 [private]
 port-forward:
-	kubectl port-forward deployment/nks-bob-api 8989:8080
+	kubectl port-forward --cluster dev-gcp --namespace nks-aiautomatisering deployment/nks-bob-api 8989:8080
 
 [private]
 wonderwall:
