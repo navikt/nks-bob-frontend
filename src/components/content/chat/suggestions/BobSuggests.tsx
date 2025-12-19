@@ -1,4 +1,11 @@
-import { BulletListIcon, HandShakeHeartIcon, LanguageIcon, StarFillIcon, StarIcon } from "@navikt/aksel-icons"
+import {
+  BulletListIcon,
+  HandShakeHeartIcon,
+  LanguageIcon,
+  PersonIcon,
+  StarFillIcon,
+  StarIcon,
+} from "@navikt/aksel-icons"
 import { Button, CopyButton, Tooltip } from "@navikt/ds-react"
 import { useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
@@ -23,7 +30,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
   function handleTranslate() {
     analytics.svarEndret("oversett")
     const translate: NewMessage = {
-      content: isLastMessage ? "Oversett svaret til engelsk" : `Oversett til engelsk:\n${message.content}`,
+      content: isLastMessage ? "Oversett svaret til engelsk" : `Oversett svaret til engelsk:\n${message.content}`,
     }
     onSend(translate)
   }
@@ -31,7 +38,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
   function handleBulletList() {
     analytics.svarEndret("punktliste")
     const bulletList: NewMessage = {
-      content: isLastMessage ? "Gjør om svaret til punktliste" : `Gjør om til punktliste:\n${message.content}`,
+      content: isLastMessage ? "Gjør om svaret til punktliste" : `Gjør om svaret til punktliste:\n${message.content}`,
     }
     onSend(bulletList)
   }
@@ -40,6 +47,14 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
     analytics.svarEndret("forenkle")
     const simplifyMessage: NewMessage = {
       content: isLastMessage ? "Gjør svaret mer empatisk" : `Gjør svaret mer empatisk:\n${message.content}`,
+    }
+    onSend(simplifyMessage)
+  }
+
+  function handleDuForm() {
+    analytics.svarEndret("forenkle")
+    const simplifyMessage: NewMessage = {
+      content: isLastMessage ? "Gjør om svaret til du-form" : `Gjør om svaret til du-form:\n${message.content}`,
     }
     onSend(simplifyMessage)
   }
@@ -77,7 +92,9 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
       <FeedbackOnAnswer message={message} />
 
       <MessageStar message={message} />
-      <Tooltip content={`${isLastMessage ? "Oversett til engelsk ( Alt+Ctrl+O )" : "Oversett til engelsk"}`}>
+      <Tooltip
+        content={`${isLastMessage ? "Oversett svaret til engelsk ( Alt+Ctrl+O )" : "Oversett svaret til engelsk"}`}
+      >
         <Button
           variant='tertiary-neutral'
           size='small'
@@ -86,22 +103,35 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
           onClick={handleTranslate}
         />
       </Tooltip>
-      <Tooltip content={`${isLastMessage ? "Gjør om til punktliste ( Alt+Ctrl+P )" : "Gjør om til punktliste"}`}>
+      <Tooltip
+        content={`${isLastMessage ? "Gjør om svaret til punktliste ( Alt+Ctrl+P )" : "Gjør om svaret til punktliste"}`}
+      >
         <Button
           variant='tertiary-neutral'
           size='small'
-          aria-label='Gjør svaret om til punktliste'
+          aria-label='Gjør om svaret til punktliste'
           icon={<BulletListIcon />}
           onClick={handleBulletList}
         />
       </Tooltip>
-      <Tooltip content={`${isLastMessage ? "Gjør mer empatisk ( Alt+Ctrl+E )" : "Gjør mer empatisk"}`}>
+      <Tooltip content={`${isLastMessage ? "Gjør svaret mer empatisk ( Alt+Ctrl+E )" : "Gjør svaret mer empatisk"}`}>
         <Button
           variant='tertiary-neutral'
           size='small'
           aria-label='Gjør svaret mer empatisk'
           icon={<HandShakeHeartIcon />}
           onClick={handleEmpathetic}
+        />
+      </Tooltip>
+      <Tooltip
+        content={`${isLastMessage ? "Gjør om svaret til du-form ( Alt+Ctrl+F )" : "Gjør om svaret til du-form"}`}
+      >
+        <Button
+          variant='tertiary-neutral'
+          size='small'
+          aria-label='Gjør om svaret til du-form'
+          icon={<PersonIcon />}
+          onClick={handleDuForm}
         />
       </Tooltip>
       <div className='mx-2 flex'>

@@ -240,6 +240,10 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     enabled: !!conversationId,
     enableOnFormTags: true,
   })
+  useHotkeys("Alt+Ctrl+F", () => sendMessage("hotkey", "Gjør om svaret til du-form", { clear: false, blur: false }), {
+    enabled: !!conversationId,
+    enableOnFormTags: true,
+  })
 
   return (
     <div
