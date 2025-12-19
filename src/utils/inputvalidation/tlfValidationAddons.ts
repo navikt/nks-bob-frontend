@@ -336,4 +336,12 @@ export const whitelistNames = [
   "Skatteetat",
   "Skatteetate",
   "Skatteetaten",
+  "Hu",
+  "Hus",
+  "Husb",
+  "Husba",
+  "Husban",
+  "Husbank",
+  "Husbanke",
+  "Husbanken",
 ]
