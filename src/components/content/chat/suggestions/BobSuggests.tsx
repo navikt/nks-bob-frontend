@@ -1,9 +1,15 @@
-import { BulletListIcon, HandShakeHeartIcon, LanguageIcon, StarFillIcon, StarIcon } from "@navikt/aksel-icons"
+import {
+  BulletListIcon,
+  HandShakeHeartIcon,
+  LanguageIcon,
+  PersonIcon,
+  StarFillIcon,
+  StarIcon,
+} from "@navikt/aksel-icons"
 import { Button, CopyButton, Tooltip } from "@navikt/ds-react"
 import { useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import { useStarMessage } from "../../../../api/api.ts"
-import { PointingFinger } from "../../../../assets/icons/PointingFinger.tsx"
 import { Message, NewMessage } from "../../../../types/Message.ts"
 import analytics from "../../../../utils/analytics.ts"
 import { md } from "../../../../utils/markdown.ts"
@@ -124,7 +130,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
           variant='tertiary-neutral'
           size='small'
           aria-label='Gjør om svaret til du-form'
-          icon={<PointingFinger />}
+          icon={<PersonIcon />}
           onClick={handleDuForm}
         />
       </Tooltip>
