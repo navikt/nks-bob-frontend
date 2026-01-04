@@ -106,8 +106,19 @@ function createValidatorWithWhitelist(
       return ok()
     }
 
+   
     const matches = getMatches(regex, input).filter(
-      (match) => !whitelist.includes(match.value)
+      (match) => {
+        if (whitelist.includes(match.value)) {
+          return false
+        }
+        
+        const startsWithWhitelisted = whitelist.some(whitelistedWord => 
+          match.value.startsWith(whitelistedWord + " ")
+        )
+        
+        return !startsWithWhitelisted
+      }
     )
 
     if (matches.length === 0) {

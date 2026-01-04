@@ -1,7 +1,7 @@
 import { Alert as AlertComponent, BodyShort, Heading } from "@navikt/ds-react"
 import Markdown from "react-markdown"
 import { useAlerts } from "../../../api/api.ts"
-import { ChristmasBobV1Dark, ChristmasBobV1Light } from "../../../assets/illustrations/ChristmasBob.tsx"
+import { BobTheRobot, BobTheRobotDark } from "../../../assets/illustrations/BobTheRobot.tsx"
 import { SadBob } from "../../../assets/illustrations/SadBob.tsx"
 import { Alert } from "../../../types/Notifications.ts"
 import "./Placeholders.css"
@@ -10,7 +10,7 @@ export const BobPlaceholder = () => {
   const { alerts } = useAlerts()
   const hasErrors = alerts.length > 0
 
-  const displayText = "God jul fra Bob og oss i teamet!"
+  const displayText = "Hei! Hva kan jeg hjelpe deg med?"
 
   return (
     <>
@@ -18,21 +18,18 @@ export const BobPlaceholder = () => {
         <>
           <div className='bob-styling flex dark:hidden'>
             <div>
-              {/* <BobTheRobot /> */}
-              <ChristmasBobV1Light />
+              <BobTheRobot />
             </div>
             <BodyShort
               size='medium'
               className='self-center text-text-subtle'
             >
-              {/* Hei! Hva kan jeg hjelpe deg med? */}
               {displayText}
             </BodyShort>
           </div>
           <div className='bob-styling hidden dark:flex'>
             <div>
-              {/* <BobTheRobotDark /> */}
-              <ChristmasBobV1Dark />
+              <BobTheRobotDark />
             </div>
             <BodyShort
               size='medium'
