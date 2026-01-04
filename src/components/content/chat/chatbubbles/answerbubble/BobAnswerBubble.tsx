@@ -2,15 +2,15 @@ import { BodyLong, Heading, Skeleton, Tag, VStack } from "@navikt/ds-react"
 import React, { memo, useState } from "react"
 import Markdown from "react-markdown"
 import rehypeRaw from "rehype-raw"
-import { BobSantaHead } from "../../../../../assets/illustrations/BobRoboHead.tsx"
+import { BobRoboHead } from "../../../../../assets/illustrations/BobRoboHead.tsx"
 import { Citation, Message, NewMessage } from "../../../../../types/Message.ts"
+import analytics from "../../../../../utils/analytics.ts"
 import { md } from "../../../../../utils/markdown.ts"
 import { FollowUpQuestions } from "../../../followupquestions/FollowUpQuestions.tsx"
 import BobSuggests from "../../suggestions/BobSuggests.tsx"
 import BobAnswerCitations from "../BobAnswerCitations.tsx"
 import ToggleCitations from "../citations/ToggleCitations.tsx"
 import { CitationLinks, CitationNumber } from "./Citations.tsx"
-import analytics from "../../../../../utils/analytics.ts"
 
 interface BobAnswerBubbleProps {
   message: Message
@@ -49,7 +49,7 @@ export const BobAnswerBubble = memo(
           width='full'
         >
           <div className='pt-1'>
-            {/* <BobRoboHead /> */} <BobSantaHead />
+            <BobRoboHead />
           </div>
           <div className='flex w-full flex-col pt-3'>
             <div className={`overflow-wrap mb-2 flex w-full ${isHighlighted ? "bg-[#FFF5E4] p-2" : ""} `}>
@@ -171,7 +171,10 @@ const MessageContent = ({
   }
 
   return (
-    <div className='flex flex-col gap-5' ref={divRef}>
+    <div
+      className='flex flex-col gap-5'
+      ref={divRef}
+    >
       <Heading
         size='small'
         className='sr-only top-0'
