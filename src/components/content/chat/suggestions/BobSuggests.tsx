@@ -1,4 +1,11 @@
-import { BulletListIcon, HandShakeHeartIcon, LanguageIcon, StarFillIcon, StarIcon } from "@navikt/aksel-icons"
+import {
+  BulletListIcon,
+  FilesIcon,
+  HandShakeHeartIcon,
+  LanguageIcon,
+  StarFillIcon,
+  StarIcon,
+} from "@navikt/aksel-icons"
 import { Button, CopyButton, Tooltip } from "@navikt/ds-react"
 import { useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
@@ -67,6 +74,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
           copyText=''
           size='small'
           aria-label='Kopier svaret'
+          icon={<FilesIcon aria-hidden />}
           onClick={() => {
             new Promise((resolve) => setTimeout(resolve, 100)).then(() => copyMessageContent())
 

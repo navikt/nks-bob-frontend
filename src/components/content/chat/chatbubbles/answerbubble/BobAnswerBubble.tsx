@@ -2,6 +2,7 @@ import { BodyLong, Heading, Skeleton, Tag, VStack } from "@navikt/ds-react"
 import React, { memo, useState } from "react"
 import Markdown from "react-markdown"
 import rehypeRaw from "rehype-raw"
+import remarkGfm from "remark-gfm"
 import { BobRoboHead } from "../../../../../assets/illustrations/BobRoboHead.tsx"
 import { Citation, Message, NewMessage } from "../../../../../types/Message.ts"
 import analytics from "../../../../../utils/analytics.ts"
@@ -183,8 +184,8 @@ const MessageContent = ({
         Svar fra Bob:
       </Heading>
       <Markdown
-        className='markdown'
-        remarkPlugins={[md.remarkCitations]}
+        className='markdown answer-markdown'
+        remarkPlugins={[remarkGfm, md.remarkCitations]}
         rehypePlugins={[rehypeRaw]}
         components={{
           a: ({ ...props }) => (
@@ -192,6 +193,7 @@ const MessageContent = ({
               {...props}
               target='_blank'
               rel='noopener noreferrer'
+              title='Åpne lenken i ny fane'
             />
           ),
           span: (props: CitationSpanProps) => {
