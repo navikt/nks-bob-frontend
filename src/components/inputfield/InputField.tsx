@@ -451,15 +451,14 @@ const NewMessageAlert = ({ setInputValue, conversationId }: NewMessageAlertProps
   const [newMessageAlert, setNewMessageAlert] = useState(false)
   const reopenWarning = useRef<NodeJS.Timeout | null>(null)
 
+  const WARNING_TIMER = 30 * 60 * 1000
+
   useEffect(() => {
     if (!conversationId) return
 
-    const timer = setTimeout(
-      () => {
-        setNewMessageAlert(true)
-      },
-      15 * 60 * 1000,
-    )
+    const timer = setTimeout(() => {
+      setNewMessageAlert(true)
+    }, WARNING_TIMER)
     return () => {
       clearTimeout(timer)
       if (reopenWarning.current) clearTimeout(reopenWarning.current)
@@ -478,12 +477,9 @@ const NewMessageAlert = ({ setInputValue, conversationId }: NewMessageAlertProps
     analytics.lukketNySamtaleVarsel()
     setNewMessageAlert(false)
     if (reopenWarning.current) clearTimeout(reopenWarning.current)
-    reopenWarning.current = setTimeout(
-      () => {
-        setNewMessageAlert(true)
-      },
-      15 * 60 * 1000,
-    )
+    reopenWarning.current = setTimeout(() => {
+      setNewMessageAlert(true)
+    }, WARNING_TIMER)
   }
 
   return (

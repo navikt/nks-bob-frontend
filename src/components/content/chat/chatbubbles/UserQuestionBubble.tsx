@@ -1,10 +1,9 @@
 import { Message } from "../../../../types/Message.ts"
 
-import { PencilWritingIcon } from "@navikt/aksel-icons"
-import { Button, Heading, Tooltip } from "@navikt/ds-react"
+import { FilesIcon, PencilWritingIcon } from "@navikt/aksel-icons"
+import { Button, CopyButton, Heading, Tooltip } from "@navikt/ds-react"
 import { memo } from "react"
 import Markdown from "react-markdown"
-import rehypeRaw from "rehype-raw"
 import remarkBreaks from "remark-breaks"
 import remarkGfm from "remark-gfm"
 import analytics from "../../../../utils/analytics.ts"
@@ -34,7 +33,18 @@ const UserQuestionBubble = memo(
       <div className='questionhover mb-4 flex w-fit flex-row items-end gap-1 self-end'>
         <div className='hide-show-edit fade-in hidden'>
           <Tooltip
-            content='Rediger spørsmålet'
+            content='Kopier teksten'
+            placement='bottom'
+          >
+            <CopyButton
+              copyText={raw}
+              size='small'
+              activeText='Kopiert!'
+              icon={<FilesIcon aria-hidden />}
+            />
+          </Tooltip>
+          <Tooltip
+            content='Rediger teksten'
             placement='bottom'
           >
             <Button
@@ -56,7 +66,7 @@ const UserQuestionBubble = memo(
           </Heading>
           <Markdown
             remarkPlugins={[remarkGfm, remarkBreaks]}
-            rehypePlugins={[rehypeRaw]}
+            className='chat-markdown'
           >
             {raw}
           </Markdown>
