@@ -376,7 +376,7 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
     const updatedFeedback = {
       options: feedback.options,
       comment: feedback.comment,
-      resolved: false,
+      resolved: feedback.resolved,
       resolvedCategory: category === "" ? null : category,
       resolvedImportance: importance === "" ? null : importance,
       resolvedNote: note === "" ? null : note,
