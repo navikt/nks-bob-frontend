@@ -1,4 +1,4 @@
-import { BodyLong, Heading, Skeleton, Tag, VStack } from "@navikt/ds-react"
+import { BodyLong, BodyShort, Heading, Skeleton, VStack } from "@navikt/ds-react"
 import React, { memo, useState } from "react"
 import Markdown from "react-markdown"
 import rehypeRaw from "rehype-raw"
@@ -11,6 +11,7 @@ import { FollowUpQuestions } from "../../../followupquestions/FollowUpQuestions.
 import BobSuggests from "../../suggestions/BobSuggests.tsx"
 import BobAnswerCitations from "../BobAnswerCitations.tsx"
 import ToggleCitations from "../citations/ToggleCitations.tsx"
+import { NoSourcesNeeded, ShowAllSourcesToggle } from "../sources/ShowAllSources.tsx"
 import { CitationLinks, CitationNumber } from "./Citations.tsx"
 
 interface BobAnswerBubbleProps {
@@ -29,6 +30,27 @@ interface CitationSpanProps extends React.HTMLAttributes<HTMLSpanElement> {
   "data-position"?: string
 }
 
+const getSourcesComponent = (message: Message) => {
+  const hasContext = message.context && message.context.length > 0
+  const hasCitations = message.citations && message.citations.length > 0
+
+  if (!hasContext && !hasCitations) {
+    return <NoSourcesNeeded />
+  }
+
+  if (hasContext) {
+    const toggleTitle = hasCitations ? "Vis alle kilder" : "Vis kildene Bob fant"
+    return (
+      <ShowAllSourcesToggle
+        message={message}
+        toggleTitle={toggleTitle}
+      />
+    )
+  }
+
+  return <NoSourcesNeeded />
+}
+
 export const BobAnswerBubble = memo(
   ({ message, onSend, isLoading, isLastMessage, isHighlighted, followUp }: BobAnswerBubbleProps) => {
     const hasError = ({ errors, pending, content }: Message): boolean => errors.length > 0 && !pending && content === ""
@@ -43,7 +65,7 @@ export const BobAnswerBubble = memo(
       <VStack
         gap='1'
         align='stretch'
-        className={`pb-12 ${isLastMessage ? "min-h-[calc(100vh_-_250px)]" : ""}`}
+        className={`pb-14 ${isLastMessage ? "min-h-[calc(100vh_-_250px)]" : ""}`}
       >
         <VStack
           align='start'
@@ -67,36 +89,30 @@ export const BobAnswerBubble = memo(
               )}
             </div>
             {contentReady && message.content && (
-              <div className='mb-6 flex flex-wrap-reverse items-center gap-2'>
-                <BobSuggests
+              <>
+                <div className='mb-6 flex items-center gap-2'>
+                  <BobSuggests
+                    message={message}
+                    onSend={onSend}
+                    isLastMessage={isLastMessage}
+                  />
+                  {getSourcesComponent(message)}
+                </div>
+                <Citations
                   message={message}
                   onSend={onSend}
+                  isLoading={isLoading}
                   isLastMessage={isLastMessage}
+                  citations={citations}
+                  showLinks={contentReady}
                 />
-                {message.context.length === 0 && (
-                  <Tag
-                    size='small'
-                    variant='neutral'
-                    className='h-fit w-fit px-3'
-                  >
-                    Bob brukte ingen kilder for å lage svaret
-                  </Tag>
-                )}
-              </div>
+                <FollowUpQuestions
+                  followUp={followUp}
+                  onSend={(question) => onSend({ content: question })}
+                  className='pointer-events-auto'
+                />
+              </>
             )}
-            <Citations
-              message={message}
-              onSend={onSend}
-              isLoading={isLoading}
-              isLastMessage={isLastMessage}
-              citations={citations}
-              showLinks={contentReady}
-            />
-            <FollowUpQuestions
-              followUp={followUp}
-              onSend={(question) => onSend({ content: question })}
-              className='pointer-events-auto'
-            />
           </div>
         </VStack>
       </VStack>
@@ -173,7 +189,7 @@ const MessageContent = ({
 
   return (
     <div
-      className='flex flex-col gap-5'
+      className='mb-2 flex flex-col gap-3'
       ref={divRef}
     >
       <Heading
@@ -183,6 +199,12 @@ const MessageContent = ({
       >
         Svar fra Bob:
       </Heading>
+      {message.citations.length === 0 && (
+        <BodyShort>
+          Jeg fant kilder, men <strong>de inneholdt ikke informasjon som kunne svare på spørsmålet</strong>. Likevel
+          skal jeg forsøke å svare så godt som mulig:
+        </BodyShort>
+      )}
       <Markdown
         className='markdown answer-markdown'
         remarkPlugins={[remarkGfm, md.remarkCitations]}
@@ -278,8 +300,8 @@ const Citations = memo(
       )
 
     return (
-      <div className='flex flex-col gap-4'>
-        {showLinks && (
+      <div className='mb-4 flex flex-col gap-4'>
+        {showLinks && citations.length > 0 && (
           <div className='flex flex-col gap-2'>
             <CitationLinks
               citations={citations}

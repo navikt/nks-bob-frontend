@@ -13,8 +13,6 @@ import { useStarMessage } from "../../../../api/api.ts"
 import { Message, NewMessage } from "../../../../types/Message.ts"
 import analytics from "../../../../utils/analytics.ts"
 import { md } from "../../../../utils/markdown.ts"
-import { CoachMark } from "../../../coachmark/CoachMark.tsx"
-import { AnswerButtonsExplanation } from "../../../coachmark/CoachmarkContent.tsx"
 import { FeedbackOnAnswer } from "../feedback/GiveUsFeedback.tsx"
 import "./BobSuggests.css"
 
@@ -25,8 +23,6 @@ interface BobSuggestsProps {
 }
 
 const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
-  const coachMarkKey = "coachMarkShownChat"
-
   function handleTranslate() {
     analytics.svarEndret("oversett")
     const translate: NewMessage = {
@@ -112,15 +108,6 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
           onClick={handleEmpathetic}
         />
       </Tooltip>
-      <div className='mx-2 flex'>
-        <CoachMark
-          title='Disse knappene lar deg:'
-          buttonText='Skjønner!'
-          coachMarkKey={coachMarkKey}
-        >
-          <AnswerButtonsExplanation />
-        </CoachMark>
-      </div>
     </div>
   )
 }
