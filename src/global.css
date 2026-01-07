@@ -430,6 +430,16 @@ body.dark {
 
   --ax-border-subtle: rgba(46, 54, 65, 1);
 
+  --ac-chip-toggle-neutral-bg: rgba(28, 35, 47, 1);
+  --ac-chip-toggle-neutral-border: rgba(224, 237, 254, 0.15);
+  --ac-chip-toggle-neutral-text: rgba(223, 225, 229, 1);
+
+  --ac-chip-toggle-neutral-hover-border: rgba(119, 127, 141, 1);
+  --ac-chip-toggle-neutral-hover-bg: rgba(36, 43, 55, 1);
+
+  --ac-chip-toggle-neutral-pressed-bg: rgba(165, 172, 182, 1);
+
+
   /*  Select  */
   --ac-select-bg: var(--new-bg-raised);
   --ac-select-text: rgba(223, 225, 229, 1);

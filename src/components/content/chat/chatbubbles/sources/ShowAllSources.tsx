@@ -1,11 +1,13 @@
 import { ChevronDownIcon, ChevronUpIcon, XMarkIcon } from "@navikt/aksel-icons"
-import { BodyLong, BodyShort, Button, CopyButton, Heading, HStack, Label, Link, VStack } from "@navikt/ds-react"
+import { BodyLong, BodyShort, Button, CopyButton, Detail, Heading, HStack, Label, Link, VStack } from "@navikt/ds-react"
 import { useState } from "react"
 import Markdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import { create } from "zustand"
 import { KunnskapsbasenIcon } from "../../../../../assets/icons/KunnskapsbasenIcon.tsx"
 import { NavNoIcon } from "../../../../../assets/icons/NavNoIcon.tsx"
+
+import { ShowAllSourcesIcon } from "../../../../../assets/icons/ShowAllSourcesIcon.tsx"
 import { Context, Message } from "../../../../../types/Message.ts"
 import analytics from "../../../../../utils/analytics.ts"
 import "./ShowAllSources.css"
@@ -191,5 +193,43 @@ const UtdragDropDown = ({ context }: { context: Context }) => {
         </BodyLong>
       )}
     </VStack>
+  )
+}
+
+interface ShowAllSourcesToggleProps {
+  message: Message
+  toggleTitle: string
+}
+
+export const ShowAllSourcesToggle = ({ message, toggleTitle }: ShowAllSourcesToggleProps) => {
+  const { activeMessage, setActiveMessage } = useSourcesStore()
+  const isActive = activeMessage !== null && activeMessage.id === message.id
+  const toggleActive = () => setActiveMessage(isActive ? null : message)
+
+  return (
+    <button
+      type='button'
+      aria-pressed={isActive}
+      onClick={toggleActive}
+      className='navds-chips__toggle navds-chips__toggle--neutral aria-pressed::text-[rgba(223_225_229/1)] h-[26px] rounded-full px-2 py-[1px] dark:aria-pressed:text-[rgba(0_0_0/1)] aria-pressed:dark:hover:bg-[rgba(148,155,168,1)]'
+    >
+      <div className='flex items-center gap-1'>
+        <ShowAllSourcesIcon />
+        <Detail
+          aria-pressed={isActive}
+          className='aria-pressed:dark:text-[rgba(0,0,0,1)]'
+        >
+          {toggleTitle}
+        </Detail>
+      </div>
+    </button>
+  )
+}
+
+export const NoSourcesNeeded = () => {
+  return (
+    <div className='rounded-full border border-[rgb(7_26_54/0.21)] bg-[rgb(18_43_68/0.08)] px-2 py-[2px] dark:border-[rgba(224_237_254/0.15)] dark:bg-[rgba(28_35_47/1)]'>
+      <Detail>Bob brukte ingen kilder for å lage svaret</Detail>
+    </div>
   )
 }
