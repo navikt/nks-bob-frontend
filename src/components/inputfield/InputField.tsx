@@ -288,7 +288,10 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           >
             Spørsmålet ser ut til å inneholde personopplysninger
           </Heading>
-          <BodyShort size='small'>Vurder om følgende er nødvendig for å få svar på spørsmålet:</BodyShort>
+          <BodyShort size='small'>
+            {" "}
+            Vurder om følgende er personopplysninger. Om det er tilfellet, må de fjernes før du sender inn spørsmålet.
+          </BodyShort>
           <List
             size='small'
             className='max-h-36 overflow-scroll'
@@ -344,7 +347,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           >
             Spørsmålet inneholder fødselsnummer/d-nummer/hnr
           </Heading>
-          <BodyShort size='small'>Fjern eller anonymiser følgende før du sender:</BodyShort>
+          <BodyShort size='small'>Fjern følgende før du sender inn spørsmålet.</BodyShort>
           <List
             size='small'
             className='max-h-36 overflow-scroll'
