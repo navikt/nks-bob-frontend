@@ -7,13 +7,13 @@ interface ToggleCitationsProps {
   message: Message
 }
 
-const citationOptions = ["Sitater fra Nav.no", "Sitater fra Kunnskapsbasen"]
+const citationOptions = ["Sitater fra Kunnskapsbasen", "Sitater fra Nav.no"]
 
 const ToggleCitations = ({ onToggle, message }: ToggleCitationsProps) => {
-  const hasNavnoCitations = message.citations.some((citation) => message.context[citation.sourceId].source === "navno")
   const hasKunnskapsbasenCitations = message.citations.some(
     (citation) => message.context[citation.sourceId].source === "nks",
   )
+  const hasNavnoCitations = message.citations.some((citation) => message.context[citation.sourceId].source === "navno")
 
   const filteredOptions = citationOptions.filter((option) => {
     if (option === "Sitater fra Nav.no" && !hasNavnoCitations) {

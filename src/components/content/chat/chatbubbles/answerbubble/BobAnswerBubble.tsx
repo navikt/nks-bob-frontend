@@ -23,7 +23,7 @@ interface BobAnswerBubbleProps {
   followUp: string[]
 }
 
-const options = ["Sitater fra Nav.no", "Sitater fra Kunnskapsbasen"]
+const options = ["Sitater fra Kunnskapsbasen", "Sitater fra Nav.no"]
 
 interface CitationSpanProps extends React.HTMLAttributes<HTMLSpanElement> {
   "data-citation"?: string
@@ -38,12 +38,23 @@ const getSourcesComponent = (message: Message) => {
     return <NoSourcesNeeded />
   }
 
+  /*
   if (hasContext) {
-    const toggleTitle = hasCitations ? "Vis alle kilder" : "Vis kildene Bob fant"
+    const toggleTitle = message.pending || hasCitations ? "Vis alle kilder" : "Vis kildene Bob fant"
     return (
       <ShowAllSourcesToggle
         message={message}
         toggleTitle={toggleTitle}
+      />
+    )
+  }
+    */
+
+  if (hasContext) {
+    return (
+      <ShowAllSourcesToggle
+        message={message}
+        toggleTitle='Vis alle kilder'
       />
     )
   }
@@ -199,7 +210,7 @@ const MessageContent = ({
       >
         Svar fra Bob:
       </Heading>
-      {message.citations.length === 0 && message.context.length > 0 && (
+      {!message.pending && !message.citations && message.context.length > 0 && (
         <BodyShort>
           Jeg fant kilder, men <strong>de inneholdt ikke informasjon som kunne svare på spørsmålet</strong>. Likevel
           skal jeg forsøke å svare så godt som mulig:
@@ -260,11 +271,11 @@ const Citations = memo(
         return false
       }
       return selectedCitations.some((selected) => {
-        if (selected === "Sitater fra Nav.no") {
-          return message.context[citation.sourceId].source === "navno"
-        }
         if (selected === "Sitater fra Kunnskapsbasen") {
           return message.context[citation.sourceId].source === "nks"
+        }
+        if (selected === "Sitater fra Nav.no") {
+          return message.context[citation.sourceId].source === "navno"
         }
         return false
       })
@@ -298,6 +309,11 @@ const Citations = memo(
           citations: Citation[]
         }[],
       )
+      .sort((a, b) => {
+        if (a.source === "nks" && b.source === "navno") return -1
+        if (a.source === "navno" && b.source === "nks") return 1
+        return 0
+      })
 
     return (
       <div className='mb-4 flex flex-col gap-4'>
