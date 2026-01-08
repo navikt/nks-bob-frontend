@@ -1,13 +1,22 @@
-export const KunnskapsbasenIcon = () => {
+interface KunnskapsbasenIconProps {
+  size?: number
+}
+
+export const KunnskapsbasenIcon = ({ size = 20 }: KunnskapsbasenIconProps) => {
   return (
     <svg
-      width='20'
-      height='20'
+      width={size}
+      height={size}
       viewBox='0 0 20 20'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
     >
-      <rect width='20' height='20' rx='10' fill='#CB66FF' />
+      <rect
+        width='20'
+        height='20'
+        rx='10'
+        fill='#CB66FF'
+      />
       <path
         d='M4.1665 7.62897C4.1665 6.60531 5.01955 6.39958 5.44607 6.42467V12.1451C5.44607 12.6268 5.74715 12.8476 5.89769 12.8978H14.1773C14.659 12.8978 14.7794 12.396 14.7794 12.1451V6.42467C15.502 6.42467 15.783 6.97663 15.8332 7.25261V13.0483C15.8332 13.6505 15.231 13.9515 14.9299 14.0268H11.1665L10.7149 14.7042H9.43532L8.90844 14.0268H5.29554C4.51274 14.0268 4.26686 13.3745 4.24177 13.0483C4.21668 11.6684 4.1665 8.65262 4.1665 7.62897Z'
         fill='white'

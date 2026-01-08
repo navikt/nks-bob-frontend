@@ -5,9 +5,10 @@ import analytics from "../../utils/analytics.ts"
 interface HoverCardProps {
   children: React.ReactNode
   content: React.ReactNode
+  onOpenChange?: (isOpen: boolean) => void
 }
 
-export const HoverCard = ({ children, content }: HoverCardProps) => {
+export const HoverCard = ({ children, content, onOpenChange }: HoverCardProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [position, setPosition] = useState({
     x: 0,
@@ -20,7 +21,7 @@ export const HoverCard = ({ children, content }: HoverCardProps) => {
   const cardRef = useRef<HTMLDivElement>(null)
   const timeoutRef = useRef<NodeJS.Timeout>(null)
 
-  const handleMouseEnter = (_e: React.MouseEvent) => {
+  const handleMouseEnter = () => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current)
     }
@@ -81,11 +82,13 @@ export const HoverCard = ({ children, content }: HoverCardProps) => {
       })
     }
     setIsOpen(true)
+    onOpenChange?.(true)
   }
 
   const handleMouseLeave = () => {
     timeoutRef.current = setTimeout(() => {
       setIsOpen(false)
+      onOpenChange?.(false)
     }, 100)
   }
 
@@ -97,6 +100,7 @@ export const HoverCard = ({ children, content }: HoverCardProps) => {
 
   const handleCardMouseLeave = () => {
     setIsOpen(false)
+    onOpenChange?.(false)
   }
 
   return (
