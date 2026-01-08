@@ -199,7 +199,7 @@ const MessageContent = ({
       >
         Svar fra Bob:
       </Heading>
-      {message.citations.length === 0 && (
+      {message.citations.length === 0 && message.context.length > 0 && (
         <BodyShort>
           Jeg fant kilder, men <strong>de inneholdt ikke informasjon som kunne svare på spørsmålet</strong>. Likevel
           skal jeg forsøke å svare så godt som mulig:
