@@ -102,6 +102,8 @@ const FILTERS = {
   arbeidsgiver: "Arbeidsgiver",
   internasjonalt: "Internasjonalt",
   fellesrutinene: "Fellesrutinene",
+  inaktive: "Inaktive",
+  aktive: "Aktive",
 }
 
 type FilterValue = keyof typeof FILTERS
