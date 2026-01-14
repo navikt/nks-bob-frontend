@@ -131,6 +131,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     }
   }
 
+  /*
   function handlePaste(e: React.ClipboardEvent<HTMLTextAreaElement>) {
     const pasted = e.clipboardData.getData("text")
     if (pasted.trim().length > 0) {
@@ -138,6 +139,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
       e.preventDefault()
     }
   }
+    */
 
   function handleDrop(e: React.DragEvent<HTMLTextAreaElement>) {
     e.preventDefault()
@@ -237,6 +239,10 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     },
   )
   useHotkeys("Alt+Ctrl+E", () => sendMessage("hotkey", "Gjør svaret mer empatisk", { clear: false, blur: false }), {
+    enabled: !!conversationId,
+    enableOnFormTags: true,
+  })
+  useHotkeys("Alt+Ctrl+F", () => sendMessage("hotkey", "Gjør om svaret til du-form", { clear: false, blur: false }), {
     enabled: !!conversationId,
     enableOnFormTags: true,
   })
@@ -396,7 +402,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           value={inputValue}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
-          onPaste={handlePaste}
+          /* onPaste={handlePaste} */
           autoFocus={true}
           tabIndex={1}
           onDrop={handleDrop}
