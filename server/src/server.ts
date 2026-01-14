@@ -285,6 +285,43 @@ const main = async () => {
     }
   })
 
+  // add users first name as metadata when creating a message
+  app.use("/bob-api/api/v1/conversations/{*splat}/messages/sse", (req, _res, next) => {
+    function getUser() {
+      const token = oasis.getToken(req)
+      if (!token) {
+        log.warn("No token found")
+        return null
+      }
+
+      const result = oasis.parseAzureUserToken(token)
+      if (!result.ok) {
+        log.error("Unable to parse user token")
+        return null
+      }
+
+      if (!result.name || !result.name.includes(", ")) {
+        log.error("Invalid name in supplied token")
+        return null
+      }
+
+      const [_lastName, firstName] = result.name.split(", ")
+      return {
+        firstName,
+      }
+    }
+
+    const user = getUser()
+    if (user) {
+      req.body = {
+        ...req.body,
+        meta: { user },
+      }
+    }
+
+    next()
+  })
+
   app.use(
     "/bob-api",
     entraMiddleware({ log, audience }),
