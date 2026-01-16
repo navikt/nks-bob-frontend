@@ -102,6 +102,8 @@ const FILTERS = {
   arbeidsgiver: "Arbeidsgiver",
   internasjonalt: "Internasjonalt",
   fellesrutinene: "Fellesrutinene",
+  inaktive: "Inaktive",
+  aktive: "Aktive",
 }
 
 type FilterValue = keyof typeof FILTERS
@@ -376,7 +378,7 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
     const updatedFeedback = {
       options: feedback.options,
       comment: feedback.comment,
-      resolved: false,
+      resolved: feedback.resolved,
       resolvedCategory: category === "" ? null : category,
       resolvedImportance: importance === "" ? null : importance,
       resolvedNote: note === "" ? null : note,

@@ -6,6 +6,7 @@ import { KunnskapsbasenIcon } from "../../../../assets/icons/KunnskapsbasenIcon.
 import { NavNoIcon } from "../../../../assets/icons/NavNoIcon.tsx"
 import { Citation, Context } from "../../../../types/Message.ts"
 import analytics from "../../../../utils/analytics.ts"
+import { md } from "../../../../utils/markdown.ts"
 
 interface BobAnswerCitationProps {
   citation: { title: string; source: "navno" | "nks"; citations: Citation[] }
@@ -92,7 +93,7 @@ const SingleCitation = ({ citation, context }: { citation: Citation; context: Co
         className='mt-1 italic'
       >
         <Markdown
-          className='markdown'
+          className='markdown answer-markdown'
           remarkPlugins={[remarkGfm]}
           components={{
             a: ({ ...props }) => (
@@ -186,8 +187,8 @@ const MultiCitation = ({
           <>
             <div className='group mt-1 gap-1 italic'>
               <Markdown
-                className='markdown markdown-inline navds-body-short--small mb-1 inline'
-                remarkPlugins={[remarkGfm]}
+                className='markdown answer-markdown markdown-inline navds-body-short--small mb-1 inline'
+                remarkPlugins={[remarkGfm, md.rewriteRelativeLinks]}
                 components={{
                   a: ({ ...props }) => (
                     <a
@@ -322,7 +323,7 @@ const CitationLink = ({
 
     return (
       <HStack align='center'>
-        <Tooltip content='Åpne artikkelen i ny fane'>
+        <Tooltip content='Åpner artikkelen i ny fane'>
           <Link
             href={
               title === "" && matchingContextCitationData.source === "navno"
@@ -342,9 +343,9 @@ const CitationLink = ({
           >
             {title ?? matchingContextCitationData.title}
             {title === "" ? (
-              <>
-                Les mer <ChevronRightDoubleIcon />
-              </>
+              <div className='mt-2 flex items-center gap-1'>
+                Finn sitatet i artikkelen <ChevronRightDoubleIcon />
+              </div>
             ) : null}
           </Link>
         </Tooltip>

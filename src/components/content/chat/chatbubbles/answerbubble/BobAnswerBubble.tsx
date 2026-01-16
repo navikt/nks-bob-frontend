@@ -2,8 +2,10 @@ import { BodyLong, Heading, Skeleton, Tag, VStack } from "@navikt/ds-react"
 import React, { memo, useState } from "react"
 import Markdown from "react-markdown"
 import rehypeRaw from "rehype-raw"
+import remarkGfm from "remark-gfm"
 import { BobRoboHead } from "../../../../../assets/illustrations/BobRoboHead.tsx"
 import { Citation, Message, NewMessage } from "../../../../../types/Message.ts"
+import analytics from "../../../../../utils/analytics.ts"
 import { md } from "../../../../../utils/markdown.ts"
 import { FollowUpQuestions } from "../../../followupquestions/FollowUpQuestions.tsx"
 import BobSuggests from "../../suggestions/BobSuggests.tsx"
@@ -144,6 +146,12 @@ const MessageContent = ({
     >
   >
 }) => {
+  const divRef = React.useRef<HTMLDivElement>(null)
+  divRef.current?.addEventListener("copy", (e) => {
+    analytics.svartekstMarkert()
+    e.stopImmediatePropagation()
+  })
+
   const addCitation = (citationId: number, position: number) => {
     let existingCitations = citations
     const newCitation = { citationId, position }
@@ -164,7 +172,10 @@ const MessageContent = ({
   }
 
   return (
-    <div className='flex flex-col gap-5'>
+    <div
+      className='flex flex-col gap-5'
+      ref={divRef}
+    >
       <Heading
         size='small'
         className='sr-only top-0'
@@ -173,8 +184,8 @@ const MessageContent = ({
         Svar fra Bob:
       </Heading>
       <Markdown
-        className='markdown'
-        remarkPlugins={[md.remarkCitations]}
+        className='markdown answer-markdown'
+        remarkPlugins={[remarkGfm, md.remarkCitations]}
         rehypePlugins={[rehypeRaw]}
         components={{
           a: ({ ...props }) => (
@@ -182,6 +193,7 @@ const MessageContent = ({
               {...props}
               target='_blank'
               rel='noopener noreferrer'
+              title='Åpne lenken i ny fane'
             />
           ),
           span: (props: CitationSpanProps) => {

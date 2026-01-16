@@ -1,17 +1,16 @@
 import { Alert as AlertComponent, BodyShort, Heading } from "@navikt/ds-react"
 import Markdown from "react-markdown"
 import { useAlerts } from "../../../api/api.ts"
+import { BobTheRobot, BobTheRobotDark } from "../../../assets/illustrations/BobTheRobot.tsx"
 import { SadBob } from "../../../assets/illustrations/SadBob.tsx"
 import { Alert } from "../../../types/Notifications.ts"
 import "./Placeholders.css"
-import {
-  BobTheRobot,
-  BobTheRobotDark,
-} from "../../../assets/illustrations/BobTheRobot.tsx"
 
 export const BobPlaceholder = () => {
   const { alerts } = useAlerts()
   const hasErrors = alerts.length > 0
+
+  const displayText = "Hei! Hva kan jeg hjelpe deg med?"
 
   return (
     <>
@@ -21,16 +20,22 @@ export const BobPlaceholder = () => {
             <div>
               <BobTheRobot />
             </div>
-            <BodyShort size='medium' className='self-center text-text-subtle'>
-              Hei! Hva kan jeg hjelpe deg med?
+            <BodyShort
+              size='medium'
+              className='self-center text-text-subtle'
+            >
+              {displayText}
             </BodyShort>
           </div>
           <div className='bob-styling hidden dark:flex'>
             <div>
               <BobTheRobotDark />
             </div>
-            <BodyShort size='medium' className='self-center text-text-subtle'>
-              Hei! Hva kan jeg hjelpe deg med?
+            <BodyShort
+              size='medium'
+              className='self-center text-text-subtle'
+            >
+              {displayText}
             </BodyShort>
           </div>
         </>
@@ -41,9 +46,7 @@ export const BobPlaceholder = () => {
 }
 
 export const WhitespacePlaceholder = () => {
-  return (
-    <div className='dialogcontent h-full items-center justify-center pt-8' />
-  )
+  return <div className='dialogcontent h-full items-center justify-center pt-8' />
 }
 
 const BobError = ({ alerts }: { alerts: Alert[] }) => {
@@ -57,8 +60,15 @@ const BobError = ({ alerts }: { alerts: Alert[] }) => {
   return (
     <div className='bob-styling flex w-full max-w-2xl flex-row items-center gap-16'>
       <SadBob level={level} />
-      <AlertComponent inline variant={level}>
-        <Heading spacing size='small' level='3'>
+      <AlertComponent
+        inline
+        variant={level}
+      >
+        <Heading
+          spacing
+          size='small'
+          level='3'
+        >
           {title}
         </Heading>
         <Markdown>{content}</Markdown>
