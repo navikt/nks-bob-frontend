@@ -76,6 +76,30 @@ const plaintextProcessor = remark()
 
 const toPlaintext = (markdown: string) => plaintextProcessor.processSync(markdown).toString()
 
-const md = { toHtml, toPlaintext, remarkCitations }
+// Rewrite relative links (/path/to/resource) to just text with the title
+function rewriteRelativeLinks(): (tree: Root) => void {
+  return (tree) => {
+    visit(tree, "link", (node, index, parent) => {
+      if (node.url.startsWith("/")) {
+        if (index && parent?.children) {
+          parent.children = parent.children.map((value, idx) => {
+            if (idx === index) {
+              const child = node.children.at(0)
+              if (child && child.type === "text") {
+                return { type: "strong", children: [child] }
+              }
+
+              return { type: "text", value: node.title ?? node.url }
+            }
+
+            return value
+          })
+        }
+      }
+    })
+  }
+}
+
+const md = { toHtml, toPlaintext, remarkCitations, rewriteRelativeLinks }
 
 export { md }

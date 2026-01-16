@@ -6,6 +6,7 @@ import { KunnskapsbasenIcon } from "../../../../assets/icons/KunnskapsbasenIcon.
 import { NavNoIcon } from "../../../../assets/icons/NavNoIcon.tsx"
 import { Citation, Context } from "../../../../types/Message.ts"
 import analytics from "../../../../utils/analytics.ts"
+import { md } from "../../../../utils/markdown.ts"
 
 interface BobAnswerCitationProps {
   citation: { title: string; source: "navno" | "nks"; citations: Citation[] }
@@ -187,7 +188,7 @@ const MultiCitation = ({
             <div className='group mt-1 gap-1 italic'>
               <Markdown
                 className='markdown answer-markdown markdown-inline navds-body-short--small mb-1 inline'
-                remarkPlugins={[remarkGfm]}
+                remarkPlugins={[remarkGfm, md.rewriteRelativeLinks]}
                 components={{
                   a: ({ ...props }) => (
                     <a
