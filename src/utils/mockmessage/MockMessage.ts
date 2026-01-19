@@ -13,6 +13,7 @@ export const mockMessages: Message[] = [
     errors: [],
     followUp: [],
     createdBy: "",
+    contextualizedQuestion: null,
   },
   {
     id: "b8fd6266-324b-48df-a38a-2a4b419ee69f",
@@ -163,6 +164,7 @@ export const mockMessages: Message[] = [
         semanticSimilarity: 0.697476863861084,
       },
     ],
+    contextualizedQuestion: "dagpenger definisjon og formål",
     pending: false,
     errors: [],
     followUp: [
