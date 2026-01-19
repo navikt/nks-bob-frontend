@@ -125,36 +125,55 @@ interface CitationLinksProps {
 }
 
 export const CitationLinks = ({ citations, context }: CitationLinksProps) => {
+  type Group = {
+    key: string
+    source: Context
+    citationIds: number[]
+  }
+
+  // Gruppér citations med samme "url". Bruker url#anchor for å unngå å slå sammen ulike seksjoner.
+  // Hvis du vil gruppere kun på URL: bytt groupKey til `source.url`.
+  const groups = new Map<string, Group>()
+
+  for (const { citationId } of citations) {
+    const source = context?.at(citationId)
+    if (!source) continue
+
+    const groupKey = `${source.url}#${source.anchor ?? ""}`
+
+    const existing = groups.get(groupKey)
+    if (existing) {
+      existing.citationIds.push(citationId)
+    } else {
+      groups.set(groupKey, { key: groupKey, source, citationIds: [citationId] })
+    }
+  }
+
   return (
     <VStack
       gap='2'
       justify='center'
       className='mb-4'
     >
-      {citations.map(({ citationId }) => (
-        <CitationLink
-          key={citationId}
+      {Array.from(groups.values()).map((group) => (
+        <GroupedCitationLink
+          key={group.key}
           citations={citations}
-          citationId={citationId}
-          context={context}
+          source={group.source}
+          citationIds={group.citationIds}
         />
       ))}
     </VStack>
   )
 }
 
-interface CitationLinkProps {
+type GroupedCitationLinkProps = {
   citations: { citationId: number }[]
-  citationId: number
-  context: Context[]
+  source: Context
+  citationIds: number[]
 }
 
-const CitationLink = ({ citations, citationId, context }: CitationLinkProps) => {
-  const source = context.at(citationId)
-  if (!context || !source) {
-    return null
-  }
-
+const GroupedCitationLink = ({ citations, source, citationIds }: GroupedCitationLinkProps) => {
   const title =
     source.source === "nks"
       ? source.title
@@ -162,7 +181,9 @@ const CitationLink = ({ citations, citationId, context }: CitationLinkProps) => 
         ? `${source.title} / ${source.anchor}`
         : source.title
 
-  const displayId = citations.findIndex((citation) => citation.citationId === citationId) + 1
+  const displayIds = citationIds
+    .map((id) => citations.findIndex((citation) => citation.citationId === id) + 1)
+    .filter((n) => n > 0)
 
   return (
     <HStack
@@ -170,19 +191,32 @@ const CitationLink = ({ citations, citationId, context }: CitationLinkProps) => 
       align='center'
       wrap={false}
     >
-      <div className='ml-[2px] rounded-[4px] bg-[rgba(0,14,41,0.07)] px-[4px] aria-pressed:text-[rgba(223_225_229/1)] dark:bg-[rgba(28_35_47/1)] dark:aria-pressed:text-[rgba(0_0_0/1)] aria-pressed:dark:hover:bg-[rgba(148,155,168,1)]'>
-        <BodyShort size='small'> {displayId}</BodyShort>
-      </div>
+      <HStack
+        gap='1'
+        wrap={false}
+      >
+        {displayIds.map((displayId) => (
+          <div
+            key={displayId}
+            className='ml-[2px] rounded-[4px] bg-[rgba(0,14,41,0.07)] px-[4px] aria-pressed:text-[rgba(223_225_229/1)] dark:bg-[rgba(28_35_47/1)] dark:aria-pressed:text-[rgba(0_0_0/1)] aria-pressed:dark:hover:bg-[rgba(148,155,168,1)]'
+          >
+            <BodyShort size='small'> {displayId}</BodyShort>
+          </div>
+        ))}
+      </HStack>
+
       {source.source === "nks" ? <KunnskapsbasenIcon size={18} /> : <NavNoIcon size={18} />}
+
       <span className='inline-flex items-center gap-2'>
         <Link
-          href={`${source.url}#${source.anchor}`}
+          href={`${source.url}#${source.anchor ?? ""}`}
           target='_blank'
           title='Åpne artikkelen i ny fane'
           className='text-base'
         >
           <BodyShort size='small'>{title}</BodyShort>
         </Link>
+
         {source.source === "nks" ? (
           <Tooltip content='Kopier artikkelnavn'>
             <CopyButton
@@ -193,7 +227,7 @@ const CitationLink = ({ citations, citationId, context }: CitationLinkProps) => 
         ) : (
           <Tooltip content='Kopier nav-lenken'>
             <CopyButton
-              copyText={source.url}
+              copyText={`${source.url}#${source.anchor ?? ""}`}
               size='xsmall'
             />
           </Tooltip>

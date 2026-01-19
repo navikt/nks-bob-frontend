@@ -93,7 +93,7 @@ const SingleCitation = ({ citation, context }: { citation: Citation; context: Co
         className='mt-1 italic'
       >
         <Markdown
-          className='markdown answer-markdown'
+          className='markdown answer-markdown mb-2'
           remarkPlugins={[remarkGfm]}
           components={{
             a: ({ ...props }) => (
@@ -108,6 +108,14 @@ const SingleCitation = ({ citation, context }: { citation: Citation; context: Co
           {citation.text}
         </Markdown>
       </BodyLong>
+      {context && (
+        <CitationLink
+          citation={citation}
+          matchingContextCitationData={context}
+          onClick={handleClick}
+          title=''
+        />
+      )}
     </div>
   )
 }
@@ -143,7 +151,7 @@ const MultiCitation = ({
   }
 
   return (
-    <div className='mb-2 flex flex-col'>
+    <div className='mb-8 flex flex-col'>
       <Label
         size='small'
         className='mb-1'
@@ -344,7 +352,8 @@ const CitationLink = ({
             {title ?? matchingContextCitationData.title}
             {title === "" ? (
               <div className='mt-2 flex items-center gap-1'>
-                Finn sitatet i artikkelen <ChevronRightDoubleIcon />
+                Finn sitatet i artikkelen
+                <ChevronRightDoubleIcon />
               </div>
             ) : null}
           </Link>
