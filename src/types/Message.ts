@@ -23,6 +23,7 @@ export type Message = {
   errors: MessageError[]
   followUp: string[]
   starred?: boolean
+  tools: string[]
 }
 
 export type Citation = {

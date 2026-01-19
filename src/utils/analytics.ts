@@ -23,6 +23,15 @@ const logEvent = (event: string, data?: Record<string, unknown>) => {
   umamiTrack(event, data)
 }
 
+type KontekstMeta = { tittel: string; kilde: "navno" | "nks" }
+
+type SitatMeta = { kildeId: number }
+
+function reduceToObject<T>(acc: { [key: number]: T }, current: T, index: number) {
+  acc[index] = current
+  return acc
+}
+
 const svarKopiert = (meldingsId: string) => logEvent("Svar kopiert", { meldingsId })
 
 const svarEndret = (endring: "oversett" | "punktliste" | "forenkle") => logEvent("Svar endret", { endring })
@@ -35,6 +44,21 @@ const mørkModusByttet = (modus: "lys" | "mørk") => logEvent("Mørk modus bytte
 
 const meldingSendt = (trigger: "knapp" | "enter" | "hotkey", antallTegn: number) =>
   logEvent("Melding sendt", { trigger, antallTegn })
+
+const svarMottatt = (
+  meldingsId: string,
+  antallTegn: number,
+  kontekst: KontekstMeta[],
+  sitater: SitatMeta[],
+  verktøykall: string[],
+) =>
+  logEvent("Svar mottatt", {
+    meldingsId,
+    antallTegn,
+    kontekst: kontekst.reduce(reduceToObject<KontekstMeta>, {}),
+    sitater: sitater.reduce(reduceToObject<SitatMeta>, {}),
+    verktøykall,
+  })
 
 const kildeAccordionÅpnet = () => logEvent("Kilde accordion åpnet")
 
@@ -98,6 +122,7 @@ export default {
   infoÅpnet,
   mørkModusByttet,
   meldingSendt,
+  svarMottatt,
   kildeAccordionÅpnet,
   kildeAccordionSkjult,
   tekstInnholdLimtInn,
