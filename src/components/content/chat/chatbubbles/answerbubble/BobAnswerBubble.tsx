@@ -1,4 +1,5 @@
-import { BodyLong, BodyShort, Heading, Skeleton, VStack } from "@navikt/ds-react"
+import { FileSearchIcon } from "@navikt/aksel-icons"
+import { BodyLong, BodyShort, Button, Heading, Skeleton, VStack } from "@navikt/ds-react"
 import React, { memo, useState } from "react"
 import Markdown from "react-markdown"
 import rehypeRaw from "rehype-raw"
@@ -37,18 +38,6 @@ const getSourcesComponent = (message: Message) => {
   if (!hasContext && !hasCitations) {
     return <NoSourcesNeeded />
   }
-
-  /*
-  if (hasContext) {
-    const toggleTitle = message.pending || hasCitations ? "Vis alle kilder" : "Vis kildene Bob fant"
-    return (
-      <ShowAllSourcesToggle
-        message={message}
-        toggleTitle={toggleTitle}
-      />
-    )
-  }
-    */
 
   if (hasContext) {
     return (
@@ -96,6 +85,7 @@ export const BobAnswerBubble = memo(
                   message={message}
                   citations={citations}
                   setCitations={setCitations}
+                  onSend={onSend}
                 />
               )}
             </div>
@@ -161,6 +151,7 @@ const MessageContent = ({
   message,
   citations,
   setCitations,
+  onSend,
 }: {
   message: Message
   citations: { citationId: number; position: number }[]
@@ -172,6 +163,7 @@ const MessageContent = ({
       }[]
     >
   >
+  onSend: (message: NewMessage) => void
 }) => {
   const divRef = React.useRef<HTMLDivElement>(null)
   divRef.current?.addEventListener("copy", (e) => {
@@ -196,6 +188,14 @@ const MessageContent = ({
     // Store citations as a list ordered by `position`
     const newState = [...existingCitations, newCitation].sort((a, b) => a.position - b.position)
     setCitations(newState)
+  }
+
+  function handleFindSourcesClick() {
+    analytics.svarEndret("punktliste")
+    const findSources: NewMessage = {
+      content: `Se om du kan finne kilder som støtter svaret:\n${message.content}`,
+    }
+    onSend(findSources)
   }
 
   return (
@@ -249,6 +249,17 @@ const MessageContent = ({
       >
         {message.content}
       </Markdown>
+      {message.context.length === 0 && message.citations.length === 0 && message.contextualizedQuestion !== null && (
+        <Button
+          size='small'
+          variant='tertiary-neutral'
+          className='my-3 w-fit'
+          icon={<FileSearchIcon fontSize={24} />}
+          onClick={handleFindSourcesClick}
+        >
+          Forsøk å finne kilder som støtter svaret
+        </Button>
+      )}
     </div>
   )
 }
