@@ -148,7 +148,10 @@ const MessageContent = ({
 }) => {
   const divRef = React.useRef<HTMLDivElement>(null)
   divRef.current?.addEventListener("copy", (e) => {
-    analytics.svartekstMarkert()
+    const messageLength = md.toPlaintext(message.content).length
+    const copyLength = window.getSelection()?.toString().length ?? 0
+
+    analytics.svartekstMarkert(copyLength / messageLength)
     e.stopImmediatePropagation()
   })
 

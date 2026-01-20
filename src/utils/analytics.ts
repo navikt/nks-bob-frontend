@@ -127,7 +127,8 @@ const versjonLagret = (versjon: string) => logEvent("Versjon av Bob brukt", { ve
 
 const nySamtaleOpprettet = (samtaleId: string) => logEvent("Ny samtale opprettet", { samtaleId })
 
-const svartekstMarkert = () => logEvent("Svartekst markert og kopiert")
+// andel markert mellom 0 og 1
+const svartekstMarkert = (andelMarkert: number) => logEvent("Svartekst markert og kopiert", { andelMarkert })
 
 export default {
   svarKopiert,
