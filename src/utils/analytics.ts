@@ -109,17 +109,17 @@ const kbModalLenkeKlikket = (kontekst: KontekstArtikkelMeta, sitat: SitatMeta, v
 const kbModalLenkeKopiert = (kontekst: KontekstArtikkelMeta, sitat: SitatMeta, verktøykall: string[]) =>
   logEvent("KB-lenke i modal kopiert", { kontekst, sitat, verktøykall })
 
-const navVisAlleKilderLenkeKlikket = (kontekst: KontekstMeta, sitat: SitatMeta, verktøykall: string[]) =>
-  logEvent("Nav-lenke under 'alle kilder' klikket", { kontekst, sitat, verktøykall })
+const navVisAlleKilderLenkeKlikket = (kontekst: KontekstMeta, verktøykall: string[]) =>
+  logEvent("Nav-lenke under 'alle kilder' klikket", { kontekst, verktøykall })
 
-const navVisAlleKilderLenkeKopiert = (kontekst: KontekstMeta, sitat: SitatMeta, verktøykall: string[]) =>
-  logEvent("Nav-lenke under 'alle kilder' kopiert", { kontekst, sitat, verktøykall })
+const navVisAlleKilderLenkeKopiert = (kontekst: KontekstMeta, verktøykall: string[]) =>
+  logEvent("Nav-lenke under 'alle kilder' kopiert", { kontekst, verktøykall })
 
-const kbVisAlleKilderLenkeKlikket = (kontekst: KontekstArtikkelMeta, sitat: SitatMeta, verktøykall: string[]) =>
-  logEvent("KB-lenke under 'alle kilder' klikket", { kontekst, sitat, verktøykall })
+const kbVisAlleKilderLenkeKlikket = (kontekst: KontekstArtikkelMeta, verktøykall: string[]) =>
+  logEvent("KB-lenke under 'alle kilder' klikket", { kontekst, verktøykall })
 
-const kbVisAlleKilderLenkeKopiert = (kontekst: KontekstArtikkelMeta, sitat: SitatMeta, verktøykall: string[]) =>
-  logEvent("KB-lenke under 'all kilder' kopiert", { kontekst, sitat, verktøykall })
+const kbVisAlleKilderLenkeKopiert = (kontekst: KontekstArtikkelMeta, verktøykall: string[]) =>
+  logEvent("KB-lenke under 'all kilder' kopiert", { kontekst, verktøykall })
 
 const versjonOppdatert = (gammelVersjon: string, nyVersjon: string) =>
   logEvent("Bob versjon oppdatert", { gammelVersjon, nyVersjon })
