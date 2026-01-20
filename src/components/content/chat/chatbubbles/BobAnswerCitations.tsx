@@ -65,11 +65,14 @@ const SingleCitation = ({ citation, context }: { citation: Citation; context: Co
               align='center'
               gap='1'
             >
-              <CitationLink
+              <Link href={context.url}>
+                <Label size='small'>{`${context.title} (${context.ingress})`}</Label>
+              </Link>
+              {/* <CitationLink
                 citation={citation}
                 matchingContextCitationData={context}
                 onClick={handleClick}
-              />
+              /> */}
               <CopyButton
                 copyText={context.source === "nks" ? context.title : context.url}
                 size='xsmall'

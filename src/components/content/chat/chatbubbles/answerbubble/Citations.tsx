@@ -131,8 +131,6 @@ export const CitationLinks = ({ citations, context }: CitationLinksProps) => {
     citationIds: number[]
   }
 
-  // Gruppér citations med samme "url". Bruker url#anchor for å unngå å slå sammen ulike seksjoner.
-  // Hvis du vil gruppere kun på URL: bytt groupKey til `source.url`.
   const groups = new Map<string, Group>()
 
   for (const { citationId } of citations) {
@@ -225,7 +223,7 @@ const GroupedCitationLink = ({ citations, source, citationIds }: GroupedCitation
             />
           </Tooltip>
         ) : (
-          <Tooltip content='Kopier nav-lenken'>
+          <Tooltip content='Kopier lenken'>
             <CopyButton
               copyText={`${source.url}#${source.anchor ?? ""}`}
               size='xsmall'
