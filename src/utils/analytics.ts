@@ -78,7 +78,8 @@ const visAlleKilderÅpnet = () => logEvent("Vis alle kilder åpnet")
 
 const spørsmålRedigert = () => logEvent("Rediger spørsmål trykket")
 
-const åpnetFotnote = () => logEvent("Fotnote åpnet")
+const åpnetFotnote = (kontekst: KontekstArtikkelMeta, sitat: SitatMeta, verktøykall: string[]) =>
+  logEvent("Fotnote åpnet", { kontekst, sitat, verktøykall })
 
 const nySamtalePgaVarsel = () => logEvent("Startet ny samtale pga varsel")
 

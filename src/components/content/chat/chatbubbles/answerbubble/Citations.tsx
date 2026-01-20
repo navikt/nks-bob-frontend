@@ -139,7 +139,12 @@ export const CitationNumber = ({ citations, citationId, context, tools }: Citati
 
   return (
     <sup>
-      <HoverCard content={hoverContent}>
+      <HoverCard
+        content={hoverContent}
+        context={source}
+        sourceId={citationId}
+        tools={tools}
+      >
         <Tag
           variant='neutral'
           size='xsmall'
