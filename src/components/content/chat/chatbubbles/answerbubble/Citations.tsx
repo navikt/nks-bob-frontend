@@ -160,9 +160,10 @@ export const CitationNumber = ({ citations, citationId, context, tools }: Citati
 interface CitationLinksProps {
   citations: { citationId: number }[]
   context: Context[]
+  tools: string[]
 }
 
-export const CitationLinks = ({ citations, context }: CitationLinksProps) => {
+export const CitationLinks = ({ citations, context, tools }: CitationLinksProps) => {
   return (
     <VStack
       gap='2'
@@ -175,6 +176,7 @@ export const CitationLinks = ({ citations, context }: CitationLinksProps) => {
           citations={citations}
           citationId={citationId}
           context={context}
+          tools={tools}
         />
       ))}
     </VStack>
@@ -185,9 +187,10 @@ interface CitationLinkProps {
   citations: { citationId: number }[]
   citationId: number
   context: Context[]
+  tools: string[]
 }
 
-const CitationLink = ({ citations, citationId, context }: CitationLinkProps) => {
+const CitationLink = ({ citations, citationId, context, tools }: CitationLinkProps) => {
   const source = context.at(citationId)
   if (!context || !source) {
     return null
@@ -219,6 +222,13 @@ const CitationLink = ({ citations, citationId, context }: CitationLinkProps) => 
         target='_blank'
         title='Åpne artikkelen i ny fane'
         className='text-base'
+        onClick={() => {
+          analytics.fotnoteLenkeKlikket(
+            { kilde: source.source, tittel: source.title, artikkelKolonne: source.articleColumn },
+            { kildeId: citationId },
+            tools,
+          )
+        }}
       >
         <span className='inline-flex items-center gap-2'>
           <BodyShort size='small'>{title}</BodyShort>

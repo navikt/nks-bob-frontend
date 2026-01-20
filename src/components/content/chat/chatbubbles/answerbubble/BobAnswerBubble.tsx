@@ -288,6 +288,7 @@ const Citations = memo(
             <CitationLinks
               citations={citations}
               context={message.context}
+              tools={message.tools}
             />
           </div>
         )}
