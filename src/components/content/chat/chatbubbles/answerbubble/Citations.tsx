@@ -11,9 +11,10 @@ interface CitationNumberProps {
   citations: { citationId: number }[]
   citationId: number
   context: Context[]
+  tools: string[]
 }
 
-export const CitationNumber = ({ citations, citationId, context }: CitationNumberProps) => {
+export const CitationNumber = ({ citations, citationId, context, tools }: CitationNumberProps) => {
   const source = context.at(citationId)
   if (!context || !source) {
     return null
@@ -44,9 +45,28 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
             title='Åpne artikkelen i ny fane'
             onClick={() => {
               if (source.source === "nks") {
-                analytics.kbModalLenkeKlikket()
+                analytics.kbModalLenkeKlikket(
+                  {
+                    kilde: source.source,
+                    tittel: source.title,
+                    artikkelKolonne: source.articleColumn,
+                  },
+                  {
+                    kildeId: citationId,
+                  },
+                  tools,
+                )
               } else if (source.source === "navno") {
-                analytics.navModalLenkeKlikket()
+                analytics.navModalLenkeKlikket(
+                  {
+                    kilde: source.source,
+                    tittel: source.title,
+                  },
+                  {
+                    kildeId: citationId,
+                  },
+                  tools,
+                )
               }
             }}
           >
@@ -62,9 +82,28 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
             size='xsmall'
             onClick={() => {
               if (source.source === "nks") {
-                analytics.kbModalLenkeKopiert()
+                analytics.kbModalLenkeKopiert(
+                  {
+                    kilde: source.source,
+                    tittel: source.title,
+                    artikkelKolonne: source.articleColumn,
+                  },
+                  {
+                    kildeId: citationId,
+                  },
+                  tools,
+                )
               } else if (source.source === "navno") {
-                analytics.navModalLenkeKopiert()
+                analytics.navModalLenkeKopiert(
+                  {
+                    kilde: source.source,
+                    tittel: source.title,
+                  },
+                  {
+                    kildeId: citationId,
+                  },
+                  tools,
+                )
               }
             }}
           />

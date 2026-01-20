@@ -25,6 +25,8 @@ const logEvent = (event: string, data?: Record<string, unknown>) => {
 
 type KontekstMeta = { tittel: string; kilde: "navno" | "nks" }
 
+type KontekstArtikkelMeta = KontekstMeta & { artikkelKolonne: string | null }
+
 type SitatMeta = { kildeId: number }
 
 function reduceToObject<T>(acc: { [key: number]: T }, current: T, index: number) {
@@ -82,29 +84,41 @@ const nySamtalePgaVarsel = () => logEvent("Startet ny samtale pga varsel")
 
 const lukketNySamtaleVarsel = () => logEvent("Lukket ny samtale varsel")
 
-const kbSitatLenkeKlikket = () => logEvent("KB-sitat-lenke åpnet")
+const kbSitatLenkeKlikket = (kontekst: KontekstArtikkelMeta, sitat: SitatMeta, verktøykall: string[]) =>
+  logEvent("KB-sitat-lenke åpnet", { kontekst, sitat, verktøykall })
 
-const kbSitatTittelKopiert = () => logEvent("KB-sitat-tittel kopiert")
+const kbSitatTittelKopiert = (kontekst: KontekstArtikkelMeta, sitat: SitatMeta, verktøykall: string[]) =>
+  logEvent("KB-sitat-tittel kopiert", { kontekst, sitat, verktøykall })
 
-const navSitatLenkeKlikket = () => logEvent("Nav-sitat-lenke åpnet")
+const navSitatLenkeKlikket = (kontekst: KontekstMeta, sitat: SitatMeta, verktøykall: string[]) =>
+  logEvent("Nav-sitat-lenke åpnet", { kontekst, sitat, verktøykall })
 
-const navSitatLenkeKopiert = () => logEvent("KB-sitat-lenke kopiert")
+const navSitatLenkeKopiert = (kontekst: KontekstMeta, sitat: SitatMeta, verktøykall: string[]) =>
+  logEvent("KB-sitat-lenke kopiert", { kontekst, sitat, verktøykall })
 
-const navModalLenkeKlikket = () => logEvent("Nav-lenke i modal klikket")
+const navModalLenkeKlikket = (kontekst: KontekstMeta, sitat: SitatMeta, verktøykall: string[]) =>
+  logEvent("Nav-lenke i modal klikket", { kontekst, sitat, verktøykall })
 
-const navModalLenkeKopiert = () => logEvent("Nav-lenke i modal kopiert")
+const navModalLenkeKopiert = (kontekst: KontekstMeta, sitat: SitatMeta, verktøykall: string[]) =>
+  logEvent("Nav-lenke i modal kopiert", { kontekst, sitat, verktøykall })
 
-const kbModalLenkeKlikket = () => logEvent("KB-lenke i modal klikket")
+const kbModalLenkeKlikket = (kontekst: KontekstArtikkelMeta, sitat: SitatMeta, verktøykall: string[]) =>
+  logEvent("KB-lenke i modal klikket", { kontekst, sitat, verktøykall })
 
-const kbModalLenkeKopiert = () => logEvent("KB-lenke i modal kopiert")
+const kbModalLenkeKopiert = (kontekst: KontekstArtikkelMeta, sitat: SitatMeta, verktøykall: string[]) =>
+  logEvent("KB-lenke i modal kopiert", { kontekst, sitat, verktøykall })
 
-const navVisAlleKilderLenkeKlikket = () => logEvent("Nav-lenke under 'alle kilder' klikket")
+const navVisAlleKilderLenkeKlikket = (kontekst: KontekstMeta, sitat: SitatMeta, verktøykall: string[]) =>
+  logEvent("Nav-lenke under 'alle kilder' klikket", { kontekst, sitat, verktøykall })
 
-const navVisAlleKilderLenkeKopiert = () => logEvent("Nav-lenke under 'alle kilder' kopiert")
+const navVisAlleKilderLenkeKopiert = (kontekst: KontekstMeta, sitat: SitatMeta, verktøykall: string[]) =>
+  logEvent("Nav-lenke under 'alle kilder' kopiert", { kontekst, sitat, verktøykall })
 
-const kbVisAlleKilderLenkeKlikket = () => logEvent("KB-lenke under 'alle kilder' klikket")
+const kbVisAlleKilderLenkeKlikket = (kontekst: KontekstArtikkelMeta, sitat: SitatMeta, verktøykall: string[]) =>
+  logEvent("KB-lenke under 'alle kilder' klikket", { kontekst, sitat, verktøykall })
 
-const kbVisAlleKilderLenkeKopiert = () => logEvent("KB-lenke under 'all kilder' kopiert")
+const kbVisAlleKilderLenkeKopiert = (kontekst: KontekstArtikkelMeta, sitat: SitatMeta, verktøykall: string[]) =>
+  logEvent("KB-lenke under 'all kilder' kopiert", { kontekst, sitat, verktøykall })
 
 const versjonOppdatert = (gammelVersjon: string, nyVersjon: string) =>
   logEvent("Bob versjon oppdatert", { gammelVersjon, nyVersjon })
