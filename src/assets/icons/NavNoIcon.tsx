@@ -1,5 +1,6 @@
 interface NavNoIconProps {
   size?: number
+  title?: string
 }
 
 export const NavNoIcon = ({ size = 20 }: NavNoIconProps) => {

@@ -52,45 +52,12 @@ const SingleCitation = ({ citation, context }: { citation: Citation; context: Co
 
   return (
     <div className='mb-2 flex flex-col'>
-      <Label
-        size='small'
-        className='mb-1'
-      >
-        {context ? (
-          <HStack
-            align='center'
-            gap='3'
-          >
-            <HStack
-              align='center'
-              gap='1'
-            >
-              <Link href={context.url}>
-                <Label size='small'>{`${context.title} (${context.ingress})`}</Label>
-              </Link>
-              {/* <CitationLink
-                citation={citation}
-                matchingContextCitationData={context}
-                onClick={handleClick}
-              /> */}
-              <CopyButton
-                copyText={context.source === "nks" ? context.title : context.url}
-                size='xsmall'
-                onClick={() => {
-                  if (context.source === "nks") {
-                    analytics.kbSitatTittelKopiert()
-                  } else if (context.source === "navno") {
-                    analytics.navSitatLenkeKopiert()
-                  }
-                }}
-              />
-            </HStack>
-            <SourceIcon source={context.source} />
-          </HStack>
-        ) : (
-          <BodyShort size='medium'>Kunne ikke finne lenke til artikkelen.</BodyShort>
-        )}
-      </Label>
+      {context ? (
+        <TitleLink context={context} />
+      ) : (
+        <BodyShort size='medium'>Kunne ikke finne lenke til artikkelen.</BodyShort>
+      )}
+
       <BodyLong
         size='small'
         className='mt-1 italic'
@@ -396,5 +363,43 @@ export const SourceIcon = ({ source }: { source: "navno" | "nks" }) => {
         </Detail>
       )}
     </>
+  )
+}
+
+export const TitleLink = ({ context }: { context?: Context }) => {
+  if (!context) return null
+
+  return (
+    <HStack
+      align='center'
+      gap='3'
+    >
+      <HStack
+        align='center'
+        gap='1'
+      >
+        <SourceIcon source={context.source} />
+        <Tooltip content='Åpne artikkelen i ny fane'>
+          <Label size='small'>
+            <Link
+              href={context.url}
+              target='_blank'
+              className='navds-label_small'
+            >
+              {`${context.title} (${context.ingress})`}
+            </Link>
+          </Label>
+        </Tooltip>
+
+        <CopyButton
+          copyText={context.source === "nks" ? context.title : context.url}
+          size='xsmall'
+          onClick={() => {
+            if (context.source === "nks") analytics.kbSitatTittelKopiert()
+            if (context.source === "navno") analytics.navSitatLenkeKopiert()
+          }}
+        />
+      </HStack>
+    </HStack>
   )
 }
