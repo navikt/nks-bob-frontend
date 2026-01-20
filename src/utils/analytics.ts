@@ -36,7 +36,7 @@ function reduceToObject<T>(acc: { [key: number]: T }, current: T, index: number)
 
 const svarKopiert = (meldingsId: string) => logEvent("Svar kopiert", { meldingsId })
 
-const svarEndret = (endring: "oversett" | "punktliste" | "forenkle") => logEvent("Svar endret", { endring })
+const svarEndret = (endring: "oversett" | "punktliste" | "empatisk") => logEvent("Svar endret", { endring })
 
 const feilMeldt = (meldingsId: string) => logEvent("Feil meldt", { meldingsId })
 
