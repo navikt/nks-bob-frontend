@@ -121,7 +121,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
       textareaRef.current?.blur()
     }
 
-    analytics.meldingSendt(trigger)
+    analytics.meldingSendt(trigger, message.content.length)
   }
 
   function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {

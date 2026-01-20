@@ -11,9 +11,10 @@ interface CitationNumberProps {
   citations: { citationId: number }[]
   citationId: number
   context: Context[]
+  tools: string[]
 }
 
-export const CitationNumber = ({ citations, citationId, context }: CitationNumberProps) => {
+export const CitationNumber = ({ citations, citationId, context, tools }: CitationNumberProps) => {
   const source = context.at(citationId)
   if (!context || !source) {
     return null
@@ -44,9 +45,28 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
             title='Åpne artikkelen i ny fane'
             onClick={() => {
               if (source.source === "nks") {
-                analytics.kbModalLenkeKlikket()
+                analytics.kbModalLenkeKlikket(
+                  {
+                    kilde: source.source,
+                    tittel: source.title,
+                    artikkelKolonne: source.articleColumn,
+                  },
+                  {
+                    kildeId: citationId,
+                  },
+                  tools,
+                )
               } else if (source.source === "navno") {
-                analytics.navModalLenkeKlikket()
+                analytics.navModalLenkeKlikket(
+                  {
+                    kilde: source.source,
+                    tittel: source.title,
+                  },
+                  {
+                    kildeId: citationId,
+                  },
+                  tools,
+                )
               }
             }}
           >
@@ -62,9 +82,28 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
             size='xsmall'
             onClick={() => {
               if (source.source === "nks") {
-                analytics.kbModalLenkeKopiert()
+                analytics.kbModalLenkeKopiert(
+                  {
+                    kilde: source.source,
+                    tittel: source.title,
+                    artikkelKolonne: source.articleColumn,
+                  },
+                  {
+                    kildeId: citationId,
+                  },
+                  tools,
+                )
               } else if (source.source === "navno") {
-                analytics.navModalLenkeKopiert()
+                analytics.navModalLenkeKopiert(
+                  {
+                    kilde: source.source,
+                    tittel: source.title,
+                  },
+                  {
+                    kildeId: citationId,
+                  },
+                  tools,
+                )
               }
             }}
           />
@@ -100,7 +139,12 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
 
   return (
     <sup>
-      <HoverCard content={hoverContent}>
+      <HoverCard
+        content={hoverContent}
+        context={source}
+        sourceId={citationId}
+        tools={tools}
+      >
         <Tag
           variant='neutral'
           size='xsmall'
@@ -116,9 +160,10 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
 interface CitationLinksProps {
   citations: { citationId: number }[]
   context: Context[]
+  tools: string[]
 }
 
-export const CitationLinks = ({ citations, context }: CitationLinksProps) => {
+export const CitationLinks = ({ citations, context, tools }: CitationLinksProps) => {
   return (
     <VStack
       gap='2'
@@ -131,6 +176,7 @@ export const CitationLinks = ({ citations, context }: CitationLinksProps) => {
           citations={citations}
           citationId={citationId}
           context={context}
+          tools={tools}
         />
       ))}
     </VStack>
@@ -141,9 +187,10 @@ interface CitationLinkProps {
   citations: { citationId: number }[]
   citationId: number
   context: Context[]
+  tools: string[]
 }
 
-const CitationLink = ({ citations, citationId, context }: CitationLinkProps) => {
+const CitationLink = ({ citations, citationId, context, tools }: CitationLinkProps) => {
   const source = context.at(citationId)
   if (!context || !source) {
     return null
@@ -175,6 +222,13 @@ const CitationLink = ({ citations, citationId, context }: CitationLinkProps) => 
         target='_blank'
         title='Åpne artikkelen i ny fane'
         className='text-base'
+        onClick={() => {
+          analytics.fotnoteLenkeKlikket(
+            { kilde: source.source, tittel: source.title, artikkelKolonne: source.articleColumn },
+            { kildeId: citationId },
+            tools,
+          )
+        }}
       >
         <span className='inline-flex items-center gap-2'>
           <BodyShort size='small'>{title}</BodyShort>

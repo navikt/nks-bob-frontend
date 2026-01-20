@@ -1,35 +1,40 @@
 import { create } from "zustand"
 import { MessageEvent as ConversationEvent } from "../api/sse"
-import { Message } from "./Message"
-import { transformNksUrlsArray } from "../utils/nksUrlTransformer"
+import analytics from "../utils/analytics"
 import { transformArticleColumnArray } from "../utils/articleColumnTransformer"
+import { transformNksUrlsArray } from "../utils/nksUrlTransformer"
+import { Message } from "./Message"
 
 // Type guard functions for MessageEvent types
-function isNewMessage(event: ConversationEvent): event is { type: "NewMessage", id: string, message: Message } {
+function isNewMessage(event: ConversationEvent): event is { type: "NewMessage"; id: string; message: Message } {
   return event.type === "NewMessage"
 }
 
-function isContentUpdated(event: ConversationEvent): event is { type: "ContentUpdated", id: string, content: string } {
+function isContentUpdated(event: ConversationEvent): event is { type: "ContentUpdated"; id: string; content: string } {
   return event.type === "ContentUpdated"
 }
 
-function isCitationsUpdated(event: ConversationEvent): event is { type: "CitationsUpdated", id: string, citations: any[] } {
+function isCitationsUpdated(
+  event: ConversationEvent,
+): event is { type: "CitationsUpdated"; id: string; citations: any[] } {
   return event.type === "CitationsUpdated"
 }
 
-function isContextUpdated(event: ConversationEvent): event is { type: "ContextUpdated", id: string, context: any[] } {
+function isContextUpdated(event: ConversationEvent): event is { type: "ContextUpdated"; id: string; context: any[] } {
   return event.type === "ContextUpdated"
 }
 
-function isPendingUpdated(event: ConversationEvent): event is { type: "PendingUpdated", id: string, message: Message, pending: boolean } {
+function isPendingUpdated(
+  event: ConversationEvent,
+): event is { type: "PendingUpdated"; id: string; message: Message; pending: boolean } {
   return event.type === "PendingUpdated"
 }
 
-function isStatusUpdate(event: ConversationEvent): event is { type: "StatusUpdate", id: string, content: string } {
+function isStatusUpdate(event: ConversationEvent): event is { type: "StatusUpdate"; id: string; content: string } {
   return event.type === "StatusUpdate"
 }
 
-function isErrorsUpdated(event: ConversationEvent): event is { type: "ErrorsUpdated", id: string, errors: any[] } {
+function isErrorsUpdated(event: ConversationEvent): event is { type: "ErrorsUpdated"; id: string; errors: any[] } {
   return event.type === "ErrorsUpdated"
 }
 
@@ -45,13 +50,13 @@ type MessageState = {
 }
 
 const transformContextData = <T extends { url: string; articleColumn?: string | null }>(contexts: T[]): T[] => {
-    let transformed = transformNksUrlsArray(contexts)
+  let transformed = transformNksUrlsArray(contexts)
 
-    if (contexts.length > 0 && 'articleColumn' in contexts[0]) {
-      transformed = transformArticleColumnArray(transformed as any) as T[]
-    }
+  if (contexts.length > 0 && "articleColumn" in contexts[0]) {
+    transformed = transformArticleColumnArray(transformed as any) as T[]
+  }
 
-    return transformed
+  return transformed
 }
 
 export const messageStore = create<MessageState>()((set) => {
@@ -77,11 +82,11 @@ export const messageStore = create<MessageState>()((set) => {
       }
     })
 
- const addMessage = (message: Message) =>
+  const addMessage = (message: Message) =>
     set((state) => {
       const transformedMessage = {
         ...message,
-        context: transformContextData(message.context)
+        context: transformContextData(message.context),
       }
 
       const messageMap = {
@@ -98,9 +103,9 @@ export const messageStore = create<MessageState>()((set) => {
 
   const setMessages = (messages: Message[]) =>
     set((state) => {
-      const transformedMessages = messages.map(message => ({
+      const transformedMessages = messages.map((message) => ({
         ...message,
-        context: transformContextData(message.context)
+        context: transformContextData(message.context),
       }))
 
       const messageMap: MessageMap = transformedMessages.reduce(
@@ -121,19 +126,15 @@ export const messageStore = create<MessageState>()((set) => {
     addMessage,
     updateMessage,
     setMessages,
-    resetMessages: () =>
-      set((state) => ({ ...state, messageMap: {}, messages: [] })),
+    resetMessages: () => set((state) => ({ ...state, messageMap: {}, messages: [] })),
   }
 })
 
-const getMessage = (
-  event: ConversationEvent,
-  messages: MessageMap,
-): Message | undefined => {
+const getMessage = (event: ConversationEvent, messages: MessageMap): Message | undefined => {
   if (isNewMessage(event)) {
     return {
       ...event.message,
-    context: transformContextData(event.message.context)
+      context: transformContextData(event.message.context),
     }
   }
 
@@ -164,9 +165,23 @@ const getMessage = (
   }
 
   if (isPendingUpdated(event)) {
+    if (!event.pending) {
+      const messageLength = event.message.content.length
+      const contextMeta = event.message.context.map(({ source, title }) => ({
+        tittel: title,
+        kilde: source,
+      }))
+      const citationMeta = event.message.citations.map(({ sourceId }) => ({
+        kildeId: sourceId,
+      }))
+      const tools = event.message.tools
+
+      analytics.svarMottatt(event.id, messageLength, contextMeta, citationMeta, tools)
+    }
+
     return {
       ...event.message,
-      context: transformContextData(event.message.context)
+      context: transformContextData(event.message.context),
     }
   }
 
