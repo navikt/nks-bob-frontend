@@ -24,9 +24,13 @@ For å kjøre applikasjonen lokalt, må du først installere dependencies:
 
 - pnpm install
 
+og bygge prosjektet (før første gang)
+
+- pnpm run build
+
 Deretter starte development server:
 
-- pnpm start
+- pnpm run dev
 
 Dette vil starte en lokal utviklingsserver som du får tilgang til via nettleser på http://localhost:3000.
 
