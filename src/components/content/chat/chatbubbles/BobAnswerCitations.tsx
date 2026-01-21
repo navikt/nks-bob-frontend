@@ -70,9 +70,13 @@ const SingleCitation = ({
   }
 
   return (
-    <div className='mb-2 flex flex-col'>
+    <div className='mb-2 flex flex-col border-b border-[rgba(207,211,216,1)] pb-6'>
       {context ? (
-        <TitleLink context={context} citation={citation} tools={tools} />
+        <TitleLink
+          context={context}
+          citation={citation}
+          tools={tools}
+        />
       ) : (
         <BodyShort size='medium'>Kunne ikke finne lenke til artikkelen.</BodyShort>
       )}
@@ -110,8 +114,6 @@ const SingleCitation = ({
 }
 
 const MultiCitation = ({
-  title,
-  source,
   citations,
   contexts,
   tools,
@@ -122,19 +124,8 @@ const MultiCitation = ({
   contexts: Context[]
   tools: string[]
 }) => {
-  const articleLink = contexts.at(citations[0]!.sourceId)!.url
-
-  function handleMainLinkClick() {
-    if (source === "nks") {
-      analytics.kbSitatLenkeKlikket(
-        { tittel: title, kilde: source, artikkelKolonne: null },
-        { kildeId: citations[0].sourceId },
-        tools,
-      )
-    } else if (source === "navno") {
-      analytics.navSitatLenkeKlikket({ tittel: title, kilde: source }, { kildeId: citations[0].sourceId }, tools)
-    }
-  }
+  const mainCitation = citations[0]
+  const mainContext = mainCitation ? contexts.at(mainCitation.sourceId) : undefined
 
   function handleCitationLinkClick(citation: Citation) {
     const context = contexts.at(citation.sourceId)
@@ -154,57 +145,18 @@ const MultiCitation = ({
   }
 
   return (
-    <div className='mb-8 flex flex-col'>
-      <Label
-        size='small'
-        className='mb-1'
-      >
-        <HStack align='center'>
-          <HStack
-            align='center'
-            gap='3'
-          >
-            <HStack
-              align='center'
-              gap='1'
-            >
-              <Tooltip content='Åpne artikkelen i ny fane'>
-                <Link
-                  href={articleLink}
-                  target='_blank'
-                  onClick={handleMainLinkClick}
-                >
-                  {title}
-                </Link>
-              </Tooltip>
-              <CopyButton
-                copyText={source === "nks" ? title : articleLink}
-                size='xsmall'
-                onClick={() => {
-                  if (source === "nks") {
-                    analytics.kbSitatTittelKopiert(
-                      { tittel: title, kilde: source, artikkelKolonne: null },
-                      { kildeId: citations[0].sourceId },
-                      tools,
-                    )
-                  } else if (source === "navno") {
-                    analytics.navSitatLenkeKopiert(
-                      { tittel: title, kilde: source },
-                      { kildeId: citations[0].sourceId },
-                      tools,
-                    )
-                  }
-                }}
-              />
-            </HStack>
-            <SourceIcon source={source} />
-          </HStack>
-        </HStack>
-      </Label>
+    <div className='mb-4 flex flex-col border-b border-[rgba(207,211,216,1)] pb-6'>
+      {mainCitation && (
+        <TitleLink
+          context={mainContext}
+          citation={mainCitation}
+          tools={tools}
+        />
+      )}
       <div className='flex flex-col gap-2'>
         {citations.map((citation) => (
           <>
-            <div className='group mt-1 gap-1 italic'>
+            <div className='group mb-2 mt-1 gap-1 italic'>
               <Markdown
                 className='markdown answer-markdown markdown-inline navds-body-short--small mb-1 inline'
                 remarkPlugins={[remarkGfm, md.rewriteRelativeLinks]}
@@ -346,7 +298,7 @@ const CitationLink = ({
           <Link
             href={
               title === "" && matchingContextCitationData.source === "navno"
-                ? `${matchingContextCitationData.url}#${matchingContextCitationData.anchor}`
+                ? `${matchingContextCitationData.url}${expandAll}#:~:text=${textFragment}`
                 : useAnchor
                   ? `${matchingContextCitationData.url}${expandAll}#${matchingContextCitationData.anchor}`
                   : !start || start.trim().length === 0
@@ -407,27 +359,38 @@ export const SourceIcon = ({ source }: { source: "navno" | "nks" }) => {
   )
 }
 
-export const TitleLink = ({ context, citation, tools }: { context?: Context, citation: Citation, tools: string[] }) => {
+export const TitleLink = ({ context, citation, tools }: { context?: Context; citation: Citation; tools: string[] }) => {
   if (!context) return null
+
+  const urlReturn = () => {
+    const navUrlWAnchor = `${context.url}#${context.anchor}`
+    const navUrl = `${context.url}`
+
+    if (context.source === "navno" && context.anchor != null) {
+      return navUrlWAnchor
+    } else if (context.source === "navno" && context.anchor === null) {
+      return navUrl
+    }
+  }
 
   return (
     <HStack
       align='center'
       gap='3'
+      className='mb-1'
     >
       <HStack
         align='center'
         gap='1'
       >
-        <SourceIcon source={context.source} />
         <Tooltip content='Åpne artikkelen i ny fane'>
           <Label size='small'>
             <Link
-              href={context.url}
+              href={urlReturn()}
               target='_blank'
               className='navds-label_small'
             >
-              {`${context.title} (${context.ingress})`}
+              {`${context.title}`}
             </Link>
           </Label>
         </Tooltip>
@@ -437,21 +400,22 @@ export const TitleLink = ({ context, citation, tools }: { context?: Context, cit
           size='xsmall'
           onClick={() => {
             if (context.source === "nks") {
-                    analytics.kbSitatTittelKopiert(
-                      { tittel: context.title, kilde: context.source, artikkelKolonne: context.articleColumn },
-                      { kildeId: citation.sourceId },
-                      tools,
-                    )
-                  } else if (context.source === "navno") {
-                    analytics.navSitatLenkeKopiert(
-                      { tittel: context.title, kilde: context.source },
-                      { kildeId: citation.sourceId },
-                      tools,
-                    )
-                  }
+              analytics.kbSitatTittelKopiert(
+                { tittel: context.title, kilde: context.source, artikkelKolonne: context.articleColumn },
+                { kildeId: citation.sourceId },
+                tools,
+              )
+            } else if (context.source === "navno") {
+              analytics.navSitatLenkeKopiert(
+                { tittel: context.title, kilde: context.source },
+                { kildeId: citation.sourceId },
+                tools,
+              )
+            }
           }}
         />
       </HStack>
+      <SourceIcon source={context.source} />
     </HStack>
   )
 }
