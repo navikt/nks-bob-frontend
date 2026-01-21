@@ -16,7 +16,6 @@ interface CitationNumberProps {
   tools: string[]
 }
 
-
 export const CitationNumber = ({ citations, citationId, context, tools }: CitationNumberProps) => {
   const [isActive, setIsActive] = useState(false)
   const source = context.at(citationId)
@@ -257,10 +256,18 @@ const GroupedCitationLink = ({ citations, source, citationIds, tools }: GroupedC
           target='_blank'
           title='Åpne artikkelen i ny fane'
           className='text-base'
+          onClick={() => {
+            analytics.fotnoteLenkeKlikket(
+              { kilde: source.source, tittel: source.title, artikkelKolonne: source.articleColumn },
+              citationIds.map((id) => ({ kildeId: id })),
+              tools,
+            )
+          }}
         >
           <BodyShort size='small'>{title}</BodyShort>
         </Link>
 
+        {/* TODO: track event for copy */}
         {source.source === "nks" ? (
           <Tooltip content='Kopier artikkelnavn'>
             <CopyButton

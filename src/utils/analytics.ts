@@ -131,8 +131,12 @@ const nySamtaleOpprettet = (samtaleId: string) => logEvent("Ny samtale opprettet
 // andel markert mellom 0 og 1
 const svartekstMarkert = (andelMarkert: number) => logEvent("Svartekst markert og kopiert", { andelMarkert })
 
-const fotnoteLenkeKlikket = (kontekst: KontekstArtikkelMeta, sitat: SitatMeta, verktøykall: string[]) =>
-  logEvent("Fotnote-lenke klikket", { kontekst, sitat, verktøykall })
+const fotnoteLenkeKlikket = (kontekst: KontekstArtikkelMeta, sitater: SitatMeta[], verktøykall: string[]) =>
+  logEvent("Fotnote-lenke klikket", {
+    kontekst,
+    sitater: sitater.reduce(reduceToObject<SitatMeta>, {}),
+    verktøykall,
+  })
 
 export default {
   svarKopiert,
