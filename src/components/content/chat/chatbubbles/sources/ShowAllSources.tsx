@@ -36,6 +36,8 @@ export const ShowAllSources = () => {
   const nksContext = context?.filter(({ source }) => source === "nks") ?? []
   const navContext = context?.filter(({ source }) => source === "navno") ?? []
 
+  const tools = activeMessage?.tools ?? []
+
   return (
     <VStack className={`all-sources-container ${activeMessage ? "active" : "inactive"}`}>
       <HStack
@@ -67,7 +69,10 @@ export const ShowAllSources = () => {
             </HStack>
             <VStack className='my-1'>
               {nksContext.map((ctx) => (
-                <NksSource context={ctx} />
+                <NksSource
+                  context={ctx}
+                  tools={tools}
+                />
               ))}
             </VStack>
           </VStack>
@@ -80,7 +85,10 @@ export const ShowAllSources = () => {
             </HStack>
             <VStack className='my-1'>
               {navContext.map((ctx) => (
-                <NavSource context={ctx} />
+                <NavSource
+                  context={ctx}
+                  tools={tools}
+                />
               ))}
             </VStack>
           </VStack>
@@ -90,7 +98,7 @@ export const ShowAllSources = () => {
   )
 }
 
-const NksSource = ({ context }: { context: Context }) => {
+const NksSource = ({ context, tools }: { context: Context; tools: string[] }) => {
   return (
     <VStack className='sourcepanel gap-3'>
       <HStack
@@ -100,14 +108,24 @@ const NksSource = ({ context }: { context: Context }) => {
         <Link
           href={`${context.url}#${context.anchor}`}
           target='_blank'
-          onClick={() => analytics.kbVisAlleKilderLenkeKlikket()}
+          onClick={() =>
+            analytics.kbVisAlleKilderLenkeKlikket(
+              { kilde: context.source, tittel: context.title, artikkelKolonne: context.articleColumn },
+              tools,
+            )
+          }
         >
           <Label size='small'>{context.title}</Label>
         </Link>
         <CopyButton
           copyText={context.title}
           size='xsmall'
-          onClick={() => analytics.kbVisAlleKilderLenkeKopiert()}
+          onClick={() =>
+            analytics.kbVisAlleKilderLenkeKopiert(
+              { kilde: context.source, tittel: context.title, artikkelKolonne: context.articleColumn },
+              tools,
+            )
+          }
         />
       </HStack>
       <UtdragDropDown context={context} />
@@ -115,7 +133,7 @@ const NksSource = ({ context }: { context: Context }) => {
   )
 }
 
-const NavSource = ({ context }: { context: Context }) => {
+const NavSource = ({ context, tools }: { context: Context; tools: string[] }) => {
   const title =
     context.source === "nks"
       ? context.title
@@ -132,14 +150,18 @@ const NavSource = ({ context }: { context: Context }) => {
         <Link
           href={`${context.url}#${context.anchor}`}
           target='_blank'
-          onClick={() => analytics.navVisAlleKilderLenkeKlikket()}
+          onClick={() =>
+            analytics.navVisAlleKilderLenkeKlikket({ kilde: context.source, tittel: context.title }, tools)
+          }
         >
           <Label size='small'>{title}</Label>
         </Link>
         <CopyButton
           copyText={context.title}
           size='xsmall'
-          onClick={() => analytics.navVisAlleKilderLenkeKopiert()}
+          onClick={() =>
+            analytics.navVisAlleKilderLenkeKopiert({ kilde: context.source, tittel: context.title }, tools)
+          }
         />
       </HStack>
       <UtdragDropDown context={context} />

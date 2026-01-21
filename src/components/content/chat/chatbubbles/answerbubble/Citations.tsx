@@ -13,9 +13,11 @@ interface CitationNumberProps {
   citations: { citationId: number }[]
   citationId: number
   context: Context[]
+  tools: string[]
 }
 
-export const CitationNumber = ({ citations, citationId, context }: CitationNumberProps) => {
+
+export const CitationNumber = ({ citations, citationId, context, tools }: CitationNumberProps) => {
   const [isActive, setIsActive] = useState(false)
   const source = context.at(citationId)
   if (!context || !source) {
@@ -47,9 +49,28 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
             title='Åpne artikkelen i ny fane'
             onClick={() => {
               if (source.source === "nks") {
-                analytics.kbModalLenkeKlikket()
+                analytics.kbModalLenkeKlikket(
+                  {
+                    kilde: source.source,
+                    tittel: source.title,
+                    artikkelKolonne: source.articleColumn,
+                  },
+                  {
+                    kildeId: citationId,
+                  },
+                  tools,
+                )
               } else if (source.source === "navno") {
-                analytics.navModalLenkeKlikket()
+                analytics.navModalLenkeKlikket(
+                  {
+                    kilde: source.source,
+                    tittel: source.title,
+                  },
+                  {
+                    kildeId: citationId,
+                  },
+                  tools,
+                )
               }
             }}
           >
@@ -65,9 +86,28 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
             size='xsmall'
             onClick={() => {
               if (source.source === "nks") {
-                analytics.kbModalLenkeKopiert()
+                analytics.kbModalLenkeKopiert(
+                  {
+                    kilde: source.source,
+                    tittel: source.title,
+                    artikkelKolonne: source.articleColumn,
+                  },
+                  {
+                    kildeId: citationId,
+                  },
+                  tools,
+                )
               } else if (source.source === "navno") {
-                analytics.navModalLenkeKopiert()
+                analytics.navModalLenkeKopiert(
+                  {
+                    kilde: source.source,
+                    tittel: source.title,
+                  },
+                  {
+                    kildeId: citationId,
+                  },
+                  tools,
+                )
               }
             }}
           />
@@ -106,6 +146,9 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
       <HoverCard
         content={hoverContent}
         onOpenChange={setIsActive}
+        context={source}
+        sourceId={citationId}
+        tools={tools}
       >
         <button
           type='button'
@@ -122,9 +165,10 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
 interface CitationLinksProps {
   citations: { citationId: number }[]
   context: Context[]
+  tools: string[]
 }
 
-export const CitationLinks = ({ citations, context }: CitationLinksProps) => {
+export const CitationLinks = ({ citations, context, tools }: CitationLinksProps) => {
   type Group = {
     key: string
     source: Context
@@ -159,6 +203,7 @@ export const CitationLinks = ({ citations, context }: CitationLinksProps) => {
           citations={citations}
           source={group.source}
           citationIds={group.citationIds}
+          tools={tools}
         />
       ))}
     </VStack>
@@ -169,9 +214,10 @@ type GroupedCitationLinkProps = {
   citations: { citationId: number }[]
   source: Context
   citationIds: number[]
+  tools: string[]
 }
 
-const GroupedCitationLink = ({ citations, source, citationIds }: GroupedCitationLinkProps) => {
+const GroupedCitationLink = ({ citations, source, citationIds, tools }: GroupedCitationLinkProps) => {
   const title =
     source.source === "nks"
       ? source.title

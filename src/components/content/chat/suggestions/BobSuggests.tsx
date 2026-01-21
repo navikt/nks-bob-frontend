@@ -40,7 +40,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
   }
 
   function handleEmpathetic() {
-    analytics.svarEndret("forenkle")
+    analytics.svarEndret("empatisk")
     const simplifyMessage: NewMessage = {
       content: isLastMessage ? "Gjør svaret mer empatisk" : `Gjør svaret mer empatisk:\n${message.content}`,
     }

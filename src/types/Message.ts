@@ -24,6 +24,7 @@ export type Message = {
   followUp: string[]
   starred?: boolean
   contextualizedQuestion: null | string
+  tools: string[]
 }
 
 export type Citation = {

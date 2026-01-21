@@ -1,14 +1,18 @@
 import { Box } from "@navikt/ds-react"
 import React, { useRef, useState } from "react"
 import analytics from "../../utils/analytics.ts"
+import { Context } from "../../types/Message.ts"
 
 interface HoverCardProps {
   children: React.ReactNode
   content: React.ReactNode
   onOpenChange?: (isOpen: boolean) => void
+  context: Context
+  sourceId: number
+  tools: string[]
 }
 
-export const HoverCard = ({ children, content, onOpenChange }: HoverCardProps) => {
+export const HoverCard = ({ children, content, onOpenChange, context, sourceId, tools }: HoverCardProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [position, setPosition] = useState({
     x: 0,
@@ -27,7 +31,17 @@ export const HoverCard = ({ children, content, onOpenChange }: HoverCardProps) =
     }
 
     if (!isOpen) {
-      analytics.åpnetFotnote()
+      analytics.åpnetFotnote(
+        {
+          kilde: context.source,
+          tittel: context.title,
+          artikkelKolonne: context.articleColumn,
+        },
+        {
+          kildeId: sourceId,
+        },
+        tools,
+      )
     }
 
     if (triggerRef.current) {

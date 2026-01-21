@@ -167,7 +167,10 @@ const MessageContent = ({
 }) => {
   const divRef = React.useRef<HTMLDivElement>(null)
   divRef.current?.addEventListener("copy", (e) => {
-    analytics.svartekstMarkert()
+    const messageLength = md.toPlaintext(message.content).length
+    const copyLength = window.getSelection()?.toString().length ?? 0
+
+    analytics.svartekstMarkert(copyLength / messageLength)
     e.stopImmediatePropagation()
   })
 
@@ -240,6 +243,7 @@ const MessageContent = ({
                   citations={citations}
                   citationId={citationId}
                   context={message.context}
+                  tools={message.tools}
                 />
               )
             }
@@ -333,6 +337,7 @@ const Citations = memo(
             <CitationLinks
               citations={citations}
               context={message.context}
+              tools={message.tools}
             />
           </div>
         )}
@@ -347,6 +352,7 @@ const Citations = memo(
                 citation={citation}
                 key={`citation-${index}`}
                 context={message.context}
+                tools={message.tools}
               />
             ))}
           </div>

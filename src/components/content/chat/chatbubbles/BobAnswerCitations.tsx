@@ -11,16 +11,18 @@ import { md } from "../../../../utils/markdown.ts"
 interface BobAnswerCitationProps {
   citation: { title: string; source: "navno" | "nks"; citations: Citation[] }
   context: Context[]
+  tools: string[]
 }
 
 // Matching citation.text against context metadata, to find correct URL //
-function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
+function BobAnswerCitations({ citation, context, tools }: BobAnswerCitationProps) {
   if (citation.citations.length === 1) {
     const singleCitation = citation.citations.at(0)!
     return (
       <SingleCitation
         citation={singleCitation}
         context={context.at(singleCitation.sourceId)}
+        tools={tools}
       />
     )
   }
@@ -32,6 +34,7 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
         source={citation.source}
         citations={citation.citations}
         contexts={context}
+        tools={tools}
       />
     )
   }
@@ -41,19 +44,35 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
 
 export default BobAnswerCitations
 
-const SingleCitation = ({ citation, context }: { citation: Citation; context: Context | undefined }) => {
+const SingleCitation = ({
+  citation,
+  context,
+  tools,
+}: {
+  citation: Citation
+  context: Context | undefined
+  tools: string[]
+}) => {
   function handleClick() {
     if (context?.source === "nks") {
-      analytics.kbSitatLenkeKlikket()
+      analytics.kbSitatLenkeKlikket(
+        { tittel: context.title, kilde: context.source, artikkelKolonne: context.articleColumn },
+        { kildeId: citation.sourceId },
+        tools,
+      )
     } else if (context?.source === "navno") {
-      analytics.navSitatLenkeKlikket()
+      analytics.navSitatLenkeKlikket(
+        { tittel: context.title, kilde: context.source },
+        { kildeId: citation.sourceId },
+        tools,
+      )
     }
   }
 
   return (
     <div className='mb-2 flex flex-col'>
       {context ? (
-        <TitleLink context={context} />
+        <TitleLink context={context} citation={citation} tools={tools} />
       ) : (
         <BodyShort size='medium'>Kunne ikke finne lenke til artikkelen.</BodyShort>
       )}
@@ -95,28 +114,42 @@ const MultiCitation = ({
   source,
   citations,
   contexts,
+  tools,
 }: {
   title: string
   source: "navno" | "nks"
   citations: Citation[]
   contexts: Context[]
+  tools: string[]
 }) => {
   const articleLink = contexts.at(citations[0]!.sourceId)!.url
 
   function handleMainLinkClick() {
     if (source === "nks") {
-      analytics.kbSitatLenkeKlikket()
+      analytics.kbSitatLenkeKlikket(
+        { tittel: title, kilde: source, artikkelKolonne: null },
+        { kildeId: citations[0].sourceId },
+        tools,
+      )
     } else if (source === "navno") {
-      analytics.navSitatLenkeKlikket()
+      analytics.navSitatLenkeKlikket({ tittel: title, kilde: source }, { kildeId: citations[0].sourceId }, tools)
     }
   }
 
   function handleCitationLinkClick(citation: Citation) {
     const context = contexts.at(citation.sourceId)
     if (context?.source === "nks") {
-      analytics.kbSitatLenkeKlikket()
+      analytics.kbSitatLenkeKlikket(
+        { tittel: context.title, kilde: context.source, artikkelKolonne: context.articleColumn },
+        { kildeId: citation.sourceId },
+        tools,
+      )
     } else if (context?.source === "navno") {
-      analytics.navSitatLenkeKlikket()
+      analytics.navSitatLenkeKlikket(
+        { tittel: context.title, kilde: context.source },
+        { kildeId: citation.sourceId },
+        tools,
+      )
     }
   }
 
@@ -149,9 +182,17 @@ const MultiCitation = ({
                 size='xsmall'
                 onClick={() => {
                   if (source === "nks") {
-                    analytics.kbSitatTittelKopiert()
+                    analytics.kbSitatTittelKopiert(
+                      { tittel: title, kilde: source, artikkelKolonne: null },
+                      { kildeId: citations[0].sourceId },
+                      tools,
+                    )
                   } else if (source === "navno") {
-                    analytics.navSitatLenkeKopiert()
+                    analytics.navSitatLenkeKopiert(
+                      { tittel: title, kilde: source },
+                      { kildeId: citations[0].sourceId },
+                      tools,
+                    )
                   }
                 }}
               />
@@ -178,7 +219,7 @@ const MultiCitation = ({
                 }}
               >
                 {citation.text}
-              </Markdown>{" "}
+              </Markdown>
               <CitationLink
                 citation={citation}
                 matchingContextCitationData={contexts.at(citation.sourceId)!}
@@ -366,7 +407,7 @@ export const SourceIcon = ({ source }: { source: "navno" | "nks" }) => {
   )
 }
 
-export const TitleLink = ({ context }: { context?: Context }) => {
+export const TitleLink = ({ context, citation, tools }: { context?: Context, citation: Citation, tools: string[] }) => {
   if (!context) return null
 
   return (
@@ -395,8 +436,19 @@ export const TitleLink = ({ context }: { context?: Context }) => {
           copyText={context.source === "nks" ? context.title : context.url}
           size='xsmall'
           onClick={() => {
-            if (context.source === "nks") analytics.kbSitatTittelKopiert()
-            if (context.source === "navno") analytics.navSitatLenkeKopiert()
+            if (context.source === "nks") {
+                    analytics.kbSitatTittelKopiert(
+                      { tittel: context.title, kilde: context.source, artikkelKolonne: context.articleColumn },
+                      { kildeId: citation.sourceId },
+                      tools,
+                    )
+                  } else if (context.source === "navno") {
+                    analytics.navSitatLenkeKopiert(
+                      { tittel: context.title, kilde: context.source },
+                      { kildeId: citation.sourceId },
+                      tools,
+                    )
+                  }
           }}
         />
       </HStack>
