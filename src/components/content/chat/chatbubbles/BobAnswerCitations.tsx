@@ -365,11 +365,14 @@ export const TitleLink = ({ context, citation, tools }: { context?: Context; cit
   const urlReturn = () => {
     const navUrlWAnchor = `${context.url}#${context.anchor}`
     const navUrl = `${context.url}`
+    const nksUrl = `${context.url}`
 
     if (context.source === "navno" && context.anchor != null) {
       return navUrlWAnchor
     } else if (context.source === "navno" && context.anchor === null) {
       return navUrl
+    } else if (context.source === "nks") {
+      return nksUrl
     }
   }
 
@@ -390,7 +393,7 @@ export const TitleLink = ({ context, citation, tools }: { context?: Context; cit
               target='_blank'
               className='navds-label_small'
             >
-              {`${context.title}`}
+              {context.title}
             </Link>
           </Label>
         </Tooltip>
