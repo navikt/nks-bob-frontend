@@ -228,6 +228,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     enabled: !!conversationId,
     enableOnFormTags: true,
   })
+
   useHotkeys(
     "Alt+Ctrl+P",
     () => sendMessage("hotkey", "Gjør om svaret til punktliste", { clear: false, blur: false }),
@@ -236,7 +237,13 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
       enableOnFormTags: true,
     },
   )
+
   useHotkeys("Alt+Ctrl+E", () => sendMessage("hotkey", "Gjør svaret mer empatisk", { clear: false, blur: false }), {
+    enabled: !!conversationId,
+    enableOnFormTags: true,
+  })
+
+  useHotkeys("Alt+Ctrl+F", () => sendMessage("hotkey", "Gjør om svaret til du-form", { clear: false, blur: false }), {
     enabled: !!conversationId,
     enableOnFormTags: true,
   })
