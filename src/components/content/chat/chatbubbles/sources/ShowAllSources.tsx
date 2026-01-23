@@ -1,5 +1,5 @@
 import { ChevronDownIcon, ChevronUpIcon, XMarkIcon } from "@navikt/aksel-icons"
-import { BodyLong, BodyShort, Button, CopyButton, Detail, Heading, HStack, Label, Link, VStack } from "@navikt/ds-react"
+import { BodyLong, BodyShort, Button, CopyButton, Detail, Heading, HStack, VStack } from "@navikt/ds-react"
 import { useState } from "react"
 import Markdown from "react-markdown"
 import remarkGfm from "remark-gfm"
@@ -8,7 +8,7 @@ import { create } from "zustand"
 import { ShowAllSourcesIcon } from "../../../../../assets/icons/ShowAllSourcesIcon.tsx"
 import { Context, Message } from "../../../../../types/Message.ts"
 import analytics from "../../../../../utils/analytics.ts"
-import { SourceIcon } from "../BobAnswerCitations.tsx"
+import { SourceIcon, TextFragmentLink } from "../BobAnswerCitations.tsx"
 import "./ShowAllSources.css"
 
 type SourcesState = {
@@ -102,18 +102,17 @@ const NksSource = ({ context, tools }: { context: Context; tools: string[] }) =>
         align='center'
         gap='1'
       >
-        <Link
-          href={`${context.url}#${context.anchor}`}
-          target='_blank'
+        <TextFragmentLink
+          text={context.content}
+          matchingContextCitationData={context}
+          className='inline'
           onClick={() =>
             analytics.kbVisAlleKilderLenkeKlikket(
               { kilde: context.source, tittel: context.title, artikkelKolonne: context.articleColumn },
               tools,
             )
           }
-        >
-          <Label size='small'>{context.title}</Label>
-        </Link>
+        />
         <CopyButton
           copyText={context.title}
           size='xsmall'
@@ -144,15 +143,14 @@ const NavSource = ({ context, tools }: { context: Context; tools: string[] }) =>
         align='center'
         gap='1'
       >
-        <Link
-          href={`${context.url}#${context.anchor}`}
-          target='_blank'
+        <TextFragmentLink
+          text={context.content}
+          matchingContextCitationData={context}
+          className='inline'
           onClick={() =>
             analytics.navVisAlleKilderLenkeKlikket({ kilde: context.source, tittel: context.title }, tools)
           }
-        >
-          <Label size='small'>{title}</Label>
-        </Link>
+        />
         <CopyButton
           copyText={context.title}
           size='xsmall'

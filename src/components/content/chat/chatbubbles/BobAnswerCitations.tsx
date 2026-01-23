@@ -102,8 +102,8 @@ const SingleCitation = ({
         </Markdown>
       </BodyLong>
       {context && (
-        <CitationLink
-          citation={citation}
+        <TextFragmentLink
+          text={citation.text}
           matchingContextCitationData={context}
           onClick={handleClick}
           title=''
@@ -172,8 +172,8 @@ const MultiCitation = ({
               >
                 {citation.text}
               </Markdown>
-              <CitationLink
-                citation={citation}
+              <TextFragmentLink
+                text={citation.text}
                 matchingContextCitationData={contexts.at(citation.sourceId)!}
                 title=''
                 className='inline'
@@ -187,14 +187,14 @@ const MultiCitation = ({
   )
 }
 
-export const CitationLink = ({
-  citation,
+export const TextFragmentLink = ({
+  text,
   matchingContextCitationData,
   title,
   className,
   onClick,
 }: {
-  citation: Citation
+  text: string
   matchingContextCitationData: Context
   title?: string
   className?: string
@@ -227,10 +227,10 @@ export const CitationLink = ({
     return cleanedBlocks
   }
 
-  const textBlocks = processTextForBlocks(citation.text)
+  const textBlocks = processTextForBlocks(text)
 
   if (textBlocks.length <= 1) {
-    const citeWords = citation.text
+    const citeWords = text
       .replace(/\n\n|\n/g, " ")
       .replace(/^[-•·‣⁃*]\s*/g, "")
       .replace(/\n\s*[-•·‣⁃*]\s*/g, " ")
