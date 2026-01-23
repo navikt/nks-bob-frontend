@@ -4,12 +4,11 @@ import { useState } from "react"
 import Markdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import { create } from "zustand"
-import { KunnskapsbasenIcon } from "../../../../../assets/icons/KunnskapsbasenIcon.tsx"
-import { NavNoIcon } from "../../../../../assets/icons/NavNoIcon.tsx"
 
 import { ShowAllSourcesIcon } from "../../../../../assets/icons/ShowAllSourcesIcon.tsx"
 import { Context, Message } from "../../../../../types/Message.ts"
 import analytics from "../../../../../utils/analytics.ts"
+import { SourceIcon } from "../BobAnswerCitations.tsx"
 import "./ShowAllSources.css"
 
 type SourcesState = {
@@ -63,10 +62,9 @@ export const ShowAllSources = () => {
         </BodyLong>
         {nksContext.length > 0 && (
           <VStack>
-            <HStack className='sourceheading gap-2'>
-              <KunnskapsbasenIcon />
-              <BodyShort size='small'>Kunnskapsbasen</BodyShort>
-            </HStack>
+            <div className='bg-[rgba(245,246,247,1)] px-4 py-2'>
+              <SourceIcon source='nks' />
+            </div>
             <VStack className='my-1'>
               {nksContext.map((ctx) => (
                 <NksSource
@@ -79,10 +77,9 @@ export const ShowAllSources = () => {
         )}
         {navContext.length > 0 && (
           <VStack className='sourcepanel-list'>
-            <HStack className='sourceheading gap-2'>
-              <NavNoIcon />
-              <BodyShort size='small'>Nav.no</BodyShort>
-            </HStack>
+            <div className='bg-[rgba(245,246,247,1)] px-4 py-2'>
+              <SourceIcon source='navno' />
+            </div>
             <VStack className='my-1'>
               {navContext.map((ctx) => (
                 <NavSource

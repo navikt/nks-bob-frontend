@@ -187,7 +187,7 @@ const MultiCitation = ({
   )
 }
 
-const CitationLink = ({
+export const CitationLink = ({
   citation,
   matchingContextCitationData,
   title,
