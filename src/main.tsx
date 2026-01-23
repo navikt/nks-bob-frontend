@@ -4,7 +4,13 @@ import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } 
 import { SWRConfig } from "swr"
 import { createHead, UnheadProvider } from "@unhead/react/client"
 import App from "./App.tsx"
-import { preloadAlerts, preloadNewsNotifications, preloadUserConfig, triggerReAuth } from "./api/api.ts"
+import {
+  preloadAlerts,
+  preloadNewsNotifications,
+  preloadUserConfig,
+  preloadUserInfo,
+  triggerReAuth,
+} from "./api/api.ts"
 import "./global.css"
 import { AnalyticsProvider } from "./utils/AnalyticsProvider.tsx"
 
@@ -23,6 +29,7 @@ const LoadingFallback = () => (
 )
 
 preloadUserConfig()
+preloadUserInfo()
 preloadNewsNotifications()
 preloadAlerts()
 

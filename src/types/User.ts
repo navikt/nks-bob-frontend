@@ -4,3 +4,11 @@ export type UserConfig = {
   showNewConceptInfo: boolean
   userType: "user" | "admin"
 }
+
+export type UserInfo = {
+  fullnameInverted: string | null // Nordmann, Ola
+  fullname: string | null // Ola Nordmann
+  firstName: string | null // Ola
+  lastName: string | null // Nordmann
+  email: string | null // ola.nordmann@nav.no
+}
