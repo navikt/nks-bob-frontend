@@ -219,7 +219,7 @@ type GroupedCitationLinkProps = {
 const GroupedCitationLink = ({ citations, source, citationIds, tools }: GroupedCitationLinkProps) => {
   const title =
     source.source === "nks"
-      ? source.title
+      ? `${source.title} / ${source.anchor}`
       : source.anchor !== null
         ? `${source.title} / ${source.anchor}`
         : source.title
