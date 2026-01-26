@@ -130,13 +130,6 @@ const NksSource = ({ context, tools }: { context: Context; tools: string[] }) =>
 }
 
 const NavSource = ({ context, tools }: { context: Context; tools: string[] }) => {
-  const title =
-    context.source === "nks"
-      ? context.title
-      : context.anchor !== null
-        ? `${context.title} / ${context.anchor}`
-        : context.title
-
   return (
     <VStack className='sourcepanel gap-3'>
       <HStack
