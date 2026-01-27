@@ -104,7 +104,8 @@ const NksSource = ({ context, tools }: { context: Context; tools: string[] }) =>
         gap='1'
       >
         <TextFragmentLink
-          text={buildLinkTitle(context)}
+          text={context.content}
+          title={buildLinkTitle(context)}
           matchingContextCitationData={context}
           className='inline'
           onClick={() =>
