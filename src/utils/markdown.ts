@@ -100,6 +100,37 @@ function rewriteRelativeLinks(): (tree: Root) => void {
   }
 }
 
-const md = { toHtml, toPlaintext, remarkCitations, rewriteRelativeLinks }
+// Extracts the heading from markdown content by highest depth (max h3).
+export function getFirstHeading(markdown: string, maxDepth = 3): string | null {
+  const tree = remark().parse(markdown)
+
+  const headings = tree.children.filter((node) => node.type === "heading")
+  const depthTarget = Math.min(
+    Math.max(...headings.map(({ depth }) => depth).filter((depth) => depth <= maxDepth)),
+    maxDepth,
+  )
+
+  const heading = headings.find((node) => node.depth === depthTarget)
+  if (!heading) {
+    return null
+  }
+
+  const miniTree: Root = {
+    type: "root",
+    children: [
+      {
+        type: "paragraph",
+        children: heading.children,
+      },
+    ],
+  }
+
+  const strippedAst = remark().use(stripMarkdown).runSync(miniTree)
+  const plain = remark().use(remarkStringify).stringify(strippedAst)
+
+  return plain.trim()
+}
+
+const md = { toHtml, toPlaintext, remarkCitations, rewriteRelativeLinks, getFirstHeading }
 
 export { md }
