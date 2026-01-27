@@ -7,6 +7,7 @@ import { NavNoIcon } from "../../../../assets/icons/NavNoIcon.tsx"
 import { Citation, Context } from "../../../../types/Message.ts"
 import analytics from "../../../../utils/analytics.ts"
 import { md } from "../../../../utils/markdown.ts"
+import { buildLinkTitle } from "../../../../utils/link.ts"
 
 interface BobAnswerCitationProps {
   citation: { title: string; source: "navno" | "nks"; citations: Citation[] }
@@ -191,12 +192,14 @@ export const TextFragmentLink = ({
   text,
   matchingContextCitationData,
   title,
+  anchor,
   className,
   onClick,
 }: {
   text: string
   matchingContextCitationData: Context
   title?: string
+  anchor?: string
   className?: string
   onClick?: () => void
 }) => {
@@ -288,7 +291,7 @@ export const TextFragmentLink = ({
     }
 
     const expandAll = matchingContextCitationData?.source === "navno" ? "?expandall=true" : ""
-    const useAnchor = matchingContextCitationData?.url.includes("/saksbehandlingstider")
+    const useAnchor = anchor ?? matchingContextCitationData?.url.includes("/saksbehandlingstider")
 
     const textFragment = end && end.trim() ? `${encodeFragment(start)},${encodeFragment(end)}` : encodeFragment(start)
 
@@ -300,7 +303,7 @@ export const TextFragmentLink = ({
               title === "" && matchingContextCitationData.source === "navno"
                 ? `${matchingContextCitationData.url}${expandAll}#:~:text=${textFragment}`
                 : useAnchor
-                  ? `${matchingContextCitationData.url}${expandAll}#${matchingContextCitationData.anchor}`
+                  ? `${matchingContextCitationData.url}${expandAll}#${anchor ?? matchingContextCitationData.anchor}`
                   : !start || start.trim().length === 0
                     ? `${matchingContextCitationData.url}`
                     : matchingContextCitationData.articleColumn
@@ -393,7 +396,7 @@ export const TitleLink = ({ context, citation, tools }: { context?: Context; cit
               target='_blank'
               className='navds-label_small'
             >
-              {context.title}
+              {buildLinkTitle(context)}
             </Link>
           </Label>
         </Tooltip>

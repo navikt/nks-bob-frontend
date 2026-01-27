@@ -10,6 +10,7 @@ import { Context, Message } from "../../../../../types/Message.ts"
 import analytics from "../../../../../utils/analytics.ts"
 import { SourceIcon, TextFragmentLink } from "../BobAnswerCitations.tsx"
 import "./ShowAllSources.css"
+import { buildLinkTitle } from "../../../../../utils/link.ts"
 
 type SourcesState = {
   activeMessage: Message | null
@@ -103,7 +104,7 @@ const NksSource = ({ context, tools }: { context: Context; tools: string[] }) =>
         gap='1'
       >
         <TextFragmentLink
-          text={context.content}
+          text={buildLinkTitle(context)}
           matchingContextCitationData={context}
           className='inline'
           onClick={() =>
@@ -138,6 +139,8 @@ const NavSource = ({ context, tools }: { context: Context; tools: string[] }) =>
       >
         <TextFragmentLink
           text={context.content}
+          title={buildLinkTitle(context)}
+          anchor={context.anchor ?? undefined}
           matchingContextCitationData={context}
           className='inline'
           onClick={() =>

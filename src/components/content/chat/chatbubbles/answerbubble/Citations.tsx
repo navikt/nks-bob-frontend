@@ -8,6 +8,7 @@ import { Context } from "../../../../../types/Message.ts"
 import analytics from "../../../../../utils/analytics.ts"
 import { HoverCard } from "../../../../ui/HoverCard.tsx"
 import { SourceIcon } from "../BobAnswerCitations.tsx"
+import { buildLinkTitle } from "../../../../../utils/link.ts"
 
 interface CitationNumberProps {
   citations: { citationId: number }[]
@@ -23,13 +24,7 @@ export const CitationNumber = ({ citations, citationId, context, tools }: Citati
     return null
   }
 
-  const title =
-    source.source === "nks"
-      ? source.title
-      : source.anchor !== null
-        ? `${source.title} / ${source.anchor}`
-        : source.title
-
+  const title = buildLinkTitle(source)
   const displayId = citations.findIndex((citation) => citation.citationId === citationId) + 1
 
   const hoverContent = (
@@ -217,12 +212,7 @@ type GroupedCitationLinkProps = {
 }
 
 const GroupedCitationLink = ({ citations, source, citationIds, tools }: GroupedCitationLinkProps) => {
-  const title =
-    source.source === "nks"
-      ? `${source.title} / ${source.anchor}`
-      : source.anchor !== null
-        ? `${source.title} / ${source.anchor}`
-        : source.title
+  const title = buildLinkTitle(source)
 
   const displayIds = citationIds
     .map((id) => citations.findIndex((citation) => citation.citationId === id) + 1)
