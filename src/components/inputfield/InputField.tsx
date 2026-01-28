@@ -79,9 +79,13 @@ export const useInputFieldStore = create<InputFieldState>()(
 interface InputFieldProps {
   onSend: (message: NewMessage) => void
   disabled: boolean
+  allowPaste?: boolean
 }
 
-const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputField({ onSend, disabled }, containerRef) {
+const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputField(
+  { onSend, disabled, allowPaste = false },
+  containerRef,
+) {
   const placeholderText = "Spør Bob om noe Nav-relatert"
   const [isSensitiveInfoAlert, setIsSensitiveInfoAlert] = useState<boolean>(false)
   const [sendDisabled, setSendDisabled] = useState<boolean>(disabled)
@@ -135,7 +139,10 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     const pasted = e.clipboardData.getData("text")
     if (pasted.trim().length > 0) {
       setIsSensitiveInfoAlert(true)
-      e.preventDefault()
+
+      if (!allowPaste) {
+        e.preventDefault()
+      }
     }
   }
 
