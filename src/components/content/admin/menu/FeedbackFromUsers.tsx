@@ -1,4 +1,11 @@
-import { ChatExclamationmarkIcon, CheckmarkCircleIcon, FilterIcon } from "@navikt/aksel-icons"
+import {
+  ChatExclamationmarkIcon,
+  CheckmarkCircleIcon,
+  CircleFillIcon,
+  ExclamationmarkIcon,
+  FilterIcon,
+  InformationIcon,
+} from "@navikt/aksel-icons"
 import {
   ActionMenu,
   BodyShort,
@@ -74,40 +81,79 @@ const SORT = {
 
 type SortValue = keyof typeof SORT
 
-const FILTERS = {
-  nye: "Nye",
-  ferdigstilte: "Ferdigstilte",
-  "ikke-relevante": "Ikke relevante",
-  "litt-viktige": "Litt viktige",
-  viktige: "Viktige",
-  "særskilt-viktige": "Særskilt viktige",
-  brukerfeil: "Brukerfeil",
-  "ki-feil": "KI-feil",
-  "dato-utgatt": "Utgått dato",
-  "hele-deler-av-svaret-er-feil": "Hele-/deler av svaret er feil",
-  "mangler-vesentlige-detaljer": "Mangler vesentlige detaljer",
-  "benytter-ikke-forventede-artikler": "Benytter ikke forventede artikler",
-  "forholder-seg-ikke-til-kontekst": "Forholder seg ikke til kontekst",
-  "blander-ytelser": "Blander ytelser",
-  "finner-ikke-sitatet-i-artikkelen": "Finner ikke sitatet i artikkelen",
-  "mangler-kilder": "Mangler kilder",
-  annet: "Annet",
-  arbeid: "Arbeid",
-  helse: "Helse",
-  familie: "Familie",
-  pleiepenger: "Pleiepenger",
-  gjeldsveiledning: "Gjeldsveiledning",
-  "sosiale-tjenester": "Sosiale tjenester",
-  pensjon: "Pensjon",
-  uforetrygd: "Uføretrygd",
-  arbeidsgiver: "Arbeidsgiver",
-  internasjonalt: "Internasjonalt",
-  fellesrutinene: "Fellesrutinene",
-  inaktive: "Inaktive",
-  aktive: "Aktive",
-}
+const GROUPS = ["Status", "Viktighet", "Kategori", "Begrunnelse", "Fagområde"] as const
+type Group = (typeof GROUPS)[number]
 
-type FilterValue = keyof typeof FILTERS
+const FILTER_VALUES = [
+  "nye",
+  "ferdigstilte",
+  "ikke-relevante",
+  "litt-viktige",
+  "viktige",
+  "særskilt-viktige",
+  "brukerfeil",
+  "ki-feil",
+  "dato-utgatt",
+  "hele-deler-av-svaret-er-feil",
+  "mangler-vesentlige-detaljer",
+  "benytter-ikke-forventede-artikler",
+  "forholder-seg-ikke-til-kontekst",
+  "blander-ytelser",
+  "finner-ikke-sitatet-i-artikkelen",
+  "mangler-kilder",
+  "annet",
+  "arbeid",
+  "helse",
+  "familie",
+  "pleiepenger",
+  "gjeldsveiledning",
+  "sosiale-tjenester",
+  "pensjon",
+  "uforetrygd",
+  "arbeidsgiver",
+  "internasjonalt",
+  "fellesrutinene",
+  "aktive",
+  "inaktive",
+] as const
+
+const FILTERS: { [key: string]: { label: string; group: Group } } = {
+  nye: { label: "Nye", group: "Status" },
+  ferdigstilte: { label: "Ferdigstilte", group: "Status" },
+  "ikke-relevante": { label: "Ikke relevante", group: "Viktighet" },
+  "litt-viktige": { label: "Litt viktige", group: "Viktighet" },
+  viktige: { label: "Viktige", group: "Viktighet" },
+  "særskilt-viktige": { label: "Særskilt viktige", group: "Viktighet" },
+  brukerfeil: { label: "Brukerfeil", group: "Kategori" },
+  "ki-feil": { label: "KI-feil", group: "Kategori" },
+  "dato-utgatt": { label: "Utgått dato", group: "Kategori" },
+  "hele-deler-av-svaret-er-feil": { label: "Hele-/deler av svaret er feil", group: "Begrunnelse" },
+  "mangler-vesentlige-detaljer": { label: "Mangler vesentlige detaljer", group: "Begrunnelse" },
+  "benytter-ikke-forventede-artikler": {
+    label: "Benytter ikke forventede artikler",
+    group: "Begrunnelse",
+  },
+  "forholder-seg-ikke-til-kontekst": { label: "Forholder seg ikke til kontekst", group: "Begrunnelse" },
+  "blander-ytelser": { label: "Blander ytelser", group: "Begrunnelse" },
+  "finner-ikke-sitatet-i-artikkelen": { label: "Finner ikke sitatet i artikkelen", group: "Begrunnelse" },
+  "mangler-kilder": { label: "Mangler kilder", group: "Begrunnelse" },
+  annet: { label: "Annet", group: "Begrunnelse" },
+  arbeid: { label: "Arbeid", group: "Fagområde" },
+  helse: { label: "Helse", group: "Fagområde" },
+  familie: { label: "Familie", group: "Fagområde" },
+  pleiepenger: { label: "Pleiepenger", group: "Fagområde" },
+  gjeldsveiledning: { label: "Gjeldsveiledning", group: "Fagområde" },
+  "sosiale-tjenester": { label: "Sosiale tjenester", group: "Fagområde" },
+  pensjon: { label: "Pensjon", group: "Fagområde" },
+  uforetrygd: { label: "Uføretrygd", group: "Fagområde" },
+  arbeidsgiver: { label: "Arbeidsgiver", group: "Fagområde" },
+  internasjonalt: { label: "Internasjonalt", group: "Fagområde" },
+  fellesrutinene: { label: "Fellesrutinene", group: "Fagområde" },
+  aktive: { label: "Aktive", group: "Status" },
+  inaktive: { label: "Inaktive", group: "Status" },
+} as const
+
+type FilterValue = (typeof FILTER_VALUES)[number]
 
 const FeedbackHeader = ({
   menuRef,
@@ -120,7 +166,7 @@ const FeedbackHeader = ({
   sort: SortValue
   setSort: Dispatch<SetStateAction<SortValue>>
   activeFilters: FilterValue[]
-  setActiveFilters: Dispatch<SetStateAction<FilterValue[]>>
+  setActiveFilters: Dispatch<FilterValue[]>
 }) => {
   const { total } = useFeedbacks(activeFilters)
 
@@ -166,15 +212,40 @@ const FeedbackHeader = ({
                 e.stopPropagation()
               }}
             >
-              {Object.entries(FILTERS).map(([value, label]) => (
-                <ActionMenu.CheckboxItem
-                  key={`feedback-filter-item-${value}`}
-                  checked={activeFilters.includes(value as FilterValue)}
-                  onCheckedChange={() => handleCheckboxChange(value as FilterValue)}
-                >
-                  {label}
-                </ActionMenu.CheckboxItem>
-              ))}
+              {GROUPS.map((currentGroup) => {
+                const groupContainsActiveFilter = Object.entries(FILTERS)
+                  .filter(([_v, { group }]) => group === currentGroup)
+                  .some(([value]) => activeFilters.includes(value as FilterValue))
+                return (
+                  <ActionMenu.Sub>
+                    <ActionMenu.SubTrigger
+                      icon={
+                        groupContainsActiveFilter && (
+                          <CircleFillIcon
+                            height={8}
+                            color='#00459C'
+                          />
+                        )
+                      }
+                    >
+                      {currentGroup}
+                    </ActionMenu.SubTrigger>
+                    <ActionMenu.SubContent>
+                      {Object.entries(FILTERS)
+                        .filter(([_v, { group }]) => group === currentGroup)
+                        .map(([value, { label }]) => (
+                          <ActionMenu.CheckboxItem
+                            key={`feedback-filter-item-${value}`}
+                            checked={activeFilters.includes(value as FilterValue)}
+                            onCheckedChange={() => handleCheckboxChange(value as FilterValue)}
+                          >
+                            {label}
+                          </ActionMenu.CheckboxItem>
+                        ))}
+                    </ActionMenu.SubContent>
+                  </ActionMenu.Sub>
+                )
+              })}
             </ActionMenu.Group>
             <ActionMenu.Divider />
             <ActionMenu.RadioGroup
@@ -437,7 +508,10 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
         <VStack gap='2'>
           <Label size='small'>Hva er galt med svaret?</Label>
           {feedback.options.map((option, i) => (
-            <VStack gap='4' key={`feedback-option-${option}-${i}`}>
+            <VStack
+              gap='4'
+              key={`feedback-option-${option}-${i}`}
+            >
               <HStack gap='2'>
                 <FeedbackOptionTag
                   key={`${feedback.id}-${option}`}
