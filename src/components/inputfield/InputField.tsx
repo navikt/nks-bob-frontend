@@ -405,12 +405,6 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           }}
           onBlur={() => {
             setIsFocused(false)
-
-            const ta = textareaRef.current
-            if (ta) {
-              ta.style.height = ""
-              ta.style.width = ""
-            }
           }}
         />
         <Button
