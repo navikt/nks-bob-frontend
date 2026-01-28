@@ -7,7 +7,7 @@ import { Alert as AlertComponent, BodyShort, Button, Heading, HStack, Tooltip, V
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import Markdown from "react-markdown"
-import { isApiError, useAlerts, useMessages } from "../../api/api.ts"
+import { isApiError, useAlerts, useMessages, useUserConfig } from "../../api/api.ts"
 import { NewMessage } from "../../types/Message.ts"
 import { messageStore } from "../../types/messageStore.ts"
 import { Alert } from "../../types/Notifications.ts"
@@ -36,6 +36,7 @@ function ConversationContent() {
   const { sendMessage, isLoading } = useSendMessage(conversationId!)
   const { messages, setMessages } = messageStore()
   const { alerts } = useAlerts()
+  const { userConfig } = useUserConfig()
 
   const inputContainerRef = useRef<HTMLDivElement | null>(null)
   const [inputHeight, setInputHeight] = useState(0)
@@ -117,6 +118,8 @@ function ConversationContent() {
     enableOnFormTags: true,
   })
 
+  const isAdmin = userConfig?.userType === "admin"
+
   return (
     <div className='conversation-content'>
       <DialogWrapper>
@@ -153,6 +156,7 @@ function ConversationContent() {
           onSend={handleUserMessage}
           disabled={isLoading}
           ref={inputContainerRef}
+          allowPaste={isAdmin}
         />
       </DialogWrapper>
       <ShowAllSources />

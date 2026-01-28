@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { useNavigate } from "react-router"
-import { useCreateConversation } from "../../api/api.ts"
+import { useCreateConversation, useUserConfig } from "../../api/api.ts"
 import { NewConversation, NewMessage } from "../../types/Message.ts"
 import { messageStore } from "../../types/messageStore.ts"
 import Header from "../header/Header.tsx"
@@ -16,6 +16,7 @@ const CreateConversationContent = () => {
   const { setFollowUp } = useInputFieldStore()
   const { setActiveMessage } = useSourcesStore()
   const { resetMessages } = messageStore()
+  const { userConfig } = useUserConfig()
 
   useEffect(() => {
     // reset message state on first render.
@@ -42,6 +43,8 @@ const CreateConversationContent = () => {
       })
   }
 
+  const isAdmin = userConfig?.userType === "admin"
+
   return (
     <CreateConversationWrapper>
       <Header conversation={undefined} />
@@ -50,6 +53,7 @@ const CreateConversationContent = () => {
       <InputField
         onSend={handleUserMessage}
         disabled={false}
+        allowPaste={isAdmin}
       />
     </CreateConversationWrapper>
   )
