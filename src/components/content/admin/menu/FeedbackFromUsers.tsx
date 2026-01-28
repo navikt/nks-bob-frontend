@@ -18,14 +18,15 @@ import { format } from "date-fns"
 import { Dispatch, FormEvent, RefObject, SetStateAction, useCallback, useEffect, useRef, useState } from "react"
 import { useNavigate, useSearchParams } from "react-router"
 import { debounce } from "ts-debounce"
+import { useSWRConfig } from "swr"
 import { preloadFeedbacks, useFeedbacks, useUpdateFeedback } from "../../../../api/admin"
 import { Feedback } from "../../../../types/Message"
-import {  useSWRConfig } from "swr"
+import { useStateLocalStorage } from "../../../../utils/localStorage"
 
 export const FeedbackFromUsers = () => {
   const menuRef = useRef<HTMLDivElement>(null)
   const [sort, setSort] = useState<SortValue>("CREATED_AT_DESC")
-  const [activeFilters, setActiveFilters] = useState<FilterValue[]>(["nye"])
+  const [activeFilters, setActiveFilters] = useStateLocalStorage<FilterValue[]>("feedbackFilters", ["nye", "aktive"])
   const [currentPage, setCurrentPage] = useState(1)
   const pageSize = 4
 
