@@ -13,6 +13,7 @@ export const mockMessages: Message[] = [
     errors: [],
     followUp: [],
     createdBy: "",
+    contextualizedQuestion: null,
     tools: [],
   },
   {
@@ -159,6 +160,7 @@ export const mockMessages: Message[] = [
         semanticSimilarity: 0.697476863861084,
       },
     ],
+    contextualizedQuestion: "dagpenger definisjon og formål",
     pending: false,
     errors: [],
     followUp: [

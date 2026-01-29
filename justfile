@@ -14,7 +14,7 @@ localnais: port-forward wonderwall localnais-serve
 
 [private]
 nais-login:
-    nais login
+    nais auth login
 
 [private]
 fetch-env:

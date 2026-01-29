@@ -6,12 +6,13 @@ import { Context } from "../../types/Message.ts"
 interface HoverCardProps {
   children: React.ReactNode
   content: React.ReactNode
+  onOpenChange?: (isOpen: boolean) => void
   context: Context
   sourceId: number
   tools: string[]
 }
 
-export const HoverCard = ({ children, content, context, sourceId, tools }: HoverCardProps) => {
+export const HoverCard = ({ children, content, onOpenChange, context, sourceId, tools }: HoverCardProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [position, setPosition] = useState({
     x: 0,
@@ -24,7 +25,7 @@ export const HoverCard = ({ children, content, context, sourceId, tools }: Hover
   const cardRef = useRef<HTMLDivElement>(null)
   const timeoutRef = useRef<NodeJS.Timeout>(null)
 
-  const handleMouseEnter = (_e: React.MouseEvent) => {
+  const handleMouseEnter = () => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current)
     }
@@ -95,11 +96,13 @@ export const HoverCard = ({ children, content, context, sourceId, tools }: Hover
       })
     }
     setIsOpen(true)
+    onOpenChange?.(true)
   }
 
   const handleMouseLeave = () => {
     timeoutRef.current = setTimeout(() => {
       setIsOpen(false)
+      onOpenChange?.(false)
     }, 100)
   }
 
@@ -111,6 +114,7 @@ export const HoverCard = ({ children, content, context, sourceId, tools }: Hover
 
   const handleCardMouseLeave = () => {
     setIsOpen(false)
+    onOpenChange?.(false)
   }
 
   return (
