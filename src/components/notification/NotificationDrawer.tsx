@@ -157,7 +157,7 @@ const NotificationList = ({ notifications }: { notifications: NewsNotification[]
         <NotificationItem
           key={`notification-${notification.id}`}
           notification={notification}
-          className='border-b-border-subtle p-4 [&:not(:last-child)]:border-b'
+          className='border-b-border-subtle p-4 not-last:border-b'
         />
       ))}
     </div>

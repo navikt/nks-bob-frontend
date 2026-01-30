@@ -178,7 +178,7 @@ const ErrorBanner = ({ alerts }: { alerts: Alert[] }) => {
       fullWidth
       size='small'
       variant={level}
-      className='mb-4 w-full max-w-[48rem]'
+      className='mb-4 w-full max-w-3xl'
     >
       <Heading
         spacing

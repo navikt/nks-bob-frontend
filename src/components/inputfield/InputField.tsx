@@ -400,14 +400,14 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
         setInputValue={setInputValue}
         conversationId={conversationId}
       />
-      <div className='inputfield relative flex max-w-[48rem] flex-col items-center justify-end'>
+      <div className='inputfield relative flex max-w-3xl flex-col items-center justify-end'>
         <Textarea
           resize={isFocused ? "vertical" : false}
           ref={textareaRef}
           size='medium'
           label=''
           hideLabel
-          className='dialogcontent mb-3 min-h-[43px] truncate [&_textarea]:max-h-[450px] [&_textarea]:min-h-[43px] focus:[&_textarea]:min-h-[50px]'
+          className='dialogcontent mb-3 min-h-[43px] truncate [&_textarea]:max-h-[450px] [&_textarea]:min-h-[43px] [&_textarea]:focus:min-h-[50px]'
           minRows={1.3}
           maxRows={15}
           placeholder={placeholderText}

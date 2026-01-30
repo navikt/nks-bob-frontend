@@ -202,7 +202,7 @@ export const Step2 = ({
   onPrevious: () => void
   handleSelectChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
 }) => (
-  <div className='fixed left-1/2 top-1/2 z-[1000] w-[calc(100%-32px)] max-w-[700px] -translate-x-1/2 -translate-y-1/2 transform flex-col'>
+  <div className='fixed left-1/2 top-1/2 z-1000 w-[calc(100%-32px)] max-w-[700px] -translate-x-1/2 -translate-y-1/2 transform flex-col'>
     <div className='flex translate-y-[16px] justify-start'>
       <BobTheGuide2 />
     </div>
@@ -293,12 +293,12 @@ export const Step3 = ({
   onPrevious: () => void
   handleSelectChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
 }) => (
-  <div className='fixed left-1/2 top-1/2 z-[1000] w-[calc(100%-32px)] max-w-[700px] -translate-x-1/2 -translate-y-1/2 transform flex-col'>
+  <div className='fixed left-1/2 top-1/2 z-1000 w-[calc(100%-32px)] max-w-[700px] -translate-x-1/2 -translate-y-1/2 transform flex-col'>
     <div className='flex translate-y-[60px] justify-center'>
       <BobTheGuide2 />
     </div>
     <VStack
-      className='modal-container sticky z-[1000]'
+      className='modal-container sticky z-1000'
       gap='4'
     >
       <HStack
@@ -383,12 +383,12 @@ export const Step4 = ({
   onPrevious: () => void
   handleSelectChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
 }) => (
-  <div className='fixed left-1/2 top-[40%] z-[1000] w-[calc(100%-32px)] max-w-[700px] -translate-x-1/2 -translate-y-1/2 transform flex-col'>
+  <div className='fixed left-1/2 top-[40%] z-1000 w-[calc(100%-32px)] max-w-[700px] -translate-x-1/2 -translate-y-1/2 transform flex-col'>
     <div className='flex translate-y-[60px] justify-end'>
       <BobThePirate />
     </div>
     <VStack
-      className='modal-container sticky z-[1000]'
+      className='modal-container sticky z-1000'
       gap='0'
     >
       <HStack
@@ -460,12 +460,12 @@ export const Step5 = ({
   onPrevious: () => void
   handleSelectChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
 }) => (
-  <div className='fixed left-1/2 top-1/2 z-[1000] w-[calc(100%-32px)] max-w-[700px] -translate-x-1/2 -translate-y-1/2 transform flex-col'>
+  <div className='fixed left-1/2 top-1/2 z-1000 w-[calc(100%-32px)] max-w-[700px] -translate-x-1/2 -translate-y-1/2 transform flex-col'>
     <div className='flex translate-y-[16px] justify-start'>
       <BobTheGuide2 />
     </div>{" "}
     <VStack
-      className='modal-container sticky z-[1000]'
+      className='modal-container sticky z-1000'
       gap='0'
     >
       <HStack

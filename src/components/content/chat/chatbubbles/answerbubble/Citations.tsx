@@ -147,7 +147,7 @@ export const CitationNumber = ({ citations, citationId, context, tools }: Citati
         <button
           type='button'
           aria-pressed={isActive}
-          className='ml-[4px] rounded-[4px] bg-[rgba(0,14,41,0.07)] px-[4px] aria-pressed:bg-[rgba(73,81,94,1)] aria-pressed:text-[rgba(255,255,255,1)] dark:bg-[rgba(28_35_47/1)] dark:aria-pressed:text-[rgba(0_0_0/1)] aria-pressed:dark:hover:bg-[rgba(148,155,168,1)]'
+          className='ml-[4px] rounded-[4px] bg-[rgba(0,14,41,0.07)] px-[4px] aria-pressed:bg-[rgba(73,81,94,1)] aria-pressed:text-[rgba(255,255,255,1)] dark:bg-[rgba(28_35_47/1)] dark:aria-pressed:text-[rgba(0_0_0/1)] dark:aria-pressed:hover:bg-[rgba(148,155,168,1)]'
         >
           <BodyShort size='small'> {displayId}</BodyShort>
         </button>
@@ -231,7 +231,7 @@ const GroupedCitationLink = ({ citations, source, citationIds, tools }: GroupedC
         {displayIds.map((displayId) => (
           <div
             key={displayId}
-            className='ml-[2px] rounded-[4px] bg-[rgba(0,14,41,0.07)] px-[4px] aria-pressed:text-[rgba(223_225_229/1)] dark:bg-[rgba(28_35_47/1)] dark:aria-pressed:text-[rgba(0_0_0/1)] aria-pressed:dark:hover:bg-[rgba(148,155,168,1)]'
+            className='ml-[2px] rounded-[4px] bg-[rgba(0,14,41,0.07)] px-[4px] aria-pressed:text-[rgba(223_225_229/1)] dark:bg-[rgba(28_35_47/1)] dark:aria-pressed:text-[rgba(0_0_0/1)] dark:aria-pressed:hover:bg-[rgba(148,155,168,1)]'
           >
             <BodyShort size='small'> {displayId}</BodyShort>
           </div>

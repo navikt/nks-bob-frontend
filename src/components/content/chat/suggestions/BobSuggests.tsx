@@ -73,7 +73,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
   })
 
   return (
-    <div className='fade-in background-color ml-[-0.3rem] flex h-fit w-fit flex-wrap items-center justify-start rounded'>
+    <div className='fade-in background-color ml-[-0.3rem] flex h-fit w-fit flex-wrap items-center justify-start rounded-sm'>
       <Tooltip content={`${isLastMessage ? "Kopier svaret ( Alt+Ctrl+C )" : "Kopier svaret"}`}>
         <CopyButton
           copyText=''
