@@ -8,8 +8,8 @@ body.dark {
   }
 
   h1,
-  .navds-tabs,
-  .navds-tabs__tab {
+  .aksel-tabs,
+  .aksel-tabs__tab {
     color: var(--darkmode-text-default)
   }
 

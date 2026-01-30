@@ -238,11 +238,11 @@ ul {
 
 /*   Read more styling   */
 
-.navds-textarea__input {
+.aksel-textarea__input {
   padding-right: 2.5rem;
 }
 
-.navds-read-more__button {
+.aksel-read-more__button {
   background: rgba(241, 247, 255, 1);
   width: 100%;
   border-radius: 3rem;
@@ -252,25 +252,11 @@ ul {
   flex-direction: row-reverse;
 }
 
-.navds-read-more__content {
+.aksel-read-more__content {
   margin-left: 1.4rem;
   margin-top: 0.6rem;
 }
 
-body.dark .navds-read-more__content {
-  color: var(--darkmode-text-default);
-}
-
-.navds-read-more__button:hover {
+.aksel-read-more__button:hover {
   background: rgba(228, 238, 255, 1);
 }
-
-body.dark .navds-read-more__button {
-  background: rgba(16, 29, 45, 1);
-}
-
-body.dark .navds-read-more__button:hover {
-  background: rgba(21, 36, 54, 1);
-}
-
-/*  DARK MODE    */

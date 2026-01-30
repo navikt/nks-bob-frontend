@@ -157,9 +157,9 @@ const MultiCitation = ({
       <div className='flex flex-col gap-2'>
         {citations.map((citation) => (
           <>
-            <div className='group mb-2 mt-1 gap-1 italic'>
+            <div className='group mt-1 mb-2 gap-1 italic'>
               <Markdown
-                className='markdown answer-markdown markdown-inline navds-body-short--small mb-1 inline'
+                className='markdown answer-markdown markdown-inline aksel-body-short--small mb-1 inline'
                 remarkPlugins={[remarkGfm, md.rewriteRelativeLinks]}
                 components={{
                   a: ({ ...props }) => (
@@ -312,7 +312,7 @@ export const TextFragmentLink = ({
             }
             target='_blank'
             inlineText
-            className={`${className} navds-body-short--small`}
+            className={`${className} aksel-body-short--small`}
             onClick={onClick}
           >
             {title ?? matchingContextCitationData.title}
@@ -394,7 +394,7 @@ export const TitleLink = ({ context, citation, tools }: { context?: Context; cit
             <Link
               href={urlReturn()}
               target='_blank'
-              className='navds-label_small'
+              className='aksel-label_small'
             >
               {buildLinkTitle(context)}
             </Link>

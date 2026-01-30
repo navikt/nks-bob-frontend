@@ -225,7 +225,7 @@ export const ShowAllSourcesToggle = ({ message, toggleTitle }: ShowAllSourcesTog
       type='button'
       aria-pressed={isActive}
       onClick={toggleActive}
-      className='navds-chips__toggle navds-chips__toggle--neutral h-[26px] rounded-full px-2 py-px aria-pressed:text-[rgba(223_225_229/1)] dark:aria-pressed:text-[rgba(0_0_0/1)] dark:aria-pressed:hover:bg-[rgba(148,155,168,1)]'
+      className='aksel-chips__toggle aksel-chips__toggle--neutral h-[26px] rounded-full px-2 py-px aria-pressed:text-[rgba(223_225_229/1)] dark:aria-pressed:text-[rgba(0_0_0/1)] dark:aria-pressed:hover:bg-[rgba(148,155,168,1)]'
     >
       <div className='flex items-center gap-1'>
         <ShowAllSourcesIcon />
