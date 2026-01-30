@@ -181,9 +181,12 @@ For enkelt navn:
 
 */
 
+/* Fjerner denne funksjonen midlertidig pga. tilbakemelding: "Datoer er ikke sensitiv informasjon og bør ekskluderes. Rundt annenhver / hver tredje samtale i bob inneholder datoer, så det vil kunne være et irritasjonsmoment for mange." 
 
 const dateOfBirthRegex = /\b(?:[0]?[1-9]|[12]\d|3[01])[-./,]+?(?:[0]?[1-9]|[12]\d|3[01])[-./,]+?\d{2,4}\b/g
 export const validateDateOfBirth = createValidator(dateOfBirthRegex, warning, "Tekst som ligner på fødselsdato:", "dob")
+
+*/
 
 // dateOfBirthRegex fanger opp datoer skrevet som dd.mm.yy eller dd.mm.yyyy (f.eks. 01/02/1990), med ulike skilletegn som -, ., / eller , mellom tallene.
 
