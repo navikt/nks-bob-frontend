@@ -39,3 +39,21 @@ export function useUpdateLocalStorage(key: string) {
 
   return [storageValue, updateStorageValue, () => getItem(key)] as const
 }
+
+export function useStateLocalStorage<S>(key: string, initialState: S): [S, React.Dispatch<S>] {
+  const [storageValue, setStorageValue] = useState(() => {
+    const existingItem: S | undefined = getItem(key)
+    if (existingItem) {
+      return existingItem
+    }
+
+    return initialState
+  })
+
+  const updateStorageValue = (newValue: S) => {
+    setStorageValue(newValue)
+    setItem(key, newValue)
+  }
+
+  return [storageValue, updateStorageValue]
+}

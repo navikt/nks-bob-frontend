@@ -22,3 +22,21 @@ body.dark .questionbubble {
 .questionhover:hover .hide-show-edit {
   display: flex;
 }
+
+.questionbubble .chat-markdown ol {
+  list-style: decimal;
+  list-style-position: outside;
+  padding-left: 1.25rem;
+  margin: 0;
+}
+
+.questionbubble .chat-markdown ul {
+  list-style: disc;
+  list-style-position: outside;
+  padding-left: 1.25rem;
+  margin: 0;
+}
+
+.questionbubble .chat-markdown li {
+  margin: 0;
+}

@@ -1,13 +1,18 @@
 import { Box } from "@navikt/ds-react"
 import React, { useRef, useState } from "react"
 import analytics from "../../utils/analytics.ts"
+import { Context } from "../../types/Message.ts"
 
 interface HoverCardProps {
   children: React.ReactNode
   content: React.ReactNode
+  onOpenChange?: (isOpen: boolean) => void
+  context: Context
+  sourceId: number
+  tools: string[]
 }
 
-export const HoverCard = ({ children, content }: HoverCardProps) => {
+export const HoverCard = ({ children, content, onOpenChange, context, sourceId, tools }: HoverCardProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [position, setPosition] = useState({
     x: 0,
@@ -20,13 +25,23 @@ export const HoverCard = ({ children, content }: HoverCardProps) => {
   const cardRef = useRef<HTMLDivElement>(null)
   const timeoutRef = useRef<NodeJS.Timeout>(null)
 
-  const handleMouseEnter = (_e: React.MouseEvent) => {
+  const handleMouseEnter = () => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current)
     }
 
     if (!isOpen) {
-      analytics.åpnetFotnote()
+      analytics.åpnetFotnote(
+        {
+          kilde: context.source,
+          tittel: context.title,
+          artikkelKolonne: context.articleColumn,
+        },
+        {
+          kildeId: sourceId,
+        },
+        tools,
+      )
     }
 
     if (triggerRef.current) {
@@ -81,11 +96,13 @@ export const HoverCard = ({ children, content }: HoverCardProps) => {
       })
     }
     setIsOpen(true)
+    onOpenChange?.(true)
   }
 
   const handleMouseLeave = () => {
     timeoutRef.current = setTimeout(() => {
       setIsOpen(false)
+      onOpenChange?.(false)
     }, 100)
   }
 
@@ -97,6 +114,7 @@ export const HoverCard = ({ children, content }: HoverCardProps) => {
 
   const handleCardMouseLeave = () => {
     setIsOpen(false)
+    onOpenChange?.(false)
   }
 
   return (

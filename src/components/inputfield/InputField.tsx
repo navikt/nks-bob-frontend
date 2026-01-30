@@ -79,9 +79,13 @@ export const useInputFieldStore = create<InputFieldState>()(
 interface InputFieldProps {
   onSend: (message: NewMessage) => void
   disabled: boolean
+  allowPaste?: boolean
 }
 
-const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputField({ onSend, disabled }, containerRef) {
+const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputField(
+  { onSend, disabled, allowPaste = false },
+  containerRef,
+) {
   const placeholderText = "Spør Bob om noe Nav-relatert"
   const [isSensitiveInfoAlert, setIsSensitiveInfoAlert] = useState<boolean>(false)
   const [sendDisabled, setSendDisabled] = useState<boolean>(disabled)
@@ -121,7 +125,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
       textareaRef.current?.blur()
     }
 
-    analytics.meldingSendt(trigger)
+    analytics.meldingSendt(trigger, message.content.length)
   }
 
   function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -135,7 +139,10 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     const pasted = e.clipboardData.getData("text")
     if (pasted.trim().length > 0) {
       setIsSensitiveInfoAlert(true)
-      e.preventDefault()
+
+      if (!allowPaste) {
+        e.preventDefault()
+      }
     }
   }
 
@@ -228,6 +235,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     enabled: !!conversationId,
     enableOnFormTags: true,
   })
+
   useHotkeys(
     "Alt+Ctrl+P",
     () => sendMessage("hotkey", "Gjør om svaret til punktliste", { clear: false, blur: false }),
@@ -236,10 +244,16 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
       enableOnFormTags: true,
     },
   )
+
   useHotkeys("Alt+Ctrl+E", () => sendMessage("hotkey", "Gjør svaret mer empatisk", { clear: false, blur: false }), {
     enabled: !!conversationId,
     enableOnFormTags: true,
   })
+  useHotkeys("Alt+Ctrl+F", () => sendMessage("hotkey", "Gjør om svaret til du-form", { clear: false, blur: false }), {
+    enabled: !!conversationId,
+    enableOnFormTags: true,
+  })
+
   useHotkeys("Alt+Ctrl+F", () => sendMessage("hotkey", "Gjør om svaret til du-form", { clear: false, blur: false }), {
     enabled: !!conversationId,
     enableOnFormTags: true,
@@ -292,7 +306,10 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           >
             Spørsmålet ser ut til å inneholde personopplysninger
           </Heading>
-          <BodyShort size='small'>Vurder om følgende er nødvendig for å få svar på spørsmålet:</BodyShort>
+          <BodyShort size='small'>
+            {" "}
+            Vurder om følgende er personopplysninger. Om det er tilfellet, må de fjernes før du sender inn spørsmålet.
+          </BodyShort>
           <List
             size='small'
             className='max-h-36 overflow-scroll'
@@ -348,7 +365,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           >
             Spørsmålet inneholder fødselsnummer/d-nummer/hnr
           </Heading>
-          <BodyShort size='small'>Fjern eller anonymiser følgende før du sender:</BodyShort>
+          <BodyShort size='small'>Fjern følgende før du sender inn spørsmålet.</BodyShort>
           <List
             size='small'
             className='max-h-36 overflow-scroll'
@@ -406,12 +423,6 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           }}
           onBlur={() => {
             setIsFocused(false)
-
-            const ta = textareaRef.current
-            if (ta) {
-              ta.style.height = ""
-              ta.style.width = ""
-            }
           }}
         />
         <Button

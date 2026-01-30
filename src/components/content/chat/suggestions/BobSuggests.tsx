@@ -14,8 +14,6 @@ import { useStarMessage } from "../../../../api/api.ts"
 import { Message, NewMessage } from "../../../../types/Message.ts"
 import analytics from "../../../../utils/analytics.ts"
 import { md } from "../../../../utils/markdown.ts"
-import { CoachMark } from "../../../coachmark/CoachMark.tsx"
-import { AnswerButtonsExplanation } from "../../../coachmark/CoachmarkContent.tsx"
 import { FeedbackOnAnswer } from "../feedback/GiveUsFeedback.tsx"
 import "./BobSuggests.css"
 
@@ -26,8 +24,6 @@ interface BobSuggestsProps {
 }
 
 const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
-  const coachMarkKey = "coachMarkShownChat"
-
   function handleTranslate() {
     analytics.svarEndret("oversett")
     const translate: NewMessage = {
@@ -45,7 +41,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
   }
 
   function handleEmpathetic() {
-    analytics.svarEndret("forenkle")
+    analytics.svarEndret("empatisk")
     const simplifyMessage: NewMessage = {
       content: isLastMessage ? "Gjør svaret mer empatisk" : `Gjør svaret mer empatisk:\n${message.content}`,
     }
@@ -53,7 +49,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
   }
 
   function handleDuForm() {
-    analytics.svarEndret("forenkle")
+    analytics.svarEndret("du-form")
     const simplifyMessage: NewMessage = {
       content: isLastMessage ? "Gjør om svaret til du-form" : `Gjør om svaret til du-form:\n${message.content}`,
     }
@@ -136,15 +132,6 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
           onClick={handleDuForm}
         />
       </Tooltip>
-      <div className='mx-2 flex'>
-        <CoachMark
-          title='Disse knappene lar deg:'
-          buttonText='Skjønner!'
-          coachMarkKey={coachMarkKey}
-        >
-          <AnswerButtonsExplanation />
-        </CoachMark>
-      </div>
     </div>
   )
 }

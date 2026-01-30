@@ -1,14 +1,16 @@
 import { ChevronDownIcon, ChevronUpIcon, XMarkIcon } from "@navikt/aksel-icons"
-import { BodyLong, BodyShort, Button, CopyButton, Heading, HStack, Label, Link, VStack } from "@navikt/ds-react"
+import { BodyLong, BodyShort, Button, CopyButton, Detail, Heading, HStack, VStack } from "@navikt/ds-react"
 import { useState } from "react"
 import Markdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import { create } from "zustand"
-import { KunnskapsbasenIcon } from "../../../../../assets/icons/KunnskapsbasenIcon.tsx"
-import { NavNoIcon } from "../../../../../assets/icons/NavNoIcon.tsx"
+
+import { ShowAllSourcesIcon } from "../../../../../assets/icons/ShowAllSourcesIcon.tsx"
 import { Context, Message } from "../../../../../types/Message.ts"
 import analytics from "../../../../../utils/analytics.ts"
+import { SourceIcon, TextFragmentLink } from "../BobAnswerCitations.tsx"
 import "./ShowAllSources.css"
+import { buildLinkTitle } from "../../../../../utils/link.ts"
 
 type SourcesState = {
   activeMessage: Message | null
@@ -33,6 +35,8 @@ export const ShowAllSources = () => {
   const context = activeMessage?.context
   const nksContext = context?.filter(({ source }) => source === "nks") ?? []
   const navContext = context?.filter(({ source }) => source === "navno") ?? []
+
+  const tools = activeMessage?.tools ?? []
 
   return (
     <VStack className={`all-sources-container ${activeMessage ? "active" : "inactive"}`}>
@@ -59,26 +63,30 @@ export const ShowAllSources = () => {
         </BodyLong>
         {nksContext.length > 0 && (
           <VStack>
-            <HStack className='sourceheading gap-2'>
-              <KunnskapsbasenIcon />
-              <BodyShort size='small'>Kunnskapsbasen</BodyShort>
-            </HStack>
+            <div className='bg-[rgba(245,246,247,1)] px-4 py-2'>
+              <SourceIcon source='nks' />
+            </div>
             <VStack className='my-1'>
               {nksContext.map((ctx) => (
-                <NksSource context={ctx} />
+                <NksSource
+                  context={ctx}
+                  tools={tools}
+                />
               ))}
             </VStack>
           </VStack>
         )}
         {navContext.length > 0 && (
           <VStack className='sourcepanel-list'>
-            <HStack className='sourceheading gap-2'>
-              <NavNoIcon />
-              <BodyShort size='small'>Nav.no</BodyShort>
-            </HStack>
+            <div className='bg-[rgba(245,246,247,1)] px-4 py-2'>
+              <SourceIcon source='navno' />
+            </div>
             <VStack className='my-1'>
               {navContext.map((ctx) => (
-                <NavSource context={ctx} />
+                <NavSource
+                  context={ctx}
+                  tools={tools}
+                />
               ))}
             </VStack>
           </VStack>
@@ -88,24 +96,34 @@ export const ShowAllSources = () => {
   )
 }
 
-const NksSource = ({ context }: { context: Context }) => {
+const NksSource = ({ context, tools }: { context: Context; tools: string[] }) => {
   return (
     <VStack className='sourcepanel gap-3'>
       <HStack
         align='center'
         gap='1'
       >
-        <Link
-          href={`${context.url}#${context.anchor}`}
-          target='_blank'
-          onClick={() => analytics.kbVisAlleKilderLenkeKlikket()}
-        >
-          <Label size='small'>{context.title}</Label>
-        </Link>
+        <TextFragmentLink
+          text={context.content}
+          title={buildLinkTitle(context)}
+          matchingContextCitationData={context}
+          className='inline'
+          onClick={() =>
+            analytics.kbVisAlleKilderLenkeKlikket(
+              { kilde: context.source, tittel: context.title, artikkelKolonne: context.articleColumn },
+              tools,
+            )
+          }
+        />
         <CopyButton
           copyText={context.title}
           size='xsmall'
-          onClick={() => analytics.kbVisAlleKilderLenkeKopiert()}
+          onClick={() =>
+            analytics.kbVisAlleKilderLenkeKopiert(
+              { kilde: context.source, tittel: context.title, artikkelKolonne: context.articleColumn },
+              tools,
+            )
+          }
         />
       </HStack>
       <UtdragDropDown context={context} />
@@ -113,31 +131,29 @@ const NksSource = ({ context }: { context: Context }) => {
   )
 }
 
-const NavSource = ({ context }: { context: Context }) => {
-  const title =
-    context.source === "nks"
-      ? context.title
-      : context.anchor !== null
-        ? `${context.title} / ${context.anchor}`
-        : context.title
-
+const NavSource = ({ context, tools }: { context: Context; tools: string[] }) => {
   return (
     <VStack className='sourcepanel gap-3'>
       <HStack
         align='center'
         gap='1'
       >
-        <Link
-          href={`${context.url}#${context.anchor}`}
-          target='_blank'
-          onClick={() => analytics.navVisAlleKilderLenkeKlikket()}
-        >
-          <Label size='small'>{title}</Label>
-        </Link>
+        <TextFragmentLink
+          text={context.content}
+          title={buildLinkTitle(context)}
+          anchor={context.anchor ?? undefined}
+          matchingContextCitationData={context}
+          className='inline'
+          onClick={() =>
+            analytics.navVisAlleKilderLenkeKlikket({ kilde: context.source, tittel: context.title }, tools)
+          }
+        />
         <CopyButton
           copyText={context.title}
           size='xsmall'
-          onClick={() => analytics.navVisAlleKilderLenkeKopiert()}
+          onClick={() =>
+            analytics.navVisAlleKilderLenkeKopiert({ kilde: context.source, tittel: context.title }, tools)
+          }
         />
       </HStack>
       <UtdragDropDown context={context} />
@@ -191,5 +207,43 @@ const UtdragDropDown = ({ context }: { context: Context }) => {
         </BodyLong>
       )}
     </VStack>
+  )
+}
+
+interface ShowAllSourcesToggleProps {
+  message: Message
+  toggleTitle: string
+}
+
+export const ShowAllSourcesToggle = ({ message, toggleTitle }: ShowAllSourcesToggleProps) => {
+  const { activeMessage, setActiveMessage } = useSourcesStore()
+  const isActive = activeMessage !== null && activeMessage.id === message.id
+  const toggleActive = () => setActiveMessage(isActive ? null : message)
+
+  return (
+    <button
+      type='button'
+      aria-pressed={isActive}
+      onClick={toggleActive}
+      className='navds-chips__toggle navds-chips__toggle--neutral h-[26px] rounded-full px-2 py-[1px] aria-pressed:text-[rgba(223_225_229/1)] dark:aria-pressed:text-[rgba(0_0_0/1)] aria-pressed:dark:hover:bg-[rgba(148,155,168,1)]'
+    >
+      <div className='flex items-center gap-1'>
+        <ShowAllSourcesIcon />
+        <Detail
+          aria-pressed={isActive}
+          className='aria-pressed:dark:text-[rgba(0,0,0,1)]'
+        >
+          {toggleTitle}
+        </Detail>
+      </div>
+    </button>
+  )
+}
+
+export const NoSourcesNeeded = () => {
+  return (
+    <div className='rounded-full border border-[rgb(7_26_54/0.21)] bg-[rgb(18_43_68/0.08)] px-2 py-[2px] dark:border-[rgba(224_237_254/0.15)] dark:bg-[rgba(28_35_47/1)]'>
+      <Detail>Bob brukte ingen kilder for å lage svaret</Detail>
+    </div>
   )
 }

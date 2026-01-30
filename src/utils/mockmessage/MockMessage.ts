@@ -13,6 +13,8 @@ export const mockMessages: Message[] = [
     errors: [],
     followUp: [],
     createdBy: "",
+    contextualizedQuestion: null,
+    tools: [],
   },
   {
     id: "b8fd6266-324b-48df-a38a-2a4b419ee69f",
@@ -96,8 +98,7 @@ export const mockMessages: Message[] = [
         content:
           "## Hva kan du få?\n### Hvor lenge kan du få?\n#### Hvilke inntekter avgjør hvor lenge du kan få?\nVi bruker disse inntektene for å beregne hvor lenge du kan få dagpenger:\n\n* Arbeidsinntekt\n* Foreldrepenger\n* Svangerskapspenger\n* Svangerskapsrelaterte sykepenger\n\nDisse inntektene regnes ikke som arbeidsinntekt:\n\n* Inntekt som selvstendig næringsdrivende\n* Arbeidsavklaringspenger (AAP)",
         title: "Dagpenger",
-        ingress:
-          "Dagpenger er en pengestøtte du kan få når du er arbeidsledig eller permittert.",
+        ingress: "Dagpenger er en pengestøtte du kan få når du er arbeidsledig eller permittert.",
         source: "navno",
         url: "https://www.nav.no/dagpenger",
         anchor: "hvor-lenge",
@@ -110,8 +111,7 @@ export const mockMessages: Message[] = [
         content:
           "## Hvem kan få?\n### Hvis du er permittert\nSom permittert har du som hovedregel rett til lønn fra arbeidsgiveren din de 15 første arbeidsdagene du er permittert. Hvis du er delvis permittert, kan de 15 arbeidsdagene med lønn strekke seg over en lengre periode. Etter denne perioden med lønn, kan du få dagpenger.\n\nFor at du skal ha rett til dagpenger som permittert må permitteringsårsaken være mangel på arbeid i bedriften, eller andre forhold som arbeidsgiveren din ikke kan påvirke. Grunnen til at du permitteres kan derfor ha betydning for din rett til dagpenger. Nav vurderer om permitteringsårsaken gir deg rett til dagpenger.",
         title: "Dagpenger",
-        ingress:
-          "Dagpenger er en pengestøtte du kan få når du er arbeidsledig eller permittert.",
+        ingress: "Dagpenger er en pengestøtte du kan få når du er arbeidsledig eller permittert.",
         source: "navno",
         url: "https://www.nav.no/dagpenger",
         anchor: "permittert",
@@ -124,8 +124,7 @@ export const mockMessages: Message[] = [
         content:
           "## Hvem kan få?\n### Hvem kan få dagpenger?\n#### Hvilke inntekter gir rett til dagpenger?\nVi bruker disse inntektene for å finne ut om du har rett til dagpenger:\n\n* Arbeidsinntekt\n* Foreldrepenger som arbeidstaker\n* Svangerskapspenger som arbeidstaker\n* Svangerskapsrelaterte sykepenger som arbeidstaker\n\nDisse inntektene regnes ikke som arbeidsinntekt:\n\n* Inntekt som selvstendig næringsdrivende\n* Arbeidsavklaringspenger (AAP)",
         title: "Dagpenger",
-        ingress:
-          "Dagpenger er en pengestøtte du kan få når du er arbeidsledig eller permittert.",
+        ingress: "Dagpenger er en pengestøtte du kan få når du er arbeidsledig eller permittert.",
         source: "navno",
         url: "https://www.nav.no/dagpenger",
         anchor: "hvem-kan",
@@ -138,8 +137,7 @@ export const mockMessages: Message[] = [
         content:
           "## Hva kan du få?\n### Hvor lenge kan du få?\n#### Har du vært permittert de siste 18 månedene?\nBlir du permittert på nytt av samme arbeidsgiver innenfor en periode på 18 måneder, vil du fortsette på de 26 ukene du kan være permittert. For eksempel, hvis du tidligere var permittert i 20 uker de siste 18 månedene, kan du nå være permittert i 6 uker.\n\nHar det gått mer enn 18 måneder siden forrige permittering fra samme arbeidsgiver, kan du være permittert i 26 uker.\n\nBlir du permittert av en annen arbeidsgiver kan du være permittert derfra i 26 uker uavhengig av om du har vært permittert tidligere",
         title: "Dagpenger",
-        ingress:
-          "Dagpenger er en pengestøtte du kan få når du er arbeidsledig eller permittert.",
+        ingress: "Dagpenger er en pengestøtte du kan få når du er arbeidsledig eller permittert.",
         source: "navno",
         url: "https://www.nav.no/dagpenger",
         anchor: "hvor-lenge",
@@ -152,8 +150,7 @@ export const mockMessages: Message[] = [
         content:
           "## Hva sier loven?\n* [Kapittel 4. Dagpenger under arbeidsløshet (lovdata.no)](https://lovdata.no/nav/folketrygdloven/kap4)\n* [Hovednr. 45 – Rundskriv til EØS-avtalens bestemmelser om trygd (lovdata.no)](https://lovdata.no/nav/rundskriv/r45-00/kap0#kap0)",
         title: "Dagpenger",
-        ingress:
-          "Dagpenger er en pengestøtte du kan få når du er arbeidsledig eller permittert.",
+        ingress: "Dagpenger er en pengestøtte du kan få når du er arbeidsledig eller permittert.",
         source: "navno",
         url: "https://www.nav.no/dagpenger",
         anchor: "loven",
@@ -163,6 +160,7 @@ export const mockMessages: Message[] = [
         semanticSimilarity: 0.697476863861084,
       },
     ],
+    contextualizedQuestion: "dagpenger definisjon og formål",
     pending: false,
     errors: [],
     followUp: [
@@ -171,5 +169,6 @@ export const mockMessages: Message[] = [
       "Hvordan påvirker permittering retten til dagpenger?",
     ],
     createdBy: "",
+    tools: [],
   },
 ]

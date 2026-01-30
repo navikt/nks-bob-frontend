@@ -1,12 +1,5 @@
 import { ChatExclamationmarkIcon } from "@navikt/aksel-icons"
-import {
-  Button,
-  Checkbox,
-  CheckboxGroup,
-  Modal,
-  Textarea,
-  Tooltip,
-} from "@navikt/ds-react"
+import { Button, Checkbox, CheckboxGroup, Modal, Textarea, Tooltip } from "@navikt/ds-react"
 import { useEffect, useRef, useState } from "react"
 import { useAddFeedback } from "../../../../api/api.ts"
 import { Message } from "../../../../types/Message.ts"
@@ -123,7 +116,11 @@ export const FeedbackOnAnswer = ({ message }: FeedbackOnAnswerProps) => {
             error={optionsError}
           >
             {Object.entries(OPTIONS).map(([value, label]) => (
-              <Checkbox value={value} className='mb-1 first:mt-3 last:mb-4'>
+              <Checkbox
+                key={`feedback-option-${value}`}
+                value={value}
+                className='mb-1 first:mt-3 last:mb-4'
+              >
                 {label}
               </Checkbox>
             ))}
