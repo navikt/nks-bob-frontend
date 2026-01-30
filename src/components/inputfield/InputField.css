@@ -9,7 +9,7 @@
 }
 
 .detailcolor {
-  color: var(--a-text-subtle)
+  color: var(--ax-text-neutral-subtle)
 }
 
 body.dark .detailcolor {

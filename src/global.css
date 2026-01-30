@@ -25,7 +25,7 @@
 /*  LAYOUT  */
 
 * {
-  scrollbar-color: var(--a-grayalpha-400) transparent;
+  scrollbar-color: var(--neutral-500) transparent;
 }
 
 ul li:not(:last-child) {

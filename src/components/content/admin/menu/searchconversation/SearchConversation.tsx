@@ -53,7 +53,7 @@ const SearchConversation = () => {
 
   return (
     <VStack>
-      <div className='mb-2 w-full border-b border-b-border-subtle p-4'>
+      <div className='mb-2 w-full border-b border-b-ax-border-neutral-subtle p-4'>
         <Heading size='xsmall'>Søk etter samtale</Heading>
       </div>
       <form onSubmit={submit} className='max-w-full'>

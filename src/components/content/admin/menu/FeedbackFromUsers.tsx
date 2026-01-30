@@ -459,7 +459,7 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
   }, [category, importance, note, domain, debouncedUpdate])
 
   const buttonLabel = isResolved ? "Ferdigstilt" : "Ferdigstill"
-  const buttonStyle = isResolved ? "bg-[#00893C] text-white" : ""
+  const buttonStyle = isResolved ? "bg-[#00893C] white" : ""
 
   const isResolvable = category !== "" && importance !== ""
 

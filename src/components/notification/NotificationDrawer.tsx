@@ -115,8 +115,8 @@ const NotificationDrawer = ({
       onChange={(value) => setActiveTab(value as TabName)}
     >
       <div className='sticky top-0 z-10'>
-        <div className='bg-surface-default'>
-          <div className='bg-surface-neutral-subtle p-4'>Varsler</div>
+        <div className='bg-ax-bg-default'>
+          <div className='bg-ax-bg-neutral-soft p-4'>Varsler</div>
           <Tabs.List>
             <Tabs.Tab
               value='alle'
@@ -157,7 +157,7 @@ const NotificationList = ({ notifications }: { notifications: NewsNotification[]
         <NotificationItem
           key={`notification-${notification.id}`}
           notification={notification}
-          className='border-b-border-subtle p-4 not-last:border-b'
+          className='border-b-ax-border-neutral-subtle p-4 not-last:border-b'
         />
       ))}
     </div>
@@ -195,5 +195,5 @@ const NotificationItem = ({ notification, className }: { notification: NewsNotif
 }
 
 const NotificationTick = ({ className }: { className?: string }) => {
-  return <div className={`h-1.5 w-1.5 animate-ping rounded-full bg-surface-danger ${className}`} />
+  return <div className={`h-1.5 w-1.5 animate-ping rounded-full bg-ax-bg-danger-strong ${className}`} />
 }

@@ -30,7 +30,7 @@ export const CitationNumber = ({ citations, citationId, context, tools }: Citati
   const hoverContent = (
     <div className='flex flex-col gap-4'>
       <VStack gap='2'>
-        <div className='mb-2 border-b border-border-subtle pb-3'>
+        <div className='mb-2 border-b border-ax-border-neutral-subtle pb-3'>
           <SourceIcon source={source.source} />
         </div>
         <HStack

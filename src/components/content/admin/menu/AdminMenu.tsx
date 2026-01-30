@@ -48,7 +48,7 @@ const AdminMenu = () => {
             }}
           >
             <div
-              className={`pointer-events-auto flex flex-col gap-3 rounded-l-lg bg-bg-default p-3 ${activeComponent ? "opacity-100" : "opacity-10"} border-y border-l border-border-subtle transition-opacity duration-700 hover:opacity-100`}
+              className={`pointer-events-auto flex flex-col gap-3 rounded-l-lg bg-ax-bg-default p-3 ${activeComponent ? "opacity-100" : "opacity-10"} border-y border-l border-ax-border-neutral-subtle transition-opacity duration-700 hover:opacity-100`}
             >
               <Button
                 size='small'

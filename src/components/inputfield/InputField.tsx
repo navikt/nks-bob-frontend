@@ -332,7 +332,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
                           }
                         }}
                       >
-                        <span className='cursor-pointer font-bold'>{value}</span>
+                        <span className='cursor-pointer font-ax-bold'>{value}</span>
                       </Link>
                     </Tooltip>
 
@@ -387,7 +387,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
                         }
                       }}
                     >
-                      <span className='cursor-pointer font-bold'>{value}</span>
+                      <span className='cursor-pointer font-ax-bold'>{value}</span>
                     </Link>
                   </HStack>
                 </List.Item>

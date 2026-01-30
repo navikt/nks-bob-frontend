@@ -16,7 +16,7 @@
 }
 
 .modal-container {
-    background-color: var(--a-bg-default);
+    background-color: var(--ax-bg-default);
     padding: 16px;
     box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.08), 0 2px 5px 0 rgba(0, 0, 0, 0.15), 0 10px 24px 0 rgba(0, 0, 0, 0.18);
     gap: 8px;

@@ -146,7 +146,7 @@ export const HoverCard = ({ children, content, onOpenChange, context, sourceId, 
             borderRadius='medium'
             borderWidth='1'
             shadow='medium'
-            className='overflow-y-auto border-border-default bg-surface-default'
+            className='overflow-y-auto border-ax-border-neutral bg-ax-bg-default'
             style={{ maxHeight: "inherit" }}
           >
             {content}

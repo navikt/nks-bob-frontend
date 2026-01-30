@@ -40,7 +40,7 @@ function ConversationLink({ conversation }: ConversationLinkProps) {
         <TrashIcon
           title='Slett'
           fontSize='1.2rem'
-          className='hover:accent-surface-danger-hover'
+          className='hover:accent-ax-bg-danger-strong-hover'
         />
       </div>
     </div>
