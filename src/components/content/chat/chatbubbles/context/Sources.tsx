@@ -107,9 +107,7 @@ const ArticleSummary = ({ context }: { context: Context }) => {
         open={open}
         onClose={() => setOpen(false)}
         anchorEl={buttonRef.current}
-        arrow={false}
-        className="max-w-prose max-h-96 overflow-auto"
-      >
+        className="max-w-prose max-h-96 overflow-auto">
         <Popover.Content>
           <Heading level="3" size="small">
             {context.title}
