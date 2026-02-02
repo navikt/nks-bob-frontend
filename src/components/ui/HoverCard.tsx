@@ -142,7 +142,7 @@ export const HoverCard = ({ children, content, onOpenChange, context, sourceId, 
           onMouseLeave={handleCardMouseLeave}
         >
           <Box
-            padding='space-4'
+            padding='space-16'
             borderRadius='4'
             borderWidth='1'
             shadow='dialog'
