@@ -327,7 +327,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
                       className='items-center'
                     >
                       <HStack
-                        gap='2'
+                        gap='space-2'
                         align='center'
                       >
                         <Tooltip content='Endre'>
@@ -390,7 +390,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
                       className='items-center'
                     >
                       <HStack
-                        gap='2'
+                        gap='space-2'
                         align='center'
                       >
                         <Link
@@ -528,7 +528,7 @@ const NewMessageAlert = ({ setInputValue, conversationId }: NewMessageAlertProps
         >
           Psst!
         </Heading>
-        <VStack gap='3'>
+        <VStack gap='space-4'>
           Du har vært lenge i denne samtalen. Husk å starte en ny samtale når du får en ny henvendelse – da unngår du at
           Bob blander temaer.
           <Button

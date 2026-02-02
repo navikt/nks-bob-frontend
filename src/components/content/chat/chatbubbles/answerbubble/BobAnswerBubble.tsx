@@ -63,7 +63,7 @@ export const BobAnswerBubble = memo(
 
     return (
       <VStack
-        gap='1'
+        gap='space-1'
         align='stretch'
         className={`pb-14 ${isLastMessage ? "min-h-[calc(100vh-250px)]" : ""}`}
       >

@@ -14,7 +14,7 @@ const ErrorComponent = ({ error }: { error: any; resetErrorBoundary: (...args: a
       <Header conversation={undefined} />
       <HStack
         className='h-dvh'
-        gap='16'
+        gap='space-16'
         align='center'
         justify='center'
       >
@@ -25,7 +25,7 @@ const ErrorComponent = ({ error }: { error: any; resetErrorBoundary: (...args: a
         />
         <VStack
           className='max-w-[30%]'
-          gap='4'
+          gap='space-4'
         >
           <Heading size='medium'>Det har oppstått en uventet feil</Heading>
           <BodyShort>

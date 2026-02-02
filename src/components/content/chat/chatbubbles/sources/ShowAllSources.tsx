@@ -101,7 +101,7 @@ const NksSource = ({ context, tools }: { context: Context; tools: string[] }) =>
     <VStack className='sourcepanel gap-3'>
       <HStack
         align='center'
-        gap='1'
+        gap='space-1'
       >
         <TextFragmentLink
           text={context.content}
@@ -136,7 +136,7 @@ const NavSource = ({ context, tools }: { context: Context; tools: string[] }) =>
     <VStack className='sourcepanel gap-3'>
       <HStack
         align='center'
-        gap='1'
+        gap='space-1'
       >
         <TextFragmentLink
           text={context.content}

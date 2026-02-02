@@ -53,14 +53,19 @@ const SearchConversation = () => {
 
   return (
     <VStack>
-      <div className='mb-2 w-full border-b border-b-ax-border-neutral-subtle p-4'>
+      <div className='border-b-ax-border-neutral-subtle mb-2 w-full border-b p-4'>
         <Heading size='xsmall'>Søk etter samtale</Heading>
       </div>
-      <form onSubmit={submit} className='max-w-full'>
+      <form
+        onSubmit={submit}
+        className='max-w-full'
+      >
         <VStack className='mb-6 p-4'>
-          <BodyShort size='small' className='mb-6'>
-            Bruk enten samtale-id eller meldings-id for å finne samtalen det
-            gjelder.
+          <BodyShort
+            size='small'
+            className='mb-6'
+          >
+            Bruk enten samtale-id eller meldings-id for å finne samtalen det gjelder.
           </BodyShort>
           <TextField
             size='small'
@@ -89,22 +94,18 @@ const SearchConversation = () => {
           </Button>
         </VStack>
         <VStack>
-          <HStack className='w-full bg-[#F5F6F7] p-4' gap='2' align='center'>
+          <HStack
+            className='w-full bg-[#F5F6F7] p-4'
+            gap='space-2'
+            align='center'
+          >
             <Chat2Icon fontSize={20} />
             <Label size='small'>Samtale</Label>
           </HStack>
           <div className='h-full w-full overflow-auto p-4'>
-            {searchValue.type === "conversationId" && (
-              <ConversationIdSearch conversationId={searchValue.value} />
-            )}
-            {searchValue.type === "messageId" && (
-              <MessageIdSearch messageId={searchValue.value} />
-            )}
-            {searchValue.type === null && (
-              <BodyShort textColor='subtle'>
-                Samtalen vises her ved søk.
-              </BodyShort>
-            )}
+            {searchValue.type === "conversationId" && <ConversationIdSearch conversationId={searchValue.value} />}
+            {searchValue.type === "messageId" && <MessageIdSearch messageId={searchValue.value} />}
+            {searchValue.type === null && <BodyShort textColor='subtle'>Samtalen vises her ved søk.</BodyShort>}
           </div>
         </VStack>
       </form>
@@ -112,38 +113,24 @@ const SearchConversation = () => {
   )
 }
 
-const ConversationIdSearch = ({
-  conversationId,
-}: {
-  conversationId: string
-}) => {
+const ConversationIdSearch = ({ conversationId }: { conversationId: string }) => {
   const {
     data: conversation,
     isLoading,
     error,
-  } = useSWR<Conversation, ApiError>(
-    conversationId ? `/api/v1/admin/conversations/${conversationId}` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-      revalidateOnFocus: false,
-      shouldRetryOnError: false,
-    },
-  )
+  } = useSWR<Conversation, ApiError>(conversationId ? `/api/v1/admin/conversations/${conversationId}` : null, fetcher, {
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    shouldRetryOnError: false,
+  })
 
   if (error && error.status === 404) {
-    return (
-      <BodyShort textColor='subtle'>
-        Ingen samtaler funnet med denne samtale-id.
-      </BodyShort>
-    )
+    return <BodyShort textColor='subtle'>Ingen samtaler funnet med denne samtale-id.</BodyShort>
   }
 
   if (error) {
     console.error(error)
-    return (
-      <BodyShort textColor='subtle'>Feil ved lasting av samtale.</BodyShort>
-    )
+    return <BodyShort textColor='subtle'>Feil ved lasting av samtale.</BodyShort>
   }
 
   if (isLoading) {
@@ -162,29 +149,19 @@ const MessageIdSearch = ({ messageId }: { messageId: string }) => {
     data: conversation,
     isLoading,
     error,
-  } = useSWR<Conversation, ApiError>(
-    messageId ? `/api/v1/admin/messages/${messageId}/conversation` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-      revalidateOnFocus: false,
-      shouldRetryOnError: false,
-    },
-  )
+  } = useSWR<Conversation, ApiError>(messageId ? `/api/v1/admin/messages/${messageId}/conversation` : null, fetcher, {
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    shouldRetryOnError: false,
+  })
 
   if (error && error.status === 404) {
-    return (
-      <BodyShort textColor='subtle'>
-        Ingen samtaler funnet med denne meldings-id.
-      </BodyShort>
-    )
+    return <BodyShort textColor='subtle'>Ingen samtaler funnet med denne meldings-id.</BodyShort>
   }
 
   if (error) {
     console.error(error)
-    return (
-      <BodyShort textColor='subtle'>Feil ved lasting av samtale.</BodyShort>
-    )
+    return <BodyShort textColor='subtle'>Feil ved lasting av samtale.</BodyShort>
   }
 
   if (isLoading) {
@@ -196,7 +173,10 @@ const MessageIdSearch = ({ messageId }: { messageId: string }) => {
   }
 
   return (
-    <ConversationPreview conversation={conversation!} messageId={messageId} />
+    <ConversationPreview
+      conversation={conversation!}
+      messageId={messageId}
+    />
   )
 }
 
@@ -208,27 +188,21 @@ const ConversationLoading = () => {
   )
 }
 
-const ConversationPreview = ({
-  conversation,
-  messageId,
-}: {
-  conversation: Conversation
-  messageId?: string
-}) => {
+const ConversationPreview = ({ conversation, messageId }: { conversation: Conversation; messageId?: string }) => {
   const queryParams = messageId ? `?messageId=${messageId}` : ""
   return (
-    <VStack gap='3'>
+    <VStack gap='space-2'>
       <Heading size='small'>
-        <Link as={NavLink} to={`/admin/${conversation.id}${queryParams}`}>
+        <Link
+          as={NavLink}
+          to={`/admin/${conversation.id}${queryParams}`}
+        >
           Samtale med Bob
         </Link>
       </Heading>
       <Detail>ID: {conversation.id}</Detail>
       <Detail>Tittel: "{conversation.title}"</Detail>
-      <Detail>
-        Opprettet:{" "}
-        {format(new Date(conversation.createdAt), "dd.MM.yyyy HH:mm:ss")}
-      </Detail>
+      <Detail>Opprettet: {format(new Date(conversation.createdAt), "dd.MM.yyyy HH:mm:ss")}</Detail>
     </VStack>
   )
 }

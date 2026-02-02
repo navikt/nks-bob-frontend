@@ -199,7 +199,7 @@ const ConversationNotFound = () => {
       <div className='flex h-full w-full flex-col justify-between'>
         <Header conversation={conversationId} />
         <HStack
-          gap='16'
+          gap='space-16'
           align='center'
           justify='center'
         >
@@ -210,7 +210,7 @@ const ConversationNotFound = () => {
           />
           <VStack
             className='max-w-[30%]'
-            gap='4'
+            gap='space-4'
           >
             <Heading size='medium'>Samtalen ble ikke funnet</Heading>
             <BodyShort>Hvis samtalen er over 30 dager gammel så kan den ha blitt slettet.</BodyShort>

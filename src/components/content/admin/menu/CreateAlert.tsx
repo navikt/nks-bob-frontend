@@ -43,7 +43,7 @@ export const CreateAlert = () => {
 
 const AlertDescription = () => {
   return (
-    <Box padding='4' position='sticky'>
+    <Box padding='space-4' position='sticky'>
       <BodyShort size='medium' textColor='subtle'>
         Lag feilmeldinger som blir synlig i grensesnittet for brukere.
       </BodyShort>
@@ -52,7 +52,7 @@ const AlertDescription = () => {
 }
 const AlertHeader = () => {
   return (
-    <Box className='bg-[#F5F6F7]' padding='4' position='sticky'>
+    <Box className='bg-[#F5F6F7]' padding='space-4' position='sticky'>
       <BodyShort size='medium' weight='semibold' textColor='subtle'>
         Publiser feilmelding
       </BodyShort>
@@ -139,7 +139,7 @@ const AlertForm = ({
   }
 
   return (
-    <VStack padding='4' gap='6'>
+    <VStack padding='space-4' gap='space-6'>
       <Select
         label='Type feilmelding'
         size='small'
@@ -211,7 +211,7 @@ const AlertForm = ({
           </form>
         </Modal.Body>
         <Modal.Footer className='flex-row'>
-          <HStack gap='4'>
+          <HStack gap='space-4'>
             <Button variant='secondary' onClick={() => ref.current?.close()}>
               Avbryt
             </Button>
@@ -263,8 +263,8 @@ const SingleAlertInner = ({
   }
 
   return (
-    <VStack padding='4' gap='4'>
-      <VStack gap='1'>
+    <VStack padding='space-4' gap='space-4'>
+      <VStack gap='space-1'>
         <Heading level='3' size='xsmall' textColor='subtle'>
           Du har 1 aktiv feilmelding
         </Heading>
@@ -287,7 +287,7 @@ const SingleAlertInner = ({
         <Label>Tekst</Label>
         <BodyShort>{content}</BodyShort>
       </VStack>
-      <HStack gap='2'>
+      <HStack gap='space-2'>
         <Button
           size='small'
           variant='secondary-neutral'
@@ -331,7 +331,7 @@ const SingleAlertInner = ({
             </form>
           </Modal.Body>
           <Modal.Footer className='flex-row'>
-            <HStack gap='4'>
+            <HStack gap='space-4'>
               <Button variant='secondary' onClick={() => ref.current?.close()}>
                 Avbryt
               </Button>
@@ -422,7 +422,7 @@ const UpdateAlertForm = ({
   }
 
   return (
-    <VStack padding='4' gap='6'>
+    <VStack padding='space-4' gap='space-6'>
       <Select
         label='Type feilmelding'
         size='small'
@@ -494,7 +494,7 @@ const UpdateAlertForm = ({
           </form>
         </Modal.Body>
         <Modal.Footer className='flex-row'>
-          <HStack gap='4'>
+          <HStack gap='space-4'>
             <Button variant='secondary' onClick={() => ref.current?.close()}>
               Avbryt
             </Button>

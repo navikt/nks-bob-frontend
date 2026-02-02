@@ -59,7 +59,7 @@ export const FeedbackFromUsers = () => {
 const FeedbackDescription = () => {
   return (
     <Box
-      padding='4'
+      padding='space-4'
       position='sticky'
     >
       Her finner du tilbakemeldinger som veilederne sender oss når de ser at noe er galt med svaret.
@@ -172,7 +172,7 @@ const FeedbackHeader = ({
   return (
     <Box
       className='bg-[#F5F6F7]'
-      padding='4'
+      padding='space-4'
       position='sticky'
     >
       <HStack
@@ -180,7 +180,7 @@ const FeedbackHeader = ({
         justify='space-between'
       >
         <HStack
-          gap='2'
+          gap='space-2'
           align='center'
         >
           <ChatExclamationmarkIcon />
@@ -327,7 +327,7 @@ const FeedbackList = ({
 
       {totalPages > 1 && (
         <HStack
-          padding='4'
+          padding='space-4'
           justify='center'
         >
           <Pagination
@@ -466,10 +466,10 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
   return (
     <Box
       ref={boxRef}
-      paddingBlock='7'
-      paddingInline='4'
+      paddingBlock='space-8'
+      paddingInline='space-4'
       borderWidth='0 0 1 0'
-      borderColor='border-subtle'
+      borderColor='neutral-subtle'
       onClick={() =>
         feedback.messageId === null
           ? setPopoverOpen(true)
@@ -489,7 +489,7 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
           Denne meldingen finnes ikke. Den har sannsynligvis blitt slettet hvis den er over 30 dager gammel.
         </Popover.Content>
       </Popover>
-      <VStack gap='4'>
+      <VStack gap='space-4'>
         <HStack justify='space-between'>
           <Label size='medium'>Feil innmeldt: {format(new Date(feedback.createdAt), "dd.MM.yy (HH:mm)")}</Label>
           <Tag
@@ -499,14 +499,14 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
             {feedback.id.substring(30)}
           </Tag>
         </HStack>
-        <VStack gap='2'>
+        <VStack gap='space-2'>
           <Label size='small'>Hva er galt med svaret?</Label>
           {feedback.options.map((option, i) => (
             <VStack
-              gap='4'
+              gap='space-4'
               key={`feedback-option-${option}-${i}`}
             >
-              <HStack gap='2'>
+              <HStack gap='space-2'>
                 <FeedbackOptionTag
                   key={`${feedback.id}-${option}`}
                   option={option}
@@ -514,14 +514,14 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
               </HStack>
             </VStack>
           ))}
-          <VStack gap='2'>
+          <VStack gap='space-2'>
             <Label size='small'>Kommentar: </Label>
             <BodyShort size='small'>{feedback.comment}</BodyShort>
           </VStack>
         </VStack>
         <form onSubmit={submit}>
           <HStack
-            gap='4'
+            gap='space-4'
             align='end'
           >
             <Select

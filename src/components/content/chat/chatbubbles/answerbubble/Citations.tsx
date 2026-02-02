@@ -29,13 +29,13 @@ export const CitationNumber = ({ citations, citationId, context, tools }: Citati
 
   const hoverContent = (
     <div className='flex flex-col gap-4'>
-      <VStack gap='2'>
+      <VStack gap='space-2'>
         <div className='mb-2 border-b border-ax-border-neutral-subtle pb-3'>
           <SourceIcon source={source.source} />
         </div>
         <HStack
           align='center'
-          gap='1'
+          gap='space-1'
         >
           <Link
             href={`${source.url}#${source.anchor}`}
@@ -187,7 +187,7 @@ export const CitationLinks = ({ citations, context, tools }: CitationLinksProps)
 
   return (
     <VStack
-      gap='2'
+      gap='space-2'
       justify='center'
       className='mb-4'
     >
@@ -220,12 +220,12 @@ const GroupedCitationLink = ({ citations, source, citationIds, tools }: GroupedC
 
   return (
     <HStack
-      gap='2'
+      gap='space-2'
       align='center'
       wrap={false}
     >
       <HStack
-        gap='1'
+        gap='space-1'
         wrap={false}
       >
         {displayIds.map((displayId) => (

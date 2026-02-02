@@ -27,7 +27,7 @@ export const CreateNews = () => {
 
 export const NewsDescription = () => {
   return (
-    <Box padding='4' position='sticky'>
+    <Box padding='space-4' position='sticky'>
       <BodyShort size='medium' textColor='subtle'>
         Publiser nyheter som blir synlig fo alle som bruker Bob.
       </BodyShort>
@@ -36,7 +36,7 @@ export const NewsDescription = () => {
 }
 export const NewsHeader = () => {
   return (
-    <Box className='bg-[#F5F6F7]' padding='4' position='sticky'>
+    <Box className='bg-[#F5F6F7]' padding='space-4' position='sticky'>
       <BodyShort size='medium' weight='semibold' textColor='subtle'>
         Publiser nyhet
       </BodyShort>
@@ -96,7 +96,7 @@ export const NewsForm = () => {
   }
 
   return (
-    <VStack padding='4' gap='6'>
+    <VStack padding='space-4' gap='space-6'>
       <TextField
         label='Tittel'
         size='small'
@@ -153,7 +153,7 @@ export const NewsForm = () => {
           </form>
         </Modal.Body>
         <Modal.Footer className='flex-row'>
-          <HStack gap='4'>
+          <HStack gap='space-4'>
             <Button variant='secondary' onClick={() => ref.current?.close()}>
               Avbryt
             </Button>

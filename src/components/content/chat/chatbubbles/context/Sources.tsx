@@ -27,8 +27,8 @@ export const Sources = memo(({ context }: { context: Context[] }) => {
           deler av dem, kan det være vanskelig å finne den eksakte informasjonen
           som støtter svaret.
         </BodyShort>
-        <VStack gap='4'>
-          <VStack gap='3'>
+        <VStack gap='space-4'>
+          <VStack gap='space-2'>
             <Heading level='2' size='xsmall'>
               Kunnskapsbasen
             </Heading>
@@ -36,7 +36,7 @@ export const Sources = memo(({ context }: { context: Context[] }) => {
               <NksSource context={ctx} />
             ))}
           </VStack>
-          <VStack gap='3'>
+          <VStack gap='space-2'>
             <Heading level='2' size='xsmall'>
               Nav.no
             </Heading>
