@@ -79,7 +79,12 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
           copyText=''
           size='small'
           aria-label='Kopier svaret'
-          icon={<FilesIcon aria-hidden />}
+          icon={
+            <FilesIcon
+              aria-hidden
+              fontSize='1.25rem'
+            />
+          }
           onClick={() => {
             new Promise((resolve) => setTimeout(resolve, 100)).then(() => copyMessageContent())
 
@@ -97,7 +102,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
           variant='tertiary'
           size='small'
           aria-label='Oversett svaret til engelsk'
-          icon={<LanguageIcon />}
+          icon={<LanguageIcon fontSize='1.25rem' />}
           onClick={handleTranslate}
         />
       </Tooltip>
@@ -109,7 +114,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
           variant='tertiary'
           size='small'
           aria-label='Gjør om svaret til punktliste'
-          icon={<BulletListIcon />}
+          icon={<BulletListIcon fontSize='1.25rem' />}
           onClick={handleBulletList}
         />
       </Tooltip>
@@ -119,7 +124,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
           variant='tertiary'
           size='small'
           aria-label='Gjør svaret mer empatisk'
-          icon={<HandShakeHeartIcon />}
+          icon={<HandShakeHeartIcon fontSize='1.25rem' />}
           onClick={handleEmpathetic}
         />
       </Tooltip>
@@ -131,7 +136,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
           variant='tertiary'
           size='small'
           aria-label='Gjør om svaret til du-form'
-          icon={<PersonIcon />}
+          icon={<PersonIcon fontSize='1.25rem' />}
           onClick={handleDuForm}
         />
       </Tooltip>
@@ -156,7 +161,16 @@ const MessageStar = ({ message }: { message: Message }) => {
         variant='tertiary'
         size='small'
         aria-label='Marker som bra svar'
-        icon={starred ? <StarFillIcon className='text-ax-warning-600' /> : <StarIcon />}
+        icon={
+          starred ? (
+            <StarFillIcon
+              fontSize='1.25rem'
+              className='text-ax-warning-600'
+            />
+          ) : (
+            <StarIcon fontSize='1.25rem' />
+          )
+        }
         onClick={() => {
           handleStarMessage()
         }}

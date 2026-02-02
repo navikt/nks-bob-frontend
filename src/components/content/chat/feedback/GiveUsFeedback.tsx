@@ -90,12 +90,13 @@ export const FeedbackOnAnswer = ({ message }: FeedbackOnAnswerProps) => {
     <div>
       <Tooltip content='Meld inn feil med svaret'>
         <Button
-          data-color="neutral"
-          variant="tertiary"
+          data-color='neutral'
+          variant='tertiary'
           size='small'
           aria-label='Meld inn feil med svaret'
-          icon={<ChatExclamationmarkIcon />}
-          onClick={() => modalRef.current?.showModal()} />
+          icon={<ChatExclamationmarkIcon fontSize='1.25rem' />}
+          onClick={() => modalRef.current?.showModal()}
+        />
       </Tooltip>
       <Modal
         ref={modalRef}
@@ -154,5 +155,5 @@ export const FeedbackOnAnswer = ({ message }: FeedbackOnAnswerProps) => {
         </Modal.Footer>
       </Modal>
     </div>
-  );
+  )
 }
