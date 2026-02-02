@@ -1,15 +1,5 @@
 import { ExclamationmarkTriangleIcon } from "@navikt/aksel-icons"
-import {
-  BodyShort,
-  Box,
-  Button,
-  Detail,
-  HStack,
-  Modal,
-  Textarea,
-  TextField,
-  VStack,
-} from "@navikt/ds-react"
+import { BodyShort, Box, Button, Detail, HStack, Modal, Textarea, TextField, VStack } from "@navikt/ds-react"
 import { FormEvent, useEffect, useRef, useState } from "react"
 import { useSWRConfig } from "swr"
 import { useCreateNews } from "../../../../api/admin"
@@ -27,8 +17,14 @@ export const CreateNews = () => {
 
 export const NewsDescription = () => {
   return (
-    <Box padding='space-4' position='sticky'>
-      <BodyShort size='medium' textColor='subtle'>
+    <Box
+      padding='space-16'
+      position='sticky'
+    >
+      <BodyShort
+        size='medium'
+        textColor='subtle'
+      >
         Publiser nyheter som blir synlig fo alle som bruker Bob.
       </BodyShort>
     </Box>
@@ -36,8 +32,16 @@ export const NewsDescription = () => {
 }
 export const NewsHeader = () => {
   return (
-    <Box className='bg-[#F5F6F7]' padding='space-4' position='sticky'>
-      <BodyShort size='medium' weight='semibold' textColor='subtle'>
+    <Box
+      background='neutral-soft'
+      padding='space-16'
+      position='sticky'
+    >
+      <BodyShort
+        size='medium'
+        weight='semibold'
+        textColor='subtle'
+      >
         Publiser nyhet
       </BodyShort>
     </Box>
@@ -96,7 +100,10 @@ export const NewsForm = () => {
   }
 
   return (
-    <VStack padding='space-4' gap='space-6'>
+    <VStack
+      padding='space-16'
+      gap='space-24'
+    >
       <TextField
         label='Tittel'
         size='small'
@@ -113,15 +120,14 @@ export const NewsForm = () => {
           setContent(event.target.value)
         }}
       />
-      <Detail textColor='subtle'>
-        NB: Du må teste feilmeldingen før du kan publisere.
-      </Detail>
+      <Detail textColor='subtle'>NB: Du må teste feilmeldingen før du kan publisere.</Detail>
       <Button
-        data-color="neutral"
-        variant="secondary"
+        data-color='neutral'
+        variant='secondary'
         size='small'
         className='w-fit'
-        onClick={testAlert}>
+        onClick={testAlert}
+      >
         Test (vises kun for deg)
       </Button>
       <Button
@@ -145,16 +151,22 @@ export const NewsForm = () => {
         closeOnBackdropClick
       >
         <Modal.Body>
-          <form method='dialog' id='news-schema' onSubmit={submit}>
+          <form
+            method='dialog'
+            id='news-schema'
+            onSubmit={submit}
+          >
             <BodyShort textColor='subtle'>
-              Nyheten vil bli synlig for alle som bruker Bob. Ønsker du å
-              fortsette?
+              Nyheten vil bli synlig for alle som bruker Bob. Ønsker du å fortsette?
             </BodyShort>
           </form>
         </Modal.Body>
         <Modal.Footer className='flex-row'>
           <HStack gap='space-4'>
-            <Button variant='secondary' onClick={() => ref.current?.close()}>
+            <Button
+              variant='secondary'
+              onClick={() => ref.current?.close()}
+            >
               Avbryt
             </Button>
             <Button
@@ -169,5 +181,5 @@ export const NewsForm = () => {
         </Modal.Footer>
       </Modal>
     </VStack>
-  );
+  )
 }

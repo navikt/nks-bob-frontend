@@ -75,7 +75,7 @@ export const BobAnswerBubble = memo(
             <BobRoboHead />
           </div>
           <div className='flex w-full flex-col pt-3'>
-            <div className={`overflow-wrap mb-2 flex w-full ${isHighlighted ? "bg-[#FFF5E4] p-2" : ""} `}>
+            <div className={`overflow-wrap mb-2 flex w-full ${isHighlighted ? "bg-ax-bg-brand-beige-soft p-2" : ""} `}>
               {hasError(message) ? (
                 <ErrorContent message={message} />
               ) : isPending(message) ? (

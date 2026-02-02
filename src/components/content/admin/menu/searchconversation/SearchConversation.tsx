@@ -1,16 +1,5 @@
 import { Chat2Icon } from "@navikt/aksel-icons"
-import {
-  BodyShort,
-  Button,
-  Detail,
-  Heading,
-  HStack,
-  Label,
-  Link,
-  Loader,
-  TextField,
-  VStack,
-} from "@navikt/ds-react"
+import { BodyShort, Button, Detail, Heading, HStack, Label, Link, Loader, TextField, VStack } from "@navikt/ds-react"
 import { format } from "date-fns"
 import { FormEvent, useState } from "react"
 import { NavLink } from "react-router"
@@ -84,18 +73,18 @@ const SearchConversation = () => {
             onChange={(e) => updateMessageId(e.target.value)}
           />
           <Button
-            data-color="neutral"
-            variant="primary"
+            data-color='neutral'
+            variant='primary'
             size='small'
             className='w-fit px-4'
-            // onClick={search}
-            type='submit'>
+            type='submit'
+          >
             Søk
           </Button>
         </VStack>
         <VStack>
           <HStack
-            className='w-full bg-[#F5F6F7] p-4'
+            className='bg-ax-bg-neutral-soft w-full p-4'
             gap='space-2'
             align='center'
           >
@@ -110,7 +99,7 @@ const SearchConversation = () => {
         </VStack>
       </form>
     </VStack>
-  );
+  )
 }
 
 const ConversationIdSearch = ({ conversationId }: { conversationId: string }) => {
