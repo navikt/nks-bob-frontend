@@ -40,21 +40,21 @@ function FeedbackThumbs({ conversationId }: FeedbackButtonsProps) {
       {feedback === null && (
         <>
           <Button
-            variant='tertiary-neutral'
+            data-color="neutral"
+            variant="tertiary"
             size='small'
             icon={<ThumbUpFillIcon />}
             onClick={() => handleFeedback(true)}
             disabled={isLoading}
-            title='Liker svaret'
-          ></Button>
+            title='Liker svaret'></Button>
           <Button
-            variant='tertiary-neutral'
+            data-color="neutral"
+            variant="tertiary"
             size='small'
             icon={<ThumbDownFillIcon className='scale-x-[-1]' />}
             onClick={() => handleFeedback(false)}
             disabled={isLoading}
-            title='Liker ikke svaret'
-          ></Button>
+            title='Liker ikke svaret'></Button>
         </>
       )}
       {feedback === "positive" && (
@@ -64,7 +64,7 @@ function FeedbackThumbs({ conversationId }: FeedbackButtonsProps) {
         <BodyShort className='fade-in'> Takk for tilbakemeldingen!</BodyShort>
       )}
     </div>
-  )
+  );
 }
 
 export default FeedbackThumbs

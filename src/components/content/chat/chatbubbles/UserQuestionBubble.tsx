@@ -48,12 +48,12 @@ const UserQuestionBubble = memo(
             placement='bottom'
           >
             <Button
-              variant='tertiary-neutral'
+              data-color="neutral"
+              variant="tertiary"
               size='small'
               aria-label='Rediger spørsmålet'
               onClick={editQuestion}
-              icon={<PencilWritingIcon />}
-            />
+              icon={<PencilWritingIcon />} />
           </Tooltip>
         </div>
         <div className='questionbubble max-w-prose'>
@@ -72,7 +72,7 @@ const UserQuestionBubble = memo(
           </Markdown>
         </div>
       </div>
-    )
+    );
   },
   (prevProps, nextProps) => {
     const prevMessage = prevProps.userQuestion

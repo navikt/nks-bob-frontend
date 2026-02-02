@@ -194,7 +194,8 @@ const FeedbackHeader = ({
         <ActionMenu rootElement={menuRef.current}>
           <ActionMenu.Trigger>
             <Button
-              variant='tertiary-neutral'
+              data-color='neutral'
+              variant='tertiary'
               icon={<FilterIcon />}
             />
           </ActionMenu.Trigger>
@@ -493,7 +494,8 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
         <HStack justify='space-between'>
           <Label size='medium'>Feil innmeldt: {format(new Date(feedback.createdAt), "dd.MM.yy (HH:mm)")}</Label>
           <Tag
-            variant='neutral-moderate'
+            data-color='neutral'
+            variant='moderate'
             size='xsmall'
           >
             {feedback.id.substring(30)}
@@ -590,8 +592,9 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
             />
             {isResolvable && (
               <Button
+                data-color='neutral'
                 type='submit'
-                variant='secondary-neutral'
+                variant='secondary'
                 size='small'
                 iconPosition='right'
                 icon={<CheckmarkCircleIcon />}
@@ -611,7 +614,8 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
 const FeedbackOptionTag = ({ option }: { option: string }) => {
   return (
     <Tag
-      variant='neutral'
+      data-color='neutral'
+      variant='outline'
       size='small'
     >
       {option}

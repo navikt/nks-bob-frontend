@@ -84,12 +84,12 @@ const SearchConversation = () => {
             onChange={(e) => updateMessageId(e.target.value)}
           />
           <Button
-            variant='primary-neutral'
+            data-color="neutral"
+            variant="primary"
             size='small'
             className='w-fit px-4'
-            type='submit'
             // onClick={search}
-          >
+            type='submit'>
             Søk
           </Button>
         </VStack>
@@ -110,7 +110,7 @@ const SearchConversation = () => {
         </VStack>
       </form>
     </VStack>
-  )
+  );
 }
 
 const ConversationIdSearch = ({ conversationId }: { conversationId: string }) => {

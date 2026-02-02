@@ -142,14 +142,14 @@ function ConversationContent() {
         {showScrollButton && (
           <Tooltip content='Scroll til bunnen ( Alt+Ctrl+B )'>
             <Button
+              data-color="neutral"
               icon={<ArrowDownIcon />}
               className='fixed left-1/2 -translate-x-1/2'
               style={{ bottom: dynamicBottom }}
-              variant='primary-neutral'
+              variant="primary"
               size='small'
               onClick={scrollToBottom}
-              aria-label='Scroll til bunnen'
-            />
+              aria-label='Scroll til bunnen' />
           </Tooltip>
         )}
         <InputField
@@ -162,7 +162,7 @@ function ConversationContent() {
       <ShowAllSources />
       <AdminMenu />
     </div>
-  )
+  );
 }
 
 const ErrorBanner = ({ alerts }: { alerts: Alert[] }) => {

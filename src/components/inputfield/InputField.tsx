@@ -343,12 +343,12 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
                         </Tooltip>
 
                         <Button
-                          variant='tertiary-neutral'
+                          data-color="neutral"
+                          variant="tertiary"
                           size='xsmall'
                           onClick={() => {
                             validateInput([...ignoredValidations, value])
-                          }}
-                        >
+                          }}>
                           Ignorer
                         </Button>
                       </HStack>
@@ -457,7 +457,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
         Bob er en kunstig intelligens og kan ta feil – sjekk kilder om du er usikker.
       </Detail>
     </div>
-  )
+  );
 })
 
 export default InputField
@@ -512,35 +512,31 @@ const NewMessageAlert = ({ setInputValue, conversationId }: NewMessageAlertProps
     }, WARNING_TIMER)
   }
 
-  return (
-    newMessageAlert && (
-      <Alert
-        variant='info'
+  return (newMessageAlert && (<Alert
+    variant='info'
+    size='small'
+    closeButton={true}
+    onClose={handleClose}
+    className='fade-in mb-2'
+  >
+    <Heading
+      size='xsmall'
+      level='3'
+      className='mb-2'
+    >
+      Psst!
+    </Heading>
+    <VStack gap='space-4'>
+      Du har vært lenge i denne samtalen. Husk å starte en ny samtale når du får en ny henvendelse – da unngår du at
+      Bob blander temaer.
+      <Button
+        data-color="neutral"
+        variant="secondary"
         size='small'
-        closeButton={true}
-        onClose={handleClose}
-        className='fade-in mb-2'
-      >
-        <Heading
-          size='xsmall'
-          level='3'
-          className='mb-2'
-        >
-          Psst!
-        </Heading>
-        <VStack gap='space-4'>
-          Du har vært lenge i denne samtalen. Husk å starte en ny samtale når du får en ny henvendelse – da unngår du at
-          Bob blander temaer.
-          <Button
-            variant='secondary-neutral'
-            size='small'
-            className='w-fit'
-            onClick={startNew}
-          >
-            Start ny samtale
-          </Button>
-        </VStack>
-      </Alert>
-    )
-  )
+        className='w-fit'
+        onClick={startNew}>
+        Start ny samtale
+      </Button>
+    </VStack>
+  </Alert>));
 }

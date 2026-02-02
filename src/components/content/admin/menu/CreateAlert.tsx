@@ -175,11 +175,11 @@ const AlertForm = ({
         NB: Du må teste feilmeldingen før du kan publisere.
       </Detail>
       <Button
-        variant='secondary-neutral'
+        data-color="neutral"
+        variant="secondary"
         size='small'
         className='w-fit'
-        onClick={testAlert}
-      >
+        onClick={testAlert}>
         Test (vises kun for deg)
       </Button>
       <Button
@@ -227,7 +227,7 @@ const AlertForm = ({
         </Modal.Footer>
       </Modal>
     </VStack>
-  )
+  );
 }
 
 const SingleAlert = ({ alert }: { alert: Alert }) => {
@@ -289,24 +289,24 @@ const SingleAlertInner = ({
       </VStack>
       <HStack gap='space-2'>
         <Button
+          data-color="neutral"
           size='small'
-          variant='secondary-neutral'
+          variant="secondary"
           onClick={(event) => {
             event.preventDefault()
             event.stopPropagation()
             setUpdateAlert(alert)
-          }}
-        >
+          }}>
           Endre
         </Button>
         <Button
+          data-color="danger"
           size='small'
-          variant='danger'
+          variant="primary"
           loading={isLoading}
           onClick={() => {
             ref.current?.showModal()
-          }}
-        >
+          }}>
           Slett
         </Button>
         <Modal
@@ -336,11 +336,11 @@ const SingleAlertInner = ({
                 Avbryt
               </Button>
               <Button
-                variant='danger'
+                data-color="danger"
+                variant="primary"
                 form='notification-delete-schema'
                 type='submit'
-                loading={isLoading}
-              >
+                loading={isLoading}>
                 Ja, slett feilmeldingen!
               </Button>
             </HStack>
@@ -348,7 +348,7 @@ const SingleAlertInner = ({
         </Modal>
       </HStack>
     </VStack>
-  )
+  );
 }
 
 const UpdateAlertForm = ({
@@ -458,11 +458,11 @@ const UpdateAlertForm = ({
         NB: Du må teste feilmeldingen før du kan publisere.
       </Detail>
       <Button
-        variant='secondary-neutral'
+        data-color="neutral"
+        variant="secondary"
         size='small'
         className='w-fit'
-        onClick={testAlert}
-      >
+        onClick={testAlert}>
         Test (vises kun for deg)
       </Button>
       <Button
@@ -510,5 +510,5 @@ const UpdateAlertForm = ({
         </Modal.Footer>
       </Modal>
     </VStack>
-  )
+  );
 }

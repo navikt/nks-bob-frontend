@@ -255,17 +255,17 @@ const MessageContent = ({
       </Markdown>
       {message.context.length === 0 && message.citations.length === 0 && message.contextualizedQuestion !== null && (
         <Button
+          data-color="neutral"
           size='small'
-          variant='tertiary-neutral'
+          variant="tertiary"
           className='my-3 w-fit'
           icon={<FileSearchIcon fontSize={24} />}
-          onClick={handleFindSourcesClick}
-        >
+          onClick={handleFindSourcesClick}>
           Forsøk å finne kilder som støtter svaret
         </Button>
       )}
     </div>
-  )
+  );
 }
 
 interface CitationsProps extends Omit<BobAnswerBubbleProps, "isHighlighted" | "followUp"> {

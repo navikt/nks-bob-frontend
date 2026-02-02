@@ -88,13 +88,13 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
         />
       </Tooltip>
       <FeedbackOnAnswer message={message} />
-
       <MessageStar message={message} />
       <Tooltip
         content={`${isLastMessage ? "Oversett svaret til engelsk ( Alt+Ctrl+O )" : "Oversett svaret til engelsk"}`}
       >
         <Button
-          variant='tertiary-neutral'
+          data-color='neutral'
+          variant='tertiary'
           size='small'
           aria-label='Oversett svaret til engelsk'
           icon={<LanguageIcon />}
@@ -105,7 +105,8 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
         content={`${isLastMessage ? "Gjør om svaret til punktliste ( Alt+Ctrl+P )" : "Gjør om svaret til punktliste"}`}
       >
         <Button
-          variant='tertiary-neutral'
+          data-color='neutral'
+          variant='tertiary'
           size='small'
           aria-label='Gjør om svaret til punktliste'
           icon={<BulletListIcon />}
@@ -114,7 +115,8 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
       </Tooltip>
       <Tooltip content={`${isLastMessage ? "Gjør svaret mer empatisk ( Alt+Ctrl+E )" : "Gjør svaret mer empatisk"}`}>
         <Button
-          variant='tertiary-neutral'
+          data-color='neutral'
+          variant='tertiary'
           size='small'
           aria-label='Gjør svaret mer empatisk'
           icon={<HandShakeHeartIcon />}
@@ -125,7 +127,8 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
         content={`${isLastMessage ? "Gjør om svaret til du-form ( Alt+Ctrl+F )" : "Gjør om svaret til du-form"}`}
       >
         <Button
-          variant='tertiary-neutral'
+          data-color='neutral'
+          variant='tertiary'
           size='small'
           aria-label='Gjør om svaret til du-form'
           icon={<PersonIcon />}
@@ -148,8 +151,9 @@ const MessageStar = ({ message }: { message: Message }) => {
   return (
     <Tooltip content='Marker som bra svar'>
       <Button
+        data-color='neutral'
         disabled={isLoading}
-        variant='tertiary-neutral'
+        variant='tertiary'
         size='small'
         aria-label='Marker som bra svar'
         icon={starred ? <StarFillIcon className='text-ax-warning-600' /> : <StarIcon />}

@@ -117,11 +117,11 @@ export const NewsForm = () => {
         NB: Du må teste feilmeldingen før du kan publisere.
       </Detail>
       <Button
-        variant='secondary-neutral'
+        data-color="neutral"
+        variant="secondary"
         size='small'
         className='w-fit'
-        onClick={testAlert}
-      >
+        onClick={testAlert}>
         Test (vises kun for deg)
       </Button>
       <Button
@@ -169,5 +169,5 @@ export const NewsForm = () => {
         </Modal.Footer>
       </Modal>
     </VStack>
-  )
+  );
 }

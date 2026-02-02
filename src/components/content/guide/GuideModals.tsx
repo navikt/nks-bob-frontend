@@ -44,7 +44,8 @@ export const NewConceptMessage = () => {
             <BodyLong>Les mer om endringen i nyhetssaken.</BodyLong>
             <BodyLong className='mb-4'>Samme Bob – ny drakt. La oss komme i gang!</BodyLong>
             <Button
-              variant='primary-neutral'
+              data-color='neutral'
+              variant='primary'
               className='w-fit'
               onClick={handleClick}
             >
@@ -77,8 +78,9 @@ export const WelcomeMessage = ({ onNext, onClose }: { onNext: () => void; onClos
           Velkommen
         </Heading>
         <Button
+          data-color='neutral'
           size='small'
-          variant='tertiary-neutral'
+          variant='tertiary'
           icon={<XMarkIcon />}
           onClick={onClose}
         />
@@ -93,14 +95,16 @@ export const WelcomeMessage = ({ onNext, onClose }: { onNext: () => void; onClos
         justify='end'
       >
         <Button
+          data-color='neutral'
           onClick={onClose}
-          variant='tertiary-neutral'
+          variant='tertiary'
         >
           Jeg trenger ikke opplæring
         </Button>
         <Button
+          data-color='neutral'
           onClick={onNext}
-          variant='primary-neutral'
+          variant='primary'
         >
           Videre
         </Button>
@@ -138,8 +142,9 @@ export const Step1 = ({
           Om tjenesten
         </Heading>
         <Button
+          data-color='neutral'
           size='small'
-          variant='tertiary-neutral'
+          variant='tertiary'
           icon={<XMarkIcon />}
           onClick={onClose}
           autoFocus={true}
@@ -178,8 +183,9 @@ export const Step1 = ({
         />
 
         <Button
+          data-color='neutral'
           onClick={onNext}
-          variant='primary-neutral'
+          variant='primary'
           size='medium'
         >
           Neste
@@ -221,8 +227,9 @@ export const Step2 = ({
           Når du stiller spørsmål
         </Heading>
         <Button
+          data-color='neutral'
           size='small'
-          variant='tertiary-neutral'
+          variant='tertiary'
           icon={<XMarkIcon />}
           onClick={onClose}
         />
@@ -261,15 +268,17 @@ export const Step2 = ({
         />
         <HStack gap='space-4'>
           <Button
+            data-color='neutral'
             onClick={onPrevious}
-            variant='tertiary-neutral'
+            variant='tertiary'
             size='medium'
           >
             Forrige
           </Button>
           <Button
+            data-color='neutral'
             onClick={onNext}
-            variant='primary-neutral'
+            variant='primary'
             size='medium'
           >
             Neste
@@ -312,8 +321,9 @@ export const Step3 = ({
           Om svaret fra Bob
         </Heading>
         <Button
+          data-color='neutral'
           size='small'
-          variant='tertiary-neutral'
+          variant='tertiary'
           icon={<XMarkIcon />}
           onClick={onClose}
         />
@@ -353,14 +363,16 @@ export const Step3 = ({
         />
         <HStack gap='space-4'>
           <Button
+            data-color='neutral'
             onClick={onPrevious}
-            variant='tertiary-neutral'
+            variant='tertiary'
           >
             Forrige
           </Button>
           <Button
+            data-color='neutral'
             onClick={onNext}
-            variant='primary-neutral'
+            variant='primary'
           >
             Neste
           </Button>
@@ -403,8 +415,9 @@ export const Step4 = ({
           Misfornøyd med svaret? Prøv dette:
         </Heading>
         <Button
+          data-color='neutral'
           size='small'
-          variant='tertiary-neutral'
+          variant='tertiary'
           icon={<XMarkIcon />}
           onClick={onClose}
         />
@@ -432,14 +445,16 @@ export const Step4 = ({
         />
         <HStack gap='space-4'>
           <Button
+            data-color='neutral'
             onClick={onPrevious}
-            variant='tertiary-neutral'
+            variant='tertiary'
           >
             Forrige
           </Button>
           <Button
+            data-color='neutral'
             onClick={onNext}
-            variant='primary-neutral'
+            variant='primary'
           >
             Neste
           </Button>
@@ -480,8 +495,9 @@ export const Step5 = ({
           Hurtigtaster
         </Heading>
         <Button
+          data-color='neutral'
           size='small'
-          variant='tertiary-neutral'
+          variant='tertiary'
           icon={<XMarkIcon />}
           onClick={onClose}
         />
@@ -525,15 +541,17 @@ export const Step5 = ({
         />
         <HStack gap='space-4'>
           <Button
+            data-color='neutral'
             onClick={onPrevious}
-            variant='tertiary-neutral'
+            variant='tertiary'
             size='medium'
           >
             Forrige
           </Button>
           <Button
+            data-color='neutral'
             onClick={onClose}
-            variant='primary-neutral'
+            variant='primary'
             size='medium'
           >
             Takk, Bob!

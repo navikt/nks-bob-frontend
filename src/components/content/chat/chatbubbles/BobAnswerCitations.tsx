@@ -287,7 +287,7 @@ export const TextFragmentLink = ({
 
   function buildLinkWithTextFragments(start: string, end: string) {
     function encodeFragment(text: string) {
-      return encodeURIComponent(text).replace(/[-!'()*#]/g, (c) => `%${c.charCodeAt(0).toString(16).toUpperCase()}`)
+      return encodeURIComponent(text).replace(/[-!'()*#]/g, (c) => `%${c.charCodeAt(0).toString(16).toUpperCase()}`);
     }
 
     const expandAll = matchingContextCitationData?.source === "navno" ? "?expandall=true" : ""

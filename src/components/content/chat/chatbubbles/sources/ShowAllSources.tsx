@@ -46,11 +46,11 @@ export const ShowAllSources = () => {
       >
         <Heading size='xsmall'>Alle kilder</Heading>
         <Button
-          variant='tertiary-neutral'
+          data-color="neutral"
+          variant="tertiary"
           size='small'
           icon={<XMarkIcon />}
-          onClick={() => setActiveMessage(null)}
-        />
+          onClick={() => setActiveMessage(null)} />
       </HStack>
       <VStack className='sourcelist pt-6'>
         <BodyLong
@@ -93,7 +93,7 @@ export const ShowAllSources = () => {
         )}
       </VStack>
     </VStack>
-  )
+  );
 }
 
 const NksSource = ({ context, tools }: { context: Context; tools: string[] }) => {

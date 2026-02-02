@@ -51,43 +51,43 @@ const AdminMenu = () => {
               className={`pointer-events-auto flex flex-col gap-3 rounded-l-lg bg-ax-bg-default p-3 ${activeComponent ? "opacity-100" : "opacity-10"} border-y border-l border-ax-border-neutral-subtle transition-opacity duration-700 hover:opacity-100`}
             >
               <Button
+                data-color="neutral"
                 size='small'
-                variant='primary-neutral'
+                variant="primary"
                 icon={<MagnifyingGlassIcon />}
                 className={`${activeComponent === "search" ? "bg-[#49515E]" : "bg-[#B65781]"} hover:bg-[#555D6A]`}
                 onClick={() =>
                   setActiveComponent(activeComponent === "search" ? null : "search")
-                }
-              />
+                } />
               <Button
+                data-color="neutral"
                 size='small'
-                variant='primary-neutral'
+                variant="primary"
                 icon={<ChatExclamationmarkIcon />}
                 className={`${activeComponent === "feedback" ? "bg-[#49515E]" : "bg-[#B65781]"} hover:bg-[#555D6A]`}
                 onClick={() =>
                   setActiveComponent(
                     activeComponent === "feedback" ? null : "feedback",
                   )
-                }
-              />
+                } />
               <Button
+                data-color="neutral"
                 size='small'
-                variant='primary-neutral'
+                variant="primary"
                 icon={<ExclamationmarkTriangleIcon />}
                 className={`${activeComponent === "alert" ? "bg-[#49515E]" : "bg-[#B65781]"} hover:bg-[#555D6A]`}
                 onClick={() =>
                   setActiveComponent(activeComponent === "alert" ? null : "alert")
-                }
-              />
+                } />
               <Button
+                data-color="neutral"
                 size='small'
-                variant='primary-neutral'
+                variant="primary"
                 icon={<BellDotIcon />}
                 className={`${activeComponent === "news" ? "bg-[#49515E]" : "bg-[#B65781]"} hover:bg-[#555D6A]`}
                 onClick={() =>
                   setActiveComponent(activeComponent === "news" ? null : "news")
-                }
-              />
+                } />
             </div>
           </div>
           
@@ -101,7 +101,7 @@ const AdminMenu = () => {
         </>
       )}
     </SidebarWrapper>
-  )
+  );
 }
 
 export default AdminMenuWrapper

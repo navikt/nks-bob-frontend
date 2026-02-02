@@ -39,7 +39,8 @@ export const CoachMark = ({ title, buttonText, children, coachMarkKey }: CoachMa
               </Heading>
               {children}
               <Button
-                variant='primary-neutral'
+                data-color='neutral'
+                variant='primary'
                 className='w-fit'
                 onClick={handleButtonClick}
               >
