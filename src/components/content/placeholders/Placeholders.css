@@ -14,7 +14,3 @@
 .placeholder-text {
   color: var(--ax-text-neutral-subtle)
 }
-
-body.dark .placeholder-text {
-  color: rgba(223, 225, 229, 1);
-}

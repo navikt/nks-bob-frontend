@@ -1,5 +1,5 @@
 import { BellIcon } from "@navikt/aksel-icons"
-import { BodyLong, BodyShort, Button, Detail, Dropdown, Heading, Tabs, Tooltip } from "@navikt/ds-react"
+import { Bleed, BodyLong, BodyShort, Button, Detail, Dropdown, Heading, Tabs, Tooltip } from "@navikt/ds-react"
 import { useEffect, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import Markdown from "react-markdown"
@@ -75,7 +75,7 @@ export const NotificationToggle = () => {
           icon={
             <div className='relative'>
               <BellIcon aria-hidden />
-              {hasUnread && <NotificationTick className='absolute right-[7px] top-[3px]' />}
+              {hasUnread && <NotificationTick className='absolute top-[3px] right-[7px]' />}
             </div>
           }
           as={Dropdown.Toggle}
@@ -195,5 +195,5 @@ const NotificationItem = ({ notification, className }: { notification: NewsNotif
 }
 
 const NotificationTick = ({ className }: { className?: string }) => {
-  return <div className={`h-1.5 w-1.5 animate-ping rounded-full bg-ax-bg-danger-strong ${className}`} />
+  return <div className={`bg-ax-bg-danger-strong h-1.5 w-1.5 animate-ping rounded-full ${className}`} />
 }
