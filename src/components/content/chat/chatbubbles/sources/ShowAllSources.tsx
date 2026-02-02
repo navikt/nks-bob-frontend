@@ -46,11 +46,12 @@ export const ShowAllSources = () => {
       >
         <Heading size='xsmall'>Alle kilder</Heading>
         <Button
-          data-color="neutral"
-          variant="tertiary"
+          data-color='neutral'
+          variant='tertiary'
           size='small'
           icon={<XMarkIcon />}
-          onClick={() => setActiveMessage(null)} />
+          onClick={() => setActiveMessage(null)}
+        />
       </HStack>
       <VStack className='sourcelist pt-6'>
         <BodyLong
@@ -63,7 +64,7 @@ export const ShowAllSources = () => {
         </BodyLong>
         {nksContext.length > 0 && (
           <VStack>
-            <div className='bg-[rgba(245,246,247,1)] px-4 py-2'>
+            <div className='bg-ax-bg-neutral-soft px-4 py-2'>
               <SourceIcon source='nks' />
             </div>
             <VStack className='my-1'>
@@ -78,7 +79,7 @@ export const ShowAllSources = () => {
         )}
         {navContext.length > 0 && (
           <VStack className='sourcepanel-list'>
-            <div className='bg-[rgba(245,246,247,1)] px-4 py-2'>
+            <div className='bg-ax-bg-neutral-soft px-4 py-2'>
               <SourceIcon source='navno' />
             </div>
             <VStack className='my-1'>
@@ -93,7 +94,7 @@ export const ShowAllSources = () => {
         )}
       </VStack>
     </VStack>
-  );
+  )
 }
 
 const NksSource = ({ context, tools }: { context: Context; tools: string[] }) => {
@@ -221,22 +222,21 @@ export const ShowAllSourcesToggle = ({ message, toggleTitle }: ShowAllSourcesTog
   const toggleActive = () => setActiveMessage(isActive ? null : message)
 
   return (
-    <button
-      type='button'
-      aria-pressed={isActive}
-      onClick={toggleActive}
-      className='aksel-chips__toggle aksel-chips__toggle--neutral h-[26px] rounded-full px-2 py-px aria-pressed:text-[rgba(223_225_229/1)] dark:aria-pressed:text-[rgba(0_0_0/1)] dark:aria-pressed:hover:bg-[rgba(148,155,168,1)]'
-    >
-      <div className='flex items-center gap-1'>
-        <ShowAllSourcesIcon />
-        <Detail
-          aria-pressed={isActive}
-          className='dark:aria-pressed:text-[rgba(0,0,0,1)]'
-        >
-          {toggleTitle}
-        </Detail>
-      </div>
-    </button>
+    <div className='aksel-chips--small'>
+      <button
+        type='button'
+        aria-pressed={isActive}
+        data-pressed={isActive}
+        onClick={toggleActive}
+        data-color='neutral'
+        className='aksel-chips__chip aksel-chips__toggle h-6.5 cursor-pointer rounded-full px-2 py-px'
+      >
+        <div className='flex items-center gap-1'>
+          <ShowAllSourcesIcon />
+          <Detail>{toggleTitle}</Detail>
+        </div>
+      </button>
+    </div>
   )
 }
 
