@@ -7,6 +7,7 @@ import App from "./App.tsx"
 import { preloadAlerts, preloadNewsNotifications, preloadUserConfig, triggerReAuth } from "./api/api.ts"
 import "./global.css"
 import { AnalyticsProvider } from "./utils/AnalyticsProvider.tsx"
+import { ThemeProvider } from "./components/menu/darkmode/DarkModeToggle.tsx"
 
 const head = createHead()
 
@@ -62,19 +63,21 @@ const router = createBrowserRouter(
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <UnheadProvider head={head}>
-      <SWRConfig
-        value={{
-          onError: (err) => {
-            if (err.status === 401) {
-              triggerReAuth()
-            }
-          },
-        }}
-      >
-        <AnalyticsProvider />
-        <RouterProvider router={router} />
-      </SWRConfig>
-    </UnheadProvider>
+    <ThemeProvider>
+      <UnheadProvider head={head}>
+        <SWRConfig
+          value={{
+            onError: (err) => {
+              if (err.status === 401) {
+                triggerReAuth()
+              }
+            },
+          }}
+        >
+          <AnalyticsProvider />
+          <RouterProvider router={router} />
+        </SWRConfig>
+      </UnheadProvider>
+    </ThemeProvider>
   </StrictMode>,
 )

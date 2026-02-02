@@ -9,7 +9,7 @@ import {
   StarIcon,
 } from "@navikt/aksel-icons"
 import { BodyShort, HStack, VStack } from "@navikt/ds-react"
-import DarkModeToggle from "../menu/darkmode/DarkModeToggle.tsx"
+import { ThemeButton } from "../menu/darkmode/DarkModeToggle"
 
 export const AnswerButtonsExplanation = () => {
   return (
@@ -94,9 +94,9 @@ export const MainButtonsExplanation = () => {
         wrap={false}
       >
         <div className='mt-1'>
-          <DarkModeToggle />
+          <ThemeButton />
         </div>
-        <BodyShort>Sliten i øynene? Bryteren gjør om til mørkmodus.</BodyShort>
+        <BodyShort>Sliten i øynene? Knappen gjør om til mørkmodus.</BodyShort>
       </HStack>
     </VStack>
   )
