@@ -3,7 +3,7 @@ import { useSendMessage } from "../../api/sse.ts"
 
 import { ErrorBoundary } from "react-error-boundary"
 import { ArrowDownIcon, NotePencilIcon } from "@navikt/aksel-icons"
-import { Alert as AlertComponent, BodyShort, Button, Heading, HStack, Tooltip, VStack } from "@navikt/ds-react"
+import { BodyShort, Button, GlobalAlert, Heading, HStack, Tooltip, VStack } from "@navikt/ds-react"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import Markdown from "react-markdown"
@@ -175,21 +175,18 @@ const ErrorBanner = ({ alerts }: { alerts: Alert[] }) => {
   const level = notificationType.toLowerCase() as "error" | "warning"
 
   return (
-    <AlertComponent
-      fullWidth
+    <GlobalAlert
       size='small'
-      variant={level}
+      status={level}
       className='mb-4 w-full max-w-3xl'
     >
-      <Heading
-        spacing
-        size='small'
-        level='3'
-      >
-        {title}
-      </Heading>
-      <Markdown>{content}</Markdown>
-    </AlertComponent>
+      <GlobalAlert.Header>
+        <GlobalAlert.Title>{title}</GlobalAlert.Title>
+      </GlobalAlert.Header>
+      <GlobalAlert.Content>
+        <Markdown>{content}</Markdown>
+      </GlobalAlert.Content>
+    </GlobalAlert>
   )
 }
 
