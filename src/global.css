@@ -38,7 +38,7 @@ ol li::marker {
 }
 
 .markdown>ol,
-ul {
+.markdown>ul {
   all: revert;
   padding-left: 1.5rem;
 }
