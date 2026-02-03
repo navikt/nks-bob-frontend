@@ -71,7 +71,7 @@ const SingleCitation = ({
   }
 
   return (
-    <div className='mb-2 flex flex-col border-b border-[rgba(207,211,216,1)] pb-6'>
+    <div className='border-ax-border-neutral-subtle mb-2 flex flex-col border-b pb-6'>
       {context ? (
         <TitleLink
           context={context}
@@ -146,7 +146,7 @@ const MultiCitation = ({
   }
 
   return (
-    <div className='mb-4 flex flex-col border-b border-[rgba(207,211,216,1)] pb-6'>
+    <div className='border-ax-border-neutral-subtle mb-4 flex flex-col border-b pb-6'>
       {mainCitation && (
         <TitleLink
           context={mainContext}
@@ -287,7 +287,7 @@ export const TextFragmentLink = ({
 
   function buildLinkWithTextFragments(start: string, end: string) {
     function encodeFragment(text: string) {
-      return encodeURIComponent(text).replace(/[-!'()*#]/g, (c) => `%${c.charCodeAt(0).toString(16).toUpperCase()}`);
+      return encodeURIComponent(text).replace(/[-!'()*#]/g, (c) => `%${c.charCodeAt(0).toString(16).toUpperCase()}`)
     }
 
     const expandAll = matchingContextCitationData?.source === "navno" ? "?expandall=true" : ""
