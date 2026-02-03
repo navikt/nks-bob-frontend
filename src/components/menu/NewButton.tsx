@@ -21,6 +21,7 @@ export const NewButton = ({ conversationId }: { conversationId: string }) => {
     <div className='flex self-center'>
       <Tooltip content='Start ny samtale ( Alt+Ctrl+N )'>
         <Button
+          data-color='neutral'
           variant='tertiary'
           size='medium'
           icon={<NotePencilIcon aria-hidden />}

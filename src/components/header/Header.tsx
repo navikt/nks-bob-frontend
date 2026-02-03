@@ -64,6 +64,7 @@ function Header({ conversation }: HeaderProps) {
             <NotificationToggle />
             <Tooltip content='Informasjon og tips ( Alt+Ctrl+I )'>
               <Button
+                data-color='neutral'
                 variant='tertiary'
                 aria-label='Informasjon og tips'
                 size='medium'
@@ -76,8 +77,8 @@ function Header({ conversation }: HeaderProps) {
               setStartGuide={setStartGuide}
             />
             {userConfig?.showNewConceptInfo && <NewConceptMessage />}
+            <ThemeButton />
           </div>
-          <ThemeButton />
         </div>
       </div>
     </div>

@@ -69,6 +69,7 @@ export const NotificationToggle = () => {
     >
       <Tooltip content='Vis varsler ( Alt+Ctrl+V )'>
         <Button
+          data-color="neutral"
           variant='tertiary'
           aria-label='Vis varsler'
           size='medium'
