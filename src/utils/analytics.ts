@@ -42,7 +42,7 @@ const feilMeldt = (meldingsId: string) => logEvent("Feil meldt", { meldingsId })
 
 const infoÅpnet = () => logEvent("Info modal åpnet")
 
-const mørkModusByttet = (modus: "lys" | "mørk") => logEvent("Mørk modus byttet", { modus })
+const mørkModusByttet = (modus: "lys" | "mørk" | "system") => logEvent("Mørk modus byttet", { modus })
 
 const meldingSendt = (trigger: "knapp" | "enter" | "hotkey", antallTegn: number) =>
   logEvent("Melding sendt", { trigger, antallTegn })
