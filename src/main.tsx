@@ -1,13 +1,19 @@
-import { StrictMode, lazy, Suspense } from "react"
+import { createHead, UnheadProvider } from "@unhead/react/client"
+import { lazy, StrictMode, Suspense } from "react"
 import { createRoot } from "react-dom/client"
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router"
 import { SWRConfig } from "swr"
-import { createHead, UnheadProvider } from "@unhead/react/client"
 import App from "./App.tsx"
-import { preloadAlerts, preloadNewsNotifications, preloadUserConfig, triggerReAuth } from "./api/api.ts"
+import {
+  preloadAlerts,
+  preloadNewsNotifications,
+  preloadUserConfig,
+  preloadUserInfo,
+  triggerReAuth,
+} from "./api/api.ts"
+import { ThemeProvider } from "./components/menu/darkmode/DarkModeToggle.tsx"
 import "./global.css"
 import { AnalyticsProvider } from "./utils/AnalyticsProvider.tsx"
-import { ThemeProvider } from "./components/menu/darkmode/DarkModeToggle.tsx"
 
 const head = createHead()
 
@@ -24,6 +30,7 @@ const LoadingFallback = () => (
 )
 
 preloadUserConfig()
+preloadUserInfo()
 preloadNewsNotifications()
 preloadAlerts()
 

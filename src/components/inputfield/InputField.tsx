@@ -1,6 +1,7 @@
 import {
   Alert,
   BodyShort,
+  Box,
   Button,
   Detail,
   Heading,
@@ -10,7 +11,6 @@ import {
   Textarea,
   Tooltip,
   VStack,
-  Box,
 } from "@navikt/ds-react"
 
 import { PaperplaneIcon } from "@navikt/aksel-icons"
@@ -21,7 +21,7 @@ import { useHotkeys } from "react-hotkeys-hook"
 import { useNavigate, useParams } from "react-router"
 import { create } from "zustand"
 import { createJSONStorage, persist } from "zustand/middleware"
-import { useAlerts } from "../../api/api.ts"
+import { useAlerts, useUserInfo } from "../../api/api.ts"
 import { NewMessage } from "../../types/Message.ts"
 import analytics from "../../utils/analytics.ts"
 import {
@@ -87,7 +87,8 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
   { onSend, disabled, allowPaste = false },
   containerRef,
 ) {
-  const placeholderText = "Spør Bob om noe Nav-relatert"
+  const { userInfo } = useUserInfo()
+  const placeholderText = `Hei ${userInfo?.firstName}! Hva kan jeg hjelpe deg med?`
   const [isSensitiveInfoAlert, setIsSensitiveInfoAlert] = useState<boolean>(false)
   const [sendDisabled, setSendDisabled] = useState<boolean>(disabled)
   const [isFocused, setIsFocused] = useState(false)
