@@ -40,7 +40,12 @@ const UserQuestionBubble = memo(
               copyText={raw}
               size='small'
               activeText='Kopiert!'
-              icon={<FilesIcon aria-hidden />}
+              icon={
+                <FilesIcon
+                  aria-hidden
+                  fontSize='1.25rem'
+                />
+              }
             />
           </Tooltip>
           <Tooltip
@@ -53,7 +58,12 @@ const UserQuestionBubble = memo(
               size='small'
               aria-label='Rediger spørsmålet'
               onClick={editQuestion}
-              icon={<PencilWritingIcon />}
+              icon={
+                <PencilWritingIcon
+                  aria-hidden
+                  fontSize='1.25rem'
+                />
+              }
             />
           </Tooltip>
         </div>
