@@ -12,6 +12,7 @@
   padding-top: 0.5rem;
   border-left: 1px solid var(--ax-border-subtle);
   transition: right .3s ease-in-out;
+  background-color: var(--ax-bg-default);
 }
 
 .all-sources-container.active {
