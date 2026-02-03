@@ -1,5 +1,5 @@
 import { ChevronDownIcon, ChevronUpIcon, XMarkIcon } from "@navikt/aksel-icons"
-import { BodyLong, BodyShort, Button, CopyButton, Detail, Heading, HStack, VStack } from "@navikt/ds-react"
+import { BodyLong, BodyShort, Button, CopyButton, Detail, Heading, HStack, Tag, VStack } from "@navikt/ds-react"
 import { useState } from "react"
 import Markdown from "react-markdown"
 import remarkGfm from "remark-gfm"
@@ -242,8 +242,8 @@ export const ShowAllSourcesToggle = ({ message, toggleTitle }: ShowAllSourcesTog
 
 export const NoSourcesNeeded = () => {
   return (
-    <div className='rounded-full border border-[rgb(7_26_54/0.21)] bg-[rgb(18_43_68/0.08)] px-2 py-[2px] dark:border-[rgba(224_237_254/0.15)] dark:bg-[rgba(28_35_47/1)]'>
+    <Tag className='rounded-full py-0'>
       <Detail>Bob brukte ingen kilder for å lage svaret</Detail>
-    </div>
+    </Tag>
   )
 }
