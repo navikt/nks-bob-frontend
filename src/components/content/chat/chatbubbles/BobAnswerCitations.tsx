@@ -382,12 +382,12 @@ export const TitleLink = ({ context, citation, tools }: { context?: Context; cit
   return (
     <HStack
       align='center'
-      gap='space-4'
+      gap='space-12'
       className='mb-1'
     >
       <HStack
         align='center'
-        gap='space-1'
+        gap='space-4'
       >
         <Tooltip content='Åpne artikkelen i ny fane'>
           <Label size='small'>

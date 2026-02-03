@@ -162,7 +162,7 @@ export const NewsForm = () => {
           </form>
         </Modal.Body>
         <Modal.Footer className='flex-row'>
-          <HStack gap='space-4'>
+          <HStack gap='space-16'>
             <Button
               variant='secondary'
               onClick={() => ref.current?.close()}

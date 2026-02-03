@@ -16,42 +16,42 @@ export const AnswerButtonsExplanation = () => {
     <div className='flex flex-col gap-2'>
       <HStack
         align='center'
-        gap='space-2'
+        gap='space-8'
       >
         <FilesIcon />
         <BodyShort>Kopiere svaret</BodyShort>
       </HStack>
       <HStack
         align='center'
-        gap='space-2'
+        gap='space-8'
       >
         <ChatExclamationmarkIcon />
         <BodyShort>Melde inn feil- eller falskt svar</BodyShort>
       </HStack>
       <HStack
         align='center'
-        gap='space-2'
+        gap='space-8'
       >
         <StarIcon />
         <BodyShort>Markere svaret som svært godt</BodyShort>
       </HStack>
       <HStack
         align='center'
-        gap='space-2'
+        gap='space-8'
       >
         <LanguageIcon />
         <BodyShort>Oversette svaret til engelsk</BodyShort>
       </HStack>
       <HStack
         align='center'
-        gap='space-2'
+        gap='space-8'
       >
         <BulletListIcon />
         <BodyShort>Lage svaret med punktliste</BodyShort>
       </HStack>
       <HStack
         align='center'
-        gap='space-2'
+        gap='space-8'
         className='mb-3'
       >
         <HandHeartIcon />
@@ -64,12 +64,12 @@ export const AnswerButtonsExplanation = () => {
 export const MainButtonsExplanation = () => {
   return (
     <VStack
-      gap='space-6'
+      gap='space-24'
       className='mb-2'
     >
       <HStack
         align='start'
-        gap='space-2'
+        gap='space-8'
         wrap={false}
       >
         <Button
@@ -85,7 +85,7 @@ export const MainButtonsExplanation = () => {
       </HStack>
       <HStack
         align='start'
-        gap='space-2'
+        gap='space-8'
         wrap={false}
       >
         <Button
@@ -98,12 +98,10 @@ export const MainButtonsExplanation = () => {
         <BodyShort>Informasjon og veiledning om hvordan du best kan bruke tjenesten.</BodyShort>
       </HStack>
       <HStack
-        gap='space-2'
+        gap='space-8'
         wrap={false}
       >
-        <div className='mt-1'>
-          <ThemeButton />
-        </div>
+        <ThemeButton />
         <BodyShort>Sliten i øynene? Knappen gjør om til mørkmodus.</BodyShort>
       </HStack>
     </VStack>

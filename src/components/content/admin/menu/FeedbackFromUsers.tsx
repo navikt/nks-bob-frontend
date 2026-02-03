@@ -468,7 +468,7 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
   return (
     <Box
       ref={boxRef}
-      paddingBlock='space-32'
+      paddingBlock='space-28'
       paddingInline='space-16'
       borderWidth='0 0 1 0'
       borderColor='neutral-subtle'

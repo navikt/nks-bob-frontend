@@ -220,7 +220,7 @@ const AlertForm = ({ setIsTesting }: { setIsTesting: React.Dispatch<React.SetSta
           </form>
         </Modal.Body>
         <Modal.Footer className='flex-row'>
-          <HStack gap='space-4'>
+          <HStack gap='space-16'>
             <Button
               variant='secondary'
               onClick={() => ref.current?.close()}
@@ -284,10 +284,10 @@ const SingleAlertInner = ({
 
   return (
     <VStack
-      padding='space-4'
-      gap='space-4'
+      padding='space-16'
+      gap='space-16'
     >
-      <VStack gap='space-1'>
+      <VStack gap='space-4'>
         <Heading
           level='3'
           size='xsmall'
@@ -315,7 +315,7 @@ const SingleAlertInner = ({
         <Label>Tekst</Label>
         <BodyShort>{content}</BodyShort>
       </VStack>
-      <HStack gap='space-2'>
+      <HStack gap='space-8'>
         <Button
           data-color='neutral'
           size='small'
@@ -360,7 +360,7 @@ const SingleAlertInner = ({
             </form>
           </Modal.Body>
           <Modal.Footer className='flex-row'>
-            <HStack gap='space-4'>
+            <HStack gap='space-16'>
               <Button
                 variant='secondary'
                 onClick={() => ref.current?.close()}
@@ -455,8 +455,8 @@ const UpdateAlertForm = ({
 
   return (
     <VStack
-      padding='space-4'
-      gap='space-6'
+      padding='space-16'
+      gap='space-24'
     >
       <Select
         label='Type feilmelding'
@@ -532,7 +532,7 @@ const UpdateAlertForm = ({
           </form>
         </Modal.Body>
         <Modal.Footer className='flex-row'>
-          <HStack gap='space-4'>
+          <HStack gap='space-16'>
             <Button
               variant='secondary'
               onClick={() => ref.current?.close()}

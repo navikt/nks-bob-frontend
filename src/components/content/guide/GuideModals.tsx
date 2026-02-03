@@ -28,7 +28,7 @@ export const NewConceptMessage = () => {
           </div>
           <VStack
             className='modal-container'
-            gap='space-4'
+            gap='space-16'
           >
             <Heading
               size='small'
@@ -65,7 +65,7 @@ export const WelcomeMessage = ({ onNext, onClose }: { onNext: () => void; onClos
     </div>
     <VStack
       className='modal-container'
-      gap='space-4'
+      gap='space-16'
     >
       <HStack
         align='center'
@@ -91,7 +91,7 @@ export const WelcomeMessage = ({ onNext, onClose }: { onNext: () => void; onClos
       </BodyLong>
       <HStack
         align='stretch'
-        gap='space-2'
+        gap='space-8'
         justify='end'
       >
         <Button
@@ -129,7 +129,7 @@ export const Step1 = ({
     </div>
     <VStack
       className='modal-container'
-      gap='space-4'
+      gap='space-16'
     >
       <HStack
         align='center'
@@ -173,7 +173,7 @@ export const Step1 = ({
       </BodyLong>
       <HStack
         align='stretch'
-        gap='space-2'
+        gap='space-8'
         justify='space-between'
         className='mt-4 items-end'
       >
@@ -214,7 +214,7 @@ export const Step2 = ({
     </div>
     <VStack
       className='modal-container'
-      gap='space-4'
+      gap='space-16'
     >
       <HStack
         align='center'
@@ -258,7 +258,7 @@ export const Step2 = ({
       </BodyLong>
       <HStack
         align='stretch'
-        gap='space-2'
+        gap='space-8'
         justify='space-between'
         className='mt-4 items-end'
       >
@@ -266,7 +266,7 @@ export const Step2 = ({
           step={step}
           onChange={handleSelectChange}
         />
-        <HStack gap='space-4'>
+        <HStack gap='space-16'>
           <Button
             data-color='neutral'
             onClick={onPrevious}
@@ -308,7 +308,7 @@ export const Step3 = ({
     </div>
     <VStack
       className='modal-container sticky z-1000'
-      gap='space-4'
+      gap='space-16'
     >
       <HStack
         align='center'
@@ -353,7 +353,7 @@ export const Step3 = ({
       </VStack>
       <HStack
         align='stretch'
-        gap='space-2'
+        gap='space-8'
         justify='space-between'
         className='mt-4 items-end'
       >
@@ -361,7 +361,7 @@ export const Step3 = ({
           step={step}
           onChange={handleSelectChange}
         />
-        <HStack gap='space-4'>
+        <HStack gap='space-16'>
           <Button
             data-color='neutral'
             onClick={onPrevious}
@@ -435,7 +435,7 @@ export const Step4 = ({
       </BodyLong>
       <HStack
         align='stretch'
-        gap='space-6'
+        gap='space-24'
         justify='space-between'
         className='mt-4 items-end'
       >
@@ -443,7 +443,7 @@ export const Step4 = ({
           step={step}
           onChange={handleSelectChange}
         />
-        <HStack gap='space-4'>
+        <HStack gap='space-16'>
           <Button
             data-color='neutral'
             onClick={onPrevious}
@@ -531,7 +531,7 @@ export const Step5 = ({
       </ul>
       <HStack
         align='stretch'
-        gap='space-6'
+        gap='space-24'
         justify='space-between'
         className='mt-2 items-end'
       >
@@ -539,7 +539,7 @@ export const Step5 = ({
           step={step}
           onChange={handleSelectChange}
         />
-        <HStack gap='space-4'>
+        <HStack gap='space-16'>
           <Button
             data-color='neutral'
             onClick={onPrevious}

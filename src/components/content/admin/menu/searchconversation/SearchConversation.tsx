@@ -85,7 +85,7 @@ const SearchConversation = () => {
         <VStack>
           <HStack
             className='bg-ax-bg-neutral-soft w-full p-4'
-            gap='space-2'
+            gap='space-8'
             align='center'
           >
             <Chat2Icon fontSize={20} />
@@ -180,7 +180,7 @@ const ConversationLoading = () => {
 const ConversationPreview = ({ conversation, messageId }: { conversation: Conversation; messageId?: string }) => {
   const queryParams = messageId ? `?messageId=${messageId}` : ""
   return (
-    <VStack gap='space-2'>
+    <VStack gap='space-12'>
       <Heading size='small'>
         <Link
           as={NavLink}
