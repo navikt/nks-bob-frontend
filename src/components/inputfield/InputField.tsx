@@ -81,10 +81,11 @@ interface InputFieldProps {
   onSend: (message: NewMessage) => void
   disabled: boolean
   allowPaste?: boolean
+  minRows?: number
 }
 
 const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputField(
-  { onSend, disabled, allowPaste = false },
+  { onSend, disabled, allowPaste = false, minRows = 5 },
   containerRef,
 ) {
   const { userInfo } = useUserInfo()
@@ -425,7 +426,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           label=''
           hideLabel
           className='dialogcontent mb-3 min-h-[43px] truncate [&_textarea]:max-h-[450px] [&_textarea]:min-h-[43px] [&_textarea]:focus:min-h-[50px]'
-          minRows={1.3}
+          minRows={minRows}
           maxRows={15}
           placeholder={placeholderText}
           value={inputValue}
@@ -444,7 +445,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
         />
         <Button
           icon={<PaperplaneIcon title='Send melding' />}
-          variant='tertiary'
+          variant='tertiary-neutral'
           size='medium'
           className='absolute top-[2%] right-[0.2%] h-full max-h-[2.5rem] w-full max-w-[2.3rem]'
           onClick={handleButtonClick}
@@ -456,7 +457,8 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
         align='center'
         className='detailcolor pb-2'
       >
-        Bob er en kunstig intelligens og kan ta feil – sjekk kilder om du er usikker.
+        Husk: Ikke del personopplysninger og sjekk kilder om du er usikker. Bob er en kunstig intelligens og kan ta
+        feil.
       </Detail>
     </div>
   )
