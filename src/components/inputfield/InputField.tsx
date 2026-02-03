@@ -1,9 +1,7 @@
 import {
-  Alert,
   BodyShort,
   Button,
   Detail,
-  Heading,
   HStack,
   Link,
   List,
@@ -11,6 +9,7 @@ import {
   Tooltip,
   VStack,
   Box,
+  LocalAlert,
 } from "@navikt/ds-react"
 
 import { PaperplaneIcon } from "@navikt/aksel-icons"
@@ -266,71 +265,119 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
       ref={containerRef}
     >
       {isSensitiveInfoAlert && (
-        <Alert
-          variant='warning'
+        <LocalAlert
           size='small'
-          closeButton={true}
-          onClose={() => setIsSensitiveInfoAlert(false)}
+          status='warning'
           className='fade-in mb-2'
         >
-          <Heading
-            size='xsmall'
-            spacing
-            className='mt-0.5 text-[16px]'
-          >
-            Vi har midlertidig slått av muligheten for å lime inn tekst
-          </Heading>
-          <BodyShort
-            size='small'
-            spacing
-          >
-            Årsaken er at det ved flere anledninger har blitt delt personopplysninger ved innliming.
-          </BodyShort>
-          <BodyShort
-            size='small'
-            spacing
-          >
-            Vi jobber aktivt med å finne en løsning.
-          </BodyShort>
-        </Alert>
+          <LocalAlert.Header>
+            <LocalAlert.Title>Vi har midlertidig slått av muligheten for å lime inn tekst</LocalAlert.Title>
+            <LocalAlert.CloseButton onClick={() => setIsSensitiveInfoAlert(false)} />
+          </LocalAlert.Header>
+          <LocalAlert.Content>
+            <BodyShort
+              size='small'
+              spacing
+            >
+              Årsaken er at det ved flere anledninger har blitt delt personopplysninger ved innliming.
+            </BodyShort>
+            <BodyShort
+              size='small'
+              spacing
+            >
+              Vi jobber aktivt med å finne en løsning.
+            </BodyShort>
+          </LocalAlert.Content>
+        </LocalAlert>
       )}
       {validationWarnings.length > 0 && (
-        <Alert
-          variant='warning'
+        <LocalAlert
+          status='warning'
           size='small'
           className='fade-in mb-2'
         >
-          <Heading
-            size='xsmall'
-            spacing
-            className='mt-0.5 text-[16px]'
-          >
-            Spørsmålet ser ut til å inneholde personopplysninger
-          </Heading>
-          <BodyShort size='small'>
-            {" "}
-            Vurder om følgende er personopplysninger. Om det er tilfellet, må de fjernes før du sender inn spørsmålet.
-          </BodyShort>
-          <div className='max-h-36 overflow-scroll'>
-            <Box
-              marginBlock='space-12'
-              asChild
-            >
-              <List
-                data-aksel-migrated-v8
-                size='small'
+          <LocalAlert.Header>
+            <LocalAlert.Title>Spørsmålet ser ut til å inneholde personopplysninger</LocalAlert.Title>
+          </LocalAlert.Header>
+          <LocalAlert.Content>
+            <BodyShort size='small'>
+              Vurder om følgende er personopplysninger. Om det er tilfellet, må de fjernes før du sender inn spørsmålet.
+            </BodyShort>
+            <div className='max-h-36 overflow-scroll'>
+              <Box
+                marginBlock='space-12'
+                asChild
               >
-                {validationWarnings.flatMap(({ matches }, i) =>
-                  matches.map(({ value, start, end }, j) => (
-                    <List.Item
-                      key={`warning-list-${i}-${j}`}
-                      className='items-center'
-                    >
-                      <HStack
-                        gap='space-2'
-                        align='center'
+                <List size='small'>
+                  {validationWarnings.flatMap(({ matches }, i) =>
+                    matches.map(({ value, start, end }, j) => (
+                      <List.Item
+                        key={`warning-list-${i}-${j}`}
+                        className='items-center'
                       >
-                        <Tooltip content='Endre'>
+                        <HStack
+                          gap='space-2'
+                          align='center'
+                        >
+                          <Tooltip content='Endre'>
+                            <Link
+                              onClick={() => {
+                                if (textareaRef.current) {
+                                  scrollToSelection(textareaRef.current, start, end)
+                                }
+                              }}
+                            >
+                              <span className='font-ax-bold cursor-pointer'>{value}</span>
+                            </Link>
+                          </Tooltip>
+
+                          <Button
+                            data-color='neutral'
+                            variant='tertiary'
+                            size='xsmall'
+                            onClick={() => {
+                              validateInput([...ignoredValidations, value])
+                            }}
+                          >
+                            Ignorer
+                          </Button>
+                        </HStack>
+                      </List.Item>
+                    )),
+                  )}
+                </List>
+              </Box>
+            </div>
+          </LocalAlert.Content>
+        </LocalAlert>
+      )}
+      {validationErrors.length > 0 && (
+        <LocalAlert
+          status='error'
+          size='small'
+          className='fade-in mb-2'
+        >
+          <LocalAlert.Header>
+            <LocalAlert.Title>Spørsmålet inneholder fødselsnummer/d-nummer/hnr</LocalAlert.Title>
+          </LocalAlert.Header>
+          <LocalAlert.Content>
+            <BodyShort size='small'>Fjern følgende før du sender inn spørsmålet.</BodyShort>
+            <div className='max-h-36 overflow-scroll'>
+              <Box
+                marginBlock='space-12'
+                asChild
+              >
+                <List size='small'>
+                  {validationErrors.flatMap(({ matches }, i) =>
+                    matches.map(({ value, start, end }, j) => (
+                      <List.Item
+                        key={`error-list-${i}-${j}`}
+                        className='items-center'
+                      >
+                        <HStack
+                          gap='space-2'
+                          align='center'
+                        >
                           <Link
                             onClick={() => {
                               if (textareaRef.current) {
@@ -340,77 +387,15 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
                           >
                             <span className='font-ax-bold cursor-pointer'>{value}</span>
                           </Link>
-                        </Tooltip>
-
-                        <Button
-                          data-color='neutral'
-                          variant='tertiary'
-                          size='xsmall'
-                          onClick={() => {
-                            validateInput([...ignoredValidations, value])
-                          }}
-                        >
-                          Ignorer
-                        </Button>
-                      </HStack>
-                    </List.Item>
-                  )),
-                )}
-              </List>
-            </Box>
-          </div>
-        </Alert>
-      )}
-      {validationErrors.length > 0 && (
-        <Alert
-          variant='error'
-          size='small'
-          className='fade-in mb-2'
-        >
-          <Heading
-            size='xsmall'
-            spacing
-            className='mt-0.5 text-[16px]'
-          >
-            Spørsmålet inneholder fødselsnummer/d-nummer/hnr
-          </Heading>
-          <BodyShort size='small'>Fjern følgende før du sender inn spørsmålet.</BodyShort>
-          <div className='max-h-36 overflow-scroll'>
-            <Box
-              marginBlock='space-12'
-              asChild
-            >
-              <List
-                data-aksel-migrated-v8
-                size='small'
-              >
-                {validationErrors.flatMap(({ matches }, i) =>
-                  matches.map(({ value, start, end }, j) => (
-                    <List.Item
-                      key={`error-list-${i}-${j}`}
-                      className='items-center'
-                    >
-                      <HStack
-                        gap='space-2'
-                        align='center'
-                      >
-                        <Link
-                          onClick={() => {
-                            if (textareaRef.current) {
-                              scrollToSelection(textareaRef.current, start, end)
-                            }
-                          }}
-                        >
-                          <span className='font-ax-bold cursor-pointer'>{value}</span>
-                        </Link>
-                      </HStack>
-                    </List.Item>
-                  )),
-                )}
-              </List>
-            </Box>
-          </div>
-        </Alert>
+                        </HStack>
+                      </List.Item>
+                    )),
+                  )}
+                </List>
+              </Box>
+            </div>
+          </LocalAlert.Content>
+        </LocalAlert>
       )}
       <NewMessageAlert
         setInputValue={setInputValue}
@@ -515,34 +500,31 @@ const NewMessageAlert = ({ setInputValue, conversationId }: NewMessageAlertProps
 
   return (
     newMessageAlert && (
-      <Alert
-        variant='info'
+      <LocalAlert
         size='small'
-        closeButton={true}
-        onClose={handleClose}
+        status='announcement'
         className='fade-in mb-2'
       >
-        <Heading
-          size='xsmall'
-          level='3'
-          className='mb-2'
-        >
-          Psst!
-        </Heading>
-        <VStack gap='space-12'>
-          Du har vært lenge i denne samtalen. Husk å starte en ny samtale når du får en ny henvendelse – da unngår du at
-          Bob blander temaer.
-          <Button
-            data-color='neutral'
-            variant='secondary'
-            size='small'
-            className='w-fit'
-            onClick={startNew}
-          >
-            Start ny samtale
-          </Button>
-        </VStack>
-      </Alert>
+        <LocalAlert.Header>
+          <LocalAlert.Title>Psst!</LocalAlert.Title>
+          <LocalAlert.CloseButton onClick={handleClose} />
+        </LocalAlert.Header>
+        <LocalAlert.Content>
+          <VStack gap='space-12'>
+            Du har vært lenge i denne samtalen. Husk å starte en ny samtale når du får en ny henvendelse – da unngår du
+            at Bob blander temaer.
+            <Button
+              data-color='neutral'
+              variant='secondary'
+              size='small'
+              className='w-fit'
+              onClick={startNew}
+            >
+              Start ny samtale
+            </Button>
+          </VStack>
+        </LocalAlert.Content>
+      </LocalAlert>
     )
   )
 }
