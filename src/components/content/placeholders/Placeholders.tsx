@@ -1,4 +1,4 @@
-import { Alert as AlertComponent, BodyShort, Heading } from "@navikt/ds-react"
+import { BodyShort, Heading, InlineMessage } from "@navikt/ds-react"
 import Markdown from "react-markdown"
 import { useAlerts } from "../../../api/api.ts"
 import { BobTheRobot, BobTheRobotDark } from "../../../assets/illustrations/BobTheRobot.tsx"
@@ -22,7 +22,7 @@ export const BobPlaceholder = () => {
             </div>
             <BodyShort
               size='medium'
-              className='self-center text-ax-text-neutral-subtle'
+              className='text-ax-text-neutral-subtle self-center'
             >
               {displayText}
             </BodyShort>
@@ -33,7 +33,7 @@ export const BobPlaceholder = () => {
             </div>
             <BodyShort
               size='medium'
-              className='self-center text-ax-text-neutral-subtle'
+              className='text-ax-text-neutral-subtle self-center'
             >
               {displayText}
             </BodyShort>
@@ -60,10 +60,7 @@ const BobError = ({ alerts }: { alerts: Alert[] }) => {
   return (
     <div className='bob-styling flex w-full max-w-2xl flex-row items-center gap-16'>
       <SadBob level={level} />
-      <AlertComponent
-        inline
-        variant={level}
-      >
+      <InlineMessage status={level}>
         <Heading
           spacing
           size='small'
@@ -71,8 +68,8 @@ const BobError = ({ alerts }: { alerts: Alert[] }) => {
         >
           {title}
         </Heading>
-        <Markdown>{content}</Markdown>
-      </AlertComponent>
+        <Markdown className='text-ax-text-neutral'>{content}</Markdown>
+      </InlineMessage>
     </div>
   )
 }

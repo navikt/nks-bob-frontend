@@ -1,12 +1,12 @@
 import { ExclamationmarkTriangleIcon } from "@navikt/aksel-icons"
 import {
-  Alert as AlertComponent,
   BodyShort,
   Box,
   Button,
   Detail,
   Heading,
   HStack,
+  InlineMessage,
   Label,
   Modal,
   Select,
@@ -300,12 +300,7 @@ const SingleAlertInner = ({
       <BodyShort>Publisert: {formatDate(new Date(createdAt), "dd.MM.yyyy (HH:mm)")}</BodyShort>
       <VStack>
         <Label>Feilmeldingstype</Label>
-        <AlertComponent
-          inline
-          variant={alertVariant}
-        >
-          {notificationType}
-        </AlertComponent>
+        <InlineMessage status={alertVariant}>{notificationType}</InlineMessage>
       </VStack>
       <VStack>
         <Label>Tittel</Label>
