@@ -6,10 +6,10 @@ import { messageStore } from "../../types/messageStore.ts"
 import analytics from "../../utils/analytics.ts"
 import Header from "../header/Header.tsx"
 import InputField, { useInputFieldStore } from "../inputfield/InputField.tsx"
+import { umamiThemeType, useTheme } from "../menu/darkmode/DarkModeToggle.tsx"
 import { useSourcesStore } from "./chat/chatbubbles/sources/ShowAllSources.tsx"
 import { BobPlaceholder } from "./placeholders/Placeholders.tsx"
 import CreateConversationWrapper from "./wrappers/CreateConversationWrapper.tsx"
-import { umamiThemeType, useTheme } from "../menu/darkmode/DarkModeToggle.tsx"
 
 const CreateConversationContent = () => {
   const navigate = useNavigate()
