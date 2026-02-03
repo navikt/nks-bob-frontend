@@ -126,7 +126,14 @@ const versjonOppdatert = (gammelVersjon: string, nyVersjon: string) =>
 
 const versjonLagret = (versjon: string) => logEvent("Versjon av Bob brukt", { versjon })
 
-const nySamtaleOpprettet = (samtaleId: string) => logEvent("Ny samtale opprettet", { samtaleId })
+const nySamtaleOpprettet = (samtaleId: string) =>
+  logEvent("Ny samtale opprettet", {
+    samtaleId,
+    screen: {
+      innerWidth,
+      innerHeight,
+    },
+  })
 
 // andel markert mellom 0 og 1
 const svartekstMarkert = (andelMarkert: number) => logEvent("Svartekst markert og kopiert", { andelMarkert })
