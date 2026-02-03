@@ -1,12 +1,12 @@
-@import "tailwindcss/base";
-@import "@navikt/ds-css";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@import 'tailwindcss';
+@import '@navikt/ds-css' layer(components);
+
+@config '../tailwind.config.cjs';
 
 /*  LAYOUT  */
 
 * {
-  scrollbar-color: var(--a-grayalpha-400) transparent;
+  scrollbar-color: var(--neutral-500) transparent;
 }
 
 ul li:not(:last-child) {
@@ -38,7 +38,7 @@ ol li::marker {
 }
 
 .markdown>ol,
-ul {
+.markdown>ul {
   all: revert;
   padding-left: 1.5rem;
 }
@@ -53,8 +53,8 @@ ul {
 
 .chat-markdown a,
 .chat-markdown a:visited {
-  color: inherit;             
-  text-decoration: underline;  
+  color: inherit;
+  text-decoration: underline;
 }
 
 .chat-markdown a:hover {
@@ -68,8 +68,8 @@ ul {
 }
 
 .answer-markdown a,
-.answer-markdown a:visited {         
-  text-decoration: underline;  
+.answer-markdown a:visited {
+  text-decoration: underline;
 }
 
 .answer-markdown a:hover {
@@ -217,265 +217,6 @@ ul {
   backdrop-filter: blur(3px);
 }
 
-/*    DARKMODE - NEW DS STYLING    */
-
-:root,
-:host {
-  --new-text-default: rgba(32, 39, 51, 1);
-  --new-bg: rgba(14, 21, 31, 1);
-  --new-bg-raised: rgba(28, 35, 47, 1);
-  --new-bg-sunken: rgba(7, 9, 13, 1);
-
-  --button-neutral-text: rgba(118, 126, 140, 1);
-  --button-neutral-hover-text: rgba(165, 172, 182, 1);
-  --button-neutral-hover-bg: rgba(28, 35, 47, 1);
-
-  --new-link-text: rgba(34, 119, 213, 1);
-
-  --ac-button-tertiary-text: rgba(34, 119, 213, 1);
-  --ac-button-tertiary-hover-bg: rgba(228, 238, 255, 1);
-  --ac-button-tertiary-active-bg: rgba(0, 91, 182, 1);
-  --ac-button-tertiary-active-hover-bg: rgba(0, 91, 182, 1);
-
-  --ac-button-tertiary-neutral-text: rgba(73, 81, 94, 1);
-  --ac-button-tertiary-neutral-hover-text: rgba(73, 81, 94, 1);
-
-  --ac-copybutton-neutral-text: rgba(73, 81, 94, 1);
-  --ac-copybutton-neutral-hover-text: rgba(73, 81, 94, 1);
-
-  --ac-alert-info-bg: rgba(238, 246, 252, 1);
-  --ac-alert-info-border: rgba(90, 143, 174, 1);
-  --ac-alert-icon-info-color: rgba(65, 125, 160, 1);
-
-  /* Danger button */
-  --ac-button-danger-bg: rgba(255, 232, 240, 1);
-  --ac-button-danger-text: rgba(203, 0, 53, 1);
-  --ac-button-danger-hover-bg: rgba(255, 217, 230, 1);
-  --ac-button-danger-active-bg: rgba(255, 194, 215, 1);
-
-  --ac-dropdown-item-text: rgba(73, 81, 94, 1);
-  --ac-dropdown-item-hover-text: rgba(73, 81, 94, 1);
-  --ac-dropdown-item-hover-bg: var(--a-surface-neutral-subtle-hover);
-  --ac-dropdown-item-active-bg: var(--a-surface-neutral-active);
-
-  /*  Tag  */
-  --ac-tag-alt-1-bg: rgba(248, 234, 239, 1);
-  --ac-tag-alt-1-border: rgba(194, 111, 146, 1);
-
-  --ac-tag-alt-2-bg: rgba(255, 244, 238, 1);
-  --ac-tag-alt-2-border: rgba(192, 118, 93, 1);
-
-  /*  Chips */
-  --ac-chip-toggle-pressed-bg: rgba(0, 91, 182, 1);
-  --ac-chip-toggle-pressed-hover-bg: rgba(0, 99, 193, 1);
-
-  /*  Tag  */
-  --ac-tag-neutral-bg: rgba(245, 246, 247, 1);
-  --ac-tag-neutral-border: rgba(207, 211, 216, 1);
-  --ac-tag-neutral-text: rgba(73, 81, 94, 1);
-
-  --ax-border-subtle: rgba(207, 211, 216, 1);
-}
-
-/*   Read more styling   */
-
-.navds-textarea__input {
+.aksel-textarea__input {
   padding-right: 2.5rem;
-}
-
-.navds-read-more__button {
-  background: rgba(241, 247, 255, 1);
-  width: 100%;
-  border-radius: 3rem;
-  padding-block: 0.8rem;
-  padding-inline: 1.2rem;
-  justify-content: space-between;
-  flex-direction: row-reverse;
-}
-
-.navds-read-more__content {
-  margin-left: 1.4rem;
-  margin-top: 0.6rem;
-}
-
-body.dark .navds-read-more__content {
-  color: var(--darkmode-text-default);
-}
-
-.navds-read-more__button:hover {
-  background: rgba(228, 238, 255, 1);
-}
-
-body.dark .navds-read-more__button {
-  background: rgba(16, 29, 45, 1);
-}
-
-body.dark .navds-read-more__button:hover {
-  background: rgba(21, 36, 54, 1);
-}
-
-/*  DARK MODE    */
-
-body.dark {
-  background: var(--new-bg);
-  color: rgba(196, 201, 208, 1);
-
-  --darkmode-text-default: rgba(196, 201, 208, 1);
-  --darkmode-linktext-default: rgba(95, 148, 216, 1);
-  --darkmode-icon-text: rgba(118, 126, 140, 1);
-  --darkmode-actiontext: rgba(132, 174, 230, 1);
-  --darkmode-button-neutral-text-default: rgba(165, 172, 182, 1);
-
-  /* Action Buttons   */
-
-  --ac-button-secondary-border: var(--darkmode-actiontext);
-  --ac-button-secondary-text: var(--darkmode-actiontext);
-
-  --ac-button-tertiary-text: var(--darkmode-actiontext);
-  --ac-button-tertiary-hover-bg: rgba(26, 44, 65, 1);
-  --ac-button-tertiary-hover-text: var(--darkmode-actiontext);
-  --ac-button-tertiary-active-bg: rgba(186, 213, 251, 1);
-  --ac-button-tertiary-active-text: black;
-  --ac-button-tertiary-active-hover-bg: rgba(186, 213, 251, 1);
-
-  /*  Inputfield  */
-  --ac-textarea-bg: var(--new-bg);
-  --ac-textarea-text: var(--darkmode-text-default);
-  --ac-textarea-placeholder: rgba(165, 172, 182, 1);
-  --ac-textarea-border: rgba(165, 172, 182, 1);
-  --ac-textarea-hover-border: rgba(66, 138, 227, 1);
-  --ac-textarea-active-border: rgba(66, 138, 227, 1);
-  --ac-textfield-bg: var(--new-bg);
-  --ac-textfield-text: var(--darkmode-text-default);
-  --ac-textfield-placeholder: rgba(165, 172, 182, 1);
-  --ac-textfield-border: rgba(165, 172, 182, 1);
-  --ac-textfield-hover-border: rgba(66, 138, 227, 1);
-  --ac-textfield-active-border: rgba(66, 138, 227, 1);
-
-  /*  Feedback buttons  */
-  --ac-button-tertiary-neutral-text: var(--darkmode-button-neutral-text-default);
-  --ac-button-tertiary-neutral-hover-text: var(--button-neutral-hover-text);
-
-  /*  Copy button */
-  --ac-copybutton-neutral-text: var(--darkmode-button-neutral-text-default);
-  --ac-copybutton-neutral-active-text: var(--button-neutral-hover-text);
-  --ac-copybutton-neutral-hover-text: var(--button-neutral-hover-text);
-  --ac-copybutton-neutral-hover-bg: var(--button-neutral-hover-bg);
-
-  /*    Link text   */
-  --ac-link-text: var(--darkmode-linktext-default);
-  --ac-link-neutral-text: var(--new-link-text);
-
-  /*    Skeleton    */
-  --ac-skeleton-bg: var(--new-bg-raised);
-
-  /*    Read more   */
-  --ac-read-more-line: rgba(101, 109, 123, 1);
-  --ac-read-more-text: var(--darkmode-actiontext);
-  --ac-read-more-hover-text: var(--darkmode-actiontext);
-  --ac-read-more-hover-bg: rgba(26, 44, 65, 1);
-  --ac-read-more-content-text: var(--darkmode-text-default);
-
-  /*    Info alert    */
-  --ac-alert-info-bg: rgba(7, 30, 45, 1);
-  --ac-alert-info-border: rgba(67, 113, 141, 1);
-  --ac-alert-icon-info-color: rgba(90, 131, 155, 1);
-
-  /*    Error alert    */
-  --ac-alert-error-bg: rgba(73, 11, 16, 1);
-  --ac-alert-error-border: rgba(222, 74, 80, 1);
-  --ac-alert-icon-error-color: rgba(222, 74, 80, 1);
-
-  /*    Warning alert    */
-  --ac-alert-warning-bg: rgba(55, 17, 0, 1);
-  --ac-alert-warning-border: rgba(197, 99, 51, 1);
-  --ac-alert-icon-warning-color: rgba(197, 99, 51, 1);
-
-  /*    Danger button   */
-  --ac-button-danger-bg: rgba(65, 4, 9, 1);
-  --ac-button-danger-text: rgba(242, 142, 162, 1);
-  --ac-button-danger-hover-bg: rgba(73, 11, 16, 1);
-  --ac-button-danger-active-bg: rgba(95, 32, 33, 1);
-
-  /*    Dropdown menu   */
-  --ac-dropdown-item-text: var(--darkmode-button-neutral-text-default);
-  --ac-dropdown-item-hover-text: var(--button-neutral-hover-text);
-  --ac-dropdown-item-hover-bg: var(--button-neutral-hover-bg);
-  --ac-dropdown-item-active-bg: var(--a-surface-neutral-active);
-
-  /*  Tag  */
-  --ac-tag-alt-1-bg: rgba(248, 234, 239, 1);
-  --ac-tag-alt-1-border: rgba(194, 111, 146, 1);
-
-  --ac-tag-alt-2-bg: rgba(255, 244, 238, 1);
-  --ac-tag-alt-2-border: rgba(192, 118, 93, 1);
-
-  --ac-tag-neutral-bg: rgba(36, 43, 55, 1);
-  --ac-tag-neutral-border: rgba(101, 109, 123, 1);
-  --ac-tag-neutral-text: var(--darkmode-text-default);
-
-  /*  Chips */
-  --ac-chip-toggle-pressed-bg: rgba(35, 55, 79, 1);
-  --ac-chip-toggle-pressed-hover-bg: rgba(26, 44, 65, 1);
-
-  --ac-chip-toggle-bg: rgba(16, 29, 45, 1);
-  --ac-chip-toggle-border: rgba(46, 54, 65, 1);
-  --ac-chip-toggle-circle-border: rgba(46, 54, 65, 1);
-  --ac-chip-toggle-text: var(--darkmode-text-default);
-
-  --ac-chip-toggle-hover-bg: rgba(21, 36, 54, 1);
-  --ac-chip-toggle-hover-border: rgba(101, 109, 123, 1);
-
-  --ac-chip-toggle-focus: rgba(95, 148, 216, 1);
-
-  --ax-border-subtle: rgba(46, 54, 65, 1);
-
-  --ac-chip-toggle-neutral-bg: rgba(28, 35, 47, 1);
-  --ac-chip-toggle-neutral-border: rgba(224, 237, 254, 0.15);
-  --ac-chip-toggle-neutral-text: rgba(223, 225, 229, 1);
-
-  --ac-chip-toggle-neutral-hover-border: rgba(119, 127, 141, 1);
-  --ac-chip-toggle-neutral-hover-bg: rgba(36, 43, 55, 1);
-
-  --ac-chip-toggle-neutral-pressed-bg: rgba(165, 172, 182, 1);
-
-
-  /*  Select  */
-  --ac-select-bg: var(--new-bg-raised);
-  --ac-select-text: rgba(223, 225, 229, 1);
-  --ac-select-border: rgba(118, 126, 140, 1);
-  --ac-select-hover-border: var(--new-link-text);
-  --ac-select-active-border: var(--new-link-text);
-
-  --a-text-default: var(--darkmode-text-default);
-
-    --ac-button-secondary-neutral-border: rgba(119, 127, 141, 1);
-    --ac-button-secondary-neutral-hover-bg: rgba(215, 222, 250, 0.11);
-    --ac-button-tertiary-neutral-hover-bg: rgba(215, 222, 250, 0.11);
-
-    /* List Item */
-
-    --ac-list-marker-ul-color: var(--darkmode-text-default)
-
-
-}
-
-body.dark a {
-  color: var(--darkmode-linktext-default);
-}
-
-body.dark p {
-  color: var(--darkmode-text-default);
-}
-
-body.dark .navds-popover,
-body.dark .navds-modal {
-  background-color: var(--new-bg);
-  border-color: rgba(101, 109, 123, 1);
-}
-
-body.dark .navds-modal__body,
-body.dark .navds-modal:not(.navds-modal--polyfilled) .navds-modal__body {
-  background: none;
-  background-color: var(--new-bg);
 }

@@ -73,13 +73,18 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
   })
 
   return (
-    <div className='fade-in background-color ml-[-0.3rem] flex h-fit w-fit flex-wrap items-center justify-start rounded'>
+    <div className='fade-in background-color ml-[-0.3rem] flex h-fit w-fit flex-wrap items-center justify-start rounded-sm'>
       <Tooltip content={`${isLastMessage ? "Kopier svaret ( Alt+Ctrl+C )" : "Kopier svaret"}`}>
         <CopyButton
           copyText=''
           size='small'
           aria-label='Kopier svaret'
-          icon={<FilesIcon aria-hidden />}
+          icon={
+            <FilesIcon
+              aria-hidden
+              fontSize='1.25rem'
+            />
+          }
           onClick={() => {
             new Promise((resolve) => setTimeout(resolve, 100)).then(() => copyMessageContent())
 
@@ -88,16 +93,16 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
         />
       </Tooltip>
       <FeedbackOnAnswer message={message} />
-
       <MessageStar message={message} />
       <Tooltip
         content={`${isLastMessage ? "Oversett svaret til engelsk ( Alt+Ctrl+O )" : "Oversett svaret til engelsk"}`}
       >
         <Button
-          variant='tertiary-neutral'
+          data-color='neutral'
+          variant='tertiary'
           size='small'
           aria-label='Oversett svaret til engelsk'
-          icon={<LanguageIcon />}
+          icon={<LanguageIcon fontSize='1.25rem' />}
           onClick={handleTranslate}
         />
       </Tooltip>
@@ -105,19 +110,21 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
         content={`${isLastMessage ? "Gjør om svaret til punktliste ( Alt+Ctrl+P )" : "Gjør om svaret til punktliste"}`}
       >
         <Button
-          variant='tertiary-neutral'
+          data-color='neutral'
+          variant='tertiary'
           size='small'
           aria-label='Gjør om svaret til punktliste'
-          icon={<BulletListIcon />}
+          icon={<BulletListIcon fontSize='1.25rem' />}
           onClick={handleBulletList}
         />
       </Tooltip>
       <Tooltip content={`${isLastMessage ? "Gjør svaret mer empatisk ( Alt+Ctrl+E )" : "Gjør svaret mer empatisk"}`}>
         <Button
-          variant='tertiary-neutral'
+          data-color='neutral'
+          variant='tertiary'
           size='small'
           aria-label='Gjør svaret mer empatisk'
-          icon={<HandShakeHeartIcon />}
+          icon={<HandShakeHeartIcon fontSize='1.25rem' />}
           onClick={handleEmpathetic}
         />
       </Tooltip>
@@ -125,10 +132,11 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
         content={`${isLastMessage ? "Gjør om svaret til du-form ( Alt+Ctrl+F )" : "Gjør om svaret til du-form"}`}
       >
         <Button
-          variant='tertiary-neutral'
+          data-color='neutral'
+          variant='tertiary'
           size='small'
           aria-label='Gjør om svaret til du-form'
-          icon={<PersonIcon />}
+          icon={<PersonIcon fontSize='1.25rem' />}
           onClick={handleDuForm}
         />
       </Tooltip>
@@ -148,11 +156,21 @@ const MessageStar = ({ message }: { message: Message }) => {
   return (
     <Tooltip content='Marker som bra svar'>
       <Button
+        data-color='neutral'
         disabled={isLoading}
-        variant='tertiary-neutral'
+        variant='tertiary'
         size='small'
         aria-label='Marker som bra svar'
-        icon={starred ? <StarFillIcon className='text-orange-500' /> : <StarIcon />}
+        icon={
+          starred ? (
+            <StarFillIcon
+              fontSize='1.25rem'
+              className='text-ax-warning-600'
+            />
+          ) : (
+            <StarIcon fontSize='1.25rem' />
+          )
+        }
         onClick={() => {
           handleStarMessage()
         }}

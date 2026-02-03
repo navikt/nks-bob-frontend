@@ -10,7 +10,7 @@ import { MainButtonsExplanation } from "../coachmark/CoachmarkContent.tsx"
 import Guide from "../content/guide/Guide.tsx"
 import { NewConceptMessage } from "../content/guide/GuideModals.tsx"
 import { NewButton } from "../menu/NewButton.tsx"
-import DarkModeToggle from "../menu/darkmode/DarkModeToggle.tsx"
+import { ThemeButton } from "../menu/darkmode/DarkModeToggle.tsx"
 import { NotificationToggle } from "../notification/NotificationDrawer.tsx"
 import "./Header.css"
 import { NAVLogo } from "./nav-logo.tsx"
@@ -46,7 +46,7 @@ function Header({ conversation }: HeaderProps) {
             <NAVLogo />
           </Link>
         </div>
-        <div className='max-h-30 flex h-full gap-3'>
+        <div className='flex h-full max-h-30 gap-3'>
           <div className='flex items-center justify-center align-middle'>
             {conversation && (
               <>
@@ -64,6 +64,7 @@ function Header({ conversation }: HeaderProps) {
             <NotificationToggle />
             <Tooltip content='Informasjon og tips ( Alt+Ctrl+I )'>
               <Button
+                data-color='neutral'
                 variant='tertiary'
                 aria-label='Informasjon og tips'
                 size='medium'
@@ -76,8 +77,8 @@ function Header({ conversation }: HeaderProps) {
               setStartGuide={setStartGuide}
             />
             {userConfig?.showNewConceptInfo && <NewConceptMessage />}
+            <ThemeButton />
           </div>
-          <DarkModeToggle />
         </div>
       </div>
     </div>

@@ -1,56 +1,82 @@
-import { Tooltip } from "@navikt/ds-react"
-import { useEffect, useState } from "react"
+import { ThemeIcon } from "@navikt/aksel-icons"
+import { Button, Theme, Tooltip } from "@navikt/ds-react"
 import { useHotkeys } from "react-hotkeys-hook"
+import { create } from "zustand"
+import { createJSONStorage, persist } from "zustand/middleware"
 import analytics from "../../../utils/analytics"
-import "./DarkModeToggle.css"
 
-const DarkModeToggle = () => {
-  const [dark, setDark] = useState(() => {
-    const savedMode = localStorage.getItem("darkMode")
-    return savedMode ? JSON.parse(savedMode) : false
-  })
+type ThemeState = {
+  currentTheme: "light" | "dark"
+  setTheme: (theme: "light" | "dark") => void
+  toggleTheme: () => void
+}
 
-  useEffect(() => {
-    if (dark) {
-      document.body.classList.add("dark")
-    } else {
-      document.body.classList.remove("dark")
-    }
-  }, [dark])
+export const useTheme = create<ThemeState>()(
+  persist(
+    (set) => {
+      const setTheme = (theme: "light" | "dark") =>
+        set((state) => {
+          analytics.mørkModusByttet(theme === "dark" ? "mørk" : "lys")
+          return {
+            ...state,
+            currentTheme: theme,
+          }
+        })
 
-  const darkModeHandler = () => {
-    setDark((prevDark: boolean) => {
-      const newDark = !prevDark
-      analytics.mørkModusByttet(newDark ? "mørk" : "lys")
-      localStorage.setItem("darkMode", JSON.stringify(newDark))
-      return newDark
-    })
-  }
+      const toggleTheme = () =>
+        set((state) => {
+          if (state.currentTheme === "light") {
+            analytics.mørkModusByttet("mørk")
+            return {
+              ...state,
+              currentTheme: "dark",
+            }
+          }
 
-  const tooltip = dark ? "Endre til lys modus ( Alt+Ctrl+D )" : "Endre til mørk modus ( Alt+Ctrl+D )"
+          analytics.mørkModusByttet("lys")
+          return {
+            ...state,
+            currentTheme: "light",
+          }
+        })
 
-  useHotkeys("alt+ctrl+d", () => darkModeHandler(), {
+      return {
+        currentTheme: "light",
+        setTheme,
+        toggleTheme,
+      }
+    },
+
+    {
+      name: "theme",
+      storage: createJSONStorage(() => localStorage),
+      partialize: ({ currentTheme }) => ({ currentTheme }),
+    },
+  ),
+)
+
+export const ThemeButton = () => {
+  const { currentTheme, toggleTheme } = useTheme()
+
+  const tooltip = currentTheme === "dark" ? "Endre til lys modus ( Alt+Ctrl+D )" : "Endre til mørk modus ( Alt+Ctrl+D )"
+
+  useHotkeys("alt+ctrl+d", () => toggleTheme(), {
     enableOnFormTags: true,
   })
 
   return (
     <Tooltip content={tooltip}>
-      <div className='darkmode-toggle'>
-        <input
-          type='checkbox'
-          id='darkmode-checkbox'
-          checked={dark}
-          onChange={darkModeHandler}
-          aria-label='Mørk modus'
-        />
-        <label
-          htmlFor='darkmode-checkbox'
-          aria-label='Mørk modus'
-          className='slider round'
-        />
-      </div>
+      <Button
+        variant='tertiary'
+        data-color='neutral'
+        icon={<ThemeIcon aria-hidden />}
+        onClick={() => toggleTheme()}
+      />
     </Tooltip>
   )
 }
 
-export default DarkModeToggle
+export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
+  const { currentTheme } = useTheme()
+  return <Theme theme={currentTheme}>{children}</Theme>
+}

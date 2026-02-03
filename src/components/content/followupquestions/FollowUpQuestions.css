@@ -1,24 +1,14 @@
 .followupcontainer {
-    display: flex;
-    padding: 4px 8px;
-    background: rgba(241, 247, 255, 1);
-    white-space: normal !important;
+  display: flex;
+  padding: 4px 8px;
+  background: var(--ax-bg-accent-soft);
+  white-space: normal !important;
 }
 
 .followupcontainer:hover {
-    background: rgba(212, 229, 253, 1);
-}
-
-body.dark .followupcontainer {
-    background: rgba(16, 29, 45, 1);
-
-}
-
-body.dark .followupcontainer:hover {
-    background: rgba(26, 44, 65, 1);
-
+  background: var(--ax-bg-accent-moderate);
 }
 
 .question-text {
-    white-space: inherit !important;
+  white-space: inherit !important;
 }

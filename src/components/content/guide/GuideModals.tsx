@@ -28,7 +28,7 @@ export const NewConceptMessage = () => {
           </div>
           <VStack
             className='modal-container'
-            gap='4'
+            gap='space-16'
           >
             <Heading
               size='small'
@@ -44,7 +44,8 @@ export const NewConceptMessage = () => {
             <BodyLong>Les mer om endringen i nyhetssaken.</BodyLong>
             <BodyLong className='mb-4'>Samme Bob – ny drakt. La oss komme i gang!</BodyLong>
             <Button
-              variant='primary-neutral'
+              data-color='neutral'
+              variant='primary'
               className='w-fit'
               onClick={handleClick}
             >
@@ -64,7 +65,7 @@ export const WelcomeMessage = ({ onNext, onClose }: { onNext: () => void; onClos
     </div>
     <VStack
       className='modal-container'
-      gap='4'
+      gap='space-16'
     >
       <HStack
         align='center'
@@ -77,8 +78,9 @@ export const WelcomeMessage = ({ onNext, onClose }: { onNext: () => void; onClos
           Velkommen
         </Heading>
         <Button
+          data-color='neutral'
           size='small'
-          variant='tertiary-neutral'
+          variant='tertiary'
           icon={<XMarkIcon />}
           onClick={onClose}
         />
@@ -89,18 +91,20 @@ export const WelcomeMessage = ({ onNext, onClose }: { onNext: () => void; onClos
       </BodyLong>
       <HStack
         align='stretch'
-        gap='2'
+        gap='space-8'
         justify='end'
       >
         <Button
+          data-color='neutral'
           onClick={onClose}
-          variant='tertiary-neutral'
+          variant='tertiary'
         >
           Jeg trenger ikke opplæring
         </Button>
         <Button
+          data-color='neutral'
           onClick={onNext}
-          variant='primary-neutral'
+          variant='primary'
         >
           Videre
         </Button>
@@ -125,7 +129,7 @@ export const Step1 = ({
     </div>
     <VStack
       className='modal-container'
-      gap='4'
+      gap='space-16'
     >
       <HStack
         align='center'
@@ -138,8 +142,9 @@ export const Step1 = ({
           Om tjenesten
         </Heading>
         <Button
+          data-color='neutral'
           size='small'
-          variant='tertiary-neutral'
+          variant='tertiary'
           icon={<XMarkIcon />}
           onClick={onClose}
           autoFocus={true}
@@ -168,7 +173,7 @@ export const Step1 = ({
       </BodyLong>
       <HStack
         align='stretch'
-        gap='2'
+        gap='space-8'
         justify='space-between'
         className='mt-4 items-end'
       >
@@ -178,8 +183,9 @@ export const Step1 = ({
         />
 
         <Button
+          data-color='neutral'
           onClick={onNext}
-          variant='primary-neutral'
+          variant='primary'
           size='medium'
         >
           Neste
@@ -202,13 +208,13 @@ export const Step2 = ({
   onPrevious: () => void
   handleSelectChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
 }) => (
-  <div className='fixed left-1/2 top-1/2 z-[1000] w-[calc(100%-32px)] max-w-[700px] -translate-x-1/2 -translate-y-1/2 transform flex-col'>
+  <div className='fixed top-1/2 left-1/2 z-1000 w-[calc(100%-32px)] max-w-[700px] -translate-x-1/2 -translate-y-1/2 transform flex-col'>
     <div className='flex translate-y-[16px] justify-start'>
       <BobTheGuide2 />
     </div>
     <VStack
       className='modal-container'
-      gap='4'
+      gap='space-16'
     >
       <HStack
         align='center'
@@ -221,8 +227,9 @@ export const Step2 = ({
           Når du stiller spørsmål
         </Heading>
         <Button
+          data-color='neutral'
           size='small'
-          variant='tertiary-neutral'
+          variant='tertiary'
           icon={<XMarkIcon />}
           onClick={onClose}
         />
@@ -251,7 +258,7 @@ export const Step2 = ({
       </BodyLong>
       <HStack
         align='stretch'
-        gap='2'
+        gap='space-8'
         justify='space-between'
         className='mt-4 items-end'
       >
@@ -259,17 +266,19 @@ export const Step2 = ({
           step={step}
           onChange={handleSelectChange}
         />
-        <HStack gap='4'>
+        <HStack gap='space-16'>
           <Button
+            data-color='neutral'
             onClick={onPrevious}
-            variant='tertiary-neutral'
+            variant='tertiary'
             size='medium'
           >
             Forrige
           </Button>
           <Button
+            data-color='neutral'
             onClick={onNext}
-            variant='primary-neutral'
+            variant='primary'
             size='medium'
           >
             Neste
@@ -293,13 +302,13 @@ export const Step3 = ({
   onPrevious: () => void
   handleSelectChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
 }) => (
-  <div className='fixed left-1/2 top-1/2 z-[1000] w-[calc(100%-32px)] max-w-[700px] -translate-x-1/2 -translate-y-1/2 transform flex-col'>
+  <div className='fixed top-1/2 left-1/2 z-1000 w-[calc(100%-32px)] max-w-[700px] -translate-x-1/2 -translate-y-1/2 transform flex-col'>
     <div className='flex translate-y-[60px] justify-center'>
       <BobTheGuide2 />
     </div>
     <VStack
-      className='modal-container sticky z-[1000]'
-      gap='4'
+      className='modal-container sticky z-1000'
+      gap='space-16'
     >
       <HStack
         align='center'
@@ -312,8 +321,9 @@ export const Step3 = ({
           Om svaret fra Bob
         </Heading>
         <Button
+          data-color='neutral'
           size='small'
-          variant='tertiary-neutral'
+          variant='tertiary'
           icon={<XMarkIcon />}
           onClick={onClose}
         />
@@ -343,7 +353,7 @@ export const Step3 = ({
       </VStack>
       <HStack
         align='stretch'
-        gap='2'
+        gap='space-8'
         justify='space-between'
         className='mt-4 items-end'
       >
@@ -351,16 +361,18 @@ export const Step3 = ({
           step={step}
           onChange={handleSelectChange}
         />
-        <HStack gap='4'>
+        <HStack gap='space-16'>
           <Button
+            data-color='neutral'
             onClick={onPrevious}
-            variant='tertiary-neutral'
+            variant='tertiary'
           >
             Forrige
           </Button>
           <Button
+            data-color='neutral'
             onClick={onNext}
-            variant='primary-neutral'
+            variant='primary'
           >
             Neste
           </Button>
@@ -383,13 +395,13 @@ export const Step4 = ({
   onPrevious: () => void
   handleSelectChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
 }) => (
-  <div className='fixed left-1/2 top-[40%] z-[1000] w-[calc(100%-32px)] max-w-[700px] -translate-x-1/2 -translate-y-1/2 transform flex-col'>
+  <div className='fixed top-[40%] left-1/2 z-1000 w-[calc(100%-32px)] max-w-[700px] -translate-x-1/2 -translate-y-1/2 transform flex-col'>
     <div className='flex translate-y-[60px] justify-end'>
       <BobThePirate />
     </div>
     <VStack
-      className='modal-container sticky z-[1000]'
-      gap='0'
+      className='modal-container sticky z-1000'
+      gap='space-0'
     >
       <HStack
         align='center'
@@ -403,8 +415,9 @@ export const Step4 = ({
           Misfornøyd med svaret? Prøv dette:
         </Heading>
         <Button
+          data-color='neutral'
           size='small'
-          variant='tertiary-neutral'
+          variant='tertiary'
           icon={<XMarkIcon />}
           onClick={onClose}
         />
@@ -422,7 +435,7 @@ export const Step4 = ({
       </BodyLong>
       <HStack
         align='stretch'
-        gap='6'
+        gap='space-24'
         justify='space-between'
         className='mt-4 items-end'
       >
@@ -430,16 +443,18 @@ export const Step4 = ({
           step={step}
           onChange={handleSelectChange}
         />
-        <HStack gap='4'>
+        <HStack gap='space-16'>
           <Button
+            data-color='neutral'
             onClick={onPrevious}
-            variant='tertiary-neutral'
+            variant='tertiary'
           >
             Forrige
           </Button>
           <Button
+            data-color='neutral'
             onClick={onNext}
-            variant='primary-neutral'
+            variant='primary'
           >
             Neste
           </Button>
@@ -460,13 +475,13 @@ export const Step5 = ({
   onPrevious: () => void
   handleSelectChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
 }) => (
-  <div className='fixed left-1/2 top-1/2 z-[1000] w-[calc(100%-32px)] max-w-[700px] -translate-x-1/2 -translate-y-1/2 transform flex-col'>
+  <div className='fixed top-1/2 left-1/2 z-1000 w-[calc(100%-32px)] max-w-[700px] -translate-x-1/2 -translate-y-1/2 transform flex-col'>
     <div className='flex translate-y-[16px] justify-start'>
       <BobTheGuide2 />
     </div>{" "}
     <VStack
-      className='modal-container sticky z-[1000]'
-      gap='0'
+      className='modal-container sticky z-1000'
+      gap='space-0'
     >
       <HStack
         align='center'
@@ -480,8 +495,9 @@ export const Step5 = ({
           Hurtigtaster
         </Heading>
         <Button
+          data-color='neutral'
           size='small'
-          variant='tertiary-neutral'
+          variant='tertiary'
           icon={<XMarkIcon />}
           onClick={onClose}
         />
@@ -515,7 +531,7 @@ export const Step5 = ({
       </ul>
       <HStack
         align='stretch'
-        gap='6'
+        gap='space-24'
         justify='space-between'
         className='mt-2 items-end'
       >
@@ -523,17 +539,19 @@ export const Step5 = ({
           step={step}
           onChange={handleSelectChange}
         />
-        <HStack gap='4'>
+        <HStack gap='space-16'>
           <Button
+            data-color='neutral'
             onClick={onPrevious}
-            variant='tertiary-neutral'
+            variant='tertiary'
             size='medium'
           >
             Forrige
           </Button>
           <Button
+            data-color='neutral'
             onClick={onClose}
-            variant='primary-neutral'
+            variant='primary'
             size='medium'
           >
             Takk, Bob!

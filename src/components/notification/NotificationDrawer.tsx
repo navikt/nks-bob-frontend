@@ -69,13 +69,14 @@ export const NotificationToggle = () => {
     >
       <Tooltip content='Vis varsler ( Alt+Ctrl+V )'>
         <Button
+          data-color="neutral"
           variant='tertiary'
           aria-label='Vis varsler'
           size='medium'
           icon={
             <div className='relative'>
               <BellIcon aria-hidden />
-              {hasUnread && <NotificationTick className='absolute right-[7px] top-[3px]' />}
+              {hasUnread && <NotificationTick className='absolute top-[3px] right-[7px]' />}
             </div>
           }
           as={Dropdown.Toggle}
@@ -115,8 +116,8 @@ const NotificationDrawer = ({
       onChange={(value) => setActiveTab(value as TabName)}
     >
       <div className='sticky top-0 z-10'>
-        <div className='bg-surface-default'>
-          <div className='bg-surface-neutral-subtle p-4'>Varsler</div>
+        <div className='bg-ax-bg-default'>
+          <div className='bg-ax-bg-neutral-soft p-4'>Varsler</div>
           <Tabs.List>
             <Tabs.Tab
               value='alle'
@@ -157,7 +158,7 @@ const NotificationList = ({ notifications }: { notifications: NewsNotification[]
         <NotificationItem
           key={`notification-${notification.id}`}
           notification={notification}
-          className='border-b-border-subtle p-4 [&:not(:last-child)]:border-b'
+          className='border-b-ax-border-neutral-subtle p-4 not-last:border-b'
         />
       ))}
     </div>
@@ -195,5 +196,5 @@ const NotificationItem = ({ notification, className }: { notification: NewsNotif
 }
 
 const NotificationTick = ({ className }: { className?: string }) => {
-  return <div className={`h-1.5 w-1.5 animate-ping rounded-full bg-surface-danger ${className}`} />
+  return <div className={`bg-ax-bg-danger-strong h-1.5 w-1.5 animate-ping rounded-full ${className}`} />
 }

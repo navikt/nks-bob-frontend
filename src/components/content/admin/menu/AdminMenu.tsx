@@ -2,7 +2,7 @@ import {
   BellDotIcon,
   ChatExclamationmarkIcon,
   ExclamationmarkTriangleIcon,
-  MagnifyingGlassIcon
+  MagnifyingGlassIcon,
 } from "@navikt/aksel-icons"
 import { Button } from "@navikt/ds-react"
 import { useState } from "react"
@@ -25,15 +25,13 @@ const AdminMenuWrapper = () => {
 }
 
 const AdminMenu = () => {
-  const [activeComponent, setActiveComponent] = useState<
-    "search" | "feedback" | "alert" | "news" | null
-  >(null)
+  const [activeComponent, setActiveComponent] = useState<"search" | "feedback" | "alert" | "news" | null>(null)
 
   return (
     <SidebarWrapper
       isOpen={activeComponent !== null}
       onClose={() => setActiveComponent(null)}
-      storageKey="admin-menu-width"
+      storageKey='admin-menu-width'
       defaultWidth={320}
       minWidth={250}
       maxWidth={600}
@@ -41,58 +39,56 @@ const AdminMenu = () => {
       {(width) => (
         <>
           {/* Picker buttons positioned relative to sidebar */}
-          <div 
-            className='pointer-events-none fixed right-0 h-full flex items-center'
-            style={{ 
-              right: activeComponent ? `${width + 2}px` : '0px'
+          <div
+            className='pointer-events-none fixed right-0 flex h-full items-center'
+            style={{
+              right: activeComponent ? `${width + 2}px` : "0px",
             }}
           >
             <div
-              className={`pointer-events-auto flex flex-col gap-3 rounded-l-lg bg-bg-default p-3 ${activeComponent ? "opacity-100" : "opacity-10"} border-y border-l border-border-subtle transition-opacity duration-700 hover:opacity-100`}
+              className={`bg-ax-bg-default pointer-events-auto flex flex-col gap-3 rounded-l-lg p-3 ${activeComponent ? "opacity-100" : "opacity-10"} border-ax-border-neutral-subtle border-y border-l transition-opacity duration-700 hover:opacity-100`}
             >
               <Button
+                data-color='brand-magenta'
                 size='small'
-                variant='primary-neutral'
+                variant='primary'
                 icon={<MagnifyingGlassIcon />}
-                className={`${activeComponent === "search" ? "bg-[#49515E]" : "bg-[#B65781]"} hover:bg-[#555D6A]`}
-                onClick={() =>
-                  setActiveComponent(activeComponent === "search" ? null : "search")
-                }
+                aria-pressed={activeComponent === "search"}
+                className='aria-pressed:bg-ax-bg-neutral-strong-pressed'
+                onClick={() => setActiveComponent(activeComponent === "search" ? null : "search")}
               />
               <Button
+                data-color='brand-magenta'
                 size='small'
-                variant='primary-neutral'
+                variant='primary'
                 icon={<ChatExclamationmarkIcon />}
-                className={`${activeComponent === "feedback" ? "bg-[#49515E]" : "bg-[#B65781]"} hover:bg-[#555D6A]`}
-                onClick={() =>
-                  setActiveComponent(
-                    activeComponent === "feedback" ? null : "feedback",
-                  )
-                }
+                aria-pressed={activeComponent === "feedback"}
+                className='aria-pressed:bg-ax-bg-neutral-strong-pressed'
+                onClick={() => setActiveComponent(activeComponent === "feedback" ? null : "feedback")}
               />
               <Button
+                data-color='brand-magenta'
                 size='small'
-                variant='primary-neutral'
+                variant='primary'
                 icon={<ExclamationmarkTriangleIcon />}
-                className={`${activeComponent === "alert" ? "bg-[#49515E]" : "bg-[#B65781]"} hover:bg-[#555D6A]`}
-                onClick={() =>
-                  setActiveComponent(activeComponent === "alert" ? null : "alert")
-                }
+                aria-pressed={activeComponent === "alert"}
+                className='aria-pressed:bg-ax-bg-neutral-strong-pressed'
+                onClick={() => setActiveComponent(activeComponent === "alert" ? null : "alert")}
               />
               <Button
+                data-color='brand-magenta'
                 size='small'
-                variant='primary-neutral'
+                variant='primary'
                 icon={<BellDotIcon />}
-                className={`${activeComponent === "news" ? "bg-[#49515E]" : "bg-[#B65781]"} hover:bg-[#555D6A]`}
-                onClick={() =>
-                  setActiveComponent(activeComponent === "news" ? null : "news")
-                }
+                aria-pressed={activeComponent === "news"}
+                className='aria-pressed:bg-ax-bg-neutral-strong-pressed'
+                onClick={() => setActiveComponent(activeComponent === "news" ? null : "news")}
               />
             </div>
           </div>
-          
+
           {/* Sidebar content */}
-          <div className="h-full">
+          <div className='h-full'>
             {activeComponent === "search" && <SearchConversation />}
             {activeComponent === "feedback" && <FeedbackFromUsers />}
             {activeComponent === "alert" && <CreateAlert />}

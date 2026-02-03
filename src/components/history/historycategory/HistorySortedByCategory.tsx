@@ -9,7 +9,7 @@ const filterConversations = (
   byDate: (conversation: Conversation) => boolean,
 ) => {
   return conversations.filter(byDate).map((conversation: Conversation) => (
-    <li key={conversation.id} className='flex flex-grow flex-col'>
+    <li key={conversation.id} className='flex grow flex-col'>
       <ConversationLink conversation={conversation} />
     </li>
   ))

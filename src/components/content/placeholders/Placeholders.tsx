@@ -22,7 +22,7 @@ export const BobPlaceholder = () => {
             </div>
             <BodyShort
               size='medium'
-              className='self-center text-text-subtle'
+              className='self-center text-ax-text-neutral-subtle'
             >
               {displayText}
             </BodyShort>
@@ -33,7 +33,7 @@ export const BobPlaceholder = () => {
             </div>
             <BodyShort
               size='medium'
-              className='self-center text-text-subtle'
+              className='self-center text-ax-text-neutral-subtle'
             >
               {displayText}
             </BodyShort>

@@ -1,5 +1,5 @@
 import { ChevronDownIcon, ChevronUpIcon, XMarkIcon } from "@navikt/aksel-icons"
-import { BodyLong, BodyShort, Button, CopyButton, Detail, Heading, HStack, VStack } from "@navikt/ds-react"
+import { BodyLong, BodyShort, Button, CopyButton, Detail, Heading, HStack, Tag, VStack } from "@navikt/ds-react"
 import { useState } from "react"
 import Markdown from "react-markdown"
 import remarkGfm from "remark-gfm"
@@ -46,7 +46,8 @@ export const ShowAllSources = () => {
       >
         <Heading size='xsmall'>Alle kilder</Heading>
         <Button
-          variant='tertiary-neutral'
+          data-color='neutral'
+          variant='tertiary'
           size='small'
           icon={<XMarkIcon />}
           onClick={() => setActiveMessage(null)}
@@ -63,7 +64,7 @@ export const ShowAllSources = () => {
         </BodyLong>
         {nksContext.length > 0 && (
           <VStack>
-            <div className='bg-[rgba(245,246,247,1)] px-4 py-2'>
+            <div className='bg-ax-bg-neutral-soft px-4 py-2'>
               <SourceIcon source='nks' />
             </div>
             <VStack className='my-1'>
@@ -78,7 +79,7 @@ export const ShowAllSources = () => {
         )}
         {navContext.length > 0 && (
           <VStack className='sourcepanel-list'>
-            <div className='bg-[rgba(245,246,247,1)] px-4 py-2'>
+            <div className='bg-ax-bg-neutral-soft px-4 py-2'>
               <SourceIcon source='navno' />
             </div>
             <VStack className='my-1'>
@@ -101,7 +102,7 @@ const NksSource = ({ context, tools }: { context: Context; tools: string[] }) =>
     <VStack className='sourcepanel gap-3'>
       <HStack
         align='center'
-        gap='1'
+        gap='space-4'
       >
         <TextFragmentLink
           text={context.content}
@@ -136,7 +137,7 @@ const NavSource = ({ context, tools }: { context: Context; tools: string[] }) =>
     <VStack className='sourcepanel gap-3'>
       <HStack
         align='center'
-        gap='1'
+        gap='space-4'
       >
         <TextFragmentLink
           text={context.content}
@@ -221,29 +222,28 @@ export const ShowAllSourcesToggle = ({ message, toggleTitle }: ShowAllSourcesTog
   const toggleActive = () => setActiveMessage(isActive ? null : message)
 
   return (
-    <button
-      type='button'
-      aria-pressed={isActive}
-      onClick={toggleActive}
-      className='navds-chips__toggle navds-chips__toggle--neutral h-[26px] rounded-full px-2 py-[1px] aria-pressed:text-[rgba(223_225_229/1)] dark:aria-pressed:text-[rgba(0_0_0/1)] aria-pressed:dark:hover:bg-[rgba(148,155,168,1)]'
-    >
-      <div className='flex items-center gap-1'>
-        <ShowAllSourcesIcon />
-        <Detail
-          aria-pressed={isActive}
-          className='aria-pressed:dark:text-[rgba(0,0,0,1)]'
-        >
-          {toggleTitle}
-        </Detail>
-      </div>
-    </button>
+    <div className='aksel-chips--small'>
+      <button
+        type='button'
+        aria-pressed={isActive}
+        data-pressed={isActive}
+        onClick={toggleActive}
+        data-color='neutral'
+        className='aksel-chips__chip aksel-chips__toggle h-6.5 cursor-pointer rounded-full px-2 py-px'
+      >
+        <div className='flex items-center gap-1'>
+          <ShowAllSourcesIcon />
+          <Detail>{toggleTitle}</Detail>
+        </div>
+      </button>
+    </div>
   )
 }
 
 export const NoSourcesNeeded = () => {
   return (
-    <div className='rounded-full border border-[rgb(7_26_54/0.21)] bg-[rgb(18_43_68/0.08)] px-2 py-[2px] dark:border-[rgba(224_237_254/0.15)] dark:bg-[rgba(28_35_47/1)]'>
+    <Tag className='rounded-full py-0'>
       <Detail>Bob brukte ingen kilder for å lage svaret</Detail>
-    </div>
+    </Tag>
   )
 }

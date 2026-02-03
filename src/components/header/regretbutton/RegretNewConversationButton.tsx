@@ -25,8 +25,9 @@ const RegretNewButton = () => {
       {fromConversationId ? (
         <Tooltip content='Angre ny samtale'>
           <Button
+            data-color='danger'
             className='fade-in mr-2'
-            variant='danger'
+            variant='tertiary'
             size='small'
             icon={<ArrowCirclepathReverseIcon />}
             onClick={handleClick}

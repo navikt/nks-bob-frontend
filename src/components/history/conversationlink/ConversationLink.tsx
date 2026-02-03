@@ -29,7 +29,7 @@ function ConversationLink({ conversation }: ConversationLinkProps) {
     >
       <div
         onClick={() => navigate(`/samtaler/${conversation.id}`)}
-        className='p flex w-full flex-grow px-2 py-1.5'
+        className='p flex w-full grow px-2 py-1.5'
       >
         {/*padding: 6px 8px;*/}
         <BodyShort truncate={true} size='medium' className='w-full'>
@@ -40,7 +40,7 @@ function ConversationLink({ conversation }: ConversationLinkProps) {
         <TrashIcon
           title='Slett'
           fontSize='1.2rem'
-          className='hover:accent-surface-danger-hover'
+          className='hover:accent-ax-bg-danger-strong-hover'
         />
       </div>
     </div>

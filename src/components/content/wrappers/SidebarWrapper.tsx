@@ -90,15 +90,15 @@ export const SidebarWrapper = ({
       className={`pointer-events-none fixed right-0 h-full items-center ${className}`}
     >
       <div
-        className={`group pointer-events-auto flex h-full w-2 cursor-ew-resize items-center justify-center bg-border-subtle transition-colors duration-200 hover:bg-border-selected active:bg-border-selected ${isOpen ? "opacity-100" : "opacity-0"}`}
+        className={`group pointer-events-auto flex h-full w-2 cursor-ew-resize items-center justify-center bg-ax-border-neutral-subtle transition-colors duration-200 hover:bg-ax-border-accent active:bg-ax-border-accent ${isOpen ? "opacity-100" : "opacity-0"}`}
         ref={resizeRef}
         onMouseDown={startResizing}
         style={{ zIndex: 105 }}
       >
-        <div className='h-10 w-0.5 bg-border-default transition-colors duration-200 group-hover:bg-border-selected group-active:bg-border-selected'></div>
+        <div className='h-10 w-0.5 bg-ax-border-neutral transition-colors duration-200 group-hover:bg-ax-border-accent group-active:bg-ax-border-accent'></div>
       </div>
       <div
-        className='pointer-events-auto relative mt-1 h-full overflow-y-auto border-l border-border-subtle bg-bg-default'
+        className='pointer-events-auto relative mt-1 h-full overflow-y-auto border-l border-ax-border-neutral-subtle bg-ax-bg-default'
         style={{
           width: isOpen ? `${width}px` : "0px"
         }}

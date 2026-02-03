@@ -1,75 +1,80 @@
-import {
-  BodyShort,
-  Button,
-  Heading,
-  HStack,
-  Label,
-  Link,
-  Popover,
-  ReadMore,
-  VStack
-} from "@navikt/ds-react"
+import { BodyShort, Button, Heading, HStack, Label, Link, Popover, ReadMore, VStack } from "@navikt/ds-react"
 import Markdown from "react-markdown"
-import remarkGfm from 'remark-gfm'
+import remarkGfm from "remark-gfm"
 import { Context } from "../../../../../types/Message"
 import { ExternalLinkIcon, InformationSquareIcon } from "@navikt/aksel-icons"
 import { memo, useRef, useState } from "react"
 
-export const Sources = memo(({ context }: { context: Context[] }) => {
-  const nksContext = context.filter(({ source }) => source === "nks")
-  const navContext = context.filter(({ source }) => source === "navno")
+/* NOTE: Not in use. */
+export const Sources = memo(
+  ({ context }: { context: Context[] }) => {
+    const nksContext = context.filter(({ source }) => source === "nks")
+    const navContext = context.filter(({ source }) => source === "navno")
 
-  return (
-    <ReadMore header='Kilder' className='mt-4'>
-      <VStack className='py-2'>
-        <BodyShort>
-          Denne oversikten viser kildene Bob har brukt, men siden han bare leser
-          deler av dem, kan det være vanskelig å finne den eksakte informasjonen
-          som støtter svaret.
-        </BodyShort>
-        <VStack gap='4'>
-          <VStack gap='3'>
-            <Heading level='2' size='xsmall'>
-              Kunnskapsbasen
-            </Heading>
-            {nksContext.map((ctx) => (
-              <NksSource context={ctx} />
-            ))}
-          </VStack>
-          <VStack gap='3'>
-            <Heading level='2' size='xsmall'>
-              Nav.no
-            </Heading>
-            {navContext.map((ctx) => (
-              <NavSource context={ctx} />
-            ))}
+    return (
+      <ReadMore
+        header='Kilder'
+        className='mt-4'
+      >
+        <VStack className='py-2'>
+          <BodyShort>
+            Denne oversikten viser kildene Bob har brukt, men siden han bare leser deler av dem, kan det være vanskelig
+            å finne den eksakte informasjonen som støtter svaret.
+          </BodyShort>
+          <VStack gap='space-4'>
+            <VStack gap='space-2'>
+              <Heading
+                level='2'
+                size='xsmall'
+              >
+                Kunnskapsbasen
+              </Heading>
+              {nksContext.map((ctx) => (
+                <NksSource context={ctx} />
+              ))}
+            </VStack>
+            <VStack gap='space-2'>
+              <Heading
+                level='2'
+                size='xsmall'
+              >
+                Nav.no
+              </Heading>
+              {navContext.map((ctx) => (
+                <NavSource context={ctx} />
+              ))}
+            </VStack>
           </VStack>
         </VStack>
-      </VStack>
-    </ReadMore>
-  )
-}, (prevProps, nextProps) => {
-  const prevContext = prevProps.context
-  const nextContext = nextProps.context
+      </ReadMore>
+    )
+  },
+  (prevProps, nextProps) => {
+    const prevContext = prevProps.context
+    const nextContext = nextProps.context
 
-  if (prevContext.length === nextContext.length) {
-    return true
-  }
+    if (prevContext.length === nextContext.length) {
+      return true
+    }
 
-  return prevContext === nextContext
-})
+    return prevContext === nextContext
+  },
+)
 
 const NksSource = ({ context }: { context: Context }) => {
   return (
     <HStack>
       <Label size='small'>
-        <Link href={`${context.url}#${context.anchor}`} target='_blank'>
+        <Link
+          href={`${context.url}#${context.anchor}`}
+          target='_blank'
+        >
           {context.title}
           <ExternalLinkIcon title='Åpne artikkelen i ny fane' />
         </Link>
       </Label>
       <ArticleSummary context={context} />
-    </HStack >
+    </HStack>
   )
 }
 
@@ -77,7 +82,10 @@ const NavSource = ({ context }: { context: Context }) => {
   return (
     <HStack>
       <Label size='small'>
-        <Link href={`${context.url}#${context.anchor}`} target='_blank'>
+        <Link
+          href={`${context.url}#${context.anchor}`}
+          target='_blank'
+        >
           {context.title} - {context.anchor}
           <ExternalLinkIcon title='Åpne artikkelen i ny fane' />
         </Link>
@@ -97,9 +105,9 @@ const ArticleSummary = ({ context }: { context: Context }) => {
         ref={buttonRef}
         onClick={() => setOpen(!open)}
         aria-expanded={open}
-        size="xsmall"
-        variant="tertiary"
-        title="Vis utdrag fra artikkel"
+        size='xsmall'
+        variant='tertiary'
+        title='Vis utdrag fra artikkel'
       >
         <InformationSquareIcon />
       </Button>
@@ -107,19 +115,17 @@ const ArticleSummary = ({ context }: { context: Context }) => {
         open={open}
         onClose={() => setOpen(false)}
         anchorEl={buttonRef.current}
-        arrow={false}
-        className="max-w-prose max-h-96 overflow-auto"
+        className='max-h-96 max-w-prose overflow-auto'
       >
         <Popover.Content>
-          <Heading level="3" size="small">
+          <Heading
+            level='3'
+            size='small'
+          >
             {context.title}
           </Heading>
-          <BodyShort>
-            {context.ingress}
-          </BodyShort>
-          <Markdown remarkPlugins={[remarkGfm]}>
-            {context.content}
-          </Markdown>
+          <BodyShort>{context.ingress}</BodyShort>
+          <Markdown remarkPlugins={[remarkGfm]}>{context.content}</Markdown>
         </Popover.Content>
       </Popover>
     </>

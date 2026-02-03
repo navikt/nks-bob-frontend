@@ -16,18 +16,18 @@ const RegretNewButton = () => {
       {fromConversationId ? (
         <div>
           <Button
+            data-color="neutral"
             className='fade-in mb-2'
-            variant='tertiary-neutral'
+            variant="tertiary"
             size='small'
             icon={<ChevronLeftDoubleIcon />}
-            onClick={handleClick}
-          >
+            onClick={handleClick}>
             Angre ny samtale
           </Button>
         </div>
       ) : null}
     </>
-  )
+  );
 }
 
 export default RegretNewButton

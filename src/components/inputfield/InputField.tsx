@@ -10,6 +10,7 @@ import {
   Textarea,
   Tooltip,
   VStack,
+  Box,
 } from "@navikt/ds-react"
 
 import { PaperplaneIcon } from "@navikt/aksel-icons"
@@ -310,46 +311,54 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
             {" "}
             Vurder om følgende er personopplysninger. Om det er tilfellet, må de fjernes før du sender inn spørsmålet.
           </BodyShort>
-          <List
-            size='small'
-            className='max-h-36 overflow-scroll'
-          >
-            {validationWarnings.flatMap(({ matches }, i) =>
-              matches.map(({ value, start, end }, j) => (
-                <List.Item
-                  key={`warning-list-${i}-${j}`}
-                  className='items-center'
-                >
-                  <HStack
-                    gap='2'
-                    align='center'
-                  >
-                    <Tooltip content='Endre'>
-                      <Link
-                        onClick={() => {
-                          if (textareaRef.current) {
-                            scrollToSelection(textareaRef.current, start, end)
-                          }
-                        }}
-                      >
-                        <span className='cursor-pointer font-bold'>{value}</span>
-                      </Link>
-                    </Tooltip>
-
-                    <Button
-                      variant='tertiary-neutral'
-                      size='xsmall'
-                      onClick={() => {
-                        validateInput([...ignoredValidations, value])
-                      }}
+          <div className='max-h-36 overflow-scroll'>
+            <Box
+              marginBlock='space-12'
+              asChild
+            >
+              <List
+                data-aksel-migrated-v8
+                size='small'
+              >
+                {validationWarnings.flatMap(({ matches }, i) =>
+                  matches.map(({ value, start, end }, j) => (
+                    <List.Item
+                      key={`warning-list-${i}-${j}`}
+                      className='items-center'
                     >
-                      Ignorer
-                    </Button>
-                  </HStack>
-                </List.Item>
-              )),
-            )}
-          </List>
+                      <HStack
+                        gap='space-2'
+                        align='center'
+                      >
+                        <Tooltip content='Endre'>
+                          <Link
+                            onClick={() => {
+                              if (textareaRef.current) {
+                                scrollToSelection(textareaRef.current, start, end)
+                              }
+                            }}
+                          >
+                            <span className='font-ax-bold cursor-pointer'>{value}</span>
+                          </Link>
+                        </Tooltip>
+
+                        <Button
+                          data-color='neutral'
+                          variant='tertiary'
+                          size='xsmall'
+                          onClick={() => {
+                            validateInput([...ignoredValidations, value])
+                          }}
+                        >
+                          Ignorer
+                        </Button>
+                      </HStack>
+                    </List.Item>
+                  )),
+                )}
+              </List>
+            </Box>
+          </div>
         </Alert>
       )}
       {validationErrors.length > 0 && (
@@ -366,48 +375,55 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
             Spørsmålet inneholder fødselsnummer/d-nummer/hnr
           </Heading>
           <BodyShort size='small'>Fjern følgende før du sender inn spørsmålet.</BodyShort>
-          <List
-            size='small'
-            className='max-h-36 overflow-scroll'
-          >
-            {validationErrors.flatMap(({ matches }, i) =>
-              matches.map(({ value, start, end }, j) => (
-                <List.Item
-                  key={`error-list-${i}-${j}`}
-                  className='items-center'
-                >
-                  <HStack
-                    gap='2'
-                    align='center'
-                  >
-                    <Link
-                      onClick={() => {
-                        if (textareaRef.current) {
-                          scrollToSelection(textareaRef.current, start, end)
-                        }
-                      }}
+          <div className='max-h-36 overflow-scroll'>
+            <Box
+              marginBlock='space-12'
+              asChild
+            >
+              <List
+                data-aksel-migrated-v8
+                size='small'
+              >
+                {validationErrors.flatMap(({ matches }, i) =>
+                  matches.map(({ value, start, end }, j) => (
+                    <List.Item
+                      key={`error-list-${i}-${j}`}
+                      className='items-center'
                     >
-                      <span className='cursor-pointer font-bold'>{value}</span>
-                    </Link>
-                  </HStack>
-                </List.Item>
-              )),
-            )}
-          </List>
+                      <HStack
+                        gap='space-2'
+                        align='center'
+                      >
+                        <Link
+                          onClick={() => {
+                            if (textareaRef.current) {
+                              scrollToSelection(textareaRef.current, start, end)
+                            }
+                          }}
+                        >
+                          <span className='font-ax-bold cursor-pointer'>{value}</span>
+                        </Link>
+                      </HStack>
+                    </List.Item>
+                  )),
+                )}
+              </List>
+            </Box>
+          </div>
         </Alert>
       )}
       <NewMessageAlert
         setInputValue={setInputValue}
         conversationId={conversationId}
       />
-      <div className='inputfield relative flex max-w-[48rem] flex-col items-center justify-end'>
+      <div className='inputfield relative flex max-w-3xl flex-col items-center justify-end'>
         <Textarea
           resize={isFocused ? "vertical" : false}
           ref={textareaRef}
           size='medium'
           label=''
           hideLabel
-          className='dialogcontent mb-3 min-h-[43px] truncate [&_textarea]:max-h-[450px] [&_textarea]:min-h-[43px] focus:[&_textarea]:min-h-[50px]'
+          className='dialogcontent mb-3 min-h-[43px] truncate [&_textarea]:max-h-[450px] [&_textarea]:min-h-[43px] [&_textarea]:focus:min-h-[50px]'
           minRows={1.3}
           maxRows={15}
           placeholder={placeholderText}
@@ -429,7 +445,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           icon={<PaperplaneIcon title='Send melding' />}
           variant='tertiary'
           size='medium'
-          className='absolute right-[0.2%] top-[2%] h-full max-h-[2.5rem] w-full max-w-[2.3rem]'
+          className='absolute top-[2%] right-[0.2%] h-full max-h-[2.5rem] w-full max-w-[2.3rem]'
           onClick={handleButtonClick}
           disabled={sendDisabled}
           tabIndex={-1}
@@ -513,11 +529,12 @@ const NewMessageAlert = ({ setInputValue, conversationId }: NewMessageAlertProps
         >
           Psst!
         </Heading>
-        <VStack gap='3'>
+        <VStack gap='space-12'>
           Du har vært lenge i denne samtalen. Husk å starte en ny samtale når du får en ny henvendelse – da unngår du at
           Bob blander temaer.
           <Button
-            variant='secondary-neutral'
+            data-color='neutral'
+            variant='secondary'
             size='small'
             className='w-fit'
             onClick={startNew}

@@ -59,7 +59,7 @@ export const FeedbackFromUsers = () => {
 const FeedbackDescription = () => {
   return (
     <Box
-      padding='4'
+      padding='space-16'
       position='sticky'
     >
       Her finner du tilbakemeldinger som veilederne sender oss når de ser at noe er galt med svaret.
@@ -171,8 +171,8 @@ const FeedbackHeader = ({
 
   return (
     <Box
-      className='bg-[#F5F6F7]'
-      padding='4'
+      background='neutral-soft'
+      padding='space-16'
       position='sticky'
     >
       <HStack
@@ -180,7 +180,7 @@ const FeedbackHeader = ({
         justify='space-between'
       >
         <HStack
-          gap='2'
+          gap='space-8'
           align='center'
         >
           <ChatExclamationmarkIcon />
@@ -194,7 +194,8 @@ const FeedbackHeader = ({
         <ActionMenu rootElement={menuRef.current}>
           <ActionMenu.Trigger>
             <Button
-              variant='tertiary-neutral'
+              data-color='neutral'
+              variant='tertiary'
               icon={<FilterIcon />}
             />
           </ActionMenu.Trigger>
@@ -219,7 +220,7 @@ const FeedbackHeader = ({
                         groupContainsActiveFilter && (
                           <CircleFillIcon
                             height={8}
-                            color='#00459C'
+                            className='text-ax-bg-brand-blue-strong-pressed'
                           />
                         )
                       }
@@ -327,7 +328,7 @@ const FeedbackList = ({
 
       {totalPages > 1 && (
         <HStack
-          padding='4'
+          padding='space-16'
           justify='center'
         >
           <Pagination
@@ -459,23 +460,24 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
   }, [category, importance, note, domain, debouncedUpdate])
 
   const buttonLabel = isResolved ? "Ferdigstilt" : "Ferdigstill"
-  const buttonStyle = isResolved ? "bg-[#00893C] text-white" : ""
+  const buttonColor = isResolved ? "success" : "neutral"
+  const buttonVariant = isResolved ? "primary" : "secondary"
 
   const isResolvable = category !== "" && importance !== ""
 
   return (
     <Box
       ref={boxRef}
-      paddingBlock='7'
-      paddingInline='4'
+      paddingBlock='space-28'
+      paddingInline='space-16'
       borderWidth='0 0 1 0'
-      borderColor='border-subtle'
+      borderColor='neutral-subtle'
       onClick={() =>
         feedback.messageId === null
           ? setPopoverOpen(true)
           : navigate(`/admin/${feedback.conversationId}?messageId=${feedback.messageId}`)
       }
-      className={`cursor-pointer hover:bg-[#F1F7FF] ${isSelected ? "bg-[#F5F6F7]" : ""}`}
+      className={`hover:bg-ax-bg-info-soft cursor-pointer ${isSelected ? "bg-ax-bg-neutral-soft" : ""}`}
       key={`single-feedback-${feedback.id}`}
     >
       <Popover
@@ -489,24 +491,25 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
           Denne meldingen finnes ikke. Den har sannsynligvis blitt slettet hvis den er over 30 dager gammel.
         </Popover.Content>
       </Popover>
-      <VStack gap='4'>
+      <VStack gap='space-16'>
         <HStack justify='space-between'>
           <Label size='medium'>Feil innmeldt: {format(new Date(feedback.createdAt), "dd.MM.yy (HH:mm)")}</Label>
           <Tag
-            variant='neutral-moderate'
+            data-color='neutral'
+            variant='moderate'
             size='xsmall'
           >
             {feedback.id.substring(30)}
           </Tag>
         </HStack>
-        <VStack gap='2'>
+        <VStack gap='space-8'>
           <Label size='small'>Hva er galt med svaret?</Label>
           {feedback.options.map((option, i) => (
             <VStack
-              gap='4'
+              gap='space-16'
               key={`feedback-option-${option}-${i}`}
             >
-              <HStack gap='2'>
+              <HStack gap='space-8'>
                 <FeedbackOptionTag
                   key={`${feedback.id}-${option}`}
                   option={option}
@@ -514,14 +517,14 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
               </HStack>
             </VStack>
           ))}
-          <VStack gap='2'>
+          <VStack gap='space-8'>
             <Label size='small'>Kommentar: </Label>
             <BodyShort size='small'>{feedback.comment}</BodyShort>
           </VStack>
         </VStack>
         <form onSubmit={submit}>
           <HStack
-            gap='4'
+            gap='space-16'
             align='end'
           >
             <Select
@@ -590,13 +593,13 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
             />
             {isResolvable && (
               <Button
+                data-color={buttonColor}
                 type='submit'
-                variant='secondary-neutral'
+                variant={buttonVariant}
                 size='small'
                 iconPosition='right'
                 icon={<CheckmarkCircleIcon />}
                 loading={isLoading}
-                className={buttonStyle}
               >
                 {buttonLabel}
               </Button>
@@ -611,7 +614,8 @@ const SingleFeedback = ({ feedback, isSelected }: { feedback: Feedback; isSelect
 const FeedbackOptionTag = ({ option }: { option: string }) => {
   return (
     <Tag
-      variant='neutral'
+      data-color='neutral'
+      variant='outline'
       size='small'
     >
       {option}

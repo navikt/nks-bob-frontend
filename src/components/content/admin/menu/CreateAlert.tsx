@@ -17,11 +17,7 @@ import {
 import { formatDate } from "date-fns"
 import { FormEvent, useEffect, useRef, useState } from "react"
 import { useSWRConfig } from "swr"
-import {
-  useCreateAlert,
-  useDeleteAlert,
-  useUpdateAlert,
-} from "../../../../api/admin"
+import { useCreateAlert, useDeleteAlert, useUpdateAlert } from "../../../../api/admin"
 import { useAlerts } from "../../../../api/api"
 import { Alert } from "../../../../types/Notifications"
 
@@ -34,17 +30,21 @@ export const CreateAlert = () => {
       <AlertDescription />
       <AlertHeader />
       {!isTesting && alerts.length > 0 && <SingleAlert alert={alerts.at(0)!} />}
-      {(isTesting || alerts.length === 0) && (
-        <AlertForm setIsTesting={setIsTesting} />
-      )}
+      {(isTesting || alerts.length === 0) && <AlertForm setIsTesting={setIsTesting} />}
     </VStack>
   )
 }
 
 const AlertDescription = () => {
   return (
-    <Box padding='4' position='sticky'>
-      <BodyShort size='medium' textColor='subtle'>
+    <Box
+      padding='space-16'
+      position='sticky'
+    >
+      <BodyShort
+        size='medium'
+        textColor='subtle'
+      >
         Lag feilmeldinger som blir synlig i grensesnittet for brukere.
       </BodyShort>
     </Box>
@@ -52,8 +52,16 @@ const AlertDescription = () => {
 }
 const AlertHeader = () => {
   return (
-    <Box className='bg-[#F5F6F7]' padding='4' position='sticky'>
-      <BodyShort size='medium' weight='semibold' textColor='subtle'>
+    <Box
+      padding='space-16'
+      position='sticky'
+      background='neutral-soft'
+    >
+      <BodyShort
+        size='medium'
+        weight='semibold'
+        textColor='subtle'
+      >
         Publiser feilmelding
       </BodyShort>
     </Box>
@@ -68,13 +76,8 @@ const ALERT_OPTIONS = {
 
 type AlertNotificationType = keyof typeof ALERT_OPTIONS
 
-const AlertForm = ({
-  setIsTesting,
-}: {
-  setIsTesting: React.Dispatch<React.SetStateAction<boolean>>
-}) => {
-  const [notificationType, setNotificationType] =
-    useState<AlertNotificationType>("")
+const AlertForm = ({ setIsTesting }: { setIsTesting: React.Dispatch<React.SetStateAction<boolean>> }) => {
+  const [notificationType, setNotificationType] = useState<AlertNotificationType>("")
   const [title, setTitle] = useState<string>("")
   const [content, setContent] = useState<string>("")
   const ref = useRef<HTMLDialogElement>(null)
@@ -139,18 +142,22 @@ const AlertForm = ({
   }
 
   return (
-    <VStack padding='4' gap='6'>
+    <VStack
+      padding='space-16'
+      gap='space-24'
+    >
       <Select
         label='Type feilmelding'
         size='small'
         className='max-w-48'
         value={notificationType}
-        onChange={(event) =>
-          setNotificationType(event.target.value as AlertNotificationType)
-        }
+        onChange={(event) => setNotificationType(event.target.value as AlertNotificationType)}
       >
         {Object.entries(ALERT_OPTIONS).map(([value, label]) => (
-          <option key={`notification-type-option-${value}`} value={value}>
+          <option
+            key={`notification-type-option-${value}`}
+            value={value}
+          >
             {label}
           </option>
         ))}
@@ -171,11 +178,10 @@ const AlertForm = ({
           setContent(event.target.value)
         }}
       />
-      <Detail textColor='subtle'>
-        NB: Du må teste feilmeldingen før du kan publisere.
-      </Detail>
+      <Detail textColor='subtle'>NB: Du må teste feilmeldingen før du kan publisere.</Detail>
       <Button
-        variant='secondary-neutral'
+        data-color='neutral'
+        variant='secondary'
         size='small'
         className='w-fit'
         onClick={testAlert}
@@ -203,16 +209,22 @@ const AlertForm = ({
         closeOnBackdropClick
       >
         <Modal.Body>
-          <form method='dialog' id='alert-schema' onSubmit={submit}>
+          <form
+            method='dialog'
+            id='alert-schema'
+            onSubmit={submit}
+          >
             <BodyShort textColor='subtle'>
-              Er du sikker på at du ønsker å publisere feilmeldingen? Den vil
-              bli synlig for alle brukere.
+              Er du sikker på at du ønsker å publisere feilmeldingen? Den vil bli synlig for alle brukere.
             </BodyShort>
           </form>
         </Modal.Body>
         <Modal.Footer className='flex-row'>
-          <HStack gap='4'>
-            <Button variant='secondary' onClick={() => ref.current?.close()}>
+          <HStack gap='space-16'>
+            <Button
+              variant='secondary'
+              onClick={() => ref.current?.close()}
+            >
               Avbryt
             </Button>
             <Button
@@ -235,11 +247,19 @@ const SingleAlert = ({ alert }: { alert: Alert }) => {
 
   if (updateAlert) {
     return (
-      <UpdateAlertForm alert={updateAlert} setUpdateAlert={setUpdateAlert} />
+      <UpdateAlertForm
+        alert={updateAlert}
+        setUpdateAlert={setUpdateAlert}
+      />
     )
   }
 
-  return <SingleAlertInner alert={alert} setUpdateAlert={setUpdateAlert} />
+  return (
+    <SingleAlertInner
+      alert={alert}
+      setUpdateAlert={setUpdateAlert}
+    />
+  )
 }
 
 const SingleAlertInner = ({
@@ -263,19 +283,27 @@ const SingleAlertInner = ({
   }
 
   return (
-    <VStack padding='4' gap='4'>
-      <VStack gap='1'>
-        <Heading level='3' size='xsmall' textColor='subtle'>
+    <VStack
+      padding='space-16'
+      gap='space-16'
+    >
+      <VStack gap='space-4'>
+        <Heading
+          level='3'
+          size='xsmall'
+          textColor='subtle'
+        >
           Du har 1 aktiv feilmelding
         </Heading>
         <Detail>NB: Du må slette feilmeldingen for å publisere en ny.</Detail>
       </VStack>
-      <BodyShort>
-        Publisert: {formatDate(new Date(createdAt), "dd.MM.yyyy (HH:mm)")}
-      </BodyShort>
+      <BodyShort>Publisert: {formatDate(new Date(createdAt), "dd.MM.yyyy (HH:mm)")}</BodyShort>
       <VStack>
         <Label>Feilmeldingstype</Label>
-        <AlertComponent inline variant={alertVariant}>
+        <AlertComponent
+          inline
+          variant={alertVariant}
+        >
           {notificationType}
         </AlertComponent>
       </VStack>
@@ -287,10 +315,11 @@ const SingleAlertInner = ({
         <Label>Tekst</Label>
         <BodyShort>{content}</BodyShort>
       </VStack>
-      <HStack gap='2'>
+      <HStack gap='space-8'>
         <Button
+          data-color='neutral'
           size='small'
-          variant='secondary-neutral'
+          variant='secondary'
           onClick={(event) => {
             event.preventDefault()
             event.stopPropagation()
@@ -300,8 +329,9 @@ const SingleAlertInner = ({
           Endre
         </Button>
         <Button
+          data-color='danger'
           size='small'
-          variant='danger'
+          variant='primary'
           loading={isLoading}
           onClick={() => {
             ref.current?.showModal()
@@ -325,18 +355,21 @@ const SingleAlertInner = ({
               onSubmit={deleteOnSubmit}
             >
               <BodyShort textColor='subtle'>
-                Feilmeldingen vil ikke lenger være synlig. Ønsker du å
-                fortsette?
+                Feilmeldingen vil ikke lenger være synlig. Ønsker du å fortsette?
               </BodyShort>
             </form>
           </Modal.Body>
           <Modal.Footer className='flex-row'>
-            <HStack gap='4'>
-              <Button variant='secondary' onClick={() => ref.current?.close()}>
+            <HStack gap='space-16'>
+              <Button
+                variant='secondary'
+                onClick={() => ref.current?.close()}
+              >
                 Avbryt
               </Button>
               <Button
-                variant='danger'
+                data-color='danger'
+                variant='primary'
                 form='notification-delete-schema'
                 type='submit'
                 loading={isLoading}
@@ -358,10 +391,9 @@ const UpdateAlertForm = ({
   alert: Alert
   setUpdateAlert: React.Dispatch<React.SetStateAction<Alert | null>>
 }) => {
-  const [notificationType, setNotificationType] =
-    useState<AlertNotificationType>(
-      alert.notificationType as AlertNotificationType,
-    )
+  const [notificationType, setNotificationType] = useState<AlertNotificationType>(
+    alert.notificationType as AlertNotificationType,
+  )
   const [title, setTitle] = useState<string>(alert.title)
   const [text, setText] = useState<string>(alert.content)
   const ref = useRef<HTMLDialogElement>(null)
@@ -422,18 +454,22 @@ const UpdateAlertForm = ({
   }
 
   return (
-    <VStack padding='4' gap='6'>
+    <VStack
+      padding='space-16'
+      gap='space-24'
+    >
       <Select
         label='Type feilmelding'
         size='small'
         className='max-w-48'
         value={notificationType}
-        onChange={(event) =>
-          setNotificationType(event.target.value as AlertNotificationType)
-        }
+        onChange={(event) => setNotificationType(event.target.value as AlertNotificationType)}
       >
         {Object.entries(ALERT_OPTIONS).map(([value, label]) => (
-          <option key={`notification-type-option-${value}`} value={value}>
+          <option
+            key={`notification-type-option-${value}`}
+            value={value}
+          >
             {label}
           </option>
         ))}
@@ -454,11 +490,10 @@ const UpdateAlertForm = ({
           setText(event.target.value)
         }}
       />
-      <Detail textColor='subtle'>
-        NB: Du må teste feilmeldingen før du kan publisere.
-      </Detail>
+      <Detail textColor='subtle'>NB: Du må teste feilmeldingen før du kan publisere.</Detail>
       <Button
-        variant='secondary-neutral'
+        data-color='neutral'
+        variant='secondary'
         size='small'
         className='w-fit'
         onClick={testAlert}
@@ -486,16 +521,22 @@ const UpdateAlertForm = ({
         closeOnBackdropClick
       >
         <Modal.Body>
-          <form method='dialog' id='alert-schema' onSubmit={submit}>
+          <form
+            method='dialog'
+            id='alert-schema'
+            onSubmit={submit}
+          >
             <BodyShort textColor='subtle'>
-              Er du sikker på at du ønsker å endre feilmeldingen? Endringene vil
-              bli synlig for alle brukere.
+              Er du sikker på at du ønsker å endre feilmeldingen? Endringene vil bli synlig for alle brukere.
             </BodyShort>
           </form>
         </Modal.Body>
         <Modal.Footer className='flex-row'>
-          <HStack gap='4'>
-            <Button variant='secondary' onClick={() => ref.current?.close()}>
+          <HStack gap='space-16'>
+            <Button
+              variant='secondary'
+              onClick={() => ref.current?.close()}
+            >
               Avbryt
             </Button>
             <Button

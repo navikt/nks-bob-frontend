@@ -71,7 +71,7 @@ const SingleCitation = ({
   }
 
   return (
-    <div className='mb-2 flex flex-col border-b border-[rgba(207,211,216,1)] pb-6'>
+    <div className='border-ax-border-neutral-subtle mb-2 flex flex-col border-b pb-6'>
       {context ? (
         <TitleLink
           context={context}
@@ -146,7 +146,7 @@ const MultiCitation = ({
   }
 
   return (
-    <div className='mb-4 flex flex-col border-b border-[rgba(207,211,216,1)] pb-6'>
+    <div className='border-ax-border-neutral-subtle mb-4 flex flex-col border-b pb-6'>
       {mainCitation && (
         <TitleLink
           context={mainContext}
@@ -157,9 +157,9 @@ const MultiCitation = ({
       <div className='flex flex-col gap-2'>
         {citations.map((citation) => (
           <>
-            <div className='group mb-2 mt-1 gap-1 italic'>
+            <div className='group mt-1 mb-2 gap-1 italic'>
               <Markdown
-                className='markdown answer-markdown markdown-inline navds-body-short--small mb-1 inline'
+                className='markdown answer-markdown markdown-inline aksel-body-short--small mb-1 inline'
                 remarkPlugins={[remarkGfm, md.rewriteRelativeLinks]}
                 components={{
                   a: ({ ...props }) => (
@@ -312,7 +312,7 @@ export const TextFragmentLink = ({
             }
             target='_blank'
             inlineText
-            className={`${className} navds-body-short--small`}
+            className={`${className} aksel-body-short--small`}
             onClick={onClick}
           >
             {title ?? matchingContextCitationData.title}
@@ -382,19 +382,19 @@ export const TitleLink = ({ context, citation, tools }: { context?: Context; cit
   return (
     <HStack
       align='center'
-      gap='3'
+      gap='space-12'
       className='mb-1'
     >
       <HStack
         align='center'
-        gap='1'
+        gap='space-4'
       >
         <Tooltip content='Åpne artikkelen i ny fane'>
           <Label size='small'>
             <Link
               href={urlReturn()}
               target='_blank'
-              className='navds-label_small'
+              className='aksel-label_small'
             >
               {buildLinkTitle(context)}
             </Link>

@@ -9,9 +9,5 @@
 }
 
 .detailcolor {
-  color: var(--a-text-subtle)
-}
-
-body.dark .detailcolor {
-  color: rgba(118, 126, 140, 1);
+  color: var(--ax-text-neutral-subtle)
 }

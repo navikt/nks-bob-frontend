@@ -3,7 +3,7 @@
   position: relative;
   width: 100%;
   align-items: center;
-  color: var(--a-text-default);
+  color: var(--ax-text-neutral);
   border-radius: 4px;
 }
 
@@ -16,7 +16,7 @@
 }
 
 .deletebutton {
-  color: var(--a-surface-neutral-hover);
+  color: var(--ax-bg-neutral-strong-hover);
   display: none;
   position: absolute;
   right: 0;
@@ -29,5 +29,5 @@
 }
 
 .deletebutton:hover {
-  color: var(--a-icon-danger);
+  color: var(--ax-text-danger-decoration);
 }

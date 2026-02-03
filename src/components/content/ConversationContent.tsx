@@ -142,10 +142,11 @@ function ConversationContent() {
         {showScrollButton && (
           <Tooltip content='Scroll til bunnen ( Alt+Ctrl+B )'>
             <Button
+              data-color='neutral'
               icon={<ArrowDownIcon />}
               className='fixed left-1/2 -translate-x-1/2'
               style={{ bottom: dynamicBottom }}
-              variant='primary-neutral'
+              variant='primary'
               size='small'
               onClick={scrollToBottom}
               aria-label='Scroll til bunnen'
@@ -178,7 +179,7 @@ const ErrorBanner = ({ alerts }: { alerts: Alert[] }) => {
       fullWidth
       size='small'
       variant={level}
-      className='mb-4 w-full max-w-[48rem]'
+      className='mb-4 w-full max-w-3xl'
     >
       <Heading
         spacing
@@ -199,7 +200,7 @@ const ConversationNotFound = () => {
       <div className='flex h-full w-full flex-col justify-between'>
         <Header conversation={conversationId} />
         <HStack
-          gap='16'
+          gap='space-64'
           align='center'
           justify='center'
         >
@@ -210,7 +211,7 @@ const ConversationNotFound = () => {
           />
           <VStack
             className='max-w-[30%]'
-            gap='4'
+            gap='space-16'
           >
             <Heading size='medium'>Samtalen ble ikke funnet</Heading>
             <BodyShort>Hvis samtalen er over 30 dager gammel så kan den ha blitt slettet.</BodyShort>
