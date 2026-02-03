@@ -35,7 +35,7 @@ function Header({ conversation }: HeaderProps) {
   })
 
   return (
-    <div className='mx-auto mb-1 flex max-h-16 w-full max-w-full justify-between px-4 py-4 align-middle [@media(max-width:700px)]:fixed [@media(max-width:700px)]:top-0'>
+    <div className='mx-auto mb-1 flex max-h-16 w-full max-w-full justify-between px-4 py-4 align-middle [@media(max-width:700px)]:sticky [@media(max-width:700px)]:top-0'>
       <div className='ml-2 flex max-w-24'>
         <Link
           to='https://www.nav.no/'
