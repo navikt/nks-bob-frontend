@@ -8,7 +8,7 @@ import {
   NotePencilIcon,
   StarIcon,
 } from "@navikt/aksel-icons"
-import { BodyShort, HStack, VStack } from "@navikt/ds-react"
+import { BodyShort, Button, HStack, VStack } from "@navikt/ds-react"
 import { ThemeButton } from "../menu/darkmode/DarkModeToggle"
 
 export const AnswerButtonsExplanation = () => {
@@ -72,9 +72,13 @@ export const MainButtonsExplanation = () => {
         gap='space-2'
         wrap={false}
       >
-        <div className='mt-1'>
-          <NotePencilIcon color='#2277D5' />
-        </div>
+        <Button
+          data-color='neutral'
+          variant='tertiary'
+          size='medium'
+          icon={<NotePencilIcon aria-hidden />}
+          aria-label='Start ny samtale'
+        />
         <BodyShort>
           Fjerner alt fra denne samtalen og oppretter en ny. Egner seg godt når man ønsker å spørre om et nytt tema.
         </BodyShort>
@@ -84,9 +88,13 @@ export const MainButtonsExplanation = () => {
         gap='space-2'
         wrap={false}
       >
-        <div className='mt-1'>
-          <InformationSquareIcon color='#2277D5' />
-        </div>
+        <Button
+          data-color='neutral'
+          variant='tertiary'
+          size='medium'
+          icon={<InformationSquareIcon aria-hidden />}
+          aria-label='Start ny samtale'
+        />
         <BodyShort>Informasjon og veiledning om hvordan du best kan bruke tjenesten.</BodyShort>
       </HStack>
       <HStack
