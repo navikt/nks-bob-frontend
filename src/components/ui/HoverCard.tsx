@@ -8,11 +8,9 @@ interface HoverCardProps {
   content: React.ReactNode
   onOpenChange?: (isOpen: boolean) => void
   context: Context
-  sourceId: number
-  tools: string[]
 }
 
-export const HoverCard = ({ children, content, onOpenChange, context, sourceId, tools }: HoverCardProps) => {
+export const HoverCard = ({ children, content, onOpenChange, context }: HoverCardProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [position, setPosition] = useState({
     x: 0,
@@ -31,17 +29,11 @@ export const HoverCard = ({ children, content, onOpenChange, context, sourceId, 
     }
 
     if (!isOpen) {
-      analytics.åpnetFotnote(
-        {
-          kilde: context.source,
-          tittel: context.title,
-          artikkelKolonne: context.articleColumn,
-        },
-        {
-          kildeId: sourceId,
-        },
-        tools,
-      )
+      analytics.åpnetFotnote({
+        kilde: context.source,
+        tittel: context.title,
+        artikkelKolonne: context.articleColumn,
+      })
     }
 
     if (triggerRef.current) {

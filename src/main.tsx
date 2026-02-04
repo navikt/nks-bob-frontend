@@ -8,6 +8,7 @@ import { preloadAlerts, preloadNewsNotifications, preloadUserConfig, triggerReAu
 import "./global.css"
 import { AnalyticsProvider } from "./utils/AnalyticsProvider.tsx"
 import { ThemeProvider } from "./components/menu/darkmode/DarkModeToggle.tsx"
+import { PageNotFound } from "./components/not-found/NotFound.tsx"
 
 const head = createHead()
 
@@ -33,6 +34,10 @@ const router = createBrowserRouter(
       path='/'
       element={<App />}
     >
+      <Route
+        path='*'
+        element={<PageNotFound />}
+      />
       <Route
         index
         element={

@@ -3,7 +3,7 @@ import { useSendMessage } from "../../api/sse.ts"
 
 import { ErrorBoundary } from "react-error-boundary"
 import { ArrowDownIcon, NotePencilIcon } from "@navikt/aksel-icons"
-import { BodyShort, Button, GlobalAlert, Heading, HStack, Tooltip, VStack } from "@navikt/ds-react"
+import { BodyShort, Button, GlobalAlert, Heading, HStack, Stack, Tooltip, VStack } from "@navikt/ds-react"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import Markdown from "react-markdown"
@@ -193,13 +193,15 @@ const ErrorBanner = ({ alerts }: { alerts: Alert[] }) => {
 const ConversationNotFound = () => {
   const { conversationId } = useParams()
   return (
-    <div className='conversation-content'>
-      <div className='flex h-full w-full flex-col justify-between'>
-        <Header conversation={conversationId} />
-        <HStack
+    <>
+      <Header conversation={conversationId} />
+      <HStack height='100vh'>
+        <Stack
           gap='space-64'
-          align='center'
+          width='100%'
           justify='center'
+          align='center'
+          direction={{ xs: "column", lg: "row" }}
         >
           <img
             src={embarressedBob}
@@ -207,8 +209,8 @@ const ConversationNotFound = () => {
             width='200px'
           />
           <VStack
-            className='max-w-[30%]'
             gap='space-16'
+            maxWidth={{ xs: "70%", lg: "30%" }}
           >
             <Heading size='medium'>Samtalen ble ikke funnet</Heading>
             <BodyShort>Hvis samtalen er over 30 dager gammel så kan den ha blitt slettet.</BodyShort>
@@ -223,13 +225,9 @@ const ConversationNotFound = () => {
               </Button>
             </Link>
           </VStack>
-        </HStack>
-        <InputField
-          onSend={() => {}}
-          disabled={true}
-        />
-      </div>
-    </div>
+        </Stack>
+      </HStack>
+    </>
   )
 }
 

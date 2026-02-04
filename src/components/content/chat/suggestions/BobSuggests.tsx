@@ -24,10 +24,14 @@ interface BobSuggestsProps {
 }
 
 const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
+  const plaintextMessageContent = md.toPlaintext(message.content)
+
   function handleTranslate() {
     analytics.svarEndret("oversett")
     const translate: NewMessage = {
-      content: isLastMessage ? "Oversett svaret til engelsk" : `Oversett svaret til engelsk:\n${message.content}`,
+      content: isLastMessage
+        ? "Oversett svaret til engelsk"
+        : `Oversett svaret til engelsk:\n${plaintextMessageContent}`,
     }
     onSend(translate)
   }
@@ -35,7 +39,9 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
   function handleBulletList() {
     analytics.svarEndret("punktliste")
     const bulletList: NewMessage = {
-      content: isLastMessage ? "Gjør om svaret til punktliste" : `Gjør om svaret til punktliste:\n${message.content}`,
+      content: isLastMessage
+        ? "Gjør om svaret til punktliste"
+        : `Gjør om svaret til punktliste:\n${plaintextMessageContent}`,
     }
     onSend(bulletList)
   }
@@ -43,7 +49,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
   function handleEmpathetic() {
     analytics.svarEndret("empatisk")
     const simplifyMessage: NewMessage = {
-      content: isLastMessage ? "Gjør svaret mer empatisk" : `Gjør svaret mer empatisk:\n${message.content}`,
+      content: isLastMessage ? "Gjør svaret mer empatisk" : `Gjør svaret mer empatisk:\n${plaintextMessageContent}`,
     }
     onSend(simplifyMessage)
   }
@@ -51,7 +57,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
   function handleDuForm() {
     analytics.svarEndret("du-form")
     const simplifyMessage: NewMessage = {
-      content: isLastMessage ? "Gjør om svaret til du-form" : `Gjør om svaret til du-form:\n${message.content}`,
+      content: isLastMessage ? "Gjør om svaret til du-form" : `Gjør om svaret til du-form:\n${plaintextMessageContent}`,
     }
     onSend(simplifyMessage)
   }

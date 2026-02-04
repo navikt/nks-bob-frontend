@@ -3,12 +3,12 @@ import { ActionMenu, Button, HStack, Theme, Tooltip } from "@navikt/ds-react"
 import { useHotkeys } from "react-hotkeys-hook"
 import { create } from "zustand"
 import { createJSONStorage, persist } from "zustand/middleware"
-import analytics from "../../../utils/analytics"
+import analytics, { UmamiThemeType } from "../../../utils/analytics"
 import { useEffect, useState } from "react"
 
 type ThemeType = "light" | "dark" | "system"
 
-const themeTypeNorsk = (theme: ThemeType): "lys" | "mørk" | "system" => {
+export const umamiThemeType = (theme: ThemeType): UmamiThemeType => {
   if (theme === "light") {
     return "lys"
   }
@@ -29,7 +29,7 @@ export const useTheme = create<ThemeState>()(
     (set) => {
       const setTheme = (theme: ThemeType) =>
         set((state) => {
-          analytics.mørkModusByttet(themeTypeNorsk(theme))
+          analytics.mørkModusByttet(umamiThemeType(theme))
           return {
             ...state,
             currentTheme: theme,
