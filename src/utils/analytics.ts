@@ -42,7 +42,9 @@ const feilMeldt = (meldingsId: string) => logEvent("Feil meldt", { meldingsId })
 
 const infoÅpnet = () => logEvent("Info modal åpnet")
 
-const mørkModusByttet = (modus: "lys" | "mørk" | "system") => logEvent("Mørk modus byttet", { modus })
+export type UmamiThemeType = "lys" | "mørk" | "system"
+
+const mørkModusByttet = (modus: UmamiThemeType) => logEvent("Mørk modus byttet", { modus })
 
 const meldingSendt = (trigger: "knapp" | "enter" | "hotkey", antallTegn: number) =>
   logEvent("Melding sendt", { trigger, antallTegn })
@@ -117,9 +119,10 @@ const versjonOppdatert = (gammelVersjon: string, nyVersjon: string) =>
 
 const versjonLagret = (versjon: string) => logEvent("Versjon av Bob brukt", { versjon })
 
-const nySamtaleOpprettet = (samtaleId: string) =>
+const nySamtaleOpprettet = (samtaleId: string, tema: UmamiThemeType) =>
   logEvent("Ny samtale opprettet", {
     samtaleId,
+    tema,
     screen: {
       innerWidth,
       innerHeight,
