@@ -9,6 +9,7 @@ import { useSourcesStore } from "./chat/chatbubbles/sources/ShowAllSources.tsx"
 import { BobPlaceholder } from "./placeholders/Placeholders.tsx"
 import CreateConversationWrapper from "./wrappers/CreateConversationWrapper.tsx"
 import analytics from "../../utils/analytics.ts"
+import { umamiThemeType, useTheme } from "../menu/darkmode/DarkModeToggle.tsx"
 
 const CreateConversationContent = () => {
   const navigate = useNavigate()
@@ -17,6 +18,7 @@ const CreateConversationContent = () => {
   const { setActiveMessage } = useSourcesStore()
   const { resetMessages } = messageStore()
   const { userConfig } = useUserConfig()
+  const { currentTheme } = useTheme()
 
   useEffect(() => {
     // reset message state on first render.
@@ -34,7 +36,7 @@ const CreateConversationContent = () => {
 
     createConversation(newConversation)
       .then((conversation) => {
-        analytics.nySamtaleOpprettet(conversation.id)
+        analytics.nySamtaleOpprettet(conversation.id, umamiThemeType(currentTheme))
         navigate(`/samtaler/${conversation.id}`, { state: { initialMessage: message.content } })
       })
 
