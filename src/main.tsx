@@ -12,6 +12,7 @@ import {
   triggerReAuth,
 } from "./api/api.ts"
 import { ThemeProvider } from "./components/menu/darkmode/DarkModeToggle.tsx"
+import { PageNotFound } from "./components/not-found/NotFound.tsx"
 import "./global.css"
 import { AnalyticsProvider } from "./utils/AnalyticsProvider.tsx"
 
@@ -40,6 +41,10 @@ const router = createBrowserRouter(
       path='/'
       element={<App />}
     >
+      <Route
+        path='*'
+        element={<PageNotFound />}
+      />
       <Route
         index
         element={
