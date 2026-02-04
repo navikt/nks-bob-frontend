@@ -64,9 +64,9 @@ const svarMottatt = (
     verktøykall,
   })
 
-const kildeAccordionÅpnet = () => logEvent("Kilde accordion åpnet")
+const kildeToggleÅpnet = (kilde: "navno" | "nks") => logEvent("Kilde toggle åpnet", { kilde })
 
-const kildeAccordionSkjult = () => logEvent("Kilde accordion skjult")
+const kildeToggleSkjult = (kilde: "navno" | "nks") => logEvent("Kilde toggle skjult", { kilde })
 
 const tekstInnholdLimtInn = () => logEvent("Tekstinnhold limt inn")
 
@@ -142,8 +142,8 @@ export default {
   mørkModusByttet,
   meldingSendt,
   svarMottatt,
-  kildeAccordionÅpnet,
-  kildeAccordionSkjult,
+  kildeToggleÅpnet,
+  kildeToggleSkjult,
   tekstInnholdLimtInn,
   tekstInneholderFnr,
   valideringsfeil,
