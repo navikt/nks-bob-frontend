@@ -125,32 +125,33 @@ const MultiCitation = ({
       {mainCitation && <TitleLink context={mainContext} />}
       <div className='flex flex-col gap-2'>
         {citations.map((citation) => (
-          <>
-            <div className='group mt-1 mb-2 gap-1 italic'>
-              <Markdown
-                className='markdown answer-markdown markdown-inline aksel-body-short--small mb-1 inline'
-                remarkPlugins={[remarkGfm, md.rewriteRelativeLinks]}
-                components={{
-                  a: ({ ...props }) => (
-                    <a
-                      {...props}
-                      target='_blank'
-                      rel='noopener noreferrer'
-                    />
-                  ),
-                }}
-              >
-                {citation.text}
-              </Markdown>
-              <TextFragmentLink
-                text={citation.text}
-                matchingContextCitationData={contexts.at(citation.sourceId)!}
-                title=''
-                className='inline'
-                onClick={() => handleCitationLinkClick(citation)}
-              />
-            </div>
-          </>
+          <div
+            key={`multi-citation-${citation.sourceId}`}
+            className='group mt-1 mb-2 gap-1 italic'
+          >
+            <Markdown
+              className='markdown answer-markdown markdown-inline aksel-body-short--small mb-1 inline'
+              remarkPlugins={[remarkGfm, md.rewriteRelativeLinks]}
+              components={{
+                a: ({ ...props }) => (
+                  <a
+                    {...props}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                  />
+                ),
+              }}
+            >
+              {citation.text}
+            </Markdown>
+            <TextFragmentLink
+              text={citation.text}
+              matchingContextCitationData={contexts.at(citation.sourceId)!}
+              title=''
+              className='inline'
+              onClick={() => handleCitationLinkClick(citation)}
+            />
+          </div>
         ))}
       </div>
     </div>
