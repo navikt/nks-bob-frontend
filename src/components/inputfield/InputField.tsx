@@ -29,7 +29,6 @@ import {
   isNotOk,
   isWarning,
   validateAccountNumber,
-  validateDateOfBirth,
   validateEmail,
   validateGlobalPhoneNumber,
   validateName,
@@ -175,7 +174,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     validateName,
     validateEmail,
     validateAccountNumber,
-    validateDateOfBirth,
+
     validateNorwegianMobileNumber,
     validateGlobalPhoneNumber,
   ]
