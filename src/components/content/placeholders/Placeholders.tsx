@@ -1,7 +1,7 @@
 import { Alert as AlertComponent, Heading } from "@navikt/ds-react"
 import Markdown from "react-markdown"
 import { useAlerts } from "../../../api/api.ts"
-import { BobTheCoffeeRobot } from "../../../assets/illustrations/BobTheCoffeeRobot.tsx"
+import { BobTheCoffeeRobot, BobTheCoffeeRobotDark } from "../../../assets/illustrations/BobTheCoffeeRobot.tsx"
 import { SadBob } from "../../../assets/illustrations/SadBob.tsx"
 import { Alert } from "../../../types/Notifications.ts"
 import "./Placeholders.css"
@@ -15,16 +15,16 @@ export const BobPlaceholder = () => {
       {!hasErrors && (
         <>
           <div className='flex self-center dark:hidden'>
-            <div className='w-40'>
+            <div className='w-46'>
               {/* <BobTheRobot /> */}
               <BobTheCoffeeRobot />
             </div>
           </div>
           <div className='flex hidden self-center dark:flex'>
-            <div className='w-40 [@media(max-width:450px)]:w-30'>
+            <div className='w-46'>
               {/* <BobTheRobotDark /> */}
               {/* <BobThePerspectiveRobot /> */}
-              <BobTheCoffeeRobot />
+              <BobTheCoffeeRobotDark />
             </div>
           </div>
         </>

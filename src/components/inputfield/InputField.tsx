@@ -455,10 +455,9 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
       </div>
       <Detail
         align='center'
-        className='detailcolor pb-2'
+        className='detailcolor mx-2 pb-2'
       >
-        Husk: Ikke del personopplysninger og sjekk kilder om du er usikker. Bob er en kunstig intelligens og kan ta
-        feil.
+        Ikke del personopplysninger og sjekk kilder om du er usikker - Bob er en kunstig intelligens og kan ta feil.
       </Detail>
     </div>
   )

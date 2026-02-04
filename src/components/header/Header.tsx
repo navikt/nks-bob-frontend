@@ -35,48 +35,50 @@ function Header({ conversation }: HeaderProps) {
   })
 
   return (
-    <div className='mx-96 mb-1 flex max-h-16 w-full max-w-full justify-between self-center px-4 py-4 align-middle'>
-      <div className='ml-2 flex max-w-24'>
-        <Link
-          to='https://www.nav.no/'
-          target='_blank'
-          tabIndex={-1}
-        >
-          <NAVLogo />
-        </Link>
-      </div>
-      <div className='flex h-full max-h-30 gap-3'>
-        <div className='flex items-center justify-center align-middle'>
-          {conversation && (
-            <>
-              <CoachMark
-                title='Her finner du overordnede valg'
-                buttonText='Den er grei!'
-                coachMarkKey={coachMarkKey}
-              >
-                <MainButtonsExplanation />
-              </CoachMark>
-              <NewButton conversationId={conversation} />
-            </>
-          )}
-          <RegretNewButton />
-          <NotificationToggle />
-          <Tooltip content='Informasjon og tips ( Alt+Ctrl+I )'>
-            <Button
-              data-color='neutral'
-              variant='tertiary'
-              aria-label='Informasjon og tips'
-              size='medium'
-              onClick={showGuide}
-              icon={<InformationSquareIcon aria-hidden />}
+    <div className='tallWide:fixed tallWide:top-0 tallWide:left-0 tallWide:right-0 tallWide:z-50 bg-ax-bg-default mb-1 w-full'>
+      <div className='marginWide:px-16 mx-auto flex max-h-16 w-full max-w-screen-2xl items-center justify-between self-center px-4 py-4'>
+        <div className='ml-2 flex max-w-24'>
+          <Link
+            to='https://www.nav.no/'
+            target='_blank'
+            tabIndex={-1}
+          >
+            <NAVLogo />
+          </Link>
+        </div>
+        <div className='flex h-full max-h-30 gap-3'>
+          <div className='flex items-center justify-center align-middle'>
+            {conversation && (
+              <>
+                <CoachMark
+                  title='Her finner du overordnede valg'
+                  buttonText='Den er grei!'
+                  coachMarkKey={coachMarkKey}
+                >
+                  <MainButtonsExplanation />
+                </CoachMark>
+                <NewButton conversationId={conversation} />
+              </>
+            )}
+            <RegretNewButton />
+            <NotificationToggle />
+            <Tooltip content='Informasjon og tips ( Alt+Ctrl+I )'>
+              <Button
+                data-color='neutral'
+                variant='tertiary'
+                aria-label='Informasjon og tips'
+                size='medium'
+                onClick={showGuide}
+                icon={<InformationSquareIcon aria-hidden />}
+              />
+            </Tooltip>
+            <Guide
+              startGuide={startGuide}
+              setStartGuide={setStartGuide}
             />
-          </Tooltip>
-          <Guide
-            startGuide={startGuide}
-            setStartGuide={setStartGuide}
-          />
-          {userConfig?.showNewConceptInfo && <NewConceptMessage />}
-          <ThemeButton />
+            {userConfig?.showNewConceptInfo && <NewConceptMessage />}
+            <ThemeButton />
+          </div>
         </div>
       </div>
     </div>
