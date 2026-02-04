@@ -14,10 +14,9 @@ interface CitationNumberProps {
   citations: { citationId: number }[]
   citationId: number
   context: Context[]
-  tools: string[]
 }
 
-export const CitationNumber = ({ citations, citationId, context, tools }: CitationNumberProps) => {
+export const CitationNumber = ({ citations, citationId, context }: CitationNumberProps) => {
   const [isActive, setIsActive] = useState(false)
   const source = context.at(citationId)
   if (!context || !source) {
@@ -43,28 +42,16 @@ export const CitationNumber = ({ citations, citationId, context, tools }: Citati
             title='Åpne artikkelen i ny fane'
             onClick={() => {
               if (source.source === "nks") {
-                analytics.kbModalLenkeKlikket(
-                  {
-                    kilde: source.source,
-                    tittel: source.title,
-                    artikkelKolonne: source.articleColumn,
-                  },
-                  {
-                    kildeId: citationId,
-                  },
-                  tools,
-                )
+                analytics.kbModalLenkeKlikket({
+                  kilde: source.source,
+                  tittel: source.title,
+                  artikkelKolonne: source.articleColumn,
+                })
               } else if (source.source === "navno") {
-                analytics.navModalLenkeKlikket(
-                  {
-                    kilde: source.source,
-                    tittel: source.title,
-                  },
-                  {
-                    kildeId: citationId,
-                  },
-                  tools,
-                )
+                analytics.navModalLenkeKlikket({
+                  kilde: source.source,
+                  tittel: source.title,
+                })
               }
             }}
           >
@@ -80,28 +67,16 @@ export const CitationNumber = ({ citations, citationId, context, tools }: Citati
             size='xsmall'
             onClick={() => {
               if (source.source === "nks") {
-                analytics.kbModalLenkeKopiert(
-                  {
-                    kilde: source.source,
-                    tittel: source.title,
-                    artikkelKolonne: source.articleColumn,
-                  },
-                  {
-                    kildeId: citationId,
-                  },
-                  tools,
-                )
+                analytics.kbModalLenkeKopiert({
+                  kilde: source.source,
+                  tittel: source.title,
+                  artikkelKolonne: source.articleColumn,
+                })
               } else if (source.source === "navno") {
-                analytics.navModalLenkeKopiert(
-                  {
-                    kilde: source.source,
-                    tittel: source.title,
-                  },
-                  {
-                    kildeId: citationId,
-                  },
-                  tools,
-                )
+                analytics.navModalLenkeKopiert({
+                  kilde: source.source,
+                  tittel: source.title,
+                })
               }
             }}
           />
@@ -141,8 +116,6 @@ export const CitationNumber = ({ citations, citationId, context, tools }: Citati
         content={hoverContent}
         onOpenChange={setIsActive}
         context={source}
-        sourceId={citationId}
-        tools={tools}
       >
         <button
           type='button'
@@ -159,10 +132,9 @@ export const CitationNumber = ({ citations, citationId, context, tools }: Citati
 interface CitationLinksProps {
   citations: { citationId: number }[]
   context: Context[]
-  tools: string[]
 }
 
-export const CitationLinks = ({ citations, context, tools }: CitationLinksProps) => {
+export const CitationLinks = ({ citations, context }: CitationLinksProps) => {
   type Group = {
     key: string
     source: Context
@@ -197,7 +169,6 @@ export const CitationLinks = ({ citations, context, tools }: CitationLinksProps)
           citations={citations}
           source={group.source}
           citationIds={group.citationIds}
-          tools={tools}
         />
       ))}
     </VStack>
@@ -208,10 +179,9 @@ type GroupedCitationLinkProps = {
   citations: { citationId: number }[]
   source: Context
   citationIds: number[]
-  tools: string[]
 }
 
-const GroupedCitationLink = ({ citations, source, citationIds, tools }: GroupedCitationLinkProps) => {
+const GroupedCitationLink = ({ citations, source, citationIds }: GroupedCitationLinkProps) => {
   const title = buildLinkTitle(source)
 
   const displayIds = citationIds
@@ -247,11 +217,11 @@ const GroupedCitationLink = ({ citations, source, citationIds, tools }: GroupedC
           title='Åpne artikkelen i ny fane'
           className='text-base'
           onClick={() => {
-            analytics.fotnoteLenkeKlikket(
-              { kilde: source.source, tittel: source.title, artikkelKolonne: source.articleColumn },
-              citationIds.map((id) => ({ kildeId: id })),
-              tools,
-            )
+            analytics.fotnoteLenkeKlikket({
+              kilde: source.source,
+              tittel: source.title,
+              artikkelKolonne: source.articleColumn,
+            })
           }}
         >
           <BodyShort size='small'>{title}</BodyShort>

@@ -38,11 +38,14 @@ const svarKopiert = (meldingsId: string) => logEvent("Svar kopiert", { meldingsI
 
 const svarEndret = (endring: "oversett" | "punktliste" | "empatisk" | "du-form") => logEvent("Svar endret", { endring })
 
-const feilMeldt = (meldingsId: string) => logEvent("Feil meldt", { meldingsId })
+const feilMeldt = (begrunnelser: string[], kommentarLengde: number) =>
+  logEvent("Feil meldt", { begrunnelser, kommentarLengde })
 
 const infoÅpnet = () => logEvent("Info modal åpnet")
 
-const mørkModusByttet = (modus: "lys" | "mørk" | "system") => logEvent("Mørk modus byttet", { modus })
+export type UmamiThemeType = "lys" | "mørk" | "system"
+
+const mørkModusByttet = (modus: UmamiThemeType) => logEvent("Mørk modus byttet", { modus })
 
 const meldingSendt = (trigger: "knapp" | "enter" | "hotkey", antallTegn: number) =>
   logEvent("Melding sendt", { trigger, antallTegn })
@@ -62,9 +65,9 @@ const svarMottatt = (
     verktøykall,
   })
 
-const kildeAccordionÅpnet = () => logEvent("Kilde accordion åpnet")
+const kildeToggleÅpnet = (kilde: "navno" | "nks") => logEvent("Kilde toggle åpnet", { kilde })
 
-const kildeAccordionSkjult = () => logEvent("Kilde accordion skjult")
+const kildeToggleSkjult = (kilde: "navno" | "nks") => logEvent("Kilde toggle skjult", { kilde })
 
 const tekstInnholdLimtInn = () => logEvent("Tekstinnhold limt inn")
 
@@ -78,65 +81,59 @@ const visAlleKilderÅpnet = () => logEvent("Vis alle kilder åpnet")
 
 const spørsmålRedigert = () => logEvent("Rediger spørsmål trykket")
 
-const åpnetFotnote = (kontekst: KontekstArtikkelMeta, sitat: SitatMeta, verktøykall: string[]) =>
-  logEvent("Fotnote åpnet", { kontekst, sitat, verktøykall })
+const åpnetFotnote = (kontekst: KontekstArtikkelMeta) => logEvent("Fotnote åpnet", { kontekst })
 
 const nySamtalePgaVarsel = () => logEvent("Startet ny samtale pga varsel")
 
 const lukketNySamtaleVarsel = () => logEvent("Lukket ny samtale varsel")
 
-const kbSitatLenkeKlikket = (kontekst: KontekstArtikkelMeta, sitat: SitatMeta, verktøykall: string[]) =>
-  logEvent("KB-sitat-lenke åpnet", { kontekst, sitat, verktøykall })
+const kbSitatLenkeKlikket = (kontekst: KontekstArtikkelMeta) => logEvent("KB-sitat-lenke åpnet", { kontekst })
 
-const kbSitatTittelKopiert = (kontekst: KontekstArtikkelMeta, sitat: SitatMeta, verktøykall: string[]) =>
-  logEvent("KB-sitat-tittel kopiert", { kontekst, sitat, verktøykall })
+const kbSitatTittelKopiert = (kontekst: KontekstArtikkelMeta) => logEvent("KB-sitat-tittel kopiert", { kontekst })
 
-const navSitatLenkeKlikket = (kontekst: KontekstMeta, sitat: SitatMeta, verktøykall: string[]) =>
-  logEvent("Nav-sitat-lenke åpnet", { kontekst, sitat, verktøykall })
+const navSitatLenkeKlikket = (kontekst: KontekstMeta) => logEvent("Nav-sitat-lenke åpnet", { kontekst })
 
-const navSitatLenkeKopiert = (kontekst: KontekstMeta, sitat: SitatMeta, verktøykall: string[]) =>
-  logEvent("KB-sitat-lenke kopiert", { kontekst, sitat, verktøykall })
+const navSitatLenkeKopiert = (kontekst: KontekstMeta) => logEvent("KB-sitat-lenke kopiert", { kontekst })
 
-const navModalLenkeKlikket = (kontekst: KontekstMeta, sitat: SitatMeta, verktøykall: string[]) =>
-  logEvent("Nav-lenke i modal klikket", { kontekst, sitat, verktøykall })
+const navModalLenkeKlikket = (kontekst: KontekstMeta) => logEvent("Nav-lenke i modal klikket", { kontekst })
 
-const navModalLenkeKopiert = (kontekst: KontekstMeta, sitat: SitatMeta, verktøykall: string[]) =>
-  logEvent("Nav-lenke i modal kopiert", { kontekst, sitat, verktøykall })
+const navModalLenkeKopiert = (kontekst: KontekstMeta) => logEvent("Nav-lenke i modal kopiert", { kontekst })
 
-const kbModalLenkeKlikket = (kontekst: KontekstArtikkelMeta, sitat: SitatMeta, verktøykall: string[]) =>
-  logEvent("KB-lenke i modal klikket", { kontekst, sitat, verktøykall })
+const kbModalLenkeKlikket = (kontekst: KontekstArtikkelMeta) => logEvent("KB-lenke i modal klikket", { kontekst })
 
-const kbModalLenkeKopiert = (kontekst: KontekstArtikkelMeta, sitat: SitatMeta, verktøykall: string[]) =>
-  logEvent("KB-lenke i modal kopiert", { kontekst, sitat, verktøykall })
+const kbModalLenkeKopiert = (kontekst: KontekstArtikkelMeta) => logEvent("KB-lenke i modal kopiert", { kontekst })
 
-const navVisAlleKilderLenkeKlikket = (kontekst: KontekstMeta, verktøykall: string[]) =>
-  logEvent("Nav-lenke under 'alle kilder' klikket", { kontekst, verktøykall })
+const navVisAlleKilderLenkeKlikket = (kontekst: KontekstMeta) =>
+  logEvent("Nav-lenke under 'alle kilder' klikket", { kontekst })
 
-const navVisAlleKilderLenkeKopiert = (kontekst: KontekstMeta, verktøykall: string[]) =>
-  logEvent("Nav-lenke under 'alle kilder' kopiert", { kontekst, verktøykall })
+const navVisAlleKilderLenkeKopiert = (kontekst: KontekstMeta) =>
+  logEvent("Nav-lenke under 'alle kilder' kopiert", { kontekst })
 
-const kbVisAlleKilderLenkeKlikket = (kontekst: KontekstArtikkelMeta, verktøykall: string[]) =>
-  logEvent("KB-lenke under 'alle kilder' klikket", { kontekst, verktøykall })
+const kbVisAlleKilderLenkeKlikket = (kontekst: KontekstArtikkelMeta) =>
+  logEvent("KB-lenke under 'alle kilder' klikket", { kontekst })
 
-const kbVisAlleKilderLenkeKopiert = (kontekst: KontekstArtikkelMeta, verktøykall: string[]) =>
-  logEvent("KB-lenke under 'all kilder' kopiert", { kontekst, verktøykall })
+const kbVisAlleKilderLenkeKopiert = (kontekst: KontekstArtikkelMeta) =>
+  logEvent("KB-lenke under 'all kilder' kopiert", { kontekst })
 
 const versjonOppdatert = (gammelVersjon: string, nyVersjon: string) =>
   logEvent("Bob versjon oppdatert", { gammelVersjon, nyVersjon })
 
 const versjonLagret = (versjon: string) => logEvent("Versjon av Bob brukt", { versjon })
 
-const nySamtaleOpprettet = (samtaleId: string) => logEvent("Ny samtale opprettet", { samtaleId })
+const nySamtaleOpprettet = (samtaleId: string, tema: UmamiThemeType) =>
+  logEvent("Ny samtale opprettet", {
+    samtaleId,
+    tema,
+    screen: {
+      innerWidth,
+      innerHeight,
+    },
+  })
 
 // andel markert mellom 0 og 1
 const svartekstMarkert = (andelMarkert: number) => logEvent("Svartekst markert og kopiert", { andelMarkert })
 
-const fotnoteLenkeKlikket = (kontekst: KontekstArtikkelMeta, sitater: SitatMeta[], verktøykall: string[]) =>
-  logEvent("Fotnote-lenke klikket", {
-    kontekst,
-    sitater: sitater.reduce(reduceToObject<SitatMeta>, {}),
-    verktøykall,
-  })
+const fotnoteLenkeKlikket = (kontekst: KontekstArtikkelMeta) => logEvent("Fotnote-lenke klikket", { kontekst })
 
 export default {
   svarKopiert,
@@ -146,8 +143,8 @@ export default {
   mørkModusByttet,
   meldingSendt,
   svarMottatt,
-  kildeAccordionÅpnet,
-  kildeAccordionSkjult,
+  kildeToggleÅpnet,
+  kildeToggleSkjult,
   tekstInnholdLimtInn,
   tekstInneholderFnr,
   valideringsfeil,

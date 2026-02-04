@@ -3,6 +3,7 @@ import { Button, Checkbox, CheckboxGroup, Modal, Textarea, Tooltip } from "@navi
 import { useEffect, useRef, useState } from "react"
 import { useAddFeedback } from "../../../../api/api.ts"
 import { Message } from "../../../../types/Message.ts"
+import analytics from "../../../../utils/analytics.ts"
 
 const OPTIONS = {
   "feil-med-svar": "Hele-/deler av svaret er feil",
@@ -82,6 +83,7 @@ export const FeedbackOnAnswer = ({ message }: FeedbackOnAnswerProps) => {
       comment,
     })
 
+    analytics.feilMeldt(optionLabels, comment?.length ?? 0)
     resetFields()
     modalRef.current?.close()
   }

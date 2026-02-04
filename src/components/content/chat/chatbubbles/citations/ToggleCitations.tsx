@@ -1,6 +1,7 @@
 import { Chips } from "@navikt/ds-react"
 import { useState } from "react"
 import { Message } from "../../../../../types/Message.ts"
+import analytics from "../../../../../utils/analytics.ts"
 
 interface ToggleCitationsProps {
   onToggle: (selected: string[]) => void
@@ -25,9 +26,19 @@ const ToggleCitations = ({ onToggle, message }: ToggleCitationsProps) => {
   const [selected, setSelected] = useState<string[]>(citationOptions)
 
   const handleToggle = (option: string) => {
+    trackOption(option)
     const newSelected = selected.includes(option) ? selected.filter((x) => x !== option) : [...selected, option]
     setSelected(newSelected)
     onToggle(newSelected)
+  }
+
+  const trackOption = (option: string) => {
+    const source = option.includes("Kunnskapsbasen") ? "nks" : "navno"
+    if (selected.includes(option)) {
+      analytics.kildeToggleSkjult(source)
+    } else {
+      analytics.kildeToggleÅpnet(source)
+    }
   }
 
   return (
