@@ -36,8 +36,6 @@ export const ShowAllSources = () => {
   const nksContext = context?.filter(({ source }) => source === "nks") ?? []
   const navContext = context?.filter(({ source }) => source === "navno") ?? []
 
-  const tools = activeMessage?.tools ?? []
-
   return (
     <VStack className={`all-sources-container ${activeMessage ? "active" : "inactive"}`}>
       <HStack
@@ -69,10 +67,7 @@ export const ShowAllSources = () => {
             </div>
             <VStack className='my-1'>
               {nksContext.map((ctx) => (
-                <NksSource
-                  context={ctx}
-                  tools={tools}
-                />
+                <NksSource context={ctx} />
               ))}
             </VStack>
           </VStack>
@@ -84,10 +79,7 @@ export const ShowAllSources = () => {
             </div>
             <VStack className='my-1'>
               {navContext.map((ctx) => (
-                <NavSource
-                  context={ctx}
-                  tools={tools}
-                />
+                <NavSource context={ctx} />
               ))}
             </VStack>
           </VStack>
@@ -97,7 +89,7 @@ export const ShowAllSources = () => {
   )
 }
 
-const NksSource = ({ context, tools }: { context: Context; tools: string[] }) => {
+const NksSource = ({ context }: { context: Context }) => {
   return (
     <VStack className='sourcepanel gap-3'>
       <HStack
@@ -110,20 +102,22 @@ const NksSource = ({ context, tools }: { context: Context; tools: string[] }) =>
           matchingContextCitationData={context}
           className='inline'
           onClick={() =>
-            analytics.kbVisAlleKilderLenkeKlikket(
-              { kilde: context.source, tittel: context.title, artikkelKolonne: context.articleColumn },
-              tools,
-            )
+            analytics.kbVisAlleKilderLenkeKlikket({
+              kilde: context.source,
+              tittel: context.title,
+              artikkelKolonne: context.articleColumn,
+            })
           }
         />
         <CopyButton
           copyText={context.title}
           size='xsmall'
           onClick={() =>
-            analytics.kbVisAlleKilderLenkeKopiert(
-              { kilde: context.source, tittel: context.title, artikkelKolonne: context.articleColumn },
-              tools,
-            )
+            analytics.kbVisAlleKilderLenkeKopiert({
+              kilde: context.source,
+              tittel: context.title,
+              artikkelKolonne: context.articleColumn,
+            })
           }
         />
       </HStack>
@@ -132,7 +126,7 @@ const NksSource = ({ context, tools }: { context: Context; tools: string[] }) =>
   )
 }
 
-const NavSource = ({ context, tools }: { context: Context; tools: string[] }) => {
+const NavSource = ({ context }: { context: Context }) => {
   return (
     <VStack className='sourcepanel gap-3'>
       <HStack
@@ -145,16 +139,12 @@ const NavSource = ({ context, tools }: { context: Context; tools: string[] }) =>
           anchor={context.anchor ?? undefined}
           matchingContextCitationData={context}
           className='inline'
-          onClick={() =>
-            analytics.navVisAlleKilderLenkeKlikket({ kilde: context.source, tittel: context.title }, tools)
-          }
+          onClick={() => analytics.navVisAlleKilderLenkeKlikket({ kilde: context.source, tittel: context.title })}
         />
         <CopyButton
           copyText={context.title}
           size='xsmall'
-          onClick={() =>
-            analytics.navVisAlleKilderLenkeKopiert({ kilde: context.source, tittel: context.title }, tools)
-          }
+          onClick={() => analytics.navVisAlleKilderLenkeKopiert({ kilde: context.source, tittel: context.title })}
         />
       </HStack>
       <UtdragDropDown context={context} />

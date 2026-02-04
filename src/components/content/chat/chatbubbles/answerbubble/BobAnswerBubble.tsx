@@ -243,7 +243,6 @@ const MessageContent = ({
                   citations={citations}
                   citationId={citationId}
                   context={message.context}
-                  tools={message.tools}
                 />
               )
             }
@@ -338,7 +337,6 @@ const Citations = memo(
             <CitationLinks
               citations={citations}
               context={message.context}
-              tools={message.tools}
             />
           </div>
         )}
@@ -353,7 +351,6 @@ const Citations = memo(
                 citation={citation}
                 key={`citation-${index}`}
                 context={message.context}
-                tools={message.tools}
               />
             ))}
           </div>

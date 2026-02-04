@@ -12,18 +12,16 @@ import { buildLinkTitle } from "../../../../utils/link.ts"
 interface BobAnswerCitationProps {
   citation: { title: string; source: "navno" | "nks"; citations: Citation[] }
   context: Context[]
-  tools: string[]
 }
 
 // Matching citation.text against context metadata, to find correct URL //
-function BobAnswerCitations({ citation, context, tools }: BobAnswerCitationProps) {
+function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
   if (citation.citations.length === 1) {
     const singleCitation = citation.citations.at(0)!
     return (
       <SingleCitation
         citation={singleCitation}
         context={context.at(singleCitation.sourceId)}
-        tools={tools}
       />
     )
   }
@@ -35,7 +33,6 @@ function BobAnswerCitations({ citation, context, tools }: BobAnswerCitationProps
         source={citation.source}
         citations={citation.citations}
         contexts={context}
-        tools={tools}
       />
     )
   }
@@ -45,39 +42,23 @@ function BobAnswerCitations({ citation, context, tools }: BobAnswerCitationProps
 
 export default BobAnswerCitations
 
-const SingleCitation = ({
-  citation,
-  context,
-  tools,
-}: {
-  citation: Citation
-  context: Context | undefined
-  tools: string[]
-}) => {
+const SingleCitation = ({ citation, context }: { citation: Citation; context: Context | undefined }) => {
   function handleClick() {
     if (context?.source === "nks") {
-      analytics.kbSitatLenkeKlikket(
-        { tittel: context.title, kilde: context.source, artikkelKolonne: context.articleColumn },
-        { kildeId: citation.sourceId },
-        tools,
-      )
+      analytics.kbSitatLenkeKlikket({
+        tittel: context.title,
+        kilde: context.source,
+        artikkelKolonne: context.articleColumn,
+      })
     } else if (context?.source === "navno") {
-      analytics.navSitatLenkeKlikket(
-        { tittel: context.title, kilde: context.source },
-        { kildeId: citation.sourceId },
-        tools,
-      )
+      analytics.navSitatLenkeKlikket({ tittel: context.title, kilde: context.source })
     }
   }
 
   return (
     <div className='border-ax-border-neutral-subtle mb-2 flex flex-col border-b pb-6'>
       {context ? (
-        <TitleLink
-          context={context}
-          citation={citation}
-          tools={tools}
-        />
+        <TitleLink context={context} />
       ) : (
         <BodyShort size='medium'>Kunne ikke finne lenke til artikkelen.</BodyShort>
       )}
@@ -117,13 +98,11 @@ const SingleCitation = ({
 const MultiCitation = ({
   citations,
   contexts,
-  tools,
 }: {
   title: string
   source: "navno" | "nks"
   citations: Citation[]
   contexts: Context[]
-  tools: string[]
 }) => {
   const mainCitation = citations[0]
   const mainContext = mainCitation ? contexts.at(mainCitation.sourceId) : undefined
@@ -131,29 +110,19 @@ const MultiCitation = ({
   function handleCitationLinkClick(citation: Citation) {
     const context = contexts.at(citation.sourceId)
     if (context?.source === "nks") {
-      analytics.kbSitatLenkeKlikket(
-        { tittel: context.title, kilde: context.source, artikkelKolonne: context.articleColumn },
-        { kildeId: citation.sourceId },
-        tools,
-      )
+      analytics.kbSitatLenkeKlikket({
+        tittel: context.title,
+        kilde: context.source,
+        artikkelKolonne: context.articleColumn,
+      })
     } else if (context?.source === "navno") {
-      analytics.navSitatLenkeKlikket(
-        { tittel: context.title, kilde: context.source },
-        { kildeId: citation.sourceId },
-        tools,
-      )
+      analytics.navSitatLenkeKlikket({ tittel: context.title, kilde: context.source })
     }
   }
 
   return (
     <div className='border-ax-border-neutral-subtle mb-4 flex flex-col border-b pb-6'>
-      {mainCitation && (
-        <TitleLink
-          context={mainContext}
-          citation={mainCitation}
-          tools={tools}
-        />
-      )}
+      {mainCitation && <TitleLink context={mainContext} />}
       <div className='flex flex-col gap-2'>
         {citations.map((citation) => (
           <>
@@ -362,7 +331,7 @@ export const SourceIcon = ({ source }: { source: "navno" | "nks" }) => {
   )
 }
 
-export const TitleLink = ({ context, citation, tools }: { context?: Context; citation: Citation; tools: string[] }) => {
+export const TitleLink = ({ context }: { context?: Context }) => {
   if (!context) return null
 
   const urlReturn = () => {
@@ -406,17 +375,13 @@ export const TitleLink = ({ context, citation, tools }: { context?: Context; cit
           size='xsmall'
           onClick={() => {
             if (context.source === "nks") {
-              analytics.kbSitatTittelKopiert(
-                { tittel: context.title, kilde: context.source, artikkelKolonne: context.articleColumn },
-                { kildeId: citation.sourceId },
-                tools,
-              )
+              analytics.kbSitatTittelKopiert({
+                tittel: context.title,
+                kilde: context.source,
+                artikkelKolonne: context.articleColumn,
+              })
             } else if (context.source === "navno") {
-              analytics.navSitatLenkeKopiert(
-                { tittel: context.title, kilde: context.source },
-                { kildeId: citation.sourceId },
-                tools,
-              )
+              analytics.navSitatLenkeKopiert({ tittel: context.title, kilde: context.source })
             }
           }}
         />
