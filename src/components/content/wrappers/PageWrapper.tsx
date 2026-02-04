@@ -1,5 +1,5 @@
 import { ArrowsCirclepathIcon } from "@navikt/aksel-icons"
-import { BodyShort, Button, Heading, HStack, VStack } from "@navikt/ds-react"
+import { BodyShort, Button, Heading, HStack, Stack, VStack } from "@navikt/ds-react"
 import { ReactNode } from "react"
 import { ErrorBoundary } from "react-error-boundary"
 import * as api from "../../../api/api"
@@ -10,39 +10,42 @@ import { LoginBoundary } from "../../LoginBoundary"
 const ErrorComponent = ({ error }: { error: any; resetErrorBoundary: (...args: any[]) => void }) => {
   console.log({ error })
   return (
-    <div className='h-dvh justify-start'>
+    <>
       <Header conversation={undefined} />
-      <HStack
-        className='h-dvh'
-        gap='space-64'
-        align='center'
-        justify='center'
-      >
-        <img
-          src={embarressedBob}
-          alt='Embarresed Bob'
-          width='200px'
-        />
-        <VStack
-          className='max-w-[30%]'
-          gap='space-16'
+      <HStack height='100vh'>
+        <Stack
+          gap='space-64'
+          width='100%'
+          justify='center'
+          align='center'
+          direction={{ xs: "column", lg: "row" }}
         >
-          <Heading size='medium'>Det har oppstått en uventet feil</Heading>
-          <BodyShort>
-            Prøv å laste inn siden på nytt ved å trykke på knappen under. Hvis problemet skjer flere ganger, gi gjerne
-            beskjed til Bob-teamet i Teams-kanalen.
-          </BodyShort>
-          <Button
-            size='small'
-            className='max-w-64'
-            icon={<ArrowsCirclepathIcon />}
-            onClick={() => window.location.reload()}
+          <img
+            src={embarressedBob}
+            alt='Embarresed Bob'
+            width='200px'
+          />
+          <VStack
+            gap='space-16'
+            maxWidth={{ xs: "70%", lg: "30%" }}
           >
-            Last inn siden på nytt
-          </Button>
-        </VStack>
+            <Heading size='medium'>Det har oppstått en uventet feil</Heading>
+            <BodyShort>
+              Prøv å laste inn siden på nytt ved å trykke på knappen under. Hvis problemet skjer flere ganger, gi gjerne
+              beskjed til Bob-teamet i Teams-kanalen.
+            </BodyShort>
+            <Button
+              size='small'
+              className='max-w-64'
+              icon={<ArrowsCirclepathIcon />}
+              onClick={() => window.location.reload()}
+            >
+              Last inn siden på nytt
+            </Button>
+          </VStack>
+        </Stack>
       </HStack>
-    </div>
+    </>
   )
 }
 
