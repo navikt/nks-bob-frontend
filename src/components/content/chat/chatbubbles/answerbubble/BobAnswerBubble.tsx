@@ -1,17 +1,15 @@
 import { FileSearchIcon } from "@navikt/aksel-icons"
-import { BodyLong, BodyShort, Button, Heading, Skeleton, VStack } from "@navikt/ds-react"
+import { BodyLong, BodyShort, Button, CopyButton, Heading, Skeleton, VStack } from "@navikt/ds-react"
 import React, { memo, useState } from "react"
 import Markdown from "react-markdown"
 import rehypeRaw from "rehype-raw"
 import remarkGfm from "remark-gfm"
 import { BobRoboHead } from "../../../../../assets/illustrations/BobRoboHead.tsx"
-import { Citation, Message, NewMessage } from "../../../../../types/Message.ts"
+import { Message, NewMessage } from "../../../../../types/Message.ts"
 import analytics from "../../../../../utils/analytics.ts"
 import { md } from "../../../../../utils/markdown.ts"
 import { FollowUpQuestions } from "../../../followupquestions/FollowUpQuestions.tsx"
 import BobSuggests from "../../suggestions/BobSuggests.tsx"
-import BobAnswerCitations from "../BobAnswerCitations.tsx"
-import ToggleCitations from "../citations/ToggleCitations.tsx"
 import { NoSourcesNeeded, ShowAllSourcesToggle } from "../sources/ShowAllSources.tsx"
 import { CitationLinks, CitationNumber } from "./Citations.tsx"
 
@@ -24,7 +22,7 @@ interface BobAnswerBubbleProps {
   followUp: string[]
 }
 
-const options = ["Sitater fra Kunnskapsbasen", "Sitater fra Nav.no"]
+/* const options = ["Sitater fra Kunnskapsbasen", "Sitater fra Nav.no"] */
 
 interface CitationSpanProps extends React.HTMLAttributes<HTMLSpanElement> {
   "data-citation"?: string
@@ -174,6 +172,16 @@ const MessageContent = ({
     e.stopImmediatePropagation()
   })
 
+  const nodeToText = (node: React.ReactNode): string => {
+    if (node === null || node === undefined || typeof node === "boolean") return ""
+    if (typeof node === "string" || typeof node === "number") return String(node)
+    if (Array.isArray(node)) return node.map(nodeToText).join("")
+    if (React.isValidElement(node)) return nodeToText((node.props as any)?.children)
+    return ""
+  }
+
+  const childrenToText = (children: React.ReactNode): string => nodeToText(children).replace(/\s+/g, " ").trim()
+
   const addCitation = (citationId: number, position: number) => {
     let existingCitations = citations
     const newCitation = { citationId, position }
@@ -232,6 +240,75 @@ const MessageContent = ({
               title='Åpne lenken i ny fane'
             />
           ),
+
+          p: ({ node, ...props }: any) => {
+            const parentTag = node?.parent?.tagName
+            const excerpt = childrenToText(props.children)
+            const showButton = parentTag !== "li" && excerpt.length > 0
+
+            return (
+              <div className='group relative'>
+                <p
+                  {...props}
+                  className={`${props.className ?? ""} rounded-sm outline-offset-4 outline-(--ax-border-neutral-subtle) group-hover:outline-2`.trim()}
+                />
+                {showButton && (
+                  <div className='invisible absolute top-full left-0 z-10 bg-inherit py-1 pr-2 opacity-0 transition-opacity group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100 before:absolute before:inset-x-0 before:bottom-full before:h-2 before:content-[""]'>
+                    <div className='bg-ax-bg-default mt-1 flex gap-1'>
+                      <Button
+                        variant='secondary'
+                        data-color='neutral'
+                        size='xsmall'
+                        className='border-(--ax-border-neutral-subtle)'
+                      >
+                        Finn teksten i kilden
+                      </Button>
+                      <CopyButton
+                        size='xsmall'
+                        className='bg-ax-bg-default w-fit border-2 border-(--ax-border-neutral-subtle)'
+                        text='Kopier'
+                        copyText={excerpt}
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            )
+          },
+
+          li: ({ node, ...props }: any) => {
+            const excerpt = childrenToText(props.children)
+
+            return (
+              <li
+                {...props}
+                className={`${props.className ?? ""} group relative rounded-sm outline-offset-4 outline-(--ax-border-neutral-subtle) hover:outline-2`.trim()}
+              >
+                {props.children}
+                {excerpt.length > 0 && (
+                  <div className='invisible absolute top-full left-0 z-10 bg-inherit py-1 pr-2 opacity-0 transition-opacity group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100 before:absolute before:inset-x-0 before:bottom-full before:h-2 before:content-[""]'>
+                    <div className='bg-ax-bg-default mt-1 flex gap-1'>
+                      <Button
+                        variant='secondary'
+                        data-color='neutral'
+                        size='xsmall'
+                        className='border-(--ax-border-neutral-subtle)'
+                      >
+                        Finn teksten i kilden
+                      </Button>
+                      <CopyButton
+                        size='xsmall'
+                        className='bg-ax-bg-default w-fit border-2 border-(--ax-border-neutral-subtle)'
+                        text='Kopier'
+                        copyText={excerpt}
+                      />
+                    </div>
+                  </div>
+                )}
+              </li>
+            )
+          },
+
           span: (props: CitationSpanProps) => {
             const dataCitation = props["data-citation"]
             const dataPosition = props["data-position"]
@@ -275,12 +352,14 @@ interface CitationsProps extends Omit<BobAnswerBubbleProps, "isHighlighted" | "f
 
 const Citations = memo(
   ({ message, citations, showLinks }: CitationsProps) => {
+    /*
     const [selectedCitations, setSelectedCitations] = useState<string[]>(options)
 
     const handleToggleCitations = (selected: string[]) => {
       setSelectedCitations(selected)
     }
 
+    
     const filteredCitations = message.citations.filter((citation) => {
       if (selectedCitations.length === 0) {
         return false
@@ -330,6 +409,8 @@ const Citations = memo(
         return 0
       })
 
+      */
+
     return (
       <div className='mb-4 flex flex-col gap-4'>
         {showLinks && citations.length > 0 && (
@@ -340,12 +421,15 @@ const Citations = memo(
             />
           </div>
         )}
+        {/*
         {message.citations && message.citations.length > 0 && (
           <div className='fade-in flex flex-col gap-2'>
             <ToggleCitations
               onToggle={handleToggleCitations}
               message={message}
             />
+
+           
             {citationData.map((citation, index) => (
               <BobAnswerCitations
                 citation={citation}
@@ -353,8 +437,10 @@ const Citations = memo(
                 context={message.context}
               />
             ))}
+              
           </div>
         )}
+          */}
       </div>
     )
   },

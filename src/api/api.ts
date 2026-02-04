@@ -2,7 +2,7 @@ import useSWR, { mutate, preload } from "swr"
 import useSWRMutation from "swr/mutation"
 import { Conversation, ConversationFeedback, Feedback, Message, NewConversation, NewMessage } from "../types/Message"
 import { Alert, NewsNotification } from "../types/Notifications"
-import { UserConfig } from "../types/User"
+import { UserConfig, UserInfo } from "../types/User"
 import { versionStore } from "../types/versionStore"
 
 export const API_URL = `${import.meta.env.BASE_URL}bob-api`
@@ -294,4 +294,41 @@ export const useAppVersionCheck = () => {
       console.error("Error checking app version:", err.message)
     },
   })
+}
+
+
+async function userInfoFetcher(): Promise<UserInfo> {
+  const res = await fetch(`${import.meta.env.BASE_URL}bff/userinfo`, {
+    credentials: "include",
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  })
+
+  if (res.status >= 400) {
+    throw {
+      status: res.status,
+      message: res.statusText,
+      data: await res.json(),
+    } as ApiError
+  }
+
+  return res.json()
+}
+
+export const useUserInfo = () => {
+  const { data, isLoading } = useSWR<UserInfo, ApiError>("/api/userinfo", userInfoFetcher, {
+    revalidateOnFocus: true,
+  })
+
+  return {
+    userInfo: data ?? null,
+    isLoading,
+  }
+}
+
+export const preloadUserInfo = () => {
+  preload("/api/userinfo", userInfoFetcher)
 }

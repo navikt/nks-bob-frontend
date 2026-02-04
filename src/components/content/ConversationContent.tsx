@@ -1,13 +1,14 @@
 import { Link, useLocation, useNavigate, useParams } from "react-router"
 import { useSendMessage } from "../../api/sse.ts"
 
-import { ErrorBoundary } from "react-error-boundary"
 import { ArrowDownIcon, NotePencilIcon } from "@navikt/aksel-icons"
 import { Alert as AlertComponent, BodyShort, Button, Heading, HStack, Stack, Tooltip, VStack } from "@navikt/ds-react"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
+import { ErrorBoundary } from "react-error-boundary"
 import { useHotkeys } from "react-hotkeys-hook"
 import Markdown from "react-markdown"
 import { isApiError, useAlerts, useMessages, useUserConfig } from "../../api/api.ts"
+import embarressedBob from "../../assets/illustrations/EmbarrassedBob.svg"
 import { NewMessage } from "../../types/Message.ts"
 import { messageStore } from "../../types/messageStore.ts"
 import { Alert } from "../../types/Notifications.ts"
@@ -18,7 +19,6 @@ import { ShowAllSources } from "./chat/chatbubbles/sources/ShowAllSources.tsx"
 import ChatContainer from "./chat/ChatContainer.tsx"
 import { WhitespacePlaceholder } from "./placeholders/Placeholders.tsx"
 import DialogWrapper from "./wrappers/DialogWrapper.tsx"
-import embarressedBob from "../../assets/illustrations/EmbarrassedBob.svg"
 
 function ConversationContent() {
   const containerRef = useRef<HTMLDivElement | null>(null)
@@ -158,6 +158,7 @@ function ConversationContent() {
           disabled={isLoading}
           ref={inputContainerRef}
           allowPaste={isAdmin}
+          minRows={1.3}
         />
       </DialogWrapper>
       <ShowAllSources />
