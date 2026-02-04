@@ -38,7 +38,8 @@ const svarKopiert = (meldingsId: string) => logEvent("Svar kopiert", { meldingsI
 
 const svarEndret = (endring: "oversett" | "punktliste" | "empatisk" | "du-form") => logEvent("Svar endret", { endring })
 
-const feilMeldt = (meldingsId: string) => logEvent("Feil meldt", { meldingsId })
+const feilMeldt = (begrunnelser: string[], kommentarLengde: number) =>
+  logEvent("Feil meldt", { begrunnelser, kommentarLengde })
 
 const infoÅpnet = () => logEvent("Info modal åpnet")
 
