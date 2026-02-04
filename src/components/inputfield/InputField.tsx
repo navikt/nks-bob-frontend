@@ -218,16 +218,13 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     warnings.forEach(({ validationType }) => analytics.valideringsfeil("warning", validationType))
     errors.forEach(({ validationType }) => analytics.valideringsfeil("error", validationType))
 
-    return [...warnings, ...errors]
+    const hasValidationError = errors.length > 0
+    const hasValidationWarning = warnings.length > 0
+    setSendDisabled(disabled || hasAlertErrors || hasValidationError || hasValidationWarning)
   }
 
   useEffect(() => {
-    const results = validateInput()
-
-    const hasValidationError = results.some(isError)
-    const hasValidationWarning = results.some(isWarning)
-
-    setSendDisabled(disabled || hasAlertErrors || hasValidationError || hasValidationWarning)
+    validateInput()
   }, [inputValue, disabled, hasAlertErrors, ignoredValidations])
 
   const prevSendDisabledRef = useRef<boolean>(true)
