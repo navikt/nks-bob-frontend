@@ -151,9 +151,10 @@ export const validatePersonnummer = createValidator(
     "fnr",
   )
 
-const nameRegex = /(?:(?:\p{Lu}[\p{L}'-]*[ \t-]+(?:\p{Lu}[\p{L}'-]*[ \t-]+)?\p{Lu}[\p{L}'-]*)|(?:(?<!^)(?<![\p{P}\n]\s*)\b\p{Lu}\p{Ll}+\b))/gu
-export const validateName = createValidatorWithWhitelist(
-  nameRegex,
+const fullNameRegex = /\b\p{Lu}[\p{L}'-]*(?:[ \t-]+\p{Lu}[\p{L}'-]*){1,2}\b/gu
+
+export const validateFullName = createValidatorWithWhitelist(
+  fullNameRegex,
   warning,
   "Tekst som ligner på et navn:",
   "name",
@@ -161,31 +162,70 @@ export const validateName = createValidatorWithWhitelist(
 )
 
 /*
-Fanger opp tekst som ligner på personnavn.
+Fanger opp tekst som ligner på fullt navn
 
-Matcher to typer:
-1) Fullt navn med to eller tre navnedeler
-2) Enkelt navn i tekst
-
-For fullt navn:
+Matcher fullt navn med to eller tre navnedeler:
 - Består av fornavn og etternavn
 - Mellomnavn er valgfritt
 - Navnedeler kan separeres med mellomrom, tab eller bindestrek
 - Hver navnedel ma starte med stor bokstav (\p{Lu})
 - Navnedeler kan inneholde Unicode-bokstaver (\p{L}), punktum, apostrof eller bindestrek
+*/
 
-For enkelt navn:
+const nameWordRegex =
+  /(?<!^)(?<![\p{P}\n]\s*)\b\p{Lu}\p{Ll}+\b/gu
+
+const has3NameWordsRegex =
+  /^(?=(?:.*(?<!^)(?<![\p{P}\n]\s*)\b\p{Lu}\p{Ll}+\b){3})/u
+
+const baseValidateFirstName = createValidatorWithWhitelist(
+  nameWordRegex,
+  warning,
+  "Tekst som ligner på et navn:",
+  "name",
+  whitelistNames
+)
+
+export const validateFirstName: Validator = (input: string) => {
+  if (!has3NameWordsRegex.test(input)) {
+    return ok()
+  }
+  return baseValidateFirstName(input)
+}
+
+/*
+Fanger opp tekst som ligner på fornavn (minst 3 før match)
+
+Matcher enkelt navn i tekst:
 - Ord med stor forbokstav i teksten
 - Matcher ikke første ord i teksten
 - Matcher ikke ord etter tegnsetting eller linjeskift
-
 */
 
 
-const dateOfBirthRegex = /\b(?:[0]?[1-9]|[12]\d|3[01])[-./,]+?(?:[0]?[1-9]|[12]\d|3[01])[-./,]+?\d{2,4}\b/g
-export const validateDateOfBirth = createValidator(dateOfBirthRegex, warning, "Tekst som ligner på fødselsdato:", "dob")
+const dobRegex =
+  /\b(?:[0]?[1-9]|[12]\d|3[01])[-./,]+?(?:[0]?[1-9]|[12]\d|3[01])[-./,]+?\d{2,4}\b/g
 
-// dateOfBirthRegex fanger opp datoer skrevet som dd.mm.yy eller dd.mm.yyyy (f.eks. 01/02/1990), med ulike skilletegn som -, ., / eller , mellom tallene.
+const has3DobRegex =
+  /^(?=(?:[\s\S]*\b(?:[0]?[1-9]|[12]\d|3[01])[-./,]+?(?:[0]?[1-9]|[12]\d|3[01])[-./,]+?\d{2,4}\b){3})/
+
+const baseValidateDateOfBirth = createValidator(
+  dobRegex,
+  warning,
+  "Tekst som ligner på fødselsdato:",
+  "dob",
+)
+
+export const validateDateOfBirth: Validator = (input: string) => {
+  if (!has3DobRegex.test(input)) {
+    return ok()
+  }
+
+  return baseValidateDateOfBirth(input)
+}
+
+// dateOfBirthRegex fanger opp dato om det skrives inn minst 3 ganger
+// Matcher dd.mm.yy eller dd.mm.yyyy (f.eks. 01/02/1990), med ulike skilletegn som -, ., / eller , mellom tallene.
 
 
 const globalPhoneNumberRegex = new RegExp(
