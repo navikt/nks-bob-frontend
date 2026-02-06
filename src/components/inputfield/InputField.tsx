@@ -34,6 +34,7 @@ import {
   validateFirstName,
   validateFullName,
   validateGlobalPhoneNumber,
+  validateNameAndDob,
   validateNorwegianMobileNumber,
   validatePersonnummer,
   ValidationError,
@@ -180,6 +181,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     validateDateOfBirth,
     validateNorwegianMobileNumber,
     validateGlobalPhoneNumber,
+    validateNameAndDob,
   ]
 
   function validateInput(ignoredWarnings?: string[]) {
