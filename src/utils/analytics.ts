@@ -120,6 +120,31 @@ const versjonOppdatert = (gammelVersjon: string, nyVersjon: string) =>
 
 const versjonLagret = (versjon: string) => logEvent("Versjon av Bob brukt", { versjon })
 
+declare global {
+  interface NavigatorUABrandVersion {
+    brand: string
+    version: string
+  }
+  interface NavigatorUAData {
+    brands: NavigatorUABrandVersion[]
+  }
+  interface Navigator {
+    userAgentData?: NavigatorUAData
+  }
+}
+
+function isRunningInEdgeSidebar(): boolean {
+  const uaData = (navigator as any).userAgentData as NavigatorUAData | undefined
+
+  const hasSidePanelBrand = !!uaData?.brands?.some((b) => b.brand === "Edge Side Panel")
+  if (hasSidePanelBrand) {
+    return true
+  }
+
+  const ua = navigator.userAgent || ""
+  return ua.includes("Edge Side Panel")
+}
+
 const nySamtaleOpprettet = (samtaleId: string, tema: UmamiThemeType) =>
   logEvent("Ny samtale opprettet", {
     samtaleId,
@@ -127,6 +152,9 @@ const nySamtaleOpprettet = (samtaleId: string, tema: UmamiThemeType) =>
     screen: {
       innerWidth,
       innerHeight,
+      widthRatio: innerWidth / window.screen.availWidth,
+      heightRatio: innerHeight / window.screen.availHeight,
+      edgeSidebar: isRunningInEdgeSidebar(),
     },
   })
 
@@ -134,6 +162,9 @@ const nySamtaleOpprettet = (samtaleId: string, tema: UmamiThemeType) =>
 const svartekstMarkert = (andelMarkert: number) => logEvent("Svartekst markert og kopiert", { andelMarkert })
 
 const fotnoteLenkeKlikket = (kontekst: KontekstArtikkelMeta) => logEvent("Fotnote-lenke klikket", { kontekst })
+
+const svarFeilet = (meldingsId: string, tittel: string, beskrivelse: string) =>
+  logEvent("Svar feilet", { meldingsId, tittel, beskrivelse })
 
 export default {
   svarKopiert,
@@ -171,4 +202,5 @@ export default {
   nySamtaleOpprettet,
   svartekstMarkert,
   fotnoteLenkeKlikket,
+  svarFeilet,
 }

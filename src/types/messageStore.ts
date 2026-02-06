@@ -191,6 +191,10 @@ const getMessage = (event: ConversationEvent, messages: MessageMap): Message | u
   }
 
   if (isErrorsUpdated(event)) {
+    event.errors.forEach(({ title, description }) => {
+      analytics.svarFeilet(message.id, title, description)
+    })
+
     return {
       ...message,
       errors: event.errors,
