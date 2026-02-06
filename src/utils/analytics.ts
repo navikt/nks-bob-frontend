@@ -163,6 +163,9 @@ const svartekstMarkert = (andelMarkert: number) => logEvent("Svartekst markert o
 
 const fotnoteLenkeKlikket = (kontekst: KontekstArtikkelMeta) => logEvent("Fotnote-lenke klikket", { kontekst })
 
+const svarFeilet = (meldingsId: string, tittel: string, beskrivelse: string) =>
+  logEvent("Svar feilet", { meldingsId, tittel, beskrivelse })
+
 export default {
   svarKopiert,
   svarEndret,
@@ -199,4 +202,5 @@ export default {
   nySamtaleOpprettet,
   svartekstMarkert,
   fotnoteLenkeKlikket,
+  svarFeilet,
 }
