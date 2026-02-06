@@ -151,43 +151,111 @@ export const validatePersonnummer = createValidator(
     "fnr",
   )
 
-const nameRegex = /(?:(?:\p{Lu}[\p{L}'-]*[ \t-]+(?:\p{Lu}[\p{L}'-]*[ \t-]+)?\p{Lu}[\p{L}'-]*)|(?:(?<!^)(?<![\p{P}\n]\s*)\b\p{Lu}\p{Ll}+\b))/gu
-export const validateName = createValidatorWithWhitelist(
-  nameRegex,
+  //
+
+  /* fullNameRegex matcher på tekst som ligner på fullt navn
+
+   Matcher fullt navn med to eller tre navnedeler:
+   - Består av fornavn og etternavn
+   - Mellomnavn er valgfritt
+   - Navnedeler kan separeres med mellomrom, tab eller bindestrek
+   - Hver navnedel ma starte med stor bokstav (\p{Lu})
+   - Navnedeler kan inneholde Unicode-bokstaver (\p{L}), punktum, apostrof eller bindestrek */
+
+const fullNameRegex = /\b\p{Lu}[\p{L}'-]*(?:[ \t-]+\p{Lu}[\p{L}'-]*){1,2}\b/gu
+
+export const validateFullName = createValidatorWithWhitelist(
+  fullNameRegex,
   warning,
   "Tekst som ligner på et navn:",
   "name",
   whitelistNames
 )
 
-/*
-Fanger opp tekst som ligner på personnavn.
+//
 
-Matcher to typer:
-1) Fullt navn med to eller tre navnedeler
-2) Enkelt navn i tekst
+/* nameWordRegex: Matcher på 3x ord med stor forbokstav
 
-For fullt navn:
-- Består av fornavn og etternavn
-- Mellomnavn er valgfritt
-- Navnedeler kan separeres med mellomrom, tab eller bindestrek
-- Hver navnedel ma starte med stor bokstav (\p{Lu})
-- Navnedeler kan inneholde Unicode-bokstaver (\p{L}), punktum, apostrof eller bindestrek
+   - Ord med stor forbokstav i teksten
+   - Matcher ikke første ord i teksten
+   - Matcher ikke ord etter tegnsetting eller linjeskift */
 
-For enkelt navn:
-- Ord med stor forbokstav i teksten
-- Matcher ikke første ord i teksten
-- Matcher ikke ord etter tegnsetting eller linjeskift
+const nameWordRegex =
+  /(?<!^)(?<![\p{P}\n]\s*)\b\p{Lu}\p{Ll}+\b/gu
 
-*/
+const has3NameWordsRegex =
+  /^(?=(?:.*(?<!^)(?<![\p{P}\n]\s*)\b\p{Lu}\p{Ll}+\b){3})/u
 
+const baseValidateFirstName = createValidatorWithWhitelist(
+  nameWordRegex,
+  warning,
+  "Tekst som ligner på et navn:",
+  "name",
+  whitelistNames
+)
 
-const dateOfBirthRegex = /\b(?:[0]?[1-9]|[12]\d|3[01])[-./,]+?(?:[0]?[1-9]|[12]\d|3[01])[-./,]+?\d{2,4}\b/g
-export const validateDateOfBirth = createValidator(dateOfBirthRegex, warning, "Tekst som ligner på fødselsdato:", "dob")
+export const validateFirstName: Validator = (input: string) => {
+  if (!has3NameWordsRegex.test(input)) {
+    return ok()
+  }
+  return baseValidateFirstName(input)
+}
 
-// dateOfBirthRegex fanger opp datoer skrevet som dd.mm.yy eller dd.mm.yyyy (f.eks. 01/02/1990), med ulike skilletegn som -, ., / eller , mellom tallene.
+//
 
+/* Matcher på dato om det skrives inn minst 3 ganger
+   Format: dd.mm.yy eller dd.mm.yyyy (f.eks. 01/02/1990), med ulike skilletegn som -, ., / eller , mellom tallene. */
 
+const dobRegex =
+  /\b(?:[0]?[1-9]|[12]\d|3[01])[-./,]+?(?:[0]?[1-9]|[12]\d|3[01])[-./,]+?\d{2,4}\b/g
+
+const has3DobRegex =
+  /^(?=(?:[\s\S]*\b(?:[0]?[1-9]|[12]\d|3[01])[-./,]+?(?:[0]?[1-9]|[12]\d|3[01])[-./,]+?\d{2,4}\b){3})/
+
+const baseValidateDateOfBirth = createValidator(
+  dobRegex,
+  warning,
+  "Tekst som ligner på fødselsdato:",
+  "dob",
+)
+
+export const validateDateOfBirth: Validator = (input: string) => {
+  if (!has3DobRegex.test(input)) {
+    return ok()
+  }
+
+  return baseValidateDateOfBirth(input)
+}
+
+//
+
+// Regel for å matche om 2 ord med stor forbokstav + dato
+
+const has2NamesAnd1DobRegex = new RegExp(
+  `^(?=(?:[\\s\\S]*${nameWordRegex.source}){2})(?=[\\s\\S]*${dobRegex.source})`,
+  "u",
+)
+
+const nameOrDobRegex = new RegExp(
+  `(?:${nameWordRegex.source})|(?:${dobRegex.source})`,
+  "gu",
+)
+
+const baseValidateNameAndDob = createValidator(
+  nameOrDobRegex,
+  warning,
+  "Tekst som ligner på navn + fødselsdato:",
+  "dob", 
+)
+
+export const validateNameAndDob: Validator = (input: string) => {
+  if (!has2NamesAnd1DobRegex.test(input)) return ok()
+  return baseValidateNameAndDob(input)
+}
+
+//
+
+// globalPhoneNumberRegex fanger opp alle telefonnumre som starter med + eller 00 etterfulgt av landekode og 6–15 sifre, med valgfri bruk av mellomrom eller bindestrek.
 const globalPhoneNumberRegex = new RegExp(
   `(?:\\+|00)(?:${countryCodePattern})[ -]*(?:\\d[ -]*){5,14}\\d`,
   "g"
@@ -195,24 +263,21 @@ const globalPhoneNumberRegex = new RegExp(
 
 export const validateGlobalPhoneNumber= createValidator(globalPhoneNumberRegex, warning, "Tekst som ligner på et norsk mobilnummer:", "tlf")
 
-// globalPhoneNumberRegex fanger opp alle telefonnumre som starter med + eller 00 etterfulgt av landekode og 6–15 sifre, med valgfri bruk av mellomrom eller bindestrek.
+//
 
-
-
+// norwegianMobileNumberRegex fanger opp norske mobilnumre på 8 siffer som starter med 4 eller 9, med valgfri bruk av mellomrom eller bindestrek.
 const norwegianMobileNumberRegex = /(?<!0047[ -]*)(?<!\+47[ -]*)\b[49](?:[ -]?\d){7}\b/g
 export const validateNorwegianMobileNumber = createValidator(norwegianMobileNumberRegex, warning, "Tekst som ligner på et norsk mobilnummer:", "tlf")
 
-// norwegianMobileNumberRegex fanger opp norske mobilnumre på 8 siffer som starter med 4 eller 9, med valgfri bruk av mellomrom eller bindestrek.
+//
 
-
+// emailRegex fanger opp en e-post ved å søke etter tekst med formen "noe@noe" uten mellomrom.
 const emailRegex = /\S+@\S+/g
 export const validateEmail = createValidator(emailRegex, warning, "Tekst som ligner på en epost-adresse:", "email")
 
-// emailRegex fanger opp en e-post ved å søke etter tekst med formen "noe@noe" uten mellomrom.
+//
 
-
+// accountNumberRegex fanger opp norske kontonumre i formatet 4-2-5 siffer, med mellomrom, punktum eller bindestrek som skilletegn.
 const accountNumberRegex = /\b\d{4}[ .-]+\d{2}[ .-]+\d{5}\b/g
 
 export const validateAccountNumber = createValidator(accountNumberRegex, warning, "Tekst som ligner på et kontonummer", "accountnumber")
-
-// accountNumberRegex fanger opp norske kontonumre i formatet 4-2-5 siffer, med mellomrom, punktum eller bindestrek som skilletegn.
