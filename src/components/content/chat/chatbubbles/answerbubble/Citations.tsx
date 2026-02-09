@@ -1,4 +1,5 @@
-import { BodyLong, BodyShort, CopyButton, HStack, Label, Link, Tooltip, VStack } from "@navikt/ds-react"
+import { ChevronDownIcon, ChevronUpIcon } from "@navikt/aksel-icons"
+import { BodyLong, BodyShort, Button, CopyButton, HStack, Label, Link, VStack } from "@navikt/ds-react"
 import { useState } from "react"
 import Markdown from "react-markdown"
 import remarkGfm from "remark-gfm"
@@ -6,9 +7,9 @@ import { KunnskapsbasenIcon } from "../../../../../assets/icons/KunnskapsbasenIc
 import { NavNoIcon } from "../../../../../assets/icons/NavNoIcon.tsx"
 import { Context } from "../../../../../types/Message.ts"
 import analytics from "../../../../../utils/analytics.ts"
+import { buildLinkTitle } from "../../../../../utils/link.ts"
 import { HoverCard } from "../../../../ui/HoverCard.tsx"
 import { SourceIcon } from "../BobAnswerCitations.tsx"
-import { buildLinkTitle } from "../../../../../utils/link.ts"
 
 interface CitationNumberProps {
   citations: { citationId: number }[]
@@ -18,6 +19,7 @@ interface CitationNumberProps {
 
 export const CitationNumber = ({ citations, citationId, context }: CitationNumberProps) => {
   const [isActive, setIsActive] = useState(false)
+
   const source = context.at(citationId)
   if (!context || !source) {
     return null
@@ -183,67 +185,117 @@ type GroupedCitationLinkProps = {
 
 const GroupedCitationLink = ({ citations, source, citationIds }: GroupedCitationLinkProps) => {
   const title = buildLinkTitle(source)
-
+  const [readMore, setReadMore] = useState(false)
   const displayIds = citationIds
     .map((id) => citations.findIndex((citation) => citation.citationId === id) + 1)
     .filter((n) => n > 0)
 
+  const handleReadMore = () => {
+    if (readMore === false) {
+      setReadMore(true)
+    } else {
+      setReadMore(false)
+    }
+  }
+
   return (
-    <HStack
-      gap='space-8'
-      align='center'
-      wrap={false}
-    >
+    <VStack>
       <HStack
-        gap='space-4'
+        gap='space-8'
+        align='center'
         wrap={false}
       >
-        {displayIds.map((displayId) => (
-          <div
-            key={displayId}
-            className='bg-ax-bg-neutral-moderate aria-pressed:bg-ax-bg-neutral-strong-pressed aria-pressed:text-ax-bg-default ml-1 rounded-sm px-1'
-          >
-            <BodyShort size='small'>{displayId}</BodyShort>
-          </div>
-        ))}
-      </HStack>
+        <HStack
+          gap='space-4'
+          wrap={false}
+        >
+          {displayIds.map((displayId) => (
+            <div
+              key={displayId}
+              className='bg-ax-bg-neutral-moderate aria-pressed:bg-ax-bg-neutral-strong-pressed aria-pressed:text-ax-bg-default ml-1 rounded-sm px-1'
+            >
+              <BodyShort size='small'>{displayId}</BodyShort>
+            </div>
+          ))}
+        </HStack>
 
-      {source.source === "nks" ? <KunnskapsbasenIcon size={18} /> : <NavNoIcon size={18} />}
-
-      <span className='inline-flex items-center gap-2'>
-        <Link
-          href={`${source.url}#${source.anchor ?? ""}`}
-          target='_blank'
-          title='Åpne artikkelen i ny fane'
-          className='text-base'
-          onClick={() => {
-            analytics.fotnoteLenkeKlikket({
-              kilde: source.source,
-              tittel: source.title,
-              artikkelKolonne: source.articleColumn,
-            })
-          }}
+        <Button
+          type='button'
+          className='aksel-read-more__button aksel-body-short aksel-body-short--small rounded-sm px-1 py-0.5 hover:bg-(--ax-bg-neutral-moderate-hoverA)'
+          icon={readMore === false ? <ChevronDownIcon fontSize={20} /> : <ChevronUpIcon fontSize={20} />}
+          onClick={() => handleReadMore()}
         >
           <BodyShort size='small'>{title}</BodyShort>
-        </Link>
+        </Button>
+        {source.source === "nks" ? <KunnskapsbasenIcon size={18} /> : <NavNoIcon size={18} />}
+
+        {/* 
+        <span className='inline-flex items-center gap-2'>
+          <Link
+            href={`${source.url}#${source.anchor ?? ""}`}
+            target='_blank'
+            title='Åpne artikkelen i ny fane'
+            className='text-base'
+            onClick={() => {
+              analytics.fotnoteLenkeKlikket({
+                kilde: source.source,
+                tittel: source.title,
+                artikkelKolonne: source.articleColumn,
+              })
+            }}
+          >
+            <BodyShort size='small'>{title}</BodyShort>
+          </Link>
+
+          */}
 
         {/* TODO: track event for copy */}
-        {source.source === "nks" ? (
-          <Tooltip content='Kopier artikkelnavn'>
-            <CopyButton
-              copyText={title}
-              size='xsmall'
-            />
-          </Tooltip>
-        ) : (
-          <Tooltip content='Kopier lenken'>
-            <CopyButton
-              copyText={`${source.url}#${source.anchor ?? ""}`}
-              size='xsmall'
-            />
-          </Tooltip>
-        )}
-      </span>
-    </HStack>
+
+        {/*
+          {source.source === "nks" ? (
+            <Tooltip content='Kopier artikkelnavn'>
+              <CopyButton
+                copyText={title}
+                size='xsmall'
+              />
+            </Tooltip>
+          ) : (
+            <Tooltip content='Kopier lenken'>
+              <CopyButton
+                copyText={`${source.url}#${source.anchor ?? ""}`}
+                size='xsmall'
+              />
+            </Tooltip>
+          )}
+        </span>
+          */}
+      </HStack>
+      {readMore && (
+        <div className='ml-2.5 border-l-2 border-(--ax-border-neutral-subtleA)'>
+          <div className='pb-2 pl-6'>
+            <BodyLong
+              size='small'
+              className='mt-2'
+            >
+              <Markdown
+                className='markdown'
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  a: ({ ...props }) => (
+                    <a
+                      {...props}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                    />
+                  ),
+                }}
+              >
+                {source.content}
+              </Markdown>
+            </BodyLong>
+          </div>
+        </div>
+      )}
+    </VStack>
   )
 }
