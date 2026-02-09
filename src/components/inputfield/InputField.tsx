@@ -1,6 +1,7 @@
 import {
   Alert,
   BodyShort,
+  Box,
   Button,
   Detail,
   Heading,
@@ -10,7 +11,6 @@ import {
   Textarea,
   Tooltip,
   VStack,
-  Box,
 } from "@navikt/ds-react"
 
 import { PaperplaneIcon } from "@navikt/aksel-icons"
@@ -31,8 +31,10 @@ import {
   validateAccountNumber,
   validateDateOfBirth,
   validateEmail,
+  validateFirstName,
+  validateFullName,
   validateGlobalPhoneNumber,
-  validateName,
+  validateNameAndDob,
   validateNorwegianMobileNumber,
   validatePersonnummer,
   ValidationError,
@@ -172,12 +174,14 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
 
   const validators: Validator[] = [
     validatePersonnummer,
-    validateName,
+    validateFullName,
+    validateFirstName,
     validateEmail,
     validateAccountNumber,
     validateDateOfBirth,
     validateNorwegianMobileNumber,
     validateGlobalPhoneNumber,
+    validateNameAndDob,
   ]
 
   function validateInput(ignoredWarnings?: string[]) {
