@@ -1,4 +1,4 @@
-import { Alert as AlertComponent, BodyShort, Heading } from "@navikt/ds-react"
+import { Alert as AlertComponent, Heading } from "@navikt/ds-react"
 import Markdown from "react-markdown"
 import { useAlerts } from "../../../api/api.ts"
 import { BobTheRobot, BobTheRobotDark } from "../../../assets/illustrations/BobTheRobot.tsx"
@@ -10,33 +10,19 @@ export const BobPlaceholder = () => {
   const { alerts } = useAlerts()
   const hasErrors = alerts.length > 0
 
-  const displayText = "Hei! Hva kan jeg hjelpe deg med?"
-
   return (
     <>
       {!hasErrors && (
         <>
-          <div className='bob-styling flex dark:hidden'>
-            <div>
+          <div className='mt-20 mb-12 flex w-full max-w-lg self-center dark:hidden'>
+            <div className='mx-auto w-full px-16'>
               <BobTheRobot />
             </div>
-            <BodyShort
-              size='medium'
-              className='self-center text-ax-text-neutral-subtle'
-            >
-              {displayText}
-            </BodyShort>
           </div>
-          <div className='bob-styling hidden dark:flex'>
-            <div>
+          <div className='mt-20 mb-12 hidden w-full max-w-lg self-center dark:flex'>
+            <div className='w-full px-16'>
               <BobTheRobotDark />
             </div>
-            <BodyShort
-              size='medium'
-              className='self-center text-ax-text-neutral-subtle'
-            >
-              {displayText}
-            </BodyShort>
           </div>
         </>
       )}

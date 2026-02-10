@@ -7,7 +7,3 @@
 .textarea-transition {
   transition: height 0.3s ease;
 }
-
-.detailcolor {
-  color: var(--ax-text-neutral-subtle)
-}
