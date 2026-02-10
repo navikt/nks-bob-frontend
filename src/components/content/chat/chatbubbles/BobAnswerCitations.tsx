@@ -1,13 +1,13 @@
 import { ChevronRightDoubleIcon } from "@navikt/aksel-icons"
-import { BodyLong, BodyShort, CopyButton, Detail, HStack, Label, Link, Tooltip } from "@navikt/ds-react"
+import { BodyLong, CopyButton, Detail, HStack, Label, Link, Tooltip } from "@navikt/ds-react"
 import Markdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import { KunnskapsbasenIcon } from "../../../../assets/icons/KunnskapsbasenIcon.tsx"
 import { NavNoIcon } from "../../../../assets/icons/NavNoIcon.tsx"
 import { Citation, Context } from "../../../../types/Message.ts"
 import analytics from "../../../../utils/analytics.ts"
-import { md } from "../../../../utils/markdown.ts"
 import { buildLinkTitle } from "../../../../utils/link.ts"
+import { md } from "../../../../utils/markdown.ts"
 
 interface BobAnswerCitationProps {
   citation: { title: string; source: "navno" | "nks"; citations: Citation[] }
@@ -42,7 +42,7 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
 
 export default BobAnswerCitations
 
-const SingleCitation = ({ citation, context }: { citation: Citation; context: Context | undefined }) => {
+export const SingleCitation = ({ citation, context }: { citation: Citation; context: Context | undefined }) => {
   function handleClick() {
     if (context?.source === "nks") {
       analytics.kbSitatLenkeKlikket({
@@ -57,15 +57,15 @@ const SingleCitation = ({ citation, context }: { citation: Citation; context: Co
 
   return (
     <div className='border-ax-border-neutral-subtle mb-2 flex flex-col border-b pb-6'>
-      {context ? (
+      {/* {context ? (
         <TitleLink context={context} />
       ) : (
         <BodyShort size='medium'>Kunne ikke finne lenke til artikkelen.</BodyShort>
       )}
-
+      */}
       <BodyLong
         size='small'
-        className='mt-1 italic'
+        className='mt-1'
       >
         <Markdown
           className='markdown answer-markdown mb-2'
@@ -95,7 +95,7 @@ const SingleCitation = ({ citation, context }: { citation: Citation; context: Co
   )
 }
 
-const MultiCitation = ({
+export const MultiCitation = ({
   citations,
   contexts,
 }: {
@@ -104,8 +104,9 @@ const MultiCitation = ({
   citations: Citation[]
   contexts: Context[]
 }) => {
+  /* 
   const mainCitation = citations[0]
-  const mainContext = mainCitation ? contexts.at(mainCitation.sourceId) : undefined
+  const mainContext = mainCitation ? contexts.at(mainCitation.sourceId) : undefined */
 
   function handleCitationLinkClick(citation: Citation) {
     const context = contexts.at(citation.sourceId)
@@ -122,12 +123,12 @@ const MultiCitation = ({
 
   return (
     <div className='border-ax-border-neutral-subtle mb-4 flex flex-col border-b pb-6'>
-      {mainCitation && <TitleLink context={mainContext} />}
+      {/* {mainCitation && <TitleLink context={mainContext} />} */}
       <div className='flex flex-col gap-2'>
         {citations.map((citation) => (
           <div
             key={`multi-citation-${citation.sourceId}`}
-            className='group mt-1 mb-2 gap-1 italic'
+            className='group mt-1 mb-2 gap-1'
           >
             <Markdown
               className='markdown answer-markdown markdown-inline aksel-body-short--small mb-1 inline'
