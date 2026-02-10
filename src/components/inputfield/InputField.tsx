@@ -91,7 +91,9 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
   containerRef,
 ) {
   const { userInfo } = useUserInfo()
-  const placeholderText = `Hei ${userInfo?.firstName}! Hva kan jeg hjelpe deg med?`
+  const placeholderText = userInfo?.firstName
+    ? `Hei ${userInfo?.firstName}! Hva kan jeg hjelpe deg med?`
+    : "Hei! Hva kan jeg hjelpe deg med?"
   const [isSensitiveInfoAlert, setIsSensitiveInfoAlert] = useState<boolean>(false)
   const [sendDisabled, setSendDisabled] = useState<boolean>(disabled)
   const [isFocused, setIsFocused] = useState(false)
