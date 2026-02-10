@@ -8,9 +8,9 @@ import { create } from "zustand"
 import { ShowAllSourcesIcon } from "../../../../../assets/icons/ShowAllSourcesIcon.tsx"
 import { Context, Message } from "../../../../../types/Message.ts"
 import analytics from "../../../../../utils/analytics.ts"
+import { buildLinkTitle } from "../../../../../utils/link.ts"
 import { SourceIcon, TextFragmentLink } from "../BobAnswerCitations.tsx"
 import "./ShowAllSources.css"
-import { buildLinkTitle } from "../../../../../utils/link.ts"
 
 type SourcesState = {
   activeMessage: Message | null
@@ -219,7 +219,7 @@ export const ShowAllSourcesToggle = ({ message, toggleTitle }: ShowAllSourcesTog
         data-pressed={isActive}
         onClick={toggleActive}
         data-color='neutral'
-        className='aksel-chips__chip aksel-chips__toggle h-6.5 cursor-pointer rounded-full px-2 py-px'
+        className='aksel-chips__chip aksel-chips__toggle h-6.5 cursor-pointer rounded-lg px-1.5 py-0'
       >
         <div className='flex items-center gap-1'>
           <ShowAllSourcesIcon />
@@ -232,7 +232,10 @@ export const ShowAllSourcesToggle = ({ message, toggleTitle }: ShowAllSourcesTog
 
 export const NoSourcesNeeded = () => {
   return (
-    <Tag className='rounded-full py-0'>
+    <Tag
+      size='small'
+      className='rounded-lg py-0'
+    >
       <Detail>Bob brukte ingen kilder for å lage svaret</Detail>
     </Tag>
   )
