@@ -1,14 +1,12 @@
-import { BodyLong, BodyShort, CopyButton, HStack, Label, Link, Tooltip, VStack } from "@navikt/ds-react"
+import { Accordion, BodyLong, BodyShort, CopyButton, HStack, Label, Link, Tag, VStack } from "@navikt/ds-react"
 import { useState } from "react"
 import Markdown from "react-markdown"
 import remarkGfm from "remark-gfm"
-import { KunnskapsbasenIcon } from "../../../../../assets/icons/KunnskapsbasenIcon.tsx"
-import { NavNoIcon } from "../../../../../assets/icons/NavNoIcon.tsx"
 import { Context } from "../../../../../types/Message.ts"
 import analytics from "../../../../../utils/analytics.ts"
+import { buildLinkTitle } from "../../../../../utils/link.ts"
 import { HoverCard } from "../../../../ui/HoverCard.tsx"
 import { SourceIcon } from "../BobAnswerCitations.tsx"
-import { buildLinkTitle } from "../../../../../utils/link.ts"
 
 interface CitationNumberProps {
   citations: { citationId: number }[]
@@ -189,6 +187,27 @@ const GroupedCitationLink = ({ citations, source, citationIds }: GroupedCitation
     .filter((n) => n > 0)
 
   return (
+    <>
+      <Accordion size='small'>
+        {displayIds.map((displayId) => (
+          <Accordion.Item key={displayId}>
+            <Accordion.Header className='text-base'>
+              <HStack
+                gap='space-6'
+                align='center'
+              >
+                <Tag size='small'>{displayId}</Tag>
+                <BodyShort size='small'>{title}</BodyShort>
+              </HStack>
+            </Accordion.Header>
+            <Accordion.Content>
+              <Markdown></Markdown>
+              {source.content}
+            </Accordion.Content>
+          </Accordion.Item>
+        ))}
+      </Accordion>
+      {/*
     <HStack
       gap='space-8'
       align='center'
@@ -226,8 +245,6 @@ const GroupedCitationLink = ({ citations, source, citationIds }: GroupedCitation
         >
           <BodyShort size='small'>{title}</BodyShort>
         </Link>
-
-        {/* TODO: track event for copy */}
         {source.source === "nks" ? (
           <Tooltip content='Kopier artikkelnavn'>
             <CopyButton
@@ -245,5 +262,7 @@ const GroupedCitationLink = ({ citations, source, citationIds }: GroupedCitation
         )}
       </span>
     </HStack>
+    */}
+    </>
   )
 }
