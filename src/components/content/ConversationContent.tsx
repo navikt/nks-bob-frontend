@@ -218,7 +218,10 @@ const ConversationNotFound = () => {
           >
             <Heading size='medium'>Samtalen ble ikke funnet</Heading>
             <BodyShort>Hvis samtalen er over 30 dager gammel så kan den ha blitt slettet.</BodyShort>
-            <Link to='/'>
+            <Link
+              to='/'
+              viewTransition
+            >
               <Button
                 size='small'
                 className='max-w-64'

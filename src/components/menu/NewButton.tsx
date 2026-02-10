@@ -10,7 +10,7 @@ export const NewButton = ({ conversationId }: { conversationId: string }) => {
 
   const startNew = () => {
     setInputValue("")
-    navigate("/", { state: { from: conversationId } })
+    navigate("/", { state: { from: conversationId }, viewTransition: true })
   }
 
   useHotkeys("Alt+Ctrl+N", startNew, {

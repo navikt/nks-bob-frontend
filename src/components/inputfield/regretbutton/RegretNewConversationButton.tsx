@@ -8,7 +8,7 @@ const RegretNewButton = () => {
   const navigate = useNavigate()
 
   const handleClick = () => {
-    navigate(`/samtaler/${fromConversationId}`, { replace: false })
+    navigate(`/samtaler/${fromConversationId}`, { replace: false, viewTransition: true })
   }
 
   return (
@@ -16,18 +16,19 @@ const RegretNewButton = () => {
       {fromConversationId ? (
         <div>
           <Button
-            data-color="neutral"
+            data-color='neutral'
             className='fade-in mb-2'
-            variant="tertiary"
+            variant='tertiary'
             size='small'
             icon={<ChevronLeftDoubleIcon />}
-            onClick={handleClick}>
+            onClick={handleClick}
+          >
             Angre ny samtale
           </Button>
         </div>
       ) : null}
     </>
-  );
+  )
 }
 
 export default RegretNewButton

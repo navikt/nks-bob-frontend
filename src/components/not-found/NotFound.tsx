@@ -27,7 +27,10 @@ export const PageNotFound = () => {
           >
             <Heading size='medium'>Siden ble ikke funnet</Heading>
             <BodyShort>Det ser ut til at lenken ikke fungerer. Prøv å starte en ny samtale.</BodyShort>
-            <Link to='/'>
+            <Link
+              to='/'
+              viewTransition
+            >
               <Button
                 size='small'
                 className='max-w-64'
