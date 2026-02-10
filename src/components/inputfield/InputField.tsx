@@ -91,9 +91,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
   containerRef,
 ) {
   const { userInfo } = useUserInfo()
-  const placeholderText = userInfo?.firstName
-    ? `Hei ${userInfo?.firstName}! Hva kan jeg hjelpe deg med?`
-    : "Hei! Hva kan jeg hjelpe deg med?"
+  const placeholderText = `Hei ${userInfo?.firstName}! Hva kan jeg hjelpe deg med?`
   const [isSensitiveInfoAlert, setIsSensitiveInfoAlert] = useState<boolean>(false)
   const [sendDisabled, setSendDisabled] = useState<boolean>(disabled)
   const [isFocused, setIsFocused] = useState(false)
@@ -272,6 +270,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     <div
       className='dialogcontent sticky bottom-0 h-auto flex-col self-center px-4'
       ref={containerRef}
+      style={{ viewTransitionName: "input-field" }}
     >
       {isSensitiveInfoAlert && (
         <Alert
@@ -509,7 +508,7 @@ const NewMessageAlert = ({ setInputValue, conversationId }: NewMessageAlertProps
   const startNew = () => {
     analytics.nySamtalePgaVarsel()
     setInputValue("")
-    navigate("/", { state: { from: conversationId } })
+    navigate("/", { state: { from: conversationId }, viewTransition: true })
   }
 
   const handleClose = () => {

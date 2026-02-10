@@ -37,7 +37,7 @@ const CreateConversationContent = () => {
     createConversation(newConversation)
       .then((conversation) => {
         analytics.nySamtaleOpprettet(conversation.id, umamiThemeType(currentTheme))
-        navigate(`/samtaler/${conversation.id}`, { state: { initialMessage: message.content } })
+        navigate(`/samtaler/${conversation.id}`, { state: { initialMessage: message.content }, viewTransition: true })
       })
 
       .catch((error) => {

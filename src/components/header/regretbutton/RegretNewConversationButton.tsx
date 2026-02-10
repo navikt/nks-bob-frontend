@@ -17,7 +17,7 @@ const RegretNewButton = () => {
   }, [fromConversationId])
 
   const handleClick = () => {
-    navigate(`/samtaler/${fromConversationId}`, { replace: false })
+    navigate(`/samtaler/${fromConversationId}`, { replace: false, viewTransition: true })
   }
 
   return (
