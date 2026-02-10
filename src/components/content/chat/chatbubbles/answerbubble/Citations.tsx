@@ -102,6 +102,18 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
                 rel='noopener noreferrer'
               />
             ),
+            h2: ({ ...props }) => (
+              <h2
+                {...props}
+                className='mb-1 font-semibold'
+              />
+            ),
+            h3: ({ ...props }) => (
+              <h3
+                {...props}
+                className='mb-1 font-semibold'
+              />
+            ),
           }}
         >
           {source.content}
@@ -210,6 +222,14 @@ const GroupedCitationLink = ({ citations, source, citationIds, context }: Groupe
             gap='space-2'
             align='center'
           >
+            {source.source === "nks" ? <KunnskapsbasenIcon size={18} /> : <NavNoIcon size={18} />}
+
+            <BodyShort
+              size='small'
+              className='flex-1'
+            >
+              {title}
+            </BodyShort>
             {displayIds.map((displayId) => (
               <div
                 key={displayId}
@@ -218,11 +238,6 @@ const GroupedCitationLink = ({ citations, source, citationIds, context }: Groupe
                 <BodyShort size='small'>{displayId}</BodyShort>
               </div>
             ))}
-
-            {source.source === "nks" ? <KunnskapsbasenIcon size={18} /> : <NavNoIcon size={18} />}
-            <div className='flex'>
-              <BodyShort size='small'>{title}</BodyShort>
-            </div>
             {source.source === "nks" ? (
               <CopyButton
                 copyText={title}
@@ -241,6 +256,18 @@ const GroupedCitationLink = ({ citations, source, citationIds, context }: Groupe
           </HStack>
         </Accordion.Header>
         <Accordion.Content>
+          <Link
+            href={source.url}
+            target='_blank'
+          >
+            <Label
+              size='small'
+              className='cursor-pointer'
+              title='Gå til artikkelen'
+            >
+              {source.title}
+            </Label>
+          </Link>
           {citationObjects.length === 1 ? (
             <SingleCitation
               citation={citationObjects[0]}

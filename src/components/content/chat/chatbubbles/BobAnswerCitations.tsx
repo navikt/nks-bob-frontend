@@ -79,6 +79,18 @@ export const SingleCitation = ({ citation, context }: { citation: Citation; cont
                 rel='noopener noreferrer'
               />
             ),
+            h2: ({ ...props }) => (
+              <h2
+                {...props}
+                className='mb-1 font-semibold'
+              />
+            ),
+            h3: ({ ...props }) => (
+              <h3
+                {...props}
+                className='mb-1 font-semibold'
+              />
+            ),
           }}
         >
           {citation.text}
@@ -125,7 +137,7 @@ export const MultiCitation = ({
   return (
     <div className='border-ax-border-neutral-subtle mb-4 flex flex-col border-b pb-6'>
       {/* {mainCitation && <TitleLink context={mainContext} />} */}
-      <div className='flex flex-col gap-2'>
+      <div className='mb-2 flex flex-col gap-4'>
         {citations.map((citation) => (
           <div
             key={`multi-citation-${citation.sourceId}`}
@@ -140,6 +152,12 @@ export const MultiCitation = ({
                     {...props}
                     target='_blank'
                     rel='noopener noreferrer'
+                  />
+                ),
+                h2: ({ ...props }) => (
+                  <h2
+                    {...props}
+                    className='mb-1 font-semibold'
                   />
                 ),
               }}
