@@ -105,11 +105,17 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
             h2: ({ ...props }) => (
               <h2
                 {...props}
-                className='mb-1 font-semibold'
+                className='mb-2 font-semibold'
               />
             ),
             h3: ({ ...props }) => (
               <h3
+                {...props}
+                className='mb-1 font-semibold'
+              />
+            ),
+            h4: ({ ...props }) => (
+              <h4
                 {...props}
                 className='mb-1 font-semibold'
               />
