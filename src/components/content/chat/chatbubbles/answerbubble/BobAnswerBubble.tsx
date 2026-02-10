@@ -1,5 +1,5 @@
 import { FileSearchIcon } from "@navikt/aksel-icons"
-import { BodyLong, BodyShort, Button, Heading, Skeleton, VStack } from "@navikt/ds-react"
+import { BodyLong, BodyShort, Button, Heading, HStack, Skeleton, VStack } from "@navikt/ds-react"
 import React, { memo, useState } from "react"
 import Markdown from "react-markdown"
 import rehypeRaw from "rehype-raw"
@@ -91,14 +91,14 @@ export const BobAnswerBubble = memo(
             </div>
             {contentReady && message.content && (
               <>
-                <div className='mb-6 flex items-center gap-2'>
+                <HStack className='mb-6 flex-wrap-reverse items-center gap-4'>
                   <BobSuggests
                     message={message}
                     onSend={onSend}
                     isLastMessage={isLastMessage}
                   />
                   {getSourcesComponent(message)}
-                </div>
+                </HStack>
                 <Citations
                   message={message}
                   onSend={onSend}
