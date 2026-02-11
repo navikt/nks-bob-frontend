@@ -1,5 +1,5 @@
 import { ChevronRightDoubleIcon } from "@navikt/aksel-icons"
-import { BodyLong, CopyButton, Detail, HStack, Label, Link, Tooltip } from "@navikt/ds-react"
+import { BodyLong, BodyShort, CopyButton, Detail, HStack, Label, Link, Tooltip } from "@navikt/ds-react"
 import Markdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import { KunnskapsbasenIcon } from "../../../../assets/icons/KunnskapsbasenIcon.tsx"
@@ -57,7 +57,7 @@ export const SingleCitation = ({ citation, context }: { citation: Citation; cont
   }
 
   return (
-    <div className='border-ax-border-neutral-subtle mb-2 flex flex-col border-b pb-6'>
+    <div className='flex flex-col pb-6'>
       {/* {context ? (
         <TitleLink context={context} />
       ) : (
@@ -66,10 +66,10 @@ export const SingleCitation = ({ citation, context }: { citation: Citation; cont
       */}
       <BodyLong
         size='small'
-        className='mt-1'
+        className='mb-3'
       >
         <Markdown
-          className='markdown answer-markdown mb-2'
+          className='markdown answer-markdown'
           remarkPlugins={[remarkGfm]}
           components={{
             a: ({ ...props }) => (
@@ -141,7 +141,7 @@ export const MultiCitation = ({
   }
 
   return (
-    <div className='border-ax-border-neutral-subtle mb-4 flex flex-col border-b pb-6'>
+    <div className='flex flex-col pb-6'>
       {/* {mainCitation && <TitleLink context={mainContext} />} */}
       <div className='mb-2 flex flex-col gap-4'>
         {citations.map((citation) => (
@@ -149,39 +149,44 @@ export const MultiCitation = ({
             key={`multi-citation-${citation.sourceId}`}
             className='group mt-1 mb-2 gap-1'
           >
-            <Markdown
-              className='markdown answer-markdown markdown-inline aksel-body-short--small mb-1 inline'
-              remarkPlugins={[remarkGfm, md.rewriteRelativeLinks]}
-              components={{
-                a: ({ ...props }) => (
-                  <a
-                    {...props}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                  />
-                ),
-                h2: ({ ...props }) => (
-                  <h2
-                    {...props}
-                    className='mb-2 font-semibold'
-                  />
-                ),
-                h3: ({ ...props }) => (
-                  <h3
-                    {...props}
-                    className='mb-1 font-semibold'
-                  />
-                ),
-                h4: ({ ...props }) => (
-                  <h4
-                    {...props}
-                    className='mb-1 font-semibold'
-                  />
-                ),
-              }}
+            <BodyLong
+              size='small'
+              className='mb-2'
             >
-              {citation.text}
-            </Markdown>
+              <Markdown
+                className='markdown answer-markdown markdown-inline aksel-body-short--small inline'
+                remarkPlugins={[remarkGfm, md.rewriteRelativeLinks]}
+                components={{
+                  a: ({ ...props }) => (
+                    <a
+                      {...props}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                    />
+                  ),
+                  h2: ({ ...props }) => (
+                    <h2
+                      {...props}
+                      className='mb-2 font-semibold'
+                    />
+                  ),
+                  h3: ({ ...props }) => (
+                    <h3
+                      {...props}
+                      className='mb-1 font-semibold'
+                    />
+                  ),
+                  h4: ({ ...props }) => (
+                    <h4
+                      {...props}
+                      className='mb-1 font-semibold'
+                    />
+                  ),
+                }}
+              >
+                {citation.text}
+              </Markdown>
+            </BodyLong>
             <TextFragmentLink
               text={citation.text}
               matchingContextCitationData={contexts.at(citation.sourceId)!}
@@ -329,10 +334,14 @@ export const TextFragmentLink = ({
           >
             {title ?? matchingContextCitationData.title}
             {title === "" ? (
-              <div className='mt-2 flex items-center gap-1'>
+              <BodyShort
+                size='small'
+                className='mt-2 flex items-center gap-1'
+                weight='semibold'
+              >
                 Finn sitatet i artikkelen
                 <ChevronRightDoubleIcon />
-              </div>
+              </BodyShort>
             ) : null}
           </Link>
         </Tooltip>

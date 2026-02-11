@@ -265,18 +265,6 @@ const GroupedCitationLink = ({ citations, source, citationIds, context }: Groupe
           </HStack>
         </Accordion.Header>
         <Accordion.Content>
-          <Link
-            href={source.url}
-            target='_blank'
-          >
-            <Label
-              size='small'
-              className='cursor-pointer'
-              title='Gå til artikkelen'
-            >
-              {source.title}
-            </Label>
-          </Link>
           {citationObjects.length === 1 ? (
             <SingleCitation
               citation={citationObjects[0]}
