@@ -18,6 +18,6 @@ export const transformArticleColumnArray = <T extends { articleColumn: string }>
     return contexts.map(transformArticleColumn)
 } 
 
-export const tranformArticleColumnValue = (articleColumn: string): string => {
+export const transformArticleColumnValue = (articleColumn: string): string => {
     return ARTICLE_COLUMN_MAPPING[articleColumn] || articleColumn
 }
