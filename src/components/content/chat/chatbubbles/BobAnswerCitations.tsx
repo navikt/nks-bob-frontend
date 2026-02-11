@@ -43,7 +43,7 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
 
 export default BobAnswerCitations
 
-const SingleCitation = ({ citation, context }: { citation: Citation; context: Context | undefined }) => {
+export const SingleCitation = ({ citation, context }: { citation: Citation; context: Context | undefined }) => {
   function handleClick() {
     if (context?.source === "nks") {
       analytics.kbSitatLenkeKlikket({
@@ -57,19 +57,19 @@ const SingleCitation = ({ citation, context }: { citation: Citation; context: Co
   }
 
   return (
-    <div className='border-ax-border-neutral-subtle mb-2 flex flex-col border-b pb-6'>
-      {context ? (
+    <div className='flex flex-col pb-6'>
+      {/* {context ? (
         <TitleLink context={context} />
       ) : (
         <BodyShort size='medium'>Kunne ikke finne lenke til artikkelen.</BodyShort>
       )}
-
+      */}
       <BodyLong
         size='small'
-        className='mt-1 italic'
+        className='mb-3'
       >
         <Markdown
-          className='markdown answer-markdown mb-2'
+          className='markdown answer-markdown'
           remarkPlugins={[remarkGfm]}
           components={{
             a: ({ ...props }) => (
@@ -77,6 +77,24 @@ const SingleCitation = ({ citation, context }: { citation: Citation; context: Co
                 {...props}
                 target='_blank'
                 rel='noopener noreferrer'
+              />
+            ),
+            h2: ({ ...props }) => (
+              <h2
+                {...props}
+                className='mb-2 font-semibold'
+              />
+            ),
+            h3: ({ ...props }) => (
+              <h3
+                {...props}
+                className='mb-1 font-semibold'
+              />
+            ),
+            h4: ({ ...props }) => (
+              <h4
+                {...props}
+                className='mb-1 font-semibold'
               />
             ),
           }}
@@ -96,7 +114,7 @@ const SingleCitation = ({ citation, context }: { citation: Citation; context: Co
   )
 }
 
-const MultiCitation = ({
+export const MultiCitation = ({
   citations,
   contexts,
 }: {
@@ -105,8 +123,9 @@ const MultiCitation = ({
   citations: Citation[]
   contexts: Context[]
 }) => {
+  /* 
   const mainCitation = citations[0]
-  const mainContext = mainCitation ? contexts.at(mainCitation.sourceId) : undefined
+  const mainContext = mainCitation ? contexts.at(mainCitation.sourceId) : undefined */
 
   function handleCitationLinkClick(citation: Citation) {
     const context = contexts.at(citation.sourceId)
@@ -122,29 +141,52 @@ const MultiCitation = ({
   }
 
   return (
-    <div className='border-ax-border-neutral-subtle mb-4 flex flex-col border-b pb-6'>
-      {mainCitation && <TitleLink context={mainContext} />}
-      <div className='flex flex-col gap-2'>
+    <div className='flex flex-col pb-6'>
+      {/* {mainCitation && <TitleLink context={mainContext} />} */}
+      <div className='mb-2 flex flex-col gap-4'>
         {citations.map((citation) => (
           <div
             key={`multi-citation-${citation.sourceId}`}
-            className='group mt-1 mb-2 gap-1 italic'
+            className='group mt-1 mb-2 gap-1'
           >
-            <Markdown
-              className='markdown answer-markdown markdown-inline aksel-body-short--small mb-1 inline'
-              remarkPlugins={[remarkGfm, md.rewriteRelativeLinks]}
-              components={{
-                a: ({ ...props }) => (
-                  <a
-                    {...props}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                  />
-                ),
-              }}
+            <BodyLong
+              size='small'
+              className='mb-2'
             >
-              {citation.text}
-            </Markdown>
+              <Markdown
+                className='markdown answer-markdown markdown-inline aksel-body-short--small inline'
+                remarkPlugins={[remarkGfm, md.rewriteRelativeLinks]}
+                components={{
+                  a: ({ ...props }) => (
+                    <a
+                      {...props}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                    />
+                  ),
+                  h2: ({ ...props }) => (
+                    <h2
+                      {...props}
+                      className='mb-2 font-semibold'
+                    />
+                  ),
+                  h3: ({ ...props }) => (
+                    <h3
+                      {...props}
+                      className='mb-1 font-semibold'
+                    />
+                  ),
+                  h4: ({ ...props }) => (
+                    <h4
+                      {...props}
+                      className='mb-1 font-semibold'
+                    />
+                  ),
+                }}
+              >
+                {citation.text}
+              </Markdown>
+            </BodyLong>
             <TextFragmentLink
               text={citation.text}
               matchingContextCitationData={contexts.at(citation.sourceId)!}
@@ -292,10 +334,14 @@ export const TextFragmentLink = ({
           >
             {title ?? matchingContextCitationData.title}
             {title === "" ? (
-              <div className='mt-2 flex items-center gap-1'>
+              <BodyShort
+                size='small'
+                className='mt-2 flex items-center gap-1'
+                weight='semibold'
+              >
                 Finn sitatet i artikkelen
                 <ChevronRightDoubleIcon />
-              </div>
+              </BodyShort>
             ) : null}
           </Link>
         </Tooltip>

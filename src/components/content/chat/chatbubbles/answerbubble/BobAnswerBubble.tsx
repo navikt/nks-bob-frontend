@@ -5,13 +5,11 @@ import Markdown from "react-markdown"
 import rehypeRaw from "rehype-raw"
 import remarkGfm from "remark-gfm"
 import { BobRoboHead } from "../../../../../assets/illustrations/BobRoboHead.tsx"
-import { Citation, Message, NewMessage } from "../../../../../types/Message.ts"
+import { Message, NewMessage } from "../../../../../types/Message.ts"
 import analytics from "../../../../../utils/analytics.ts"
 import { md } from "../../../../../utils/markdown.ts"
 import { FollowUpQuestions } from "../../../followupquestions/FollowUpQuestions.tsx"
 import BobSuggests from "../../suggestions/BobSuggests.tsx"
-import BobAnswerCitations from "../BobAnswerCitations.tsx"
-import ToggleCitations from "../citations/ToggleCitations.tsx"
 import { NoSourcesNeeded, ShowAllSourcesToggle } from "../sources/ShowAllSources.tsx"
 import { CitationLinks, CitationNumber } from "./Citations.tsx"
 
@@ -24,7 +22,7 @@ interface BobAnswerBubbleProps {
   followUp: string[]
 }
 
-const options = ["Sitater fra Kunnskapsbasen", "Sitater fra Nav.no"]
+/* const options = ["Sitater fra Kunnskapsbasen", "Sitater fra Nav.no"] */
 
 interface CitationSpanProps extends React.HTMLAttributes<HTMLSpanElement> {
   "data-citation"?: string
@@ -275,8 +273,9 @@ interface CitationsProps extends Omit<BobAnswerBubbleProps, "isHighlighted" | "f
 
 const Citations = memo(
   ({ message, citations, showLinks }: CitationsProps) => {
+    /*
     const [selectedCitations, setSelectedCitations] = useState<string[]>(options)
-
+ 
     const handleToggleCitations = (selected: string[]) => {
       setSelectedCitations(selected)
     }
@@ -295,6 +294,8 @@ const Citations = memo(
         return false
       })
     })
+
+  
 
     const citationData = filteredCitations
       .map((citation) => {
@@ -330,6 +331,8 @@ const Citations = memo(
         return 0
       })
 
+        */
+
     return (
       <div className='mb-4 flex flex-col gap-4'>
         {showLinks && citations.length > 0 && (
@@ -340,6 +343,7 @@ const Citations = memo(
             />
           </div>
         )}
+        {/*
         {message.citations && message.citations.length > 0 && (
           <div className='fade-in flex flex-col gap-2'>
             <ToggleCitations
@@ -355,6 +359,7 @@ const Citations = memo(
             ))}
           </div>
         )}
+           */}
       </div>
     )
   },
