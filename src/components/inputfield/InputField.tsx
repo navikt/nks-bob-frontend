@@ -208,7 +208,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     const errors = validationResults.filter(isError)
     setValidationErrors(errors)
 
-    const containsFnr = validationResults.filter(isError).some((v) => v.validationType === "fnr")
+    const containsFnr = validationResults.filter(isError).some((v) => v.validationType === "fnr-dnr-hnr")
     if (containsFnr) {
       analytics.tekstInneholderFnr()
     }
