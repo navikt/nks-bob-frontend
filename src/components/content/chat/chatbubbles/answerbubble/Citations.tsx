@@ -9,6 +9,7 @@ import analytics from "../../../../../utils/analytics.ts"
 import { buildLinkTitle } from "../../../../../utils/link.ts"
 import { HoverCard } from "../../../../ui/HoverCard.tsx"
 import { MultiCitation, SingleCitation, SourceIcon } from "../BobAnswerCitations.tsx"
+import "./Citations.css"
 
 interface CitationNumberProps {
   citations: { citationId: number }[]
@@ -223,16 +224,18 @@ const GroupedCitationLink = ({ citations, source, citationIds, context }: Groupe
   return (
     <>
       <Accordion.Item>
-        <Accordion.Header className='text-base'>
+        <Accordion.Header className='citation-accordion-header w-full text-base'>
           <HStack
             gap='space-2'
             align='center'
+            wrap={false}
+            className='w-full min-w-0'
           >
             {source.source === "nks" ? <KunnskapsbasenIcon size={18} /> : <NavNoIcon size={18} />}
 
             <BodyShort
               size='small'
-              className='flex-1'
+              className='min-w-0 flex-1 truncate'
             >
               {title}
             </BodyShort>

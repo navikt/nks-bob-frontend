@@ -1,0 +1,13 @@
+.citation-accordion-header .aksel-heading {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.citation-accordion-header .aksel-stack,
+.citation-accordion-header .aksel-hstack {
+  min-width: 0;
+}
