@@ -34,7 +34,7 @@ function Header({ conversation }: HeaderProps) {
 
   return (
     <div
-      className='tallWide:fixed tallWide:top-0 tallWide:left-0 tallWide:right-0 tallWide:z-50 bg-ax-bg-default mb-1 w-full'
+      className='tallWide:fixed tallWide:top-0 tallWide:left-0 tallWide:right-0 tallWide:z-50 bg-ax-bg-brand-magenta-soft mb-1 w-full'
       style={{ viewTransitionName: "nav-header" }}
     >
       <div className='marginWide:px-16 mx-auto flex max-h-16 w-full max-w-screen-2xl items-center justify-between self-center px-4 py-4'>

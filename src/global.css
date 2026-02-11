@@ -89,6 +89,7 @@ ol li::marker {
   width: 100%;
   height: 100vh;
   justify-content: center;
+  background-color: var(--ax-bg-brand-magenta-soft);
 }
 
 .createconversation-wrapper {
@@ -99,6 +100,13 @@ ol li::marker {
   height: 100%;
   max-height: 1200px;
   margin-inline: auto;
+}
+
+@media screen and (min-height: 1000px) {
+  .createconversation-wrapper {
+    justify-content: center;
+    margin-bottom: 100px;
+  }
 }
 
 .contentwrapper {
