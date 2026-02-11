@@ -6,8 +6,9 @@ import { KunnskapsbasenIcon } from "../../../../assets/icons/KunnskapsbasenIcon.
 import { NavNoIcon } from "../../../../assets/icons/NavNoIcon.tsx"
 import { Citation, Context } from "../../../../types/Message.ts"
 import analytics from "../../../../utils/analytics.ts"
-import { md } from "../../../../utils/markdown.ts"
+import { transformArticleColumnValue } from "../../../../utils/articleColumnTransformer.ts"
 import { buildLinkTitle } from "../../../../utils/link.ts"
+import { md } from "../../../../utils/markdown.ts"
 
 interface BobAnswerCitationProps {
   citation: { title: string; source: "navno" | "nks"; citations: Citation[] }
@@ -265,6 +266,10 @@ export const TextFragmentLink = ({
 
     const textFragment = end && end.trim() ? `${encodeFragment(start)},${encodeFragment(end)}` : encodeFragment(start)
 
+    const transformedArticleColumn = matchingContextCitationData.articleColumn
+      ? transformArticleColumnValue(matchingContextCitationData.articleColumn)
+      : undefined
+
     return (
       <HStack align='center'>
         <Tooltip content='Åpner artikkelen i ny fane'>
@@ -276,8 +281,8 @@ export const TextFragmentLink = ({
                   ? `${matchingContextCitationData.url}${expandAll}#${anchor ?? matchingContextCitationData.anchor}`
                   : !start || start.trim().length === 0
                     ? `${matchingContextCitationData.url}`
-                    : matchingContextCitationData.articleColumn
-                      ? `${matchingContextCitationData.url}${expandAll}#${matchingContextCitationData.articleColumn}:~:text=${textFragment}`
+                    : transformedArticleColumn
+                      ? `${matchingContextCitationData.url}${expandAll}#${transformedArticleColumn}:~:text=${textFragment}`
                       : `${matchingContextCitationData.url}${expandAll}#:~:text=${textFragment}`
             }
             target='_blank'
