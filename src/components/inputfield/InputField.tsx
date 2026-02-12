@@ -101,6 +101,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
   const [validationWarnings, setValidationWarnings] = useState<ValidationWarning[]>([])
   const [validationErrors, setValidationErrors] = useState<ValidationError[]>([])
   const [ignoredValidations, setIgnoredValidations] = useState<string[]>([])
+  const allWarningValues = validationWarnings.flatMap(({ matches }) => matches.map(({ value }) => value))
 
   const { conversationId } = useParams()
 
@@ -324,19 +325,10 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           >
             Spørsmålet ser ut til å inneholde personopplysninger
           </Heading>
-          <Button
-            size='xsmall'
-            variant='tertiary'
-            onClick={() => {
-              cleanInput(validationWarnings)
-            }}
-          >
-            Fjern alle
-          </Button>
           <BodyShort size='small'>
             Vurder om følgende er personopplysninger. Om det er tilfellet, må de fjernes før du sender inn spørsmålet.
           </BodyShort>
-          <div className='max-h-36 overflow-scroll'>
+          <div className=''>
             <Box
               marginBlock='space-12'
               asChild
@@ -384,6 +376,31 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
               </List>
             </Box>
           </div>
+          <HStack
+            gap='space-4'
+            className='mt-4'
+          >
+            <Button
+              data-color='neutral'
+              size='small'
+              variant='primary'
+              onClick={() => {
+                cleanInput(validationWarnings)
+              }}
+            >
+              Fjern alle
+            </Button>
+            <Button
+              data-color='neutral'
+              size='small'
+              variant='tertiary'
+              onClick={() => {
+                validateInput([...ignoredValidations, ...allWarningValues])
+              }}
+            >
+              Ignorer alle
+            </Button>
+          </HStack>
         </Alert>
       )}
       {validationErrors.length > 0 && (
@@ -399,17 +416,9 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           >
             Spørsmålet inneholder fødselsnummer/d-nummer/hnr
           </Heading>
-          <Button
-            size='xsmall'
-            variant='tertiary'
-            onClick={() => {
-              cleanInput(validationErrors)
-            }}
-          >
-            Fjern alle
-          </Button>
+
           <BodyShort size='small'>Fjern følgende før du sender inn spørsmålet.</BodyShort>
-          <div className='max-h-36 overflow-scroll'>
+          <div>
             <Box
               marginBlock='space-12'
               asChild
@@ -444,6 +453,17 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
               </List>
             </Box>
           </div>
+          <Button
+            size='small'
+            data-color='neutral'
+            variant='primary'
+            className='mt-2'
+            onClick={() => {
+              cleanInput(validationErrors)
+            }}
+          >
+            Fjern alle
+          </Button>
         </Alert>
       )}
       <NewMessageAlert
