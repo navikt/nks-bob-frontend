@@ -70,6 +70,23 @@ export function isError(result: ValidationResult): result is ValidationError {
 
 export type Validator = (input: string) => ValidationResult
 
+export function replaceValidationResult(validationType: ValidationType) {
+  if (validationType === "fnr") {
+    return "xxxxxx-xxxxx"
+  }
+  if (validationType === "tlf") {
+    return "xxxxxxxx"
+  }
+  if (validationType === "accountnumber") {
+    return "xxxx.xx.xxxxx"
+  }
+  if (validationType === "dob") {
+    return "xx.xx.xx"
+  }
+
+  return "(tekst som kan inneholde persondetaljer)"
+}
+
 function getMatches(regex: RegExp, input: string): ValidationMatch[] {
   return Array.from(input.matchAll(regex)).map((match) => ({
     value: match[0],

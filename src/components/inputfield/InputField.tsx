@@ -28,6 +28,7 @@ import {
   isError,
   isNotOk,
   isWarning,
+  replaceValidationResult,
   validateAccountNumber,
   validateDateOfBirth,
   validateEmail,
@@ -38,6 +39,7 @@ import {
   validateNorwegianMobileNumber,
   validatePersonnummer,
   ValidationError,
+  ValidationResult,
   ValidationWarning,
   Validator,
 } from "../../utils/inputValidation.ts"
@@ -99,6 +101,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
   const [validationWarnings, setValidationWarnings] = useState<ValidationWarning[]>([])
   const [validationErrors, setValidationErrors] = useState<ValidationError[]>([])
   const [ignoredValidations, setIgnoredValidations] = useState<string[]>([])
+  const allWarningValues = validationWarnings.flatMap(({ matches }) => matches.map(({ value }) => value))
 
   const { conversationId } = useParams()
 
@@ -216,16 +219,13 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     warnings.forEach(({ validationType }) => analytics.valideringsfeil("warning", validationType))
     errors.forEach(({ validationType }) => analytics.valideringsfeil("error", validationType))
 
-    return [...warnings, ...errors]
+    const hasValidationError = errors.length > 0
+    const hasValidationWarning = warnings.length > 0
+    setSendDisabled(disabled || hasAlertErrors || hasValidationError || hasValidationWarning)
   }
 
   useEffect(() => {
-    const results = validateInput()
-
-    const hasValidationError = results.some(isError)
-    const hasValidationWarning = results.some(isWarning)
-
-    setSendDisabled(disabled || hasAlertErrors || hasValidationError || hasValidationWarning)
+    validateInput()
   }, [inputValue, disabled, hasAlertErrors, ignoredValidations])
 
   const prevSendDisabledRef = useRef<boolean>(true)
@@ -237,6 +237,17 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     }
     prevSendDisabledRef.current = sendDisabled
   }, [sendDisabled, inputValue, textareaRef])
+
+  function cleanInput(results: ValidationResult[]) {
+    let newInputValue = inputValue
+    results.filter(isNotOk).forEach(({ matches, validationType }) => {
+      matches.forEach(({ value }) => {
+        newInputValue = newInputValue.replaceAll(value, replaceValidationResult(validationType))
+      })
+    })
+
+    setInputValue(newInputValue)
+  }
 
   useHotkeys("Alt+Ctrl+O", () => sendMessage("hotkey", "Oversett til engelsk", { clear: false, blur: false }), {
     enabled: !!conversationId,
@@ -315,10 +326,9 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
             Spørsmålet ser ut til å inneholde personopplysninger
           </Heading>
           <BodyShort size='small'>
-            {" "}
             Vurder om følgende er personopplysninger. Om det er tilfellet, må de fjernes før du sender inn spørsmålet.
           </BodyShort>
-          <div className='max-h-36 overflow-scroll'>
+          <div className=''>
             <Box
               marginBlock='space-12'
               asChild
@@ -366,6 +376,31 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
               </List>
             </Box>
           </div>
+          <HStack
+            gap='space-4'
+            className='mt-4'
+          >
+            <Button
+              data-color='neutral'
+              size='small'
+              variant='primary'
+              onClick={() => {
+                cleanInput(validationWarnings)
+              }}
+            >
+              Fjern alle
+            </Button>
+            <Button
+              data-color='neutral'
+              size='small'
+              variant='tertiary'
+              onClick={() => {
+                validateInput([...ignoredValidations, ...allWarningValues])
+              }}
+            >
+              Ignorer alle
+            </Button>
+          </HStack>
         </Alert>
       )}
       {validationErrors.length > 0 && (
@@ -381,8 +416,9 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           >
             Spørsmålet inneholder fødselsnummer/d-nummer/hnr
           </Heading>
+
           <BodyShort size='small'>Fjern følgende før du sender inn spørsmålet.</BodyShort>
-          <div className='max-h-36 overflow-scroll'>
+          <div>
             <Box
               marginBlock='space-12'
               asChild
@@ -417,6 +453,17 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
               </List>
             </Box>
           </div>
+          <Button
+            size='small'
+            data-color='neutral'
+            variant='primary'
+            className='mt-2'
+            onClick={() => {
+              cleanInput(validationErrors)
+            }}
+          >
+            Fjern alle
+          </Button>
         </Alert>
       )}
       <NewMessageAlert
