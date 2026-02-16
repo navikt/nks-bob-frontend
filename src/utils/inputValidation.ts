@@ -2,7 +2,7 @@ import { countryCodePattern, whitelistNames } from "./inputvalidation/tlfValidat
 
 export type ValidationResult = ValidationOk | ValidationWarning | ValidationError
 
-export type ValidationType = "fnr-dnr-hnr" | "firstname-three-times" | "fullname" | "tlf" | "email" | "accountnumber" | "dob-three-times" | "firstname-twice-and-dob"
+export type ValidationType = "fnr" | "dnr" | "hnr" | "firstname-three-times" | "fullname" | "tlf" | "email" | "accountnumber" | "dob-three-times" | "firstname-twice-and-dob"
 
 export type ValidationMatch = { value: string; start: number; end: number }
 
@@ -71,17 +71,32 @@ export function isError(result: ValidationResult): result is ValidationError {
 export type Validator = (input: string) => ValidationResult
 
 export function replaceValidationResult(validationType: ValidationType) {
-  if (validationType === "fnr") {
-    return "xxxxxx-xxxxx"
+  if (validationType === "fullname") {
+    return "(anonymisert navn)"
+  }
+  if (validationType === "firstname-three-times") {
+    return "(anonymisert navn)"
+  }
+  if (validationType === "dob-three-times") {
+    return "(anonymisert dato og år)"
   }
   if (validationType === "tlf") {
-    return "xxxxxxxx"
+    return "(anonymisert telefonnummer)"
+  }
+  if (validationType === "email") {
+    return "(anonymisert email)"
   }
   if (validationType === "accountnumber") {
-    return "xxxx.xx.xxxxx"
+    return "(anonymisert kontonummer)"
   }
-  if (validationType === "dob") {
-    return "xx.xx.xx"
+  if (validationType === "fnr") {
+    return "(anonymisert fødselsnummer)"
+  }
+  if (validationType === "dnr") {
+    return "(anonymisert d-nummer)"
+  }
+  if (validationType === "hnr") {
+    return "(anonymisert helsenummer)"
   }
 
   return "(tekst som kan inneholde persondetaljer)"
@@ -156,17 +171,24 @@ const hnrRegex = /\b(0[1-9]|[12]\d|3[01])(4[1-9]|5[0-2])\d{2}[ .-]*?\d{3}\d{2}\b
 // hnrRegex fanger opp H-nummer der månedfeltet er fødselsmåned + 40 (41–52), mens dag og resten av nummeret følger vanlig struktur.
 
 
-const personnummerRegex = new RegExp(
+/* const personnummerRegex = new RegExp(
   [fnrRegex, dnrRegex, hnrRegex].map(({ source }) => source).join("|"),
   "g"
-)
+) */
 
-export const validatePersonnummer = createValidator(
-    personnummerRegex,
-    error,
-    "Tekst som ligner på et fødselsnummer:",
-    "fnr-dnr-hnr",
-  )
+export const validateFnr = createValidator(fnrRegex, error, "Tekst som ligner på et fødselsnummer:", "fnr")
+export const validateDnr = createValidator(dnrRegex, error, "Tekst som ligner på et d-nummer:", "dnr")
+export const validateHnr = createValidator(hnrRegex, error, "Tekst som ligner på et helsenummer", "dnr")
+
+export const validatePersonnummer = (input: string): ValidationResult => {
+  const fnrResult = validateFnr(input)
+  if (isNotOk(fnrResult)) return fnrResult
+
+  const dnrResult = validateDnr(input)
+  if (isNotOk(dnrResult)) return dnrResult
+
+  return validateHnr(input)
+}
 
   //
 
