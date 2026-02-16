@@ -512,7 +512,8 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
         align='center'
         className='text-ax-text-neutral-subtle mx-2 pb-2'
       >
-        Ikke del personopplysninger og sjekk kilder om du er usikker - Bob er en kunstig intelligens og kan ta feil.
+        Del aldri personopplysninger med Bob. Bob er en kunstig intelligens - sjekk alltid kilder dersom du er usikker
+        på svaret.
       </Detail>
     </div>
   )
