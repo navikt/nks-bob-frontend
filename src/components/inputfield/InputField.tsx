@@ -430,7 +430,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           size='medium'
           label=''
           hideLabel
-          className='dialogcontent mb-3 min-h-[43px] truncate [&_textarea]:max-h-[450px] [&_textarea]:min-h-[43px] [&_textarea]:focus:min-h-[50px]'
+          className='dialogcontent mb-3 min-h-10.75 truncate [&_textarea]:max-h-112.5 [&_textarea]:min-h-10.75 [&_textarea]:focus:min-h-12.5'
           minRows={minRows}
           maxRows={15}
           placeholder={placeholderText}

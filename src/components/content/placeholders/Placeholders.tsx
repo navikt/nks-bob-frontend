@@ -15,7 +15,7 @@ export const BobPlaceholder = () => {
       {!hasErrors && (
         <>
           <div className='my-18 flex w-full max-w-lg self-center dark:hidden'>
-            <div className='mx-auto w-full px-16'>
+            <div className='mx-auto w-full px-10'>
               <BobTheRobot />
             </div>
           </div>

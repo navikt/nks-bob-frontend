@@ -1,5 +1,5 @@
 import { BellIcon } from "@navikt/aksel-icons"
-import { BodyLong, BodyShort, Button, Detail, Dropdown, Heading, Tabs, Tooltip } from "@navikt/ds-react"
+import { ActionMenu, BodyLong, BodyShort, Button, Detail, Heading, Tabs, Tooltip } from "@navikt/ds-react"
 import { useEffect, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import Markdown from "react-markdown"
@@ -58,7 +58,7 @@ export const NotificationToggle = () => {
   })
 
   return (
-    <Dropdown
+    <ActionMenu
       open={initialOpen ?? false}
       onOpenChange={(open) => {
         if (!open && activeTab === "nye") {
@@ -68,32 +68,28 @@ export const NotificationToggle = () => {
       }}
     >
       <Tooltip content='Vis varsler ( Alt+Ctrl+V )'>
-        <Button
-          data-color="neutral"
-          variant='tertiary'
-          aria-label='Vis varsler'
-          size='medium'
-          icon={
-            <div className='relative'>
-              <BellIcon aria-hidden />
-              {hasUnread && <NotificationTick className='absolute top-[3px] right-[7px]' />}
-            </div>
-          }
-          as={Dropdown.Toggle}
-        />
-      </Tooltip>
-      <Dropdown.Menu
-        placement='bottom-end'
-        className='max-h-[800px] w-[450px] overflow-scroll p-0'
-      >
-        <Dropdown.Menu.GroupedList>
-          <NotificationDrawer
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
+        <ActionMenu.Trigger>
+          <Button
+            data-color='neutral'
+            variant='tertiary'
+            aria-label='Vis varsler'
+            size='medium'
+            icon={
+              <div className='relative'>
+                <BellIcon aria-hidden />
+                {hasUnread && <NotificationTick className='absolute top-[3px] right-[7px]' />}
+              </div>
+            }
           />
-        </Dropdown.Menu.GroupedList>
-      </Dropdown.Menu>
-    </Dropdown>
+        </ActionMenu.Trigger>
+      </Tooltip>
+      <ActionMenu.Content className='*:max-h-[800px] *:w-[450px] *:p-0'>
+        <NotificationDrawer
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+        />
+      </ActionMenu.Content>
+    </ActionMenu>
   )
 }
 
@@ -188,7 +184,10 @@ const NotificationItem = ({ notification, className }: { notification: NewsNotif
       >
         {notification.title}
       </Heading>
-      <BodyLong textColor='subtle'>
+      <BodyLong
+        as='div'
+        textColor='subtle'
+      >
         <Markdown>{notification.content}</Markdown>
       </BodyLong>
     </div>
