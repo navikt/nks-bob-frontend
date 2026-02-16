@@ -1,4 +1,4 @@
-import { BodyLong, BodyShort, CopyButton, HStack, Label, Link, Tooltip, VStack } from "@navikt/ds-react"
+import { Accordion, BodyLong, BodyShort, CopyButton, HStack, Label, Link, VStack } from "@navikt/ds-react"
 import { useState } from "react"
 import Markdown from "react-markdown"
 import remarkGfm from "remark-gfm"
@@ -6,9 +6,10 @@ import { KunnskapsbasenIcon } from "../../../../../assets/icons/KunnskapsbasenIc
 import { NavNoIcon } from "../../../../../assets/icons/NavNoIcon.tsx"
 import { Context } from "../../../../../types/Message.ts"
 import analytics from "../../../../../utils/analytics.ts"
-import { HoverCard } from "../../../../ui/HoverCard.tsx"
-import { SourceIcon } from "../BobAnswerCitations.tsx"
 import { buildLinkTitle } from "../../../../../utils/link.ts"
+import { HoverCard } from "../../../../ui/HoverCard.tsx"
+import { MultiCitation, SingleCitation, SourceIcon } from "../BobAnswerCitations.tsx"
+import "./Citations.css"
 
 interface CitationNumberProps {
   citations: { citationId: number }[]
@@ -102,6 +103,24 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
                 rel='noopener noreferrer'
               />
             ),
+            h2: ({ ...props }) => (
+              <h2
+                {...props}
+                className='mb-2 font-semibold'
+              />
+            ),
+            h3: ({ ...props }) => (
+              <h3
+                {...props}
+                className='mb-1 font-semibold'
+              />
+            ),
+            h4: ({ ...props }) => (
+              <h4
+                {...props}
+                className='mb-1 font-semibold'
+              />
+            ),
           }}
         >
           {source.content}
@@ -163,14 +182,20 @@ export const CitationLinks = ({ citations, context }: CitationLinksProps) => {
       justify='center'
       className='mb-4'
     >
-      {Array.from(groups.values()).map((group) => (
-        <GroupedCitationLink
-          key={group.key}
-          citations={citations}
-          source={group.source}
-          citationIds={group.citationIds}
-        />
-      ))}
+      <Accordion
+        size='small'
+        data-color='neutral'
+      >
+        {Array.from(groups.values()).map((group) => (
+          <GroupedCitationLink
+            key={group.key}
+            citations={citations}
+            source={group.source}
+            citationIds={group.citationIds}
+            context={context}
+          />
+        ))}
+      </Accordion>
     </VStack>
   )
 }
@@ -179,16 +204,84 @@ type GroupedCitationLinkProps = {
   citations: { citationId: number }[]
   source: Context
   citationIds: number[]
+  context: Context[]
 }
 
-const GroupedCitationLink = ({ citations, source, citationIds }: GroupedCitationLinkProps) => {
+const GroupedCitationLink = ({ citations, source, citationIds, context }: GroupedCitationLinkProps) => {
   const title = buildLinkTitle(source)
 
   const displayIds = citationIds
     .map((id) => citations.findIndex((citation) => citation.citationId === id) + 1)
     .filter((n) => n > 0)
 
+  const citationObjects = citationIds
+    .map((id) => {
+      const ctx = context.at(id)
+      return ctx ? { sourceId: id, text: ctx.content } : null
+    })
+    .filter((c): c is { sourceId: number; text: string } => c !== null)
+
   return (
+    <>
+      <Accordion.Item>
+        <Accordion.Header className='citation-accordion-header w-full text-base'>
+          <HStack
+            gap='space-2'
+            align='center'
+            wrap={false}
+            className='w-full min-w-0'
+          >
+            {source.source === "nks" ? <KunnskapsbasenIcon size={18} /> : <NavNoIcon size={18} />}
+
+            <BodyShort
+              size='small'
+              className='min-w-0 flex-1 truncate'
+            >
+              {title}
+            </BodyShort>
+            {displayIds.map((displayId) => (
+              <div
+                key={displayId}
+                className='bg-ax-bg-neutral-moderate h-fit rounded-sm px-1'
+              >
+                <BodyShort size='small'>{displayId}</BodyShort>
+              </div>
+            ))}
+            {source.source === "nks" ? (
+              <CopyButton
+                copyText={title}
+                size='xsmall'
+                className='ml-auto'
+                onClick={(e) => e.stopPropagation()}
+              />
+            ) : (
+              <CopyButton
+                copyText={`${source.url}#${source.anchor ?? ""}`}
+                size='xsmall'
+                className='ml-auto'
+                onClick={(e) => e.stopPropagation()}
+              />
+            )}
+          </HStack>
+        </Accordion.Header>
+        <Accordion.Content>
+          {citationObjects.length === 1 ? (
+            <SingleCitation
+              citation={citationObjects[0]}
+              context={context.at(citationObjects[0].sourceId)}
+            />
+          ) : (
+            <MultiCitation
+              title={title}
+              source={source.source}
+              citations={citationObjects}
+              contexts={context}
+            />
+          )}
+        </Accordion.Content>
+      </Accordion.Item>
+
+      {/*
     <HStack
       gap='space-8'
       align='center'
@@ -226,8 +319,6 @@ const GroupedCitationLink = ({ citations, source, citationIds }: GroupedCitation
         >
           <BodyShort size='small'>{title}</BodyShort>
         </Link>
-
-        {/* TODO: track event for copy */}
         {source.source === "nks" ? (
           <Tooltip content='Kopier artikkelnavn'>
             <CopyButton
@@ -245,5 +336,7 @@ const GroupedCitationLink = ({ citations, source, citationIds }: GroupedCitation
         )}
       </span>
     </HStack>
+    */}
+    </>
   )
 }
