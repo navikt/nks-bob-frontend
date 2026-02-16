@@ -99,7 +99,7 @@ export function replaceValidationResult(validationType: ValidationType) {
     return "(anonymisert helsenummer)"
   }
 
-  return "(anonymisert personinformasjon)"
+  return "(anonymisert personopplysning)"
 }
 
 function getMatches(regex: RegExp, input: string): ValidationMatch[] {
