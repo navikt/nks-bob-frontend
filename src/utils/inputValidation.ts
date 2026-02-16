@@ -2,7 +2,7 @@ import { countryCodePattern, whitelistNames } from "./inputvalidation/tlfValidat
 
 export type ValidationResult = ValidationOk | ValidationWarning | ValidationError
 
-export type ValidationType = "fnr" | "name" | "tlf" | "email" | "accountnumber" | "dob"  
+export type ValidationType = "fnr-dnr-hnr" | "firstname-three-times" | "fullname" | "tlf" | "email" | "accountnumber" | "dob-three-times" | "firstname-twice-and-dob"
 
 export type ValidationMatch = { value: string; start: number; end: number }
 
@@ -148,7 +148,7 @@ export const validatePersonnummer = createValidator(
     personnummerRegex,
     error,
     "Tekst som ligner på et fødselsnummer:",
-    "fnr",
+    "fnr-dnr-hnr",
   )
 
   //
@@ -168,7 +168,7 @@ export const validateFullName = createValidatorWithWhitelist(
   fullNameRegex,
   warning,
   "Tekst som ligner på et navn:",
-  "name",
+  "fullname",
   whitelistNames
 )
 
@@ -190,7 +190,7 @@ const baseValidateFirstName = createValidatorWithWhitelist(
   nameWordRegex,
   warning,
   "Tekst som ligner på et navn:",
-  "name",
+  "firstname-three-times",
   whitelistNames
 )
 
@@ -216,7 +216,7 @@ const baseValidateDateOfBirth = createValidator(
   dobRegex,
   warning,
   "Tekst som ligner på fødselsdato:",
-  "dob",
+  "dob-three-times",
 )
 
 export const validateDateOfBirth: Validator = (input: string) => {
@@ -245,7 +245,7 @@ const baseValidateNameAndDob = createValidator(
   nameOrDobRegex,
   warning,
   "Tekst som ligner på navn + fødselsdato:",
-  "dob", 
+  "firstname-twice-and-dob", 
 )
 
 export const validateNameAndDob: Validator = (input: string) => {
