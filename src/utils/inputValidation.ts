@@ -99,7 +99,7 @@ export function replaceValidationResult(validationType: ValidationType) {
     return "(anonymisert helsenummer)"
   }
 
-  return "(tekst som kan inneholde persondetaljer)"
+  return "(anonymisert personinformasjon)"
 }
 
 function getMatches(regex: RegExp, input: string): ValidationMatch[] {
@@ -161,13 +161,13 @@ function createValidatorWithWhitelist(
   }
 }
 
-const fnrRegex = /\b(0[1-9]|[12]\d|3[01])(0[1-9]|1[0-2])\d{2}[ .-]*?\d{3}[ .-]*\d{2}\b/
+const fnrRegex = /\b(0[1-9]|[12]\d|3[01])(0[1-9]|1[0-2])\d{2}[ .-]*?\d{3}[ .-]*\d{2}\b/g
 // fnrRegex fanger opp fødselsnummer på formatet DDMMÅÅIIIKK, med dag 01–31, måned 01–12 og valgfri separator.
 
-const dnrRegex = /\b(4[1-9]|[56]\d|7[01])(0[1-9]|1[0-2])\d{2}[ .-]*?\d{3}[ .-]*\d{2}\b/
+const dnrRegex = /\b(4[1-9]|[56]\d|7[01])(0[1-9]|1[0-2])\d{2}[ .-]*?\d{3}[ .-]*\d{2}\b/g
 // dnrRegex fanger opp D-nummer der dagfeltet er fødselsdag + 40 (41–71), etterfulgt av måned 01–12 og resten av nummeret.
 
-const hnrRegex = /\b(0[1-9]|[12]\d|3[01])(4[1-9]|5[0-2])\d{2}[ .-]*?\d{3}\d{2}\b/
+const hnrRegex = /\b(0[1-9]|[12]\d|3[01])(4[1-9]|5[0-2])\d{2}[ .-]*?\d{3}\d{2}\b/g
 // hnrRegex fanger opp H-nummer der månedfeltet er fødselsmåned + 40 (41–52), mens dag og resten av nummeret følger vanlig struktur.
 
 

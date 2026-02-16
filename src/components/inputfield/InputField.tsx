@@ -390,7 +390,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
                 cleanInput(validationWarnings)
               }}
             >
-              Fjern alle
+              Anonymiser alle
             </Button>
             <Button
               data-color='neutral'
@@ -465,7 +465,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
               cleanInput(validationErrors)
             }}
           >
-            Fjern alle
+            Anonymiser alle
           </Button>
         </Alert>
       )}
