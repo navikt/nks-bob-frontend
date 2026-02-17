@@ -25,6 +25,7 @@ import { useAlerts, useUserInfo } from "../../api/api.ts"
 import { NewMessage } from "../../types/Message.ts"
 import analytics from "../../utils/analytics.ts"
 import {
+  filterOverlappingMatches,
   isError,
   isNotOk,
   isWarning,
@@ -34,12 +35,14 @@ import {
   validateEmail,
   validateFirstName,
   validateFullName,
+  validateFullNameAndDob,
   validateGlobalPhoneNumber,
   validateNameAndDob,
   validateNorwegianMobileNumber,
   validatePersonnummer,
   ValidationError,
   ValidationResult,
+  ValidationType,
   ValidationWarning,
   Validator,
 } from "../../utils/inputValidation.ts"
@@ -101,7 +104,6 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
   const [validationWarnings, setValidationWarnings] = useState<ValidationWarning[]>([])
   const [validationErrors, setValidationErrors] = useState<ValidationError[]>([])
   const [ignoredValidations, setIgnoredValidations] = useState<string[]>([])
-  const allWarningValues = validationWarnings.flatMap(({ matches }) => matches.map(({ value }) => value))
 
   const { conversationId } = useParams()
 
@@ -186,6 +188,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     validateDateOfBirth,
     validateNorwegianMobileNumber,
     validateGlobalPhoneNumber,
+    validateFullNameAndDob,
     validateNameAndDob,
   ]
 
@@ -196,9 +199,25 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
       ignoredWarnings = ignoredValidations
     }
 
-    const validationResults = validators.map((validator) => validator.call(null, inputValue)).filter(isNotOk)
+    const validationResults = validators.map((validator) => validator.call(null, inputValue))
 
-    const warnings = validationResults
+    const priorityOrder: ValidationType[] = [
+      "fnr",
+      "dnr",
+      "hnr",
+      "fullname-and-dob",
+      "firstname-twice-and-dob",
+      "fullname",
+      "dob-three-times",
+      "firstname-three-times",
+      "tlf",
+      "email",
+      "accountnumber",
+    ]
+
+    const filteredResults = filterOverlappingMatches(validationResults, priorityOrder).filter(isNotOk)
+
+    const warnings = filteredResults
       .filter(isWarning)
       .flatMap((validation) => ({
         ...validation,
@@ -208,7 +227,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
 
     setValidationWarnings(warnings)
 
-    const errors = validationResults.filter(isError)
+    const errors = filteredResults.filter(isError)
     setValidationErrors(errors)
 
     const containsFnr = validationResults
@@ -390,17 +409,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
                 cleanInput(validationWarnings)
               }}
             >
-              Anonymiser alle
-            </Button>
-            <Button
-              data-color='neutral'
-              size='small'
-              variant='tertiary'
-              onClick={() => {
-                validateInput([...ignoredValidations, ...allWarningValues])
-              }}
-            >
-              Ignorer alle
+              Anonymiser opplysningene
             </Button>
           </HStack>
         </Alert>
@@ -465,7 +474,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
               cleanInput(validationErrors)
             }}
           >
-            Anonymiser alle
+            Anonymiser opplysningene
           </Button>
         </Alert>
       )}

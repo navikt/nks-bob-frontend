@@ -2,7 +2,7 @@ import { countryCodePattern, whitelistNames } from "./inputvalidation/tlfValidat
 
 export type ValidationResult = ValidationOk | ValidationWarning | ValidationError
 
-export type ValidationType = "fnr" | "dnr" | "hnr" | "firstname-three-times" | "fullname" | "tlf" | "email" | "accountnumber" | "dob-three-times" | "firstname-twice-and-dob"
+export type ValidationType = "fnr" | "dnr" | "hnr" | "firstname-three-times" | "fullname" | "tlf" | "email" | "accountnumber" | "dob-three-times" | "fullname-and-dob" | "firstname-twice-and-dob"
 
 export type ValidationMatch = { value: string; start: number; end: number }
 
@@ -78,7 +78,7 @@ export function replaceValidationResult(validationType: ValidationType) {
     return "(anonymisert navn)"
   }
   if (validationType === "dob-three-times") {
-    return "(anonymisert dato og år)"
+    return "(anonymisert dato)"
   }
   if (validationType === "tlf") {
     return "(anonymisert telefonnummer)"
@@ -98,6 +98,9 @@ export function replaceValidationResult(validationType: ValidationType) {
   if (validationType === "hnr") {
     return "(anonymisert helsenummer)"
   }
+  if (validationType === "fullname-and-dob") {
+    return "(anonymisert dato)"
+  }
 
   return "(anonymisert personopplysning)"
 }
@@ -109,6 +112,45 @@ function getMatches(regex: RegExp, input: string): ValidationMatch[] {
     end: match.index + match[0].length,
   }))
 }
+
+function matchesOverlap(match1: ValidationMatch, match2: ValidationMatch): boolean {
+  return match1.start < match2.end && match2.start < match1.end
+}
+
+function filterOverlappingMatches(
+  results: ValidationResult[],
+  priorityOrder: ValidationType[]
+): ValidationResult[] {
+  const notOkResults = results.filter(isNotOk)
+  const okResults = results.filter(isOk)
+  
+  const sortedResults = notOkResults.sort((a, b) => {
+    const aIndex = priorityOrder.indexOf(a.validationType)
+    const bIndex = priorityOrder.indexOf(b.validationType)
+    return aIndex - bIndex
+  })
+
+  const filteredResults: (ValidationWarning | ValidationError)[] = []
+  const usedRanges: ValidationMatch[] = []
+
+  for (const result of sortedResults) {
+    const filteredMatches = result.matches.filter(match => 
+      !usedRanges.some(used => matchesOverlap(match, used))
+    )
+
+    if (filteredMatches.length > 0) {
+      filteredResults.push({
+        ...result,
+        matches: filteredMatches
+      })
+      usedRanges.push(...filteredMatches)
+    }
+  }
+
+  return [...okResults, ...filteredResults]
+}
+
+export { filterOverlappingMatches }
 
 function createValidator(
   regex: RegExp,
@@ -178,7 +220,7 @@ const hnrRegex = /\b(0[1-9]|[12]\d|3[01])(4[1-9]|5[0-2])\d{2}[ .-]*?\d{3}\d{2}\b
 
 export const validateFnr = createValidator(fnrRegex, error, "Tekst som ligner på et fødselsnummer:", "fnr")
 export const validateDnr = createValidator(dnrRegex, error, "Tekst som ligner på et d-nummer:", "dnr")
-export const validateHnr = createValidator(hnrRegex, error, "Tekst som ligner på et helsenummer", "dnr")
+export const validateHnr = createValidator(hnrRegex, error, "Tekst som ligner på et helsenummer", "hnr")
 
 export const validatePersonnummer = (input: string): ValidationResult => {
   const fnrResult = validateFnr(input)
@@ -269,6 +311,25 @@ export const validateDateOfBirth: Validator = (input: string) => {
 
 //
 
+const hasFullNameAnd1DobRegex = new RegExp(
+  `^(?=[\\s\\S]*${fullNameRegex.source})(?=[\\s\\S]*${dobRegex.source})`,
+  "u",
+)
+
+const dobOnlyRegex = new RegExp(dobRegex.source, "g")
+
+const baseValidationFullNameAndDob = createValidator(
+  dobOnlyRegex,
+  warning,
+  "Tekst som ligner på fullt navn + fødselsdato",
+  "fullname-and-dob"
+)
+
+export const validateFullNameAndDob: Validator = (input: string) => {
+  if (!hasFullNameAnd1DobRegex.test(input)) return ok()
+    return baseValidationFullNameAndDob(input)
+}
+
 // Regel for å matche om 2 ord med stor forbokstav + dato
 
 const has2NamesAnd1DobRegex = new RegExp(
@@ -284,7 +345,7 @@ const nameOrDobRegex = new RegExp(
 const baseValidateNameAndDob = createValidator(
   nameOrDobRegex,
   warning,
-  "Tekst som ligner på navn + fødselsdato:",
+  "Tekst som ligner på fornavn + fødselsdato:",
   "firstname-twice-and-dob", 
 )
 
@@ -321,3 +382,6 @@ export const validateEmail = createValidator(emailRegex, warning, "Tekst som lig
 const accountNumberRegex = /\b\d{4}[ .-]+\d{2}[ .-]+\d{5}\b/g
 
 export const validateAccountNumber = createValidator(accountNumberRegex, warning, "Tekst som ligner på et kontonummer", "accountnumber")
+
+//
+
