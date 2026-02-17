@@ -1,104 +1,77 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
+import { Button, Modal, Tooltip } from "@navikt/ds-react"
+import { InformationSquareIcon } from "@navikt/aksel-icons"
+import { useHotkeys } from "react-hotkeys-hook"
 import { useUpdateUserConfig, useUserConfig } from "../../../api/api.ts"
-import { Step1, Step2, Step3, Step4, Step5, WelcomeMessage } from "./GuideModals.tsx"
+import { StepModal } from "./GuideModals.tsx"
 import "./GuideStyling.css"
+import analytics from "../../../utils/analytics.ts"
 
-const Guide = ({ startGuide, setStartGuide }: { startGuide: boolean; setStartGuide: (value: boolean) => void }) => {
+const Guide = () => {
+  const [isOpen, setIsOpen] = useState(false)
+  const modalRef = useRef<HTMLDialogElement | null>(null)
   const [step, setStep] = useState<number>(1)
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
-  const [isWelcomeShown, setIsWelcomeShown] = useState<boolean>(false)
   const { updateUserConfig } = useUpdateUserConfig()
   const { userConfig } = useUserConfig()
 
-  const handleNext = () => {
-    if (!isWelcomeShown) {
-      setIsWelcomeShown(true)
-    } else {
-      setStep((prevStep) => prevStep + 1)
-    }
+  const showGuide = () => {
+    analytics.infoÅpnet()
+    setIsOpen(true)
   }
 
+  useHotkeys("Alt+Ctrl+I", () => showGuide(), {
+    enableOnFormTags: true,
+  })
+
+  const handleNext = () => setStep((prevStep) => prevStep + 1)
   const handlePrevious = () => setStep((prevStep) => prevStep - 1)
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => setStep(Number(e.target.value))
 
   function handleClose() {
-    updateUserConfig({ showStartInfo: false })
-    setIsModalOpen(false)
-    setStartGuide(false)
+    if (userConfig?.showStartInfo) {
+      updateUserConfig({ showStartInfo: false })
+    }
+    setIsOpen(false)
+    setStep(1)
   }
 
   useEffect(() => {
     if (userConfig?.showStartInfo) {
-      setIsWelcomeShown(false)
-      setIsModalOpen(true)
-    } else {
-      setIsModalOpen(false)
+      setStep(0)
+      setIsOpen(true)
+      analytics.infoÅpnet()
     }
   }, [userConfig])
 
-  useEffect(() => {
-    if (startGuide) {
-      setIsWelcomeShown(true)
-      setStep(1)
-      setIsModalOpen(true)
-    }
-  }, [startGuide])
-
-  if (!isModalOpen) return null
-
   return (
-    <div>
-      <div className='modal-overlay' />
-      {!isWelcomeShown && (
-        <WelcomeMessage
-          onNext={handleNext}
-          onClose={handleClose}
+    <>
+      <Tooltip content='Informasjon og tips ( Alt+Ctrl+I )'>
+        <Button
+          data-color='neutral'
+          variant='tertiary'
+          aria-label='Informasjon og tips'
+          size='medium'
+          onClick={showGuide}
+          icon={<InformationSquareIcon aria-hidden />}
         />
-      )}
-      {isWelcomeShown && step === 1 && (
-        <Step1
-          onNext={handleNext}
-          onClose={handleClose}
+      </Tooltip>
+      <Modal
+        ref={modalRef}
+        aria-labelledby='modal-heading'
+        open={isOpen}
+        onClose={handleClose}
+        closeOnBackdropClick
+      >
+        <StepModal
           step={step}
-          handleSelectChange={handleSelectChange}
-        />
-      )}
-      {isWelcomeShown && step === 2 && (
-        <Step2
+          totalSteps={5}
           onPrevious={handlePrevious}
-          step={step}
-          handleSelectChange={handleSelectChange}
-          onClose={handleClose}
           onNext={handleNext}
-        />
-      )}
-      {isWelcomeShown && step === 3 && (
-        <Step3
-          onPrevious={handlePrevious}
-          step={step}
-          handleSelectChange={handleSelectChange}
           onClose={handleClose}
-          onNext={handleNext}
-        />
-      )}
-      {isWelcomeShown && step === 4 && (
-        <Step4
-          onPrevious={handlePrevious}
-          step={step}
           handleSelectChange={handleSelectChange}
-          onClose={handleClose}
-          onNext={handleNext}
         />
-      )}
-      {isWelcomeShown && step === 5 && (
-        <Step5
-          onPrevious={handlePrevious}
-          step={step}
-          handleSelectChange={handleSelectChange}
-          onClose={handleClose}
-        />
-      )}
-    </div>
+      </Modal>
+    </>
   )
 }
 

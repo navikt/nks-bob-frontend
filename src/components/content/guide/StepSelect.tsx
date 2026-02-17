@@ -7,6 +7,10 @@ export const StepSelect = ({
   step: number
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
 }) => {
+  if (step === 0) {
+    return <div />
+  }
+
   return (
     <Select
       label='Velg steg'

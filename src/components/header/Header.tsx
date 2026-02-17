@@ -1,10 +1,5 @@
-import { InformationSquareIcon } from "@navikt/aksel-icons"
-import { Button, Tooltip } from "@navikt/ds-react"
-import { useState } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 import { Link } from "react-router"
 import { useUserConfig } from "../../api/api.ts"
-import analytics from "../../utils/analytics.ts"
 import { CoachMark } from "../coachmark/CoachMark.tsx"
 import { MainButtonsExplanation } from "../coachmark/CoachmarkContent.tsx"
 import Guide from "../content/guide/Guide.tsx"
@@ -20,18 +15,8 @@ interface HeaderProps {
 }
 
 function Header({ conversation }: HeaderProps) {
-  const [startGuide, setStartGuide] = useState(false)
   const { userConfig } = useUserConfig()
   const coachMarkKey = "coachMarkShownHeader"
-
-  const showGuide = () => {
-    analytics.infoÅpnet()
-    setStartGuide(true)
-  }
-
-  useHotkeys("Alt+Ctrl+I", () => showGuide(), {
-    enableOnFormTags: true,
-  })
 
   return (
     <div
@@ -64,20 +49,7 @@ function Header({ conversation }: HeaderProps) {
             )}
             <RegretNewButton />
             <NotificationToggle />
-            <Tooltip content='Informasjon og tips ( Alt+Ctrl+I )'>
-              <Button
-                data-color='neutral'
-                variant='tertiary'
-                aria-label='Informasjon og tips'
-                size='medium'
-                onClick={showGuide}
-                icon={<InformationSquareIcon aria-hidden />}
-              />
-            </Tooltip>
-            <Guide
-              startGuide={startGuide}
-              setStartGuide={setStartGuide}
-            />
+            <Guide />
             {userConfig?.showNewConceptInfo && <NewConceptMessage />}
             <ThemeButton />
           </div>
