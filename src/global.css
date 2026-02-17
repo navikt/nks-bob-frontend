@@ -88,7 +88,6 @@ ol li::marker {
   position: relative;
   width: 100%;
   height: 100vh;
-  justify-content: center;
 }
 
 .createconversation-wrapper {
@@ -99,6 +98,19 @@ ol li::marker {
   height: 100%;
   justify-content: center;
   margin-inline: auto;
+  margin-bottom: 150px;
+}
+
+@media screen and (max-height: 850px) {
+  .createconversation-wrapper {
+    justify-content: flex-start;
+}
+}
+
+@media screen and (max-width: 760px) {
+  .createconversation-wrapper {
+    justify-content: flex-start;
+  }
 }
 
 .contentwrapper {
