@@ -220,10 +220,11 @@ export const validateFullName = createValidatorWithWhitelist(
    - Matcher ikke ord etter tegnsetting eller linjeskift */
 
 const nameWordRegex =
-  /(?<!^)(?<![\p{P}\n]\s*)\b\p{Lu}\p{Ll}+\b/gu
+  /(?<!^)(?<![\p{P}\n]\s*)(?<!\p{Lu}[\p{L}'-]*[ \t-])\b\p{Lu}\p{Ll}+\b(?![ \t-]\p{Lu}[\p{L}'-]*)/gu
 
 const has3NameWordsRegex =
-  /^(?=(?:.*(?<!^)(?<![\p{P}\n]\s*)\b\p{Lu}\p{Ll}+\b){3})/u
+  /^(?=(?:.*(?<!^)(?<![\p{P}\n]\s*)(?<!\p{Lu}[\p{L}'-]*[ \t-])\b\p{Lu}\p{Ll}+\b(?![ \t-]\p{Lu}[\p{L}'-]*)){3})/u
+
 
 const baseValidateFirstName = createValidatorWithWhitelist(
   nameWordRegex,
