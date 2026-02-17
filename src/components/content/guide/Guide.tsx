@@ -3,12 +3,12 @@ import { Button, Modal, Tooltip } from "@navikt/ds-react"
 import { InformationSquareIcon } from "@navikt/aksel-icons"
 import { useHotkeys } from "react-hotkeys-hook"
 import { useUpdateUserConfig, useUserConfig } from "../../../api/api.ts"
-import { StepModal } from "./GuideModals.tsx"
+import { StepModalContent } from "./GuideModals.tsx"
 import "./GuideStyling.css"
 import analytics from "../../../utils/analytics.ts"
+import { BobTheGuide1, BobTheGuide2, BobThePirate } from "../../../assets/illustrations/BobTheGuide.tsx"
 
 const Guide = () => {
-  const [isOpen, setIsOpen] = useState(false)
   const modalRef = useRef<HTMLDialogElement | null>(null)
   const [step, setStep] = useState<number>(1)
   const { updateUserConfig } = useUpdateUserConfig()
@@ -16,7 +16,7 @@ const Guide = () => {
 
   const showGuide = () => {
     analytics.infoÅpnet()
-    setIsOpen(true)
+    modalRef.current?.showModal()
   }
 
   useHotkeys("Alt+Ctrl+I", () => showGuide(), {
@@ -31,14 +31,14 @@ const Guide = () => {
     if (userConfig?.showStartInfo) {
       updateUserConfig({ showStartInfo: false })
     }
-    setIsOpen(false)
     setStep(1)
+    modalRef.current?.close()
   }
 
   useEffect(() => {
     if (userConfig?.showStartInfo) {
       setStep(0)
-      setIsOpen(true)
+      modalRef.current?.showModal()
       analytics.infoÅpnet()
     }
   }, [userConfig])
@@ -58,11 +58,12 @@ const Guide = () => {
       <Modal
         ref={modalRef}
         aria-labelledby='modal-heading'
-        open={isOpen}
         onClose={handleClose}
         closeOnBackdropClick
+        className='relative overflow-visible'
       >
-        <StepModal
+        <BobGuide step={step} />
+        <StepModalContent
           step={step}
           totalSteps={5}
           onPrevious={handlePrevious}
@@ -73,6 +74,58 @@ const Guide = () => {
       </Modal>
     </>
   )
+}
+
+const BobGuide = ({ step }: { step: number }) => {
+  if (step === 0) {
+    return (
+      <div className='absolute bottom-0 -translate-x-45'>
+        <BobTheGuide1 />
+      </div>
+    )
+  }
+
+  if (step === 1) {
+    return (
+      <div className='absolute -translate-x-45'>
+        <BobTheGuide1 />
+      </div>
+    )
+  }
+
+  if (step === 2) {
+    return (
+      <div className='absolute -translate-y-44'>
+        <BobTheGuide2 />
+      </div>
+    )
+  }
+
+  if (step === 3) {
+    return (
+      <div className='absolute right-1/3 -translate-y-33'>
+        <BobTheGuide2 clipHeight={172} />
+      </div>
+    )
+  }
+
+  if (step === 4) {
+    return (
+      <div className='absolute right-0 -translate-y-52'>
+        <BobThePirate clipHeight={272} />
+      </div>
+    )
+  }
+
+  if (step === 5) {
+    return (
+      <div className='absolute -translate-y-44'>
+        <BobTheGuide2 />
+      </div>
+    )
+  }
+
+  return <></>
 }
 
 export default Guide

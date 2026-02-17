@@ -222,7 +222,14 @@ type StepModalProps = {
   handleSelectChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
 }
 
-export const StepModal = ({ step, totalSteps, onClose, onPrevious, onNext, handleSelectChange }: StepModalProps) => (
+export const StepModalContent = ({
+  step,
+  totalSteps,
+  onClose,
+  onPrevious,
+  onNext,
+  handleSelectChange,
+}: StepModalProps) => (
   <>
     <Modal.Header id='modal-heading'>
       <Heading
