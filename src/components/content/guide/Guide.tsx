@@ -4,7 +4,6 @@ import { InformationSquareIcon } from "@navikt/aksel-icons"
 import { useHotkeys } from "react-hotkeys-hook"
 import { useUpdateUserConfig, useUserConfig } from "../../../api/api.ts"
 import { StepModalContent } from "./GuideModals.tsx"
-import "./GuideStyling.css"
 import analytics from "../../../utils/analytics.ts"
 import { BobTheGuide1, BobTheGuide2, BobThePirate } from "../../../assets/illustrations/BobTheGuide.tsx"
 
