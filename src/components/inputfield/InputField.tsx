@@ -409,7 +409,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
                 cleanInput(validationWarnings)
               }}
             >
-              Anonymiser opplysningene
+              Anonymiser opplysninger
             </Button>
           </HStack>
         </Alert>
@@ -474,7 +474,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
               cleanInput(validationErrors)
             }}
           >
-            Anonymiser opplysningene
+            Anonymiser opplysninger
           </Button>
         </Alert>
       )}
