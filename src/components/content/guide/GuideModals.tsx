@@ -1,61 +1,6 @@
 import { BodyLong, BodyShort, Button, Heading, HStack, Link, Modal, VStack } from "@navikt/ds-react"
-import { useState } from "react"
-import { useUpdateUserConfig } from "../../../api/api.ts"
-import { BobTheGuide1 } from "../../../assets/illustrations/BobTheGuide.tsx"
 import { SitaterFraKB, SitaterFraNavno, VisAlleKilder } from "../../../assets/illustrations/ChipsIllustrations.tsx"
 import { StepSelect } from "./StepSelect.tsx"
-
-export const NewConceptMessage = () => {
-  const { updateUserConfig } = useUpdateUserConfig()
-  const [newConceptMessage, setNewConceptMessage] = useState<boolean>(true)
-
-  const handleClick = () => {
-    updateUserConfig({
-      showNewConceptInfo: false,
-    }).then(() => {
-      setNewConceptMessage(false)
-    })
-  }
-
-  return (
-    newConceptMessage && (
-      <div>
-        <div className='modal-overlay' />
-        <div className='guide-modal fade-in items-center gap-4'>
-          <div className='self-center'>
-            <BobTheGuide1 />
-          </div>
-          <VStack
-            className='modal-container'
-            gap='space-16'
-          >
-            <Heading
-              size='small'
-              level='2'
-            >
-              Møt den nye Bob!
-            </Heading>
-            <BodyLong>
-              Bob har fått et nytt utseende! Nå møter du en smart, liten robot som lærer og utvikler seg for å gi deg
-              enda bedre støtte. Vi har endret hvordan Bob fremstilles for å unngå personifisering av kunstig
-              intelligens.
-            </BodyLong>
-            <BodyLong>Les mer om endringen i nyhetssaken.</BodyLong>
-            <BodyLong className='mb-4'>Samme Bob – ny drakt. La oss komme i gang!</BodyLong>
-            <Button
-              data-color='neutral'
-              variant='primary'
-              className='w-fit'
-              onClick={handleClick}
-            >
-              Takk for det, Bob!
-            </Button>
-          </VStack>
-        </div>
-      </div>
-    )
-  )
-}
 
 const WelcomeMessage = () => (
   <BodyLong>
