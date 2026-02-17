@@ -2,7 +2,7 @@ import { countryCodePattern, whitelistNames } from "./inputvalidation/tlfValidat
 
 export type ValidationResult = ValidationOk | ValidationWarning | ValidationError
 
-export type ValidationType = "fnr-dnr-hnr" | "firstname-three-times" | "fullname" | "tlf" | "email" | "accountnumber" | "dob-three-times" | "firstname-twice-and-dob"
+export type ValidationType = "fnr" | "dnr" | "hnr" | "firstname-three-times" | "fullname" | "tlf" | "email" | "accountnumber" | "dob-three-times" | "fullname-and-dob" | "firstname-twice-and-dob"
 
 export type ValidationMatch = { value: string; start: number; end: number }
 
@@ -70,6 +70,41 @@ export function isError(result: ValidationResult): result is ValidationError {
 
 export type Validator = (input: string) => ValidationResult
 
+export function replaceValidationResult(validationType: ValidationType) {
+  if (validationType === "fullname") {
+    return "(anonymisert navn)"
+  }
+  if (validationType === "firstname-three-times") {
+    return "(anonymisert navn)"
+  }
+  if (validationType === "dob-three-times") {
+    return "(anonymisert dato)"
+  }
+  if (validationType === "tlf") {
+    return "(anonymisert telefonnummer)"
+  }
+  if (validationType === "email") {
+    return "(anonymisert email)"
+  }
+  if (validationType === "accountnumber") {
+    return "(anonymisert kontonummer)"
+  }
+  if (validationType === "fnr") {
+    return "(anonymisert fødselsnummer)"
+  }
+  if (validationType === "dnr") {
+    return "(anonymisert d-nummer)"
+  }
+  if (validationType === "hnr") {
+    return "(anonymisert helsenummer)"
+  }
+  if (validationType === "fullname-and-dob") {
+    return "(anonymisert dato)"
+  }
+
+  return "(anonymisert personopplysning)"
+}
+
 function getMatches(regex: RegExp, input: string): ValidationMatch[] {
   return Array.from(input.matchAll(regex)).map((match) => ({
     value: match[0],
@@ -77,6 +112,45 @@ function getMatches(regex: RegExp, input: string): ValidationMatch[] {
     end: match.index + match[0].length,
   }))
 }
+
+function matchesOverlap(match1: ValidationMatch, match2: ValidationMatch): boolean {
+  return match1.start < match2.end && match2.start < match1.end
+}
+
+function filterOverlappingMatches(
+  results: ValidationResult[],
+  priorityOrder: ValidationType[]
+): ValidationResult[] {
+  const notOkResults = results.filter(isNotOk)
+  const okResults = results.filter(isOk)
+  
+  const sortedResults = notOkResults.sort((a, b) => {
+    const aIndex = priorityOrder.indexOf(a.validationType)
+    const bIndex = priorityOrder.indexOf(b.validationType)
+    return aIndex - bIndex
+  })
+
+  const filteredResults: (ValidationWarning | ValidationError)[] = []
+  const usedRanges: ValidationMatch[] = []
+
+  for (const result of sortedResults) {
+    const filteredMatches = result.matches.filter(match => 
+      !usedRanges.some(used => matchesOverlap(match, used))
+    )
+
+    if (filteredMatches.length > 0) {
+      filteredResults.push({
+        ...result,
+        matches: filteredMatches
+      })
+      usedRanges.push(...filteredMatches)
+    }
+  }
+
+  return [...okResults, ...filteredResults]
+}
+
+export { filterOverlappingMatches }
 
 function createValidator(
   regex: RegExp,
@@ -129,27 +203,34 @@ function createValidatorWithWhitelist(
   }
 }
 
-const fnrRegex = /\b(0[1-9]|[12]\d|3[01])(0[1-9]|1[0-2])\d{2}[ .-]*?\d{3}[ .-]*\d{2}\b/
+const fnrRegex = /\b(0[1-9]|[12]\d|3[01])(0[1-9]|1[0-2])\d{2}[ .-]*?\d{3}[ .-]*\d{2}\b/g
 // fnrRegex fanger opp fødselsnummer på formatet DDMMÅÅIIIKK, med dag 01–31, måned 01–12 og valgfri separator.
 
-const dnrRegex = /\b(4[1-9]|[56]\d|7[01])(0[1-9]|1[0-2])\d{2}[ .-]*?\d{3}[ .-]*\d{2}\b/
+const dnrRegex = /\b(4[1-9]|[56]\d|7[01])(0[1-9]|1[0-2])\d{2}[ .-]*?\d{3}[ .-]*\d{2}\b/g
 // dnrRegex fanger opp D-nummer der dagfeltet er fødselsdag + 40 (41–71), etterfulgt av måned 01–12 og resten av nummeret.
 
-const hnrRegex = /\b(0[1-9]|[12]\d|3[01])(4[1-9]|5[0-2])\d{2}[ .-]*?\d{3}\d{2}\b/
+const hnrRegex = /\b(0[1-9]|[12]\d|3[01])(4[1-9]|5[0-2])\d{2}[ .-]*?\d{3}\d{2}\b/g
 // hnrRegex fanger opp H-nummer der månedfeltet er fødselsmåned + 40 (41–52), mens dag og resten av nummeret følger vanlig struktur.
 
 
-const personnummerRegex = new RegExp(
+/* const personnummerRegex = new RegExp(
   [fnrRegex, dnrRegex, hnrRegex].map(({ source }) => source).join("|"),
   "g"
-)
+) */
 
-export const validatePersonnummer = createValidator(
-    personnummerRegex,
-    error,
-    "Tekst som ligner på et fødselsnummer:",
-    "fnr-dnr-hnr",
-  )
+export const validateFnr = createValidator(fnrRegex, error, "Tekst som ligner på et fødselsnummer:", "fnr")
+export const validateDnr = createValidator(dnrRegex, error, "Tekst som ligner på et d-nummer:", "dnr")
+export const validateHnr = createValidator(hnrRegex, error, "Tekst som ligner på et helsenummer", "hnr")
+
+export const validatePersonnummer = (input: string): ValidationResult => {
+  const fnrResult = validateFnr(input)
+  if (isNotOk(fnrResult)) return fnrResult
+
+  const dnrResult = validateDnr(input)
+  if (isNotOk(dnrResult)) return dnrResult
+
+  return validateHnr(input)
+}
 
   //
 
@@ -181,10 +262,11 @@ export const validateFullName = createValidatorWithWhitelist(
    - Matcher ikke ord etter tegnsetting eller linjeskift */
 
 const nameWordRegex =
-  /(?<!^)(?<![\p{P}\n]\s*)\b\p{Lu}\p{Ll}+\b/gu
+  /(?<!^)(?<![\p{P}\n]\s*)(?<!\p{Lu}[\p{L}'-]*[ \t-])\b\p{Lu}\p{Ll}+\b(?![ \t-]\p{Lu}[\p{L}'-]*)/gu
 
 const has3NameWordsRegex =
-  /^(?=(?:.*(?<!^)(?<![\p{P}\n]\s*)\b\p{Lu}\p{Ll}+\b){3})/u
+  /^(?=(?:.*(?<!^)(?<![\p{P}\n]\s*)(?<!\p{Lu}[\p{L}'-]*[ \t-])\b\p{Lu}\p{Ll}+\b(?![ \t-]\p{Lu}[\p{L}'-]*)){3})/u
+
 
 const baseValidateFirstName = createValidatorWithWhitelist(
   nameWordRegex,
@@ -229,6 +311,25 @@ export const validateDateOfBirth: Validator = (input: string) => {
 
 //
 
+const hasFullNameAnd1DobRegex = new RegExp(
+  `^(?=[\\s\\S]*${fullNameRegex.source})(?=[\\s\\S]*${dobRegex.source})`,
+  "u",
+)
+
+const dobOnlyRegex = new RegExp(dobRegex.source, "g")
+
+const baseValidationFullNameAndDob = createValidator(
+  dobOnlyRegex,
+  warning,
+  "Tekst som ligner på fullt navn + fødselsdato",
+  "fullname-and-dob"
+)
+
+export const validateFullNameAndDob: Validator = (input: string) => {
+  if (!hasFullNameAnd1DobRegex.test(input)) return ok()
+    return baseValidationFullNameAndDob(input)
+}
+
 // Regel for å matche om 2 ord med stor forbokstav + dato
 
 const has2NamesAnd1DobRegex = new RegExp(
@@ -244,7 +345,7 @@ const nameOrDobRegex = new RegExp(
 const baseValidateNameAndDob = createValidator(
   nameOrDobRegex,
   warning,
-  "Tekst som ligner på navn + fødselsdato:",
+  "Tekst som ligner på fornavn + fødselsdato:",
   "firstname-twice-and-dob", 
 )
 
@@ -281,3 +382,6 @@ export const validateEmail = createValidator(emailRegex, warning, "Tekst som lig
 const accountNumberRegex = /\b\d{4}[ .-]+\d{2}[ .-]+\d{5}\b/g
 
 export const validateAccountNumber = createValidator(accountNumberRegex, warning, "Tekst som ligner på et kontonummer", "accountnumber")
+
+//
+

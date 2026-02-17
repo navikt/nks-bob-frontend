@@ -25,19 +25,24 @@ import { useAlerts, useUserInfo } from "../../api/api.ts"
 import { NewMessage } from "../../types/Message.ts"
 import analytics from "../../utils/analytics.ts"
 import {
+  filterOverlappingMatches,
   isError,
   isNotOk,
   isWarning,
+  replaceValidationResult,
   validateAccountNumber,
   validateDateOfBirth,
   validateEmail,
   validateFirstName,
   validateFullName,
+  validateFullNameAndDob,
   validateGlobalPhoneNumber,
   validateNameAndDob,
   validateNorwegianMobileNumber,
   validatePersonnummer,
   ValidationError,
+  ValidationResult,
+  ValidationType,
   ValidationWarning,
   Validator,
 } from "../../utils/inputValidation.ts"
@@ -183,6 +188,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     validateDateOfBirth,
     validateNorwegianMobileNumber,
     validateGlobalPhoneNumber,
+    validateFullNameAndDob,
     validateNameAndDob,
   ]
 
@@ -193,9 +199,25 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
       ignoredWarnings = ignoredValidations
     }
 
-    const validationResults = validators.map((validator) => validator.call(null, inputValue)).filter(isNotOk)
+    const validationResults = validators.map((validator) => validator.call(null, inputValue))
 
-    const warnings = validationResults
+    const priorityOrder: ValidationType[] = [
+      "fnr",
+      "dnr",
+      "hnr",
+      "fullname-and-dob",
+      "firstname-twice-and-dob",
+      "fullname",
+      "dob-three-times",
+      "firstname-three-times",
+      "tlf",
+      "email",
+      "accountnumber",
+    ]
+
+    const filteredResults = filterOverlappingMatches(validationResults, priorityOrder).filter(isNotOk)
+
+    const warnings = filteredResults
       .filter(isWarning)
       .flatMap((validation) => ({
         ...validation,
@@ -205,10 +227,12 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
 
     setValidationWarnings(warnings)
 
-    const errors = validationResults.filter(isError)
+    const errors = filteredResults.filter(isError)
     setValidationErrors(errors)
 
-    const containsFnr = validationResults.filter(isError).some((v) => v.validationType === "fnr-dnr-hnr")
+    const containsFnr = validationResults
+      .filter(isError)
+      .some((v) => v.validationType === "fnr" || v.validationType === "dnr" || v.validationType === "hnr")
     if (containsFnr) {
       analytics.tekstInneholderFnr()
     }
@@ -216,16 +240,13 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     warnings.forEach(({ validationType }) => analytics.valideringsfeil("warning", validationType))
     errors.forEach(({ validationType }) => analytics.valideringsfeil("error", validationType))
 
-    return [...warnings, ...errors]
+    const hasValidationError = errors.length > 0
+    const hasValidationWarning = warnings.length > 0
+    setSendDisabled(disabled || hasAlertErrors || hasValidationError || hasValidationWarning)
   }
 
   useEffect(() => {
-    const results = validateInput()
-
-    const hasValidationError = results.some(isError)
-    const hasValidationWarning = results.some(isWarning)
-
-    setSendDisabled(disabled || hasAlertErrors || hasValidationError || hasValidationWarning)
+    validateInput()
   }, [inputValue, disabled, hasAlertErrors, ignoredValidations])
 
   const prevSendDisabledRef = useRef<boolean>(true)
@@ -237,6 +258,17 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     }
     prevSendDisabledRef.current = sendDisabled
   }, [sendDisabled, inputValue, textareaRef])
+
+  function cleanInput(results: ValidationResult[]) {
+    let newInputValue = inputValue
+    results.filter(isNotOk).forEach(({ matches, validationType }) => {
+      matches.forEach(({ value }) => {
+        newInputValue = newInputValue.replaceAll(value, replaceValidationResult(validationType))
+      })
+    })
+
+    setInputValue(newInputValue)
+  }
 
   useHotkeys("Alt+Ctrl+O", () => sendMessage("hotkey", "Oversett til engelsk", { clear: false, blur: false }), {
     enabled: !!conversationId,
@@ -315,10 +347,9 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
             Spørsmålet ser ut til å inneholde personopplysninger
           </Heading>
           <BodyShort size='small'>
-            {" "}
             Vurder om følgende er personopplysninger. Om det er tilfellet, må de fjernes før du sender inn spørsmålet.
           </BodyShort>
-          <div className='max-h-36 overflow-scroll'>
+          <div className=''>
             <Box
               marginBlock='space-12'
               asChild
@@ -366,6 +397,21 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
               </List>
             </Box>
           </div>
+          <HStack
+            gap='space-4'
+            className='mt-4'
+          >
+            <Button
+              data-color='neutral'
+              size='small'
+              variant='primary'
+              onClick={() => {
+                cleanInput(validationWarnings)
+              }}
+            >
+              Anonymiser opplysninger
+            </Button>
+          </HStack>
         </Alert>
       )}
       {validationErrors.length > 0 && (
@@ -381,8 +427,9 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           >
             Spørsmålet inneholder fødselsnummer/d-nummer/hnr
           </Heading>
+
           <BodyShort size='small'>Fjern følgende før du sender inn spørsmålet.</BodyShort>
-          <div className='max-h-36 overflow-scroll'>
+          <div>
             <Box
               marginBlock='space-12'
               asChild
@@ -417,6 +464,18 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
               </List>
             </Box>
           </div>
+
+          <Button
+            size='small'
+            data-color='neutral'
+            variant='primary'
+            className='mt-2'
+            onClick={() => {
+              cleanInput(validationErrors)
+            }}
+          >
+            Anonymiser opplysninger
+          </Button>
         </Alert>
       )}
       <NewMessageAlert
@@ -462,7 +521,8 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
         align='center'
         className='text-ax-text-neutral-subtle mx-2 pb-2'
       >
-        Ikke del personopplysninger og sjekk kilder om du er usikker - Bob er en kunstig intelligens og kan ta feil.
+        Del aldri personopplysninger med Bob. Bob er en kunstig intelligens - sjekk alltid kilder dersom du er usikker
+        på svaret.
       </Detail>
     </div>
   )

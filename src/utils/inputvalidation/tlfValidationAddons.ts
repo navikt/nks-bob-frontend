@@ -320,8 +320,12 @@ export const whitelistNumbers = [
 export const whitelistNames = [ 
   "Na",
   "Nav",
+  "NAV",
   "Bo",
   "Bob",
+  "Hei",
+  "Hallo",
+  "Jeg",
   "Hei B",
   "Hei Bo",
   "Hei Bob",
