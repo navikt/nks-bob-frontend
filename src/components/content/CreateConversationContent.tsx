@@ -50,7 +50,7 @@ const CreateConversationContent = () => {
   return (
     <CreateConversationWrapper>
       <Header conversation={undefined} />
-      <div className='narrowWidth:h-full narrowWidth:mb-80 narrowHeight:h-full flex flex-col justify-center'>
+      <div className='flex flex-col justify-center'>
         <BobPlaceholder />
         <InputField
           onSend={handleUserMessage}
