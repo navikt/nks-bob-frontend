@@ -1,105 +1,130 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
+import { Button, Modal, Tooltip } from "@navikt/ds-react"
+import { InformationSquareIcon } from "@navikt/aksel-icons"
+import { useHotkeys } from "react-hotkeys-hook"
 import { useUpdateUserConfig, useUserConfig } from "../../../api/api.ts"
-import { Step1, Step2, Step3, Step4, Step5, WelcomeMessage } from "./GuideModals.tsx"
-import "./GuideStyling.css"
+import { StepModalContent } from "./GuideModals.tsx"
+import analytics from "../../../utils/analytics.ts"
+import { BobTheGuide1, BobTheGuide2, BobThePirate } from "../../../assets/illustrations/BobTheGuide.tsx"
 
-const Guide = ({ startGuide, setStartGuide }: { startGuide: boolean; setStartGuide: (value: boolean) => void }) => {
+const Guide = () => {
+  const modalRef = useRef<HTMLDialogElement | null>(null)
   const [step, setStep] = useState<number>(1)
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
-  const [isWelcomeShown, setIsWelcomeShown] = useState<boolean>(false)
   const { updateUserConfig } = useUpdateUserConfig()
   const { userConfig } = useUserConfig()
 
-  const handleNext = () => {
-    if (!isWelcomeShown) {
-      setIsWelcomeShown(true)
-    } else {
-      setStep((prevStep) => prevStep + 1)
-    }
+  const showGuide = () => {
+    analytics.infoÅpnet()
+    modalRef.current?.showModal()
   }
 
+  useHotkeys("Alt+Ctrl+I", () => showGuide(), {
+    enableOnFormTags: true,
+  })
+
+  const handleNext = () => setStep((prevStep) => prevStep + 1)
   const handlePrevious = () => setStep((prevStep) => prevStep - 1)
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => setStep(Number(e.target.value))
 
   function handleClose() {
-    updateUserConfig({ showStartInfo: false })
-    setIsModalOpen(false)
-    setStartGuide(false)
+    if (userConfig?.showStartInfo) {
+      updateUserConfig({ showStartInfo: false })
+    }
+    setStep(1)
+    modalRef.current?.close()
   }
 
   useEffect(() => {
     if (userConfig?.showStartInfo) {
-      setIsWelcomeShown(false)
-      setIsModalOpen(true)
-    } else {
-      setIsModalOpen(false)
+      setStep(0)
+      modalRef.current?.showModal()
+      analytics.infoÅpnet()
     }
   }, [userConfig])
 
-  useEffect(() => {
-    if (startGuide) {
-      setIsWelcomeShown(true)
-      setStep(1)
-      setIsModalOpen(true)
-    }
-  }, [startGuide])
-
-  if (!isModalOpen) return null
-
   return (
-    <div>
-      <div className='modal-overlay' />
-      {!isWelcomeShown && (
-        <WelcomeMessage
-          onNext={handleNext}
-          onClose={handleClose}
+    <>
+      <Tooltip content='Informasjon og tips ( Alt+Ctrl+I )'>
+        <Button
+          data-color='neutral'
+          variant='tertiary'
+          aria-label='Informasjon og tips'
+          size='medium'
+          onClick={showGuide}
+          icon={<InformationSquareIcon aria-hidden />}
         />
-      )}
-      {isWelcomeShown && step === 1 && (
-        <Step1
-          onNext={handleNext}
-          onClose={handleClose}
+      </Tooltip>
+      <Modal
+        ref={modalRef}
+        aria-labelledby='modal-heading'
+        onClose={handleClose}
+        closeOnBackdropClick
+        className='relative overflow-visible'
+      >
+        <BobGuide step={step} />
+        <StepModalContent
           step={step}
-          handleSelectChange={handleSelectChange}
-        />
-      )}
-      {isWelcomeShown && step === 2 && (
-        <Step2
+          totalSteps={5}
           onPrevious={handlePrevious}
-          step={step}
-          handleSelectChange={handleSelectChange}
-          onClose={handleClose}
           onNext={handleNext}
-        />
-      )}
-      {isWelcomeShown && step === 3 && (
-        <Step3
-          onPrevious={handlePrevious}
-          step={step}
-          handleSelectChange={handleSelectChange}
           onClose={handleClose}
-          onNext={handleNext}
-        />
-      )}
-      {isWelcomeShown && step === 4 && (
-        <Step4
-          onPrevious={handlePrevious}
-          step={step}
           handleSelectChange={handleSelectChange}
-          onClose={handleClose}
-          onNext={handleNext}
         />
-      )}
-      {isWelcomeShown && step === 5 && (
-        <Step5
-          onPrevious={handlePrevious}
-          step={step}
-          handleSelectChange={handleSelectChange}
-          onClose={handleClose}
-        />
-      )}
-    </div>
+      </Modal>
+    </>
   )
+}
+
+const BobGuide = ({ step }: { step: number }) => {
+  if (step === 0) {
+    return (
+      <div className='absolute bottom-0 -translate-x-45'>
+        <BobTheGuide1 />
+      </div>
+    )
+  }
+
+  if (step === 1) {
+    return (
+      <div className='absolute -translate-x-45'>
+        <BobTheGuide1 />
+      </div>
+    )
+  }
+
+  if (step === 2) {
+    return (
+      <div className='absolute -translate-y-44'>
+        <BobTheGuide2 />
+      </div>
+    )
+  }
+
+  if (step === 3) {
+    return (
+      <div className='absolute right-1/3 -translate-y-33'>
+        <BobTheGuide2 clipHeight={172} />
+      </div>
+    )
+  }
+
+  if (step === 4) {
+    return (
+      <div className='absolute right-0 -translate-y-52'>
+        <BobThePirate clipHeight={272} />
+      </div>
+    )
+  }
+
+  if (step === 5) {
+    return (
+      <div className='absolute -translate-y-44'>
+        <BobTheGuide2 />
+      </div>
+    )
+  }
+
+  return <></>
 }
 
 export default Guide

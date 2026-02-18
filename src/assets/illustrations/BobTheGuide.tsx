@@ -970,12 +970,12 @@ export const BobTheGuide1 = () => {
   )
 }
 
-export const BobTheGuide2 = () => {
+export const BobTheGuide2 = ({ clipHeight }: { clipHeight?: number }) => {
   return (
     <svg
       width='185'
       height='auto'
-      viewBox='0 0 243 250'
+      viewBox={`0 0 243 ${clipHeight ? clipHeight : "250"}`}
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
     >
@@ -1433,12 +1433,12 @@ export const BobTheGuide2 = () => {
   )
 }
 
-export const BobThePirate = () => {
+export const BobThePirate = ({ clipHeight }: { clipHeight?: number }) => {
   return (
     <svg
       width='270'
       height='auto'
-      viewBox='0 0 355 336'
+      viewBox={`0 0 355 ${clipHeight ? clipHeight : "336"}`}
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
     >
