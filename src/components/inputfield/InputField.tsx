@@ -209,6 +209,8 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
       "fnr",
       "dnr",
       "hnr",
+      "address",
+      "postalcode",
       "fullname-and-dob",
       "firstname-twice-and-dob",
       "fullname",

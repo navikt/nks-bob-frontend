@@ -249,7 +249,7 @@ export const validatePersonnummer = (input: string): ValidationResult => {
    - Hver navnedel ma starte med stor bokstav (\p{Lu})
    - Navnedeler kan inneholde Unicode-bokstaver (\p{L}), punktum, apostrof eller bindestrek */
 
-const fullNameRegex = /\p{Lu}[\p{L}'-]*(?:[ \t-]+[\p{L}][\p{L}'-]*){1,2}/gu
+const fullNameRegex = /\p{Lu}[\p{L}'-]*(?:[ \t-]+[\p{Lu}][\p{L}'-]*){1,2}/gu
 
 // const fullNameRegex = /\p{Lu}/gu
 
@@ -393,6 +393,7 @@ export const validateAccountNumber = createValidator(accountNumberRegex, warning
 
 // addressRegex matcher på adresse:
     // 2-3 ord (første ord må starte med stor bokstav) + mellomrom? + tall + bokstav
+
 
 const streetNameRegex = /\p{Lu}[\p{L}'-]*(?:[ \t]+\p{Lu}[\p{L}'-]*)*/u
 const houseNumberRegex = /\d+\s*\p{Lu}*/u
