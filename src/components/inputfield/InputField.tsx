@@ -31,6 +31,7 @@ import {
   isWarning,
   replaceValidationResult,
   validateAccountNumber,
+  validateAddress,
   validateDateOfBirth,
   validateEmail,
   validateFirstName,
@@ -40,6 +41,7 @@ import {
   validateNameAndDob,
   validateNorwegianMobileNumber,
   validatePersonnummer,
+  validatePostalCode,
   ValidationError,
   ValidationResult,
   ValidationType,
@@ -190,6 +192,8 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     validateGlobalPhoneNumber,
     validateFullNameAndDob,
     validateNameAndDob,
+    validateAddress,
+    validatePostalCode,
   ]
 
   function validateInput(ignoredWarnings?: string[]) {
@@ -205,6 +209,8 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
       "fnr",
       "dnr",
       "hnr",
+      "address",
+      "postalcode",
       "fullname-and-dob",
       "firstname-twice-and-dob",
       "fullname",
