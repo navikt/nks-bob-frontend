@@ -2,7 +2,7 @@ import { countryCodePattern, whitelistNames } from "./inputvalidation/tlfValidat
 
 export type ValidationResult = ValidationOk | ValidationWarning | ValidationError
 
-export type ValidationType = "fnr" | "dnr" | "hnr" | "firstname-three-times" | "fullname" | "tlf" | "email" | "accountnumber" | "dob-three-times" | "fullname-and-dob" | "firstname-twice-and-dob"
+export type ValidationType = "fnr" | "dnr" | "hnr" | "firstname-three-times" | "fullname" | "tlf" | "email" | "accountnumber" | "address" | "postalcode" | "dob-three-times" | "fullname-and-dob" | "firstname-twice-and-dob"
 
 export type ValidationMatch = { value: string; start: number; end: number }
 
@@ -100,6 +100,12 @@ export function replaceValidationResult(validationType: ValidationType) {
   }
   if (validationType === "fullname-and-dob") {
     return "(anonymisert dato)"
+  }
+    if (validationType === "address") {
+    return "(anonymisert adresse)"
+  }
+      if (validationType === "postalcode") {
+    return "(anonymisert postnummer)"
   }
 
   return "(anonymisert personopplysning)"
@@ -243,7 +249,9 @@ export const validatePersonnummer = (input: string): ValidationResult => {
    - Hver navnedel ma starte med stor bokstav (\p{Lu})
    - Navnedeler kan inneholde Unicode-bokstaver (\p{L}), punktum, apostrof eller bindestrek */
 
-const fullNameRegex = /\b\p{Lu}[\p{L}'-]*(?:[ \t-]+\p{Lu}[\p{L}'-]*){1,2}\b/gu
+const fullNameRegex = /\p{Lu}[\p{L}'-]*(?:[ \t-]+[\p{L}][\p{L}'-]*){1,2}/gu
+
+// const fullNameRegex = /\p{Lu}/gu
 
 export const validateFullName = createValidatorWithWhitelist(
   fullNameRegex,
@@ -253,12 +261,10 @@ export const validateFullName = createValidatorWithWhitelist(
   whitelistNames
 )
 
-//
-
 /* nameWordRegex: Matcher på 3x ord med stor forbokstav
 
    - Ord med stor forbokstav i teksten
-   - Matcher ikke første ord i teksten
+   - Matcher ikke første ord i teksten  
    - Matcher ikke ord etter tegnsetting eller linjeskift */
 
 const nameWordRegex =
@@ -385,3 +391,39 @@ export const validateAccountNumber = createValidator(accountNumberRegex, warning
 
 //
 
+// addressRegex matcher på adresse:
+    // 2-3 ord (første ord må starte med stor bokstav) + mellomrom? + tall + bokstav
+
+const streetNameRegex = /\p{Lu}[\p{L}'-]*(?:[ \t]+\p{Lu}[\p{L}'-]*)*/u
+const houseNumberRegex = /\d+\s*\p{Lu}*/u
+
+const addressRegex = new RegExp(
+  `\\b(?:${streetNameRegex.source})[ \\t]+(?:${houseNumberRegex.source})\\b`,
+  "gu",
+)
+
+const baseValidateAddress = createValidator(
+  addressRegex,
+  warning,
+  "Tekst som ligner på en adresse:",
+  "address",
+)
+
+export const validateAddress: Validator = (input: string) => {
+  return baseValidateAddress(input)
+}
+
+//
+
+const postalCodeRegex = /\d+[ -,]*\p{Lu}\p{L}+/gu
+
+const baseValidatePostalCode = createValidator(
+  postalCodeRegex,
+  warning,
+  "Tekst som ligner på et postnummer:",
+  "postalcode",
+)
+
+export const validatePostalCode: Validator = (input: string) => {
+  return baseValidatePostalCode(input)
+}
