@@ -5,6 +5,10 @@
 
 /*  LAYOUT  */
 
+body {
+  background-color: var(--ax-bg-default);
+}
+
 * {
   scrollbar-color: var(--neutral-500) transparent;
 }
@@ -104,7 +108,7 @@ ol li::marker {
 @media screen and (max-height: 850px) {
   .createconversation-wrapper {
     justify-content: flex-start;
-}
+  }
 }
 
 @media screen and (max-width: 760px) {
