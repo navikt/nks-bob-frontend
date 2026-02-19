@@ -166,6 +166,10 @@ const fotnoteLenkeKlikket = (kontekst: KontekstArtikkelMeta) => logEvent("Fotnot
 const svarFeilet = (meldingsId: string, tittel: string, beskrivelse: string) =>
   logEvent("Svar feilet", { meldingsId, tittel, beskrivelse })
 
+const ignorerTrykket = (type: string) => logEvent("Ignorer trykket", { type })
+
+const anonymiserTrykket = (antall: number, typer: string[]) => logEvent("Anonymiser trykket", { antall, typer })
+
 export default {
   svarKopiert,
   svarEndret,
@@ -203,4 +207,6 @@ export default {
   svartekstMarkert,
   fotnoteLenkeKlikket,
   svarFeilet,
+  ignorerTrykket,
+  anonymiserTrykket,
 }
