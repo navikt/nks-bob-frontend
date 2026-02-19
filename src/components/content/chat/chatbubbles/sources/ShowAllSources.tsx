@@ -136,7 +136,6 @@ const NavSource = ({ context }: { context: Context }) => {
         <TextFragmentLink
           text={context.content}
           title={buildLinkTitle(context)}
-          anchor={context.anchor ?? undefined}
           matchingContextCitationData={context}
           className='inline'
           onClick={() => analytics.navVisAlleKilderLenkeKlikket({ kilde: context.source, tittel: context.title })}
