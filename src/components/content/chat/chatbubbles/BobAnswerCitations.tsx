@@ -174,10 +174,18 @@ export const TextFragmentLink = ({
   className?: string
   onClick?: () => void
 }) => {
+  function stripHeadingLines(value: string) {
+    return value
+      .replace(/^\s*#{1,6}\s+.*$/gm, "")
+      .replace(/^\s*\*{1,3}[^*\n]+\*{1,3}\s*$/gm, "")
+      .trim()
+  }
+
   function processTextForBlocks(text: string) {
+    const textWithoutHeadings = stripHeadingLines(text)
     const blockSeparators = [/\n\s*\n/g, /\n\s*[-•·‣⁃*]\s*/g, /\n\s*\d+\.\s*/g, /\n\s*#{1,6}\s*/g, /\n\s*>\s*/g]
 
-    let blocks = [text]
+    let blocks = [textWithoutHeadings]
 
     blockSeparators.forEach((separator) => {
       blocks = blocks.flatMap((block) => block.split(separator).filter((part) => part.trim().length > 0))
@@ -191,7 +199,8 @@ export const TextFragmentLink = ({
           .replace(/[•·‣⁃*]/g, "")
           .replace(/\n/g, " ")
           .replace(/\s+/g, " ")
-          .replace(/#{1,6}\s*/g, "")
+          .replace(/^\s{0,3}#{1,6}\s+/gm, "")
+          .replace(/\*{1,3}([^*]+)\*{1,3}/g, "$1")
           .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
           .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
           .trim(),
@@ -204,12 +213,14 @@ export const TextFragmentLink = ({
   const textBlocks = processTextForBlocks(text)
 
   if (textBlocks.length <= 1) {
-    const citeWords = text
+    const textWithoutHeadings = stripHeadingLines(text)
+    const citeWords = textWithoutHeadings
       .replace(/\n\n|\n/g, " ")
       .replace(/^[-•·‣⁃*]\s*/g, "")
       .replace(/\n\s*[-•·‣⁃*]\s*/g, " ")
       .replace(/[•·‣⁃*]/g, "")
-      .replace(/#{1,6}\s*/g, "")
+      .replace(/^\s{0,3}#{1,6}\s+/gm, "")
+      .replace(/\*{1,3}([^*]+)\*{1,3}/g, "$1")
       .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
       .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
       .replace(/\s+/g, " ")
