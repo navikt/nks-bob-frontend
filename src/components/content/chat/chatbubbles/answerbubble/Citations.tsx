@@ -1,4 +1,4 @@
-import { BodyLong, BodyShort, CopyButton, HStack, Label, Link, Tooltip, VStack } from "@navikt/ds-react"
+import { BodyLong, BodyShort, CopyButton, HStack, Tooltip, VStack } from "@navikt/ds-react"
 import { useState } from "react"
 import Markdown from "react-markdown"
 import remarkGfm from "remark-gfm"
@@ -6,9 +6,9 @@ import { KunnskapsbasenIcon } from "../../../../../assets/icons/KunnskapsbasenIc
 import { NavNoIcon } from "../../../../../assets/icons/NavNoIcon.tsx"
 import { Context } from "../../../../../types/Message.ts"
 import analytics from "../../../../../utils/analytics.ts"
-import { HoverCard } from "../../../../ui/HoverCard.tsx"
-import { SourceIcon } from "../BobAnswerCitations.tsx"
 import { buildLinkTitle } from "../../../../../utils/link.ts"
+import { HoverCard } from "../../../../ui/HoverCard.tsx"
+import { SourceIcon, TextFragmentLink } from "../BobAnswerCitations.tsx"
 
 interface CitationNumberProps {
   citations: { citationId: number }[]
@@ -36,6 +36,7 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
           align='center'
           gap='space-4'
         >
+          {/*
           <Link
             href={`${source.url}#${source.anchor}`}
             target='_blank'
@@ -62,6 +63,26 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
               {title}
             </Label>
           </Link>
+          */}
+          <TextFragmentLink
+            title={title}
+            matchingContextCitationData={source}
+            text={source.content}
+            onClick={() => {
+              if (source.source === "nks") {
+                analytics.kbModalLenkeKlikket({
+                  kilde: source.source,
+                  tittel: source.title,
+                  artikkelKolonne: source.articleColumn,
+                })
+              } else if (source.source === "navno") {
+                analytics.navModalLenkeKlikket({
+                  kilde: source.source,
+                  tittel: source.title,
+                })
+              }
+            }}
+          />
           <CopyButton
             copyText={source.source === "nks" ? source.title : `${source.url}#${source.anchor}`}
             size='xsmall'
@@ -211,6 +232,7 @@ const GroupedCitationLink = ({ citations, source, citationIds }: GroupedCitation
       {source.source === "nks" ? <KunnskapsbasenIcon size={18} /> : <NavNoIcon size={18} />}
 
       <span className='inline-flex items-center gap-2'>
+        {/*
         <Link
           href={`${source.url}#${source.anchor ?? ""}`}
           target='_blank'
@@ -226,6 +248,21 @@ const GroupedCitationLink = ({ citations, source, citationIds }: GroupedCitation
         >
           <BodyShort size='small'>{title}</BodyShort>
         </Link>
+
+        */}
+
+        <TextFragmentLink
+          text={source.content}
+          matchingContextCitationData={source}
+          onClick={() => {
+            analytics.fotnoteLenkeKlikket({
+              kilde: source.source,
+              tittel: source.title,
+              artikkelKolonne: source.articleColumn,
+            })
+          }}
+          title={title}
+        />
 
         {/* TODO: track event for copy */}
         {source.source === "nks" ? (
