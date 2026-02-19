@@ -162,15 +162,29 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
 
   const [theme, setTheme] = useState<"light" | "dark">(resolveTheme)
 
-  const colorSchemeEventListener = (e: MediaQueryListEvent) => {
+  const setHtmlClass = (theme: "light" | "dark") => {
+    const items = document.getElementsByTagName("html")
+    items.item(0)?.classList.remove(theme === "dark" ? "light" : "dark")
+    items.item(0)?.classList.add(theme)
+  }
+
+  const colorSchemeEventListener = (_e: MediaQueryListEvent) => {
     if (currentTheme === "system") {
-      setTheme(e.matches ? "dark" : "light")
+      const resolvedTheme = resolveTheme()
+      setTheme(resolvedTheme)
+      setHtmlClass(resolvedTheme)
     }
   }
 
   useEffect(() => {
+    setHtmlClass(resolveTheme())
+  }, [])
+
+  useEffect(() => {
     if (currentTheme !== theme) {
-      setTheme(resolveTheme())
+      const resolvedTheme = resolveTheme()
+      setTheme(resolvedTheme)
+      setHtmlClass(resolvedTheme)
     }
 
     const prefersColorScheme = window.matchMedia("(prefers-color-scheme: dark)")
