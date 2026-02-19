@@ -364,7 +364,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
                 data-aksel-migrated-v8
                 size='small'
               >
-                {validationWarnings.flatMap(({ matches }, i) =>
+                {validationWarnings.flatMap(({ matches, validationType }, i) =>
                   matches.map(({ value, start, end }, j) => (
                     <List.Item
                       key={`warning-list-${i}-${j}`}
@@ -391,6 +391,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
                           variant='tertiary'
                           size='xsmall'
                           onClick={() => {
+                            analytics.ignorerTrykket(validationType)
                             validateInput([...ignoredValidations, value])
                           }}
                         >
@@ -412,6 +413,10 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
               size='small'
               variant='primary'
               onClick={() => {
+                analytics.anonymiserTrykket(
+                  validationWarnings.length,
+                  validationWarnings.map(({ validationType }) => validationType),
+                )
                 cleanInput(validationWarnings)
               }}
             >
@@ -477,6 +482,10 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
             variant='primary'
             className='mt-2'
             onClick={() => {
+              analytics.anonymiserTrykket(
+                validationErrors.length,
+                validationErrors.map(({ validationType }) => validationType),
+              )
               cleanInput(validationErrors)
             }}
           >
