@@ -1,4 +1,4 @@
-FROM gcr.io/distroless/nodejs24-debian12
+FROM gcr.io/distroless/nodejs24-debian13
 
 WORKDIR /usr/src/app
 COPY dist/ dist/
