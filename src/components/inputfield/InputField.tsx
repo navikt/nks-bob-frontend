@@ -21,7 +21,7 @@ import { useHotkeys } from "react-hotkeys-hook"
 import { useNavigate, useParams } from "react-router"
 import { create } from "zustand"
 import { createJSONStorage, persist } from "zustand/middleware"
-import { useAlerts, useUserInfo } from "../../api/api.ts"
+import { useAddIgnoredWord, useAlerts, useUserInfo } from "../../api/api.ts"
 import { NewMessage } from "../../types/Message.ts"
 import analytics from "../../utils/analytics.ts"
 import {
@@ -106,6 +106,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
   const [validationWarnings, setValidationWarnings] = useState<ValidationWarning[]>([])
   const [validationErrors, setValidationErrors] = useState<ValidationError[]>([])
   const [ignoredValidations, setIgnoredValidations] = useState<string[]>([])
+  const { addIgnoredWord } = useAddIgnoredWord()
 
   const { conversationId } = useParams()
 
@@ -392,6 +393,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
                           size='xsmall'
                           onClick={() => {
                             analytics.ignorerTrykket(validationType)
+                            addIgnoredWord({ value, validationType, conversationId: conversationId ?? null })
                             validateInput([...ignoredValidations, value])
                           }}
                         >
