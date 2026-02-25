@@ -227,6 +227,17 @@ export const useAddFeedback = (messageId: string) => {
   }
 }
 
+export const useAddIgnoredWord = () => {
+  const { trigger, isMutating } = useSWRMutation("/api/v1/ignored-words", request("POST"))
+
+  const addIgnoredWord = (body: { value: string; validationType: string; conversationId: string | null }) => trigger(body)
+
+  return {
+    addIgnoredWord,
+    isLoading: isMutating,
+  }
+}
+
 let hasTriggeredAuth = false
 export const triggerReAuth = () => {
   if (hasTriggeredAuth) return
@@ -295,7 +306,6 @@ export const useAppVersionCheck = () => {
     },
   })
 }
-
 
 async function userInfoFetcher(): Promise<UserInfo> {
   const res = await fetch(`${import.meta.env.BASE_URL}bff/userinfo`, {

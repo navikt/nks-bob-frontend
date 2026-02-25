@@ -230,6 +230,11 @@ const main = async () => {
 
   /// Get info about the user based on the token
   app.get("/bff/userinfo", (req, res) => {
+    if (MILJO === "local") {
+      res.status(204).send()
+      return
+    }
+
     const token = oasis.getToken(req)
     if (!token) {
       log.warn("No token found")
