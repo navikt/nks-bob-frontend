@@ -15,37 +15,36 @@ export const PasteInfoModal = () => {
 
   return (
     !hasSeenModal && (
-      <div>
-        <Modal
-          open={open}
-          onClose={handleClose}
-          aria-label='Innliming er åpent igjen'
-        >
-          <Modal.Body>
-            <div className='my-10 flex justify-center'>
-              <BobTheLawyer />
-            </div>
-            <Heading
-              size='small'
-              spacing
-            >
-              Hurra, innliming er åpent igjen!
-            </Heading>
-            <BodyLong>
-              Husk på å aldri dele personopplysninger med meg. Jeg flagger hvis jeg oppdager noe, men du har
-              hovedansvaret for teksten du deler med meg.
-            </BodyLong>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button
-              type='button'
-              onClick={handleClose}
-            >
-              Bekreft
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </div>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-label='Innliming er åpent igjen'
+      >
+        <Modal.Body>
+          <div className='my-10 flex justify-center'>
+            <BobTheLawyer />
+          </div>
+          <Heading
+            size='small'
+            spacing
+          >
+            Hurra, innliming er åpent igjen!
+          </Heading>
+          <BodyLong>
+            Husk på å aldri dele personopplysninger med meg. Jeg flagger hvis jeg oppdager noe, men du har hovedansvaret
+            for teksten du deler med meg.
+          </BodyLong>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            type='button'
+            onClick={handleClose}
+          >
+            Bekreft
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
       /*
       <Dialog open={open}>
         <Dialog.Popup position='center'>

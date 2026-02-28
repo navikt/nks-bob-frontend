@@ -89,17 +89,15 @@ export const useInputFieldStore = create<InputFieldState>()(
 interface InputFieldProps {
   onSend: (message: NewMessage) => void
   disabled: boolean
-  allowPaste?: boolean
   minRows?: number
 }
 
 const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputField(
-  { onSend, disabled, allowPaste = false, minRows = 5 },
+  { onSend, disabled, minRows = 5 },
   containerRef,
 ) {
   const { userInfo } = useUserInfo()
   const placeholderText = `Hei ${userInfo?.firstName}! Hva kan jeg hjelpe deg med?`
-  const [isSensitiveInfoAlert, setIsSensitiveInfoAlert] = useState<boolean>(false)
   const [sendDisabled, setSendDisabled] = useState<boolean>(disabled)
   const [isFocused, setIsFocused] = useState(false)
 
@@ -143,20 +141,6 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
 
   function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setInputValue(e.target.value)
-    if (e.target.value.trim() === "") {
-      setIsSensitiveInfoAlert(false)
-    }
-  }
-
-  function handlePaste(e: React.ClipboardEvent<HTMLTextAreaElement>) {
-    const pasted = e.clipboardData.getData("text")
-    if (pasted.trim().length > 0) {
-      setIsSensitiveInfoAlert(true)
-
-      if (!allowPaste) {
-        e.preventDefault()
-      }
-    }
   }
 
   function handleDrop(e: React.DragEvent<HTMLTextAreaElement>) {
@@ -170,7 +154,6 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
 
         if (!sendDisabled) {
           sendMessage("enter")
-          setIsSensitiveInfoAlert(false)
         }
       }
     }
@@ -311,35 +294,6 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
       ref={containerRef}
       style={{ viewTransitionName: "input-field" }}
     >
-      {isSensitiveInfoAlert && (
-        <Alert
-          variant='warning'
-          size='small'
-          closeButton={true}
-          onClose={() => setIsSensitiveInfoAlert(false)}
-          className='fade-in mb-2'
-        >
-          <Heading
-            size='xsmall'
-            spacing
-            className='mt-0.5 text-[16px]'
-          >
-            Vi har midlertidig slått av muligheten for å lime inn tekst
-          </Heading>
-          <BodyShort
-            size='small'
-            spacing
-          >
-            Årsaken er at det ved flere anledninger har blitt delt personopplysninger ved innliming.
-          </BodyShort>
-          <BodyShort
-            size='small'
-            spacing
-          >
-            Vi jobber aktivt med å finne en løsning.
-          </BodyShort>
-        </Alert>
-      )}
       {validationWarnings.length > 0 && (
         <Alert
           variant='warning'
@@ -513,7 +467,6 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           value={inputValue}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
-          onPaste={handlePaste}
           autoFocus={true}
           tabIndex={1}
           onDrop={handleDrop}
