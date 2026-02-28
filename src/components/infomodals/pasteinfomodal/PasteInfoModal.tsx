@@ -1,34 +1,79 @@
-import { BodyLong, Button, Dialog } from "@navikt/ds-react"
+import { BodyLong, Button, Heading, Modal } from "@navikt/ds-react"
+import { useState } from "react"
+import { setItem, useLocalStorage } from "../../../utils/localStorage"
+
+const PASTE_INFO_MODAL_KEY = "pasteInfoModalSeen"
 
 export const PasteInfoModal = () => {
+  const hasSeenModal = useLocalStorage(PASTE_INFO_MODAL_KEY)
+  const [open, setOpen] = useState(!hasSeenModal)
+
+  const handleClose = () => {
+    setOpen(false)
+    setItem(PASTE_INFO_MODAL_KEY, true)
+  }
+
   return (
-    <Dialog>
-      <BobTheLawyer />
-      <Dialog.Popup>
-        <Dialog.Header>
-          <Dialog.Title>Overskrift</Dialog.Title>
-          <Dialog.Description>En kort beskrivelse av dialogen.</Dialog.Description>
-        </Dialog.Header>
-        <Dialog.Body>
-          <BodyLong>
-            Culpa aliquip ut cupidatat laborum minim quis ex in aliqua. Qui incididunt dolor do ad ut. Incididunt
-            eiusmod nostrud deserunt duis laborum. Proident aute culpa qui nostrud velit adipisicing minim.
-          </BodyLong>
-        </Dialog.Body>
-        <Dialog.Footer>
-          <Dialog.CloseTrigger>
-            <Button>Lukk</Button>
-          </Dialog.CloseTrigger>
-        </Dialog.Footer>
-      </Dialog.Popup>
-    </Dialog>
+    !hasSeenModal && (
+      <div>
+        <Modal
+          open={open}
+          onClose={handleClose}
+        >
+          <Modal.Body>
+            <div className='my-10 flex justify-center'>
+              <BobTheLawyer />
+            </div>
+            <Heading
+              size='small'
+              spacing
+            >
+              Hurra, innliming er åpent igjen!
+            </Heading>
+            <BodyLong>
+              Husk på å aldri dele personopplysninger med meg. Jeg flagger hvis jeg oppdager noe, men du har
+              hovedansvaret for teksten du deler med meg.
+            </BodyLong>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              type='button'
+              onClick={handleClose}
+            >
+              Bekreft
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
+      /*
+      <Dialog open={open}>
+        <Dialog.Popup position='center'>
+          <Dialog.Header>
+            <Dialog.Title>Overskrift</Dialog.Title>
+            <Dialog.Description>En kort beskrivelse av dialogen.</Dialog.Description>
+          </Dialog.Header>
+          <Dialog.Body>
+            <BodyLong>
+              Culpa aliquip ut cupidatat laborum minim quis ex in aliqua. Qui incididunt dolor do ad ut. Incididunt
+              eiusmod nostrud deserunt duis laborum. Proident aute culpa qui nostrud velit adipisicing minim.
+            </BodyLong>
+          </Dialog.Body>
+          <Dialog.Footer>
+            <Dialog.CloseTrigger>
+              <Button onClick={handleClose}>Lukk</Button>
+            </Dialog.CloseTrigger>
+          </Dialog.Footer>
+        </Dialog.Popup>
+      </Dialog>
+        */
+    )
   )
 }
 
 const BobTheLawyer = () => {
   return (
     <svg
-      width='auto'
+      width='250'
       height='auto'
       viewBox='0 0 855 1100'
       fill='none'
