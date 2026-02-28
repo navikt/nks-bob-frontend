@@ -19,6 +19,7 @@ export const PasteInfoModal = () => {
         <Modal
           open={open}
           onClose={handleClose}
+          aria-label='Innliming er åpent igjen'
         >
           <Modal.Body>
             <div className='my-10 flex justify-center'>
