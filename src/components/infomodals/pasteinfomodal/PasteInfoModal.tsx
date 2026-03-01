@@ -1,4 +1,4 @@
-import { BodyLong, Button, Heading, Modal } from "@navikt/ds-react"
+import { BodyLong, Button, Heading } from "@navikt/ds-react"
 import { useState } from "react"
 import { setItem, useLocalStorage } from "../../../utils/localStorage"
 
@@ -13,67 +13,62 @@ export const PasteInfoModal = () => {
     setItem(PASTE_INFO_MODAL_KEY, true)
   }
 
+  if (hasSeenModal || !open) return null
+
   return (
-    !hasSeenModal && (
-      <Modal
-        open={open}
-        onClose={handleClose}
+    <>
+      <div className='bg-ax-bg-overlay fixed inset-0 z-10000000 backdrop-blur-xs' />
+      <div
+        className='fixed z-10000000 flex w-full max-w-190 flex-col items-center gap-6 overflow-hidden rounded-xl p-0'
+        style={{
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+        }}
+        role='dialog'
+        aria-modal='true'
         aria-label='Innliming er åpent igjen'
       >
-        <Modal.Body>
-          <div className='my-10 flex justify-center'>
+        <div className='flex flex-wrap items-center justify-center gap-4 px-4'>
+          <div className='w-60'>
             <BobTheLawyer />
           </div>
-          <Heading
-            size='small'
-            spacing
-          >
-            Hurra, innliming er åpent igjen!
-          </Heading>
-          <BodyLong>
-            Husk på å aldri dele personopplysninger med meg. Jeg flagger hvis jeg oppdager noe, men du har hovedansvaret
-            for teksten du deler med meg.
-          </BodyLong>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            type='button'
-            onClick={handleClose}
-          >
-            Bekreft
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-      /*
-      <Dialog open={open}>
-        <Dialog.Popup position='center'>
-          <Dialog.Header>
-            <Dialog.Title>Overskrift</Dialog.Title>
-            <Dialog.Description>En kort beskrivelse av dialogen.</Dialog.Description>
-          </Dialog.Header>
-          <Dialog.Body>
-            <BodyLong>
-              Culpa aliquip ut cupidatat laborum minim quis ex in aliqua. Qui incididunt dolor do ad ut. Incididunt
-              eiusmod nostrud deserunt duis laborum. Proident aute culpa qui nostrud velit adipisicing minim.
-            </BodyLong>
-          </Dialog.Body>
-          <Dialog.Footer>
-            <Dialog.CloseTrigger>
-              <Button onClick={handleClose}>Lukk</Button>
-            </Dialog.CloseTrigger>
-          </Dialog.Footer>
-        </Dialog.Popup>
-      </Dialog>
-        */
-    )
+          <div className='bg-ax-bg-raised border-ax-border-neutral-subtleA flex h-fit min-w-86 flex-1 flex-col gap-6 rounded-xl border px-5 py-5'>
+            <div className='flex flex-col gap-2'>
+              <Heading
+                size='small'
+                className='mb-4'
+              >
+                Hurra, innliming er åpent igjen!
+              </Heading>
+              <BodyLong
+                className='mb-2'
+                size='medium'
+              >
+                Husk på å aldri dele personopplysninger med meg. Jeg flagger hvis jeg oppdager noe, men du har
+                hovedansvaret for teksten du deler med meg.
+              </BodyLong>
+            </div>
+            <div className='flex justify-end'>
+              <Button
+                type='button'
+                onClick={handleClose}
+                variant='primary'
+              >
+                Jeg forstår!
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   )
 }
 
 const BobTheLawyer = () => {
   return (
     <svg
-      width='250'
+      width='auto'
       height='auto'
       viewBox='0 0 855 1100'
       fill='none'
