@@ -170,6 +170,9 @@ const ignorerTrykket = (type: string) => logEvent("Ignorer trykket", { type })
 
 const anonymiserTrykket = (antall: number, typer: string[]) => logEvent("Anonymiser trykket", { antall, typer })
 
+const innlimingInfoModalLukket = () => logEvent("Infomodal om innliming lukket")
+
+
 export default {
   svarKopiert,
   svarEndret,
@@ -209,4 +212,5 @@ export default {
   svarFeilet,
   ignorerTrykket,
   anonymiserTrykket,
+  innlimingInfoModalLukket,
 }
