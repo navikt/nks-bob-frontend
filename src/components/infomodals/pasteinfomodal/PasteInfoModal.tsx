@@ -1,5 +1,6 @@
 import { BodyLong, Button, Heading } from "@navikt/ds-react"
 import { useState } from "react"
+import analytics from "../../../utils/analytics"
 import { setItem, useLocalStorage } from "../../../utils/localStorage"
 
 const PASTE_INFO_MODAL_KEY = "pasteInfoModalSeen"
@@ -11,6 +12,7 @@ export const PasteInfoModal = () => {
   const handleClose = () => {
     setOpen(false)
     setItem(PASTE_INFO_MODAL_KEY, true)
+    analytics.innlimingInfoModalLukket()
   }
 
   if (hasSeenModal || !open) return null
@@ -55,7 +57,7 @@ export const PasteInfoModal = () => {
                 onClick={handleClose}
                 variant='primary'
               >
-                Jeg forstår!
+                Jeg forstår
               </Button>
             </div>
           </div>

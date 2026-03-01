@@ -147,6 +147,10 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     e.preventDefault()
   }
 
+  function handlePaste() {
+    analytics.tekstInnholdLimtInn()
+  }
+
   function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     if (e.key === "Enter") {
       if (!e.shiftKey) {
@@ -464,6 +468,7 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
           minRows={minRows}
           maxRows={15}
           placeholder={placeholderText}
+          onPaste={handlePaste}
           value={inputValue}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
