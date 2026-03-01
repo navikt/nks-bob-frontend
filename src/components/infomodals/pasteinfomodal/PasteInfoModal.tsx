@@ -41,7 +41,7 @@ export const PasteInfoModal = () => {
                 size='small'
                 className='mb-4'
               >
-                Hurra, innliming er åpent igjen!
+                Hurra, innliming er åpent igjen
               </Heading>
               <BodyLong
                 className='mb-2'
