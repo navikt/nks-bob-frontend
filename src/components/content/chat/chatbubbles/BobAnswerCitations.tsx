@@ -281,13 +281,19 @@ export const TextFragmentLink = ({
       ? transformArticleColumnValue(matchingContextCitationData.articleColumn)
       : undefined
 
+    const navnoAnchor = matchingContextCitationData?.anchor ? `${matchingContextCitationData.anchor}` : ""
+
+    const navnoHref = navnoAnchor
+      ? `${matchingContextCitationData.url}${expandAll}#${navnoAnchor}:~:text=${textFragment}`
+      : `${matchingContextCitationData.url}${expandAll}#:~:text=${textFragment}`
+
     return (
       <HStack align='center'>
         <Tooltip content='Åpner artikkelen i ny fane'>
           <Link
             href={
-              title === "" && matchingContextCitationData.source === "navno"
-                ? `${matchingContextCitationData.url}${expandAll}#:~:text=${textFragment}`
+              matchingContextCitationData.source === "navno" && !useAnchor
+                ? navnoHref
                 : useAnchor
                   ? `${matchingContextCitationData.url}${expandAll}#${anchor ?? matchingContextCitationData.anchor}`
                   : !start || start.trim().length === 0
