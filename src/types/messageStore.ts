@@ -38,6 +38,10 @@ function isErrorsUpdated(event: ConversationEvent): event is { type: "ErrorsUpda
   return event.type === "ErrorsUpdated"
 }
 
+function isMessageUpdated(event: ConversationEvent): event is { type: "MessageUpdated"; id: string; message: Message } {
+  return event.type === "MessageUpdated"
+}
+
 type MessageMap = { [id: string]: Message }
 
 type MessageState = {
@@ -148,6 +152,10 @@ const getMessage = (event: ConversationEvent, messages: MessageMap): Message | u
       ...message,
       content: `${message.content}${event.content}`,
     }
+  }
+
+  if (isMessageUpdated(event)) {
+    return event.message
   }
 
   if (isCitationsUpdated(event)) {
