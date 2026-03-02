@@ -1,5 +1,5 @@
 import { FileSearchIcon } from "@navikt/aksel-icons"
-import { BodyLong, BodyShort, Button, Heading, HStack, Skeleton, VStack } from "@navikt/ds-react"
+import { BodyLong, Button, Heading, HStack, Skeleton, VStack } from "@navikt/ds-react"
 import React, { memo, useState } from "react"
 import Markdown from "react-markdown"
 import rehypeRaw from "rehype-raw"
@@ -213,12 +213,6 @@ const MessageContent = ({
       >
         Svar fra Bob:
       </Heading>
-      {!message.pending && message.citations.length === 0 && message.context.length > 0 && (
-        <BodyShort>
-          Jeg fant kilder, men <strong>de inneholdt ikke informasjon som kunne svare på spørsmålet</strong>. Likevel
-          skal jeg forsøke å svare så godt som mulig:
-        </BodyShort>
-      )}
       <Markdown
         className='markdown answer-markdown'
         remarkPlugins={[remarkGfm, md.remarkCitations]}
