@@ -1,7 +1,6 @@
 import { ChevronDownIcon, ChevronUpIcon, XMarkIcon } from "@navikt/aksel-icons"
 import { BodyLong, BodyShort, Button, CopyButton, Detail, Heading, HStack, Tag, VStack } from "@navikt/ds-react"
 import { useState } from "react"
-import remarkGfm from "remark-gfm"
 import { create } from "zustand"
 
 import { ShowAllSourcesIcon } from "../../../../../assets/icons/ShowAllSourcesIcon.tsx"
@@ -179,7 +178,7 @@ const UtdragDropDown = ({ context }: { context: Context }) => {
           className='mt-4'
           onClick={toggleOpen}
         >
-          <AppMarkdown remarkPlugins={[remarkGfm]}>{context.content}</AppMarkdown>
+          <AppMarkdown>{context.content}</AppMarkdown>
         </BodyLong>
       )}
     </VStack>

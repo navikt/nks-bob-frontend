@@ -12,45 +12,10 @@ body {
 * {
   scrollbar-color: var(--neutral-500) transparent;
 }
-
-.markdown {
-  overflow-wrap: break-word;
-}
  
 
 .markdown-inline>p {
   display: inline;
-}
-
-.chat-markdown a,
-.chat-markdown a:visited {
-  color: inherit;
-  text-decoration: underline;
-}
-
-.chat-markdown a:hover {
-  color: inherit;
-  text-decoration: underline;
-}
-
-.chat-markdown a:focus-visible {
-  outline: 2px solid currentColor;
-  outline-offset: 2px;
-}
-
-.answer-markdown a,
-.answer-markdown a:visited {
-  text-decoration: underline;
-}
-
-.answer-markdown a:hover {
-  color: inherit;
-  text-decoration: underline;
-}
-
-.answer-markdown a:focus-visible {
-  outline: 2px solid currentColor;
-  outline-offset: 2px;
 }
 
 .pagewrapper {

@@ -3,7 +3,6 @@ import { Message } from "../../../../types/Message.ts"
 import { FilesIcon, PencilWritingIcon } from "@navikt/aksel-icons"
 import { Button, CopyButton, Heading, Tooltip } from "@navikt/ds-react"
 import { memo } from "react"
-import remarkBreaks from "remark-breaks"
 import analytics from "../../../../utils/analytics.ts"
 import { AppMarkdown } from "../../../../utils/AppMarkdown.tsx"
 import { useInputFieldStore } from "../../../inputfield/InputField.tsx"
@@ -16,7 +15,6 @@ interface UserChatBubbleProps {
 const UserQuestionBubble = memo(
   ({ userQuestion }: UserChatBubbleProps) => {
     const raw = userQuestion?.content?.trimEnd() ?? ""
-    // const question = userQuestion?.content.replace(/\n/g, "<br>")
 
     const { setInputValue, focusTextarea } = useInputFieldStore()
 
@@ -74,7 +72,7 @@ const UserQuestionBubble = memo(
           >
             Du spurte:
           </Heading>
-          <AppMarkdown remarkPlugins={[remarkBreaks]}>{raw}</AppMarkdown>
+          <AppMarkdown>{raw}</AppMarkdown>
         </div>
       </div>
     )
