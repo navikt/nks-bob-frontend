@@ -1,7 +1,5 @@
 import { ChevronRightDoubleIcon } from "@navikt/aksel-icons"
 import { BodyLong, BodyShort, CopyButton, Detail, HStack, Label, Link, Tooltip } from "@navikt/ds-react"
-import Markdown from "react-markdown"
-import remarkGfm from "remark-gfm"
 import { KunnskapsbasenIcon } from "../../../../assets/icons/KunnskapsbasenIcon.tsx"
 import { NavNoIcon } from "../../../../assets/icons/NavNoIcon.tsx"
 import { Citation, Context } from "../../../../types/Message.ts"
@@ -66,10 +64,10 @@ const SingleCitation = ({ citation, context }: { citation: Citation; context: Co
       )}
 
       <BodyLong
-        size='small'
-        className='mt-1 italic'
+        size='medium'
+        className='italic'
       >
-        <AppMarkdown className='markdown answer-markdown mb-2'>{citation.text}</AppMarkdown>
+        <AppMarkdown remarkPlugins={[md.rewriteRelativeLinks]}>{citation.text}</AppMarkdown>
       </BodyLong>
       {context && (
         <TextFragmentLink
@@ -115,23 +113,14 @@ const MultiCitation = ({
         {citations.map((citation) => (
           <div
             key={`multi-citation-${citation.sourceId}`}
-            className='group mt-1 mb-2 gap-1 italic'
+            className='group mt-1 mb-2 gap-1'
           >
-            <Markdown
-              className='markdown answer-markdown markdown-inline aksel-body-short--small mb-1 inline'
-              remarkPlugins={[remarkGfm, md.rewriteRelativeLinks]}
-              components={{
-                a: ({ ...props }) => (
-                  <a
-                    {...props}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                  />
-                ),
-              }}
+            <BodyLong
+              size='small'
+              className='italic'
             >
-              {citation.text}
-            </Markdown>
+              <AppMarkdown>{citation.text}</AppMarkdown>
+            </BodyLong>
             <TextFragmentLink
               text={citation.text}
               matchingContextCitationData={contexts.at(citation.sourceId)!}

@@ -83,7 +83,7 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
         )}
       </VStack>
       <BodyLong size='small'>
-        <AppMarkdown className='markdown'>{source.content}</AppMarkdown>
+        <AppMarkdown>{source.content}</AppMarkdown>
       </BodyLong>
     </div>
   )

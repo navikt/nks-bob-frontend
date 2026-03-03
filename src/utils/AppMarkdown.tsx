@@ -17,6 +17,7 @@ const defaultComponents: Components = {
       target='_blank'
       rel='noopener noreferrer'
       title='Åpne lenken i ny fane'
+      className='underline'
     />
   ),
   h2: ({ ...props }) => (
@@ -40,13 +41,13 @@ const defaultComponents: Components = {
   p: ({ ...props }) => (
     <p
       {...props}
-      className='not-last:mb-3'
+      className='not-last:mb-4'
     />
   ),
   li: ({ ...props }) => (
     <li
       {...props}
-      className='not-last:mb-3'
+      className='not-only:mb-3'
     />
   ),
   ul: ({ ...props }) => (

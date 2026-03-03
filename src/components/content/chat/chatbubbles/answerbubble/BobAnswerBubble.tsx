@@ -230,15 +230,15 @@ const MessageContent = ({
       >
         Svar fra Bob:
       </Heading>
-
-      <AppMarkdown
-        className='markdown answer-markdown'
-        remarkPlugins={[md.remarkCitations]}
-        rehypePlugins={[rehypeRaw]}
-        components={{ span: citationSpanComponent }}
-      >
-        {message.content}
-      </AppMarkdown>
+      <BodyLong>
+        <AppMarkdown
+          remarkPlugins={[md.remarkCitations]}
+          rehypePlugins={[rehypeRaw]}
+          components={{ span: citationSpanComponent }}
+        >
+          {message.content}
+        </AppMarkdown>
+      </BodyLong>
 
       {message.context.length === 0 && message.citations.length === 0 && message.contextualizedQuestion !== null && (
         <Button
