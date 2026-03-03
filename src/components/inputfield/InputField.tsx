@@ -147,8 +147,9 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     e.preventDefault()
   }
 
-  function handlePaste() {
-    analytics.tekstInnholdLimtInn()
+  function handlePaste(e: React.ClipboardEvent<HTMLTextAreaElement>) {
+    const text = e.clipboardData.getData("text")
+    analytics.tekstInnholdLimtInn(text.length)
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
