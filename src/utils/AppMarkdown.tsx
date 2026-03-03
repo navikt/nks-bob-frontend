@@ -37,6 +37,30 @@ const defaultComponents: Components = {
       className='mb-1 font-semibold'
     />
   ),
+  p: ({ ...props }) => (
+    <p
+      {...props}
+      className='not-last:mb-3'
+    />
+  ),
+  li: ({ ...props }) => (
+    <li
+      {...props}
+      className='not-last:mb-3'
+    />
+  ),
+  ul: ({ ...props }) => (
+    <ul
+      {...props}
+      className='ml-6 list-disc'
+    />
+  ),
+  ol: ({ ...props }) => (
+    <ol
+      {...props}
+      className='ml-6 list-decimal marker:font-medium'
+    />
+  ),
 }
 
 export const AppMarkdown = ({

@@ -6,6 +6,7 @@ import { KunnskapsbasenIcon } from "../../../../assets/icons/KunnskapsbasenIcon.
 import { NavNoIcon } from "../../../../assets/icons/NavNoIcon.tsx"
 import { Citation, Context } from "../../../../types/Message.ts"
 import analytics from "../../../../utils/analytics.ts"
+import { AppMarkdown } from "../../../../utils/AppMarkdown.tsx"
 import { transformArticleColumnValue } from "../../../../utils/articleColumnTransformer.ts"
 import { buildLinkTitle } from "../../../../utils/link.ts"
 import { md } from "../../../../utils/markdown.ts"
@@ -68,21 +69,7 @@ const SingleCitation = ({ citation, context }: { citation: Citation; context: Co
         size='small'
         className='mt-1 italic'
       >
-        <Markdown
-          className='markdown answer-markdown mb-2'
-          remarkPlugins={[remarkGfm]}
-          components={{
-            a: ({ ...props }) => (
-              <a
-                {...props}
-                target='_blank'
-                rel='noopener noreferrer'
-              />
-            ),
-          }}
-        >
-          {citation.text}
-        </Markdown>
+        <AppMarkdown className='markdown answer-markdown mb-2'>{citation.text}</AppMarkdown>
       </BodyLong>
       {context && (
         <TextFragmentLink

@@ -3,10 +3,9 @@ import { Message } from "../../../../types/Message.ts"
 import { FilesIcon, PencilWritingIcon } from "@navikt/aksel-icons"
 import { Button, CopyButton, Heading, Tooltip } from "@navikt/ds-react"
 import { memo } from "react"
-import Markdown from "react-markdown"
 import remarkBreaks from "remark-breaks"
-import remarkGfm from "remark-gfm"
 import analytics from "../../../../utils/analytics.ts"
+import { AppMarkdown } from "../../../../utils/AppMarkdown.tsx"
 import { useInputFieldStore } from "../../../inputfield/InputField.tsx"
 import "./ChatBubbles.css"
 
@@ -75,12 +74,7 @@ const UserQuestionBubble = memo(
           >
             Du spurte:
           </Heading>
-          <Markdown
-            remarkPlugins={[remarkGfm, remarkBreaks]}
-            className='chat-markdown'
-          >
-            {raw}
-          </Markdown>
+          <AppMarkdown remarkPlugins={[remarkBreaks]}>{raw}</AppMarkdown>
         </div>
       </div>
     )
