@@ -1,13 +1,12 @@
 import { ChevronDownIcon, ChevronUpIcon, XMarkIcon } from "@navikt/aksel-icons"
 import { BodyLong, BodyShort, Button, CopyButton, Detail, Heading, HStack, Tag, VStack } from "@navikt/ds-react"
 import { useState } from "react"
-import Markdown from "react-markdown"
-import remarkGfm from "remark-gfm"
 import { create } from "zustand"
 
 import { ShowAllSourcesIcon } from "../../../../../assets/icons/ShowAllSourcesIcon.tsx"
 import { Context, Message } from "../../../../../types/Message.ts"
 import analytics from "../../../../../utils/analytics.ts"
+import { AppMarkdown } from "../../../../../utils/AppMarkdown.tsx"
 import { buildLinkTitle } from "../../../../../utils/link.ts"
 import { SourceIcon, TextFragmentLink } from "../BobAnswerCitations.tsx"
 import "./ShowAllSources.css"
@@ -179,21 +178,7 @@ const UtdragDropDown = ({ context }: { context: Context }) => {
           className='mt-4'
           onClick={toggleOpen}
         >
-          <Markdown
-            className='markdown'
-            remarkPlugins={[remarkGfm]}
-            components={{
-              a: ({ ...props }) => (
-                <a
-                  {...props}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                />
-              ),
-            }}
-          >
-            {context.content}
-          </Markdown>
+          <AppMarkdown>{context.content}</AppMarkdown>
         </BodyLong>
       )}
     </VStack>

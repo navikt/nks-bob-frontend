@@ -3,10 +3,10 @@ import { BodyLong, Button, Heading, HStack, Skeleton, VStack } from "@navikt/ds-
 import React, { memo, useState } from "react"
 import Markdown from "react-markdown"
 import rehypeRaw from "rehype-raw"
-import remarkGfm from "remark-gfm"
 import { BobRoboHead } from "../../../../../assets/illustrations/BobRoboHead.tsx"
 import { Citation, Message, NewMessage } from "../../../../../types/Message.ts"
 import analytics from "../../../../../utils/analytics.ts"
+import { AppMarkdown } from "../../../../../utils/AppMarkdown.tsx"
 import { md } from "../../../../../utils/markdown.ts"
 import { FollowUpQuestions } from "../../../followupquestions/FollowUpQuestions.tsx"
 import BobSuggests from "../../suggestions/BobSuggests.tsx"
@@ -201,6 +201,23 @@ const MessageContent = ({
     onSend(findSources)
   }
 
+  const citationSpanComponent = (props: CitationSpanProps) => {
+    const dataCitation = props["data-citation"]
+    const dataPosition = props["data-position"]
+    if (dataCitation && dataPosition) {
+      const citationId = parseInt(dataCitation, 10)
+      addCitation(citationId, parseInt(dataPosition, 10))
+      return (
+        <CitationNumber
+          citations={citations}
+          citationId={citationId}
+          context={message.context}
+        />
+      )
+    }
+    return <span {...props} />
+  }
+
   return (
     <div
       className='mb-2 flex flex-col gap-3'
@@ -213,39 +230,16 @@ const MessageContent = ({
       >
         Svar fra Bob:
       </Heading>
-      <Markdown
-        className='markdown answer-markdown'
-        remarkPlugins={[remarkGfm, md.remarkCitations]}
-        rehypePlugins={[rehypeRaw]}
-        components={{
-          a: ({ ...props }) => (
-            <a
-              {...props}
-              target='_blank'
-              rel='noopener noreferrer'
-              title='Åpne lenken i ny fane'
-            />
-          ),
-          span: (props: CitationSpanProps) => {
-            const dataCitation = props["data-citation"]
-            const dataPosition = props["data-position"]
-            if (dataCitation && dataPosition) {
-              const citationId = parseInt(dataCitation, 10)
-              addCitation(citationId, parseInt(dataPosition, 10))
-              return (
-                <CitationNumber
-                  citations={citations}
-                  citationId={citationId}
-                  context={message.context}
-                />
-              )
-            }
-            return <span {...props} />
-          },
-        }}
-      >
-        {message.content}
-      </Markdown>
+      <BodyLong>
+        <AppMarkdown
+          remarkPlugins={[md.remarkCitations]}
+          rehypePlugins={[rehypeRaw]}
+          components={{ span: citationSpanComponent }}
+        >
+          {message.content}
+        </AppMarkdown>
+      </BodyLong>
+
       {message.context.length === 0 && message.citations.length === 0 && message.contextualizedQuestion !== null && (
         <Button
           data-color='neutral'
