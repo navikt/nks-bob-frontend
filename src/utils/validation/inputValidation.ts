@@ -76,7 +76,7 @@ export function replaceValidationResult(validationType: ValidationType) {
     return "(anonymisert navn)"
   }
   if (validationType === "firstname-three-times") {
-    return "(anonymisert navn)"
+    return "(anonymisert fornavn)"
   }
   if (validationType === "dob-three-times") {
     return "(anonymisert dato)"
@@ -193,24 +193,14 @@ function createValidatorWithWhitelist(
       return ok()
     }
 
-   
-    const matches = getMatches(regex, input).filter(
-      (match) => {
-        if (whitelist.includes(match.value)) {
-          return false
-        }
-        
-        const startsWithWhitelisted = whitelist.some(whitelistedWord => 
-          match.value.startsWith(whitelistedWord + " ")
-        )
-        
-        return !startsWithWhitelisted
-      }
-    )
+    const matches = getMatches(regex, input).filter((match) => {
+      if (whitelist.includes(match.value)) return false
+      if (whitelist.some(w => match.value.startsWith(w + " "))) return false
+      if (whitelist.some(w => match.value.endsWith(" " + w))) return false
+      return true
+    })
 
-    if (matches.length === 0) {
-      return ok()
-    }
+    if (matches.length === 0) return ok()
 
     return constructor(message, type, matches)
   }
@@ -340,11 +330,16 @@ export const validateSurname: Validator = (input: string) => {
   return warning("Tekst som ligner på et etternavn:", "surname", matches)
 }
 
-/* nameWordRegex: Matcher på 3x ord med stor forbokstav
+
+
+
+/* nameWordRegex: Matcher på 3x ord med stor forbokstav (deaktiverer denne foreløpig pga ny validering for fornavn)
 
    - Ord med stor forbokstav i teksten
    - Matcher ikke første ord i teksten  
    - Matcher ikke ord etter tegnsetting eller linjeskift */
+
+
 
 const nameWordRegex =
   /(?<!^)(?<![\p{P}\n]\s*)(?<!\p{Lu}[\p{L}'-]*[ \t-])\b\p{Lu}\p{Ll}+\b(?![ \t-]\p{Lu}[\p{L}'-]*)/gu
@@ -358,7 +353,7 @@ const baseValidateFirstName = createValidatorWithWhitelist(
   warning,
   "Tekst som ligner på et navn:",
   "firstname-three-times",
-  whitelistNames
+  [...whitelistNames, ...norwegianWhitelistCountries]
 )
 
 export const validateFirstName: Validator = (input: string) => {
@@ -384,7 +379,7 @@ const baseValidateDateOfBirth = createValidatorWithWhitelist(
   warning,
   "Tekst som ligner på fødselsdato:",
   "dob-three-times",
-  whitelistNames
+ [...whitelistNames, ...norwegianWhitelistCountries]
 )
 
 export const validateDateOfBirth: Validator = (input: string) => {
@@ -409,7 +404,7 @@ const baseValidationFullNameAndDob = createValidatorWithWhitelist(
   warning,
   "Tekst som ligner på fullt navn + fødselsdato",
   "fullname-and-dob",
-  whitelistNames
+  [...whitelistNames, ...norwegianWhitelistCountries]
 )
 
 export const validateFullNameAndDob: Validator = (input: string) => {
@@ -434,11 +429,18 @@ const baseValidateNameAndDob = createValidatorWithWhitelist(
   warning,
   "Tekst som ligner på fornavn + fødselsdato:",
   "firstname-twice-and-dob", 
-  whitelistNames
+  [...whitelistNames, ...norwegianWhitelistCountries]
 )
 
 export const validateNameAndDob: Validator = (input: string) => {
   if (!has2NamesAnd1DobRegex.test(input)) return ok()
+
+  const nameMatches = getMatches(new RegExp(nameWordRegex.source, "gu"), input).filter(
+    (match) => !whitelistNames.includes(match.value) && !whitelistNames.some(w => match.value.startsWith(w + " "))
+  )
+
+  if (nameMatches.length < 2) return ok()
+
   return baseValidateNameAndDob(input)
 }
 
