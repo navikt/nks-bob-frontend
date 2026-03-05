@@ -1,5 +1,5 @@
 import { isKnownFemaleFirstName, isKnownMaleFirstName, isKnownSurname } from "./validationutils/ssb-api";
-import { countryCodePattern, whitelistNames } from "./validationutils/whitelist";
+import { countryCodePattern, norwegianWhitelistCountries, whitelistNames } from "./validationutils/whitelist";
 
 export type ValidationResult = ValidationOk | ValidationWarning | ValidationError
 
@@ -265,7 +265,7 @@ export const validateFullName = createValidatorWithWhitelist(
   warning,
   "Tekst som ligner på et navn:",
   "fullname",
-  whitelistNames
+  [...whitelistNames, ...norwegianWhitelistCountries]
 )
 
 // FemaleFirstNames

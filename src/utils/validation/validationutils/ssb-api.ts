@@ -3,7 +3,7 @@ export const SSB_MALE_FIRST_NAMES_URL = "https://data.ssb.no/api/pxwebapi/v2/tab
 export const SSB_FEMALE_FIRST_NAMES_URL =
   "https://data.ssb.no/api/pxwebapi/v2/tables/10501/data?lang=no&outputFormat=json-stat2&valuecodes[ContentsCode]=*&valuecodes[Tid]=*&valuecodes[Fornavn]=*&codelist[Fornavn]=vs_NavnKvinner01&heading=ContentsCode,Tid&stub=Fornavn"
 
-  export const SSB_SURNAMES_URL = "https://data.ssb.no/api/pxwebapi/v2/tables/12891/data?lang=no&outputFormat=json-stat2&valuecodes[ContentsCode]=*&valuecodes[Tid]=*&valuecodes[Etternavn]=*&codelist[Etternavn]=vs_Etternavn01&heading=ContentsCode,Tid&stub=Etternavn"
+export const SSB_SURNAMES_URL = "https://data.ssb.no/api/pxwebapi/v2/tables/12891/data?lang=no&outputFormat=json-stat2&valuecodes[ContentsCode]=*&valuecodes[Tid]=*&valuecodes[Etternavn]=*&codelist[Etternavn]=vs_Etternavn01&heading=ContentsCode,Tid&stub=Etternavn"
 
 
   export type FirstNameResponse = {
