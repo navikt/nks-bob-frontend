@@ -300,11 +300,12 @@ const dobRegex =
 const has3DobRegex =
   /^(?=(?:[\s\S]*\b(?:[0]?[1-9]|[12]\d|3[01])[-./,]+?(?:[0]?[1-9]|[12]\d|3[01])[-./,]+?\d{2,4}\b){3})/
 
-const baseValidateDateOfBirth = createValidator(
+const baseValidateDateOfBirth = createValidatorWithWhitelist(
   dobRegex,
   warning,
   "Tekst som ligner på fødselsdato:",
   "dob-three-times",
+  whitelistNames
 )
 
 export const validateDateOfBirth: Validator = (input: string) => {
@@ -324,11 +325,12 @@ const hasFullNameAnd1DobRegex = new RegExp(
 
 const dobOnlyRegex = new RegExp(dobRegex.source, "g")
 
-const baseValidationFullNameAndDob = createValidator(
+const baseValidationFullNameAndDob = createValidatorWithWhitelist(
   dobOnlyRegex,
   warning,
   "Tekst som ligner på fullt navn + fødselsdato",
-  "fullname-and-dob"
+  "fullname-and-dob",
+  whitelistNames
 )
 
 export const validateFullNameAndDob: Validator = (input: string) => {
@@ -348,11 +350,12 @@ const nameOrDobRegex = new RegExp(
   "gu",
 )
 
-const baseValidateNameAndDob = createValidator(
+const baseValidateNameAndDob = createValidatorWithWhitelist(
   nameOrDobRegex,
   warning,
   "Tekst som ligner på fornavn + fødselsdato:",
   "firstname-twice-and-dob", 
+  whitelistNames
 )
 
 export const validateNameAndDob: Validator = (input: string) => {
