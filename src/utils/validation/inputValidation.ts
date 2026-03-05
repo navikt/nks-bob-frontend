@@ -1,8 +1,9 @@
-import { countryCodePattern, whitelistNames } from "./inputvalidation/tlfValidationAddons";
+import { isKnownFemaleFirstName, isKnownMaleFirstName, isKnownSurname } from "./validationutils/ssb-api";
+import { countryCodePattern, whitelistNames } from "./validationutils/whitelist";
 
 export type ValidationResult = ValidationOk | ValidationWarning | ValidationError
 
-export type ValidationType = "fnr" | "dnr" | "hnr" | "firstname-three-times" | "fullname" | "tlf" | "email" | "accountnumber" | "address" | "postalcode" | "dob-three-times" | "fullname-and-dob" | "firstname-twice-and-dob"
+export type ValidationType = "fnr" | "dnr" | "hnr" | "firstname-three-times" | "fullname" | "firstname" | "surname" | "tlf" | "email" | "accountnumber" | "address" | "postalcode" | "dob-three-times" | "fullname-and-dob" | "firstname-twice-and-dob"
 
 export type ValidationMatch = { value: string; start: number; end: number }
 
@@ -106,6 +107,12 @@ export function replaceValidationResult(validationType: ValidationType) {
   }
       if (validationType === "postalcode") {
     return "(anonymisert postnummer)"
+  }
+        if (validationType === "firstname") {
+    return "(anonymisert fornavn)"
+  }
+          if (validationType === "surname") {
+    return "(anonymisert etternavn)"
   }
 
   return "(anonymisert personopplysning)"
@@ -260,6 +267,78 @@ export const validateFullName = createValidatorWithWhitelist(
   "fullname",
   whitelistNames
 )
+
+// FemaleFirstNames
+
+export const validateFemaleFirstName: Validator = (input: string) => {
+    const words = input.split(/\s+/)
+  const matches: ValidationMatch[] = []
+
+
+  let currentIndex = 0
+  for (const word of words) {
+    const wordStart = input.indexOf(word, currentIndex)
+    if (isKnownFemaleFirstName(word) && !whitelistNames.includes(word)) {
+      matches.push({
+        value: word,
+        start: wordStart,
+        end: wordStart + word.length,
+      })
+    }
+    currentIndex = wordStart + word.length
+  }
+
+  if (matches.length === 0) return ok()
+  return warning("Tekst som ligner på et jentenavn:", "firstname", matches)
+}
+
+// MaleFirstNames
+
+export const validateMaleFirstName: Validator = (input: string) => {
+    const words = input.split(/\s+/)
+  const matches: ValidationMatch[] = []
+
+
+  let currentIndex = 0
+  for (const word of words) {
+    const wordStart = input.indexOf(word, currentIndex)
+    if (isKnownMaleFirstName(word) && !whitelistNames.includes(word)) {
+      matches.push({
+        value: word,
+        start: wordStart,
+        end: wordStart + word.length,
+      })
+    }
+    currentIndex = wordStart + word.length
+  }
+
+  if (matches.length === 0) return ok()
+  return warning("Tekst som ligner på et guttenavn:", "firstname", matches)
+}
+
+// Surnames
+
+export const validateSurname: Validator = (input: string) => {
+    const words = input.split(/\s+/)
+  const matches: ValidationMatch[] = []
+
+
+  let currentIndex = 0
+  for (const word of words) {
+    const wordStart = input.indexOf(word, currentIndex)
+    if (isKnownSurname(word) && !whitelistNames.includes(word)) {
+      matches.push({
+        value: word,
+        start: wordStart,
+        end: wordStart + word.length,
+      })
+    }
+    currentIndex = wordStart + word.length
+  }
+
+  if (matches.length === 0) return ok()
+  return warning("Tekst som ligner på et etternavn:", "surname", matches)
+}
 
 /* nameWordRegex: Matcher på 3x ord med stor forbokstav
 

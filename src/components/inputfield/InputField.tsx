@@ -34,20 +34,21 @@ import {
   validateAddress,
   validateDateOfBirth,
   validateEmail,
-  validateFirstName,
-  validateFullName,
+  validateFemaleFirstName,
   validateFullNameAndDob,
   validateGlobalPhoneNumber,
+  validateMaleFirstName,
   validateNameAndDob,
   validateNorwegianMobileNumber,
   validatePersonnummer,
   validatePostalCode,
+  validateSurname,
   ValidationError,
   ValidationResult,
   ValidationType,
   ValidationWarning,
   Validator,
-} from "../../utils/inputValidation.ts"
+} from "../../utils/validation/inputValidation.ts"
 import "./InputField.css"
 
 type InputFieldState = {
@@ -172,8 +173,9 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
 
   const validators: Validator[] = [
     validatePersonnummer,
-    validateFullName,
-    validateFirstName,
+    validateFemaleFirstName,
+    validateMaleFirstName,
+    validateSurname,
     validateEmail,
     validateAccountNumber,
     validateDateOfBirth,
@@ -200,9 +202,10 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
       "hnr",
       "address",
       "postalcode",
+      "firstname",
+      "surname",
       "fullname-and-dob",
       "firstname-twice-and-dob",
-      "fullname",
       "dob-three-times",
       "firstname-three-times",
       "tlf",
