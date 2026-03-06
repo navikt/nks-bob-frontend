@@ -246,7 +246,7 @@ export const validatePersonnummer = (input: string): ValidationResult => {
    - Hver navnedel ma starte med stor bokstav (\p{Lu})
    - Navnedeler kan inneholde Unicode-bokstaver (\p{L}), punktum, apostrof eller bindestrek */
 
-const fullNameRegex = /\p{Lu}[\p{L}'-]*(?:[ \t-]+[\p{Lu}][\p{L}'-]*){1,2}/gu
+const fullNameRegex = /\p{Lu}[\p{L}'-]+(?:[ \t-]+[\p{Lu}][\p{L}'-]+){1,2}/gu
 
 // const fullNameRegex = /\p{Lu}/gu
 
@@ -478,14 +478,7 @@ export const validateAccountNumber = createValidator(accountNumberRegex, warning
 // addressRegex matcher på adresse:
     // 2-3 ord (første ord må starte med stor bokstav) + mellomrom? + tall + bokstav
 
-
-const streetNameRegex = /\p{Lu}[\p{L}'-]*(?:[ \t]+\p{Lu}[\p{L}'-]*)*/u
-const houseNumberRegex = /\d+\s*\p{Lu}*/u
-
-const addressRegex = new RegExp(
-  `\\b(?:${streetNameRegex.source})[ \\t]+(?:${houseNumberRegex.source})\\b`,
-  "gu",
-)
+const addressRegex = /\p{Lu}\p{L}+[-']?(?:\p{Lu}\p{L}+|\p{L}+)?(?:[ \t]?\p{Lu}\p{L}+)*(?:[ \t]?\p{L}+)?[ \t]+\d+(?![.-])(?!\d)(?:[ \t]?\p{L}(?![\p{L}]))?/gu
 
 const baseValidateAddress = createValidatorWithWhitelist(
   addressRegex,
@@ -503,12 +496,11 @@ export const validateAddress: Validator = (input: string) => {
 
 const postalCodeRegex = /\d+[ -,]*\p{Lu}\p{L}+/gu
 
-const baseValidatePostalCode = createValidatorWithWhitelist(
+const baseValidatePostalCode = createValidator(
   postalCodeRegex,
   warning,
   "Tekst som ligner på et postnummer:",
   "postalcode",
-  [...whitelistWords, ...whitelistedCountries]
 )
 
 export const validatePostalCode: Validator = (input: string) => {
