@@ -1,5 +1,5 @@
 import { isKnownFemaleFirstName, isKnownMaleFirstName, isKnownSurname } from "./validationutils/ssb-api";
-import { countryCodePattern, norwegianWhitelistCountries, whitelistNames } from "./validationutils/whitelist";
+import { countryCodePattern, whitelistedCountries, whitelistWords } from "./validationutils/whitelist";
 
 export type ValidationResult = ValidationOk | ValidationWarning | ValidationError
 
@@ -255,7 +255,7 @@ export const validateFullName = createValidatorWithWhitelist(
   warning,
   "Tekst som ligner på et navn:",
   "fullname",
-  [...whitelistNames, ...norwegianWhitelistCountries]
+  [...whitelistWords, ...whitelistedCountries]
 )
 
 // FemaleFirstNames
@@ -268,7 +268,7 @@ export const validateFemaleFirstName: Validator = (input: string) => {
   let currentIndex = 0
   for (const word of words) {
     const wordStart = input.indexOf(word, currentIndex)
-    if (isKnownFemaleFirstName(word) && !whitelistNames.includes(word)) {
+    if (isKnownFemaleFirstName(word) && !whitelistWords.includes(word)) {
       matches.push({
         value: word,
         start: wordStart,
@@ -292,7 +292,7 @@ export const validateMaleFirstName: Validator = (input: string) => {
   let currentIndex = 0
   for (const word of words) {
     const wordStart = input.indexOf(word, currentIndex)
-    if (isKnownMaleFirstName(word) && !whitelistNames.includes(word)) {
+    if (isKnownMaleFirstName(word) && !whitelistWords.includes(word)) {
       matches.push({
         value: word,
         start: wordStart,
@@ -316,7 +316,7 @@ export const validateSurname: Validator = (input: string) => {
   let currentIndex = 0
   for (const word of words) {
     const wordStart = input.indexOf(word, currentIndex)
-    if (isKnownSurname(word) && !whitelistNames.includes(word)) {
+    if (isKnownSurname(word) && !whitelistWords.includes(word)) {
       matches.push({
         value: word,
         start: wordStart,
@@ -348,19 +348,19 @@ const has3NameWordsRegex =
   /^(?=(?:.*(?<!^)(?<![\p{P}\n]\s*)(?<!\p{Lu}[\p{L}'-]*[ \t-])\b\p{Lu}\p{Ll}+\b(?![ \t-]\p{Lu}[\p{L}'-]*)){3})/u
 
 
-const baseValidateFirstName = createValidatorWithWhitelist(
+const baseValidateFirstNameThreeTimes = createValidatorWithWhitelist(
   nameWordRegex,
   warning,
   "Tekst som ligner på et navn:",
   "firstname-three-times",
-  [...whitelistNames, ...norwegianWhitelistCountries]
+  [...whitelistWords, ...whitelistedCountries]
 )
 
-export const validateFirstName: Validator = (input: string) => {
+export const validateFirstNameThreeTimes: Validator = (input: string) => {
   if (!has3NameWordsRegex.test(input)) {
     return ok()
   }
-  return baseValidateFirstName(input)
+  return baseValidateFirstNameThreeTimes(input)
 }
 
 //
@@ -379,7 +379,7 @@ const baseValidateDateOfBirth = createValidatorWithWhitelist(
   warning,
   "Tekst som ligner på fødselsdato:",
   "dob-three-times",
- [...whitelistNames, ...norwegianWhitelistCountries]
+ [...whitelistWords, ...whitelistedCountries]
 )
 
 export const validateDateOfBirth: Validator = (input: string) => {
@@ -404,7 +404,7 @@ const baseValidationFullNameAndDob = createValidatorWithWhitelist(
   warning,
   "Tekst som ligner på fullt navn + fødselsdato",
   "fullname-and-dob",
-  [...whitelistNames, ...norwegianWhitelistCountries]
+  [...whitelistWords, ...whitelistedCountries]
 )
 
 export const validateFullNameAndDob: Validator = (input: string) => {
@@ -429,14 +429,14 @@ const baseValidateNameAndDob = createValidatorWithWhitelist(
   warning,
   "Tekst som ligner på fornavn + fødselsdato:",
   "firstname-twice-and-dob", 
-  [...whitelistNames, ...norwegianWhitelistCountries]
+  [...whitelistWords, ...whitelistedCountries]
 )
 
 export const validateNameAndDob: Validator = (input: string) => {
   if (!has2NamesAnd1DobRegex.test(input)) return ok()
 
   const nameMatches = getMatches(new RegExp(nameWordRegex.source, "gu"), input).filter(
-    (match) => !whitelistNames.includes(match.value) && !whitelistNames.some(w => match.value.startsWith(w + " "))
+    (match) => !whitelistWords.includes(match.value) && !whitelistWords.some(w => match.value.startsWith(w + " "))
   )
 
   if (nameMatches.length < 2) return ok()
@@ -487,11 +487,12 @@ const addressRegex = new RegExp(
   "gu",
 )
 
-const baseValidateAddress = createValidator(
+const baseValidateAddress = createValidatorWithWhitelist(
   addressRegex,
   warning,
   "Tekst som ligner på en adresse:",
   "address",
+   [...whitelistWords, ...whitelistedCountries]
 )
 
 export const validateAddress: Validator = (input: string) => {
@@ -502,11 +503,12 @@ export const validateAddress: Validator = (input: string) => {
 
 const postalCodeRegex = /\d+[ -,]*\p{Lu}\p{L}+/gu
 
-const baseValidatePostalCode = createValidator(
+const baseValidatePostalCode = createValidatorWithWhitelist(
   postalCodeRegex,
   warning,
   "Tekst som ligner på et postnummer:",
   "postalcode",
+  [...whitelistWords, ...whitelistedCountries]
 )
 
 export const validatePostalCode: Validator = (input: string) => {
