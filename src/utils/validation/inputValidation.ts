@@ -494,7 +494,7 @@ export const validateAddress: Validator = (input: string) => {
 
 //
 
-const postalCodeRegex = /\d+[ -,]*\p{Lu}\p{L}+/gu
+const postalCodeRegex = /\d{4}[ -,]+\p{Lu}\p{L}+/gu
 
 const baseValidatePostalCode = createValidator(
   postalCodeRegex,
