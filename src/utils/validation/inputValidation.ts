@@ -478,7 +478,7 @@ export const validateAccountNumber = createValidator(accountNumberRegex, warning
 // addressRegex matcher på adresse:
     // 2-3 ord (første ord må starte med stor bokstav) + mellomrom? + tall + bokstav
 
-const addressRegex = /\p{Lu}\p{L}+[-']?(?:\p{Lu}\p{L}+|\p{L}+)?(?:[ \t]?\p{Lu}\p{L}+)*(?:[ \t]?\p{L}+)?[ \t]+\d+(?![.-])(?!\d)(?:[ \t]?\p{L}(?![\p{L}]))?/gu
+const addressRegex = /\p{Lu}\p{L}+[-']?(?:\p{Lu}\p{L}+|\p{L}+)?(?:[ \t]?\p{Lu}\p{L}+)*(?:[ \t]?\p{L}+)?[ \t]+\d+(?![.-])(?!\d)(?!\p{L}{2,})(?:[ \t]?\p{L}(?![\p{L}]))?/gu
 
 const baseValidateAddress = createValidatorWithWhitelist(
   addressRegex,
