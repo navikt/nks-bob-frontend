@@ -264,10 +264,13 @@ export const validateFemaleFirstName: Validator = (input: string) => {
     const words = input.split(/\s+/)
   const matches: ValidationMatch[] = []
 
-
   let currentIndex = 0
   for (const word of words) {
     const wordStart = input.indexOf(word, currentIndex)
+    if (word.length <= 4 && word === word.toLowerCase()) {
+      currentIndex = wordStart + word.length
+      continue
+    }
     if (isKnownFemaleFirstName(word) && !whitelistWords.includes(word)) {
       matches.push({
         value: word,
@@ -288,10 +291,13 @@ export const validateMaleFirstName: Validator = (input: string) => {
     const words = input.split(/\s+/)
   const matches: ValidationMatch[] = []
 
-
   let currentIndex = 0
   for (const word of words) {
     const wordStart = input.indexOf(word, currentIndex)
+    if (word.length <= 4 && word === word.toLowerCase()) {
+      currentIndex = wordStart + word.length
+      continue
+    }
     if (isKnownMaleFirstName(word) && !whitelistWords.includes(word)) {
       matches.push({
         value: word,
@@ -312,10 +318,13 @@ export const validateSurname: Validator = (input: string) => {
     const words = input.split(/\s+/)
   const matches: ValidationMatch[] = []
 
-
   let currentIndex = 0
   for (const word of words) {
     const wordStart = input.indexOf(word, currentIndex)
+    if (word.length <= 4 && word === word.toLowerCase()) {
+      currentIndex = wordStart + word.length
+      continue
+    }
     if (isKnownSurname(word) && !whitelistWords.includes(word)) {
       matches.push({
         value: word,
