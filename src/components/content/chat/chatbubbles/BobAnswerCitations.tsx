@@ -4,7 +4,7 @@ import Markdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import { KunnskapsbasenIcon } from "../../../../assets/icons/KunnskapsbasenIcon.tsx"
 import { NavNoIcon } from "../../../../assets/icons/NavNoIcon.tsx"
-import { Citation, Context } from "../../../../types/Message.ts"
+import { Citation, Context, Contexts } from "../../../../types/Message.ts"
 import analytics from "../../../../utils/analytics.ts"
 import { transformArticleColumnValue } from "../../../../utils/articleColumnTransformer.ts"
 import { buildLinkTitle } from "../../../../utils/link.ts"
@@ -12,7 +12,7 @@ import { md } from "../../../../utils/markdown.ts"
 
 interface BobAnswerCitationProps {
   citation: { title: string; source: "navno" | "nks"; citations: Citation[] }
-  context: Context[]
+  context: Contexts
 }
 
 // Matching citation.text against context metadata, to find correct URL //
@@ -103,7 +103,7 @@ const MultiCitation = ({
   title: string
   source: "navno" | "nks"
   citations: Citation[]
-  contexts: Context[]
+  contexts: Contexts
 }) => {
   const mainCitation = citations[0]
   const mainContext = mainCitation ? contexts.at(mainCitation.sourceId) : undefined

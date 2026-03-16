@@ -3,7 +3,7 @@ import { MessageEvent as ConversationEvent } from "../api/sse"
 import analytics from "../utils/analytics"
 import { transformArticleColumnArray } from "../utils/articleColumnTransformer"
 import { transformNksUrlsArray } from "../utils/nksUrlTransformer"
-import { Message } from "./Message"
+import { Citation, Contexts, Message } from "./Message"
 
 // Type guard functions for MessageEvent types
 function isNewMessage(event: ConversationEvent): event is { type: "NewMessage"; id: string; message: Message } {
@@ -16,11 +16,13 @@ function isContentUpdated(event: ConversationEvent): event is { type: "ContentUp
 
 function isCitationsUpdated(
   event: ConversationEvent,
-): event is { type: "CitationsUpdated"; id: string; citations: any[] } {
+): event is { type: "CitationsUpdated"; id: string; citations: Citation[] } {
   return event.type === "CitationsUpdated"
 }
 
-function isContextUpdated(event: ConversationEvent): event is { type: "ContextUpdated"; id: string; context: any[] } {
+function isContextUpdated(
+  event: ConversationEvent,
+): event is { type: "ContextUpdated"; id: string; context: Contexts } {
   return event.type === "ContextUpdated"
 }
 
@@ -53,11 +55,11 @@ type MessageState = {
   resetMessages: () => void
 }
 
-const transformContextData = <T extends { url: string; articleColumn?: string | null }>(contexts: T[]): T[] => {
+const transformContextData = (contexts: Contexts): Contexts => {
   let transformed = transformNksUrlsArray(contexts)
 
   if (contexts.length > 0 && "articleColumn" in contexts[0]) {
-    transformed = transformArticleColumnArray(transformed as any) as T[]
+    transformed = transformArticleColumnArray(transformed)
   }
 
   return transformed

@@ -4,7 +4,7 @@ import Markdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import { KunnskapsbasenIcon } from "../../../../../assets/icons/KunnskapsbasenIcon.tsx"
 import { NavNoIcon } from "../../../../../assets/icons/NavNoIcon.tsx"
-import { Context } from "../../../../../types/Message.ts"
+import { Context, Contexts } from "../../../../../types/Message.ts"
 import analytics from "../../../../../utils/analytics.ts"
 import { buildLinkTitle } from "../../../../../utils/link.ts"
 import { HoverCard } from "../../../../ui/HoverCard.tsx"
@@ -13,7 +13,7 @@ import { SourceIcon, TextFragmentLink } from "../BobAnswerCitations.tsx"
 interface CitationNumberProps {
   citations: { citationId: number }[]
   citationId: number
-  context: Context[]
+  context: Contexts
 }
 
 export const CitationNumber = ({ citations, citationId, context }: CitationNumberProps) => {
@@ -152,7 +152,7 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
 
 interface CitationLinksProps {
   citations: { citationId: number }[]
-  context: Context[]
+  context: Contexts
 }
 
 export const CitationLinks = ({ citations, context }: CitationLinksProps) => {

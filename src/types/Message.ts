@@ -18,7 +18,7 @@ export type Message = {
   messageRole: MessageRole
   createdBy: string
   citations: Citation[]
-  context: Context[]
+  context: Contexts
   pending: boolean
   errors: MessageError[]
   followUp: string[]
@@ -44,6 +44,9 @@ export type Context = {
   lastModified: string | null
   semanticSimilarity: number
 }
+
+// TODO future type: { [sourceId: string]: Context }
+export type Contexts = Context[]
 
 export type MessageError = { title: string; description: string }
 

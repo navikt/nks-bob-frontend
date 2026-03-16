@@ -1,5 +1,5 @@
 import { useTransition } from "react"
-import { Citation, Context, Message, MessageError } from "../types/Message"
+import { Citation, Contexts, Message, MessageError } from "../types/Message"
 import { messageStore } from "../types/messageStore"
 import { API_URL } from "./api"
 
@@ -34,7 +34,7 @@ type CitationsUpdated = {
 type ContextUpdated = {
   type: "ContextUpdated"
   id: string
-  context: Context[]
+  context: Contexts
 }
 
 type PendingUpdated = {
