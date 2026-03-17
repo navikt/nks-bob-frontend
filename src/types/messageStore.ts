@@ -186,7 +186,13 @@ const getMessage = (event: ConversationEvent, messages: MessageMap): Message | u
       }))
       const tools = event.message.tools
 
-      analytics.svarMottatt(event.id, messageLength, contextMeta, citationMeta, tools)
+      analytics.svarMottatt(
+        event.id,
+        messageLength,
+        contextMeta,
+        citationMeta,
+        tools.map(({ name }) => name),
+      )
     }
 
     return {
