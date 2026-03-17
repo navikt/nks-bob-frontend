@@ -18,7 +18,7 @@ interface CitationNumberProps {
 
 export const CitationNumber = ({ citations, citationId, context }: CitationNumberProps) => {
   const [isActive, setIsActive] = useState(false)
-  const source = context.at(citationId)
+  const source = context[citationId]
   if (!context || !source) {
     return null
   }
@@ -165,7 +165,7 @@ export const CitationLinks = ({ citations, context }: CitationLinksProps) => {
   const groups = new Map<string, Group>()
 
   for (const { citationId } of citations) {
-    const source = context?.at(citationId)
+    const source = context[citationId]
     if (!source) continue
 
     const groupKey = `${source.url}#${source.anchor ?? ""}`

@@ -32,7 +32,7 @@ interface CitationSpanProps extends React.HTMLAttributes<HTMLSpanElement> {
 }
 
 const getSourcesComponent = (message: Message) => {
-  const hasContext = message.context && message.context.length > 0
+  const hasContext = message.context && Object.entries(message.context).length > 0
   const hasCitations = message.citations && message.citations.length > 0
 
   if (!hasContext && !hasCitations) {
@@ -246,18 +246,20 @@ const MessageContent = ({
       >
         {message.content}
       </Markdown>
-      {message.context.length === 0 && message.citations.length === 0 && message.contextualizedQuestion !== null && (
-        <Button
-          data-color='neutral'
-          size='small'
-          variant='tertiary'
-          className='my-3 w-fit'
-          icon={<FileSearchIcon fontSize={24} />}
-          onClick={handleFindSourcesClick}
-        >
-          Forsøk å finne kilder som støtter svaret
-        </Button>
-      )}
+      {Object.entries(message.context).length === 0 &&
+        message.citations.length === 0 &&
+        message.contextualizedQuestion !== null && (
+          <Button
+            data-color='neutral'
+            size='small'
+            variant='tertiary'
+            className='my-3 w-fit'
+            icon={<FileSearchIcon fontSize={24} />}
+            onClick={handleFindSourcesClick}
+          >
+            Forsøk å finne kilder som støtter svaret
+          </Button>
+        )}
     </div>
   )
 }
@@ -292,7 +294,7 @@ const Citations = memo(
 
     const citationData = filteredCitations
       .map((citation) => {
-        const matchingContext = message.context.at(citation.sourceId)!
+        const matchingContext = message.context[citation.sourceId]!
 
         return {
           title: matchingContext.title,

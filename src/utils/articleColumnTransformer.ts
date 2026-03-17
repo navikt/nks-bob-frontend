@@ -17,7 +17,12 @@ export const transformArticleColumn = (context: Context): Context => {
 }
 
 export const transformArticleColumnArray = (contexts: Contexts): Contexts => {
-  return contexts.map(transformArticleColumn)
+  const entries: [string, Context][] = Object.entries(contexts).map(([sourceId, context]) => [
+    sourceId,
+    transformArticleColumn(context),
+  ])
+
+  return Object.fromEntries(entries)
 }
 
 export const transformArticleColumnValue = (articleColumn: string): string => {

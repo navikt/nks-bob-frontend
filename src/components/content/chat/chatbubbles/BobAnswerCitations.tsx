@@ -22,7 +22,7 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
     return (
       <SingleCitation
         citation={singleCitation}
-        context={context.at(singleCitation.sourceId)}
+        context={context[singleCitation.sourceId]}
       />
     )
   }
@@ -106,10 +106,10 @@ const MultiCitation = ({
   contexts: Contexts
 }) => {
   const mainCitation = citations[0]
-  const mainContext = mainCitation ? contexts.at(mainCitation.sourceId) : undefined
+  const mainContext = mainCitation ? contexts[mainCitation.sourceId] : undefined
 
   function handleCitationLinkClick(citation: Citation) {
-    const context = contexts.at(citation.sourceId)
+    const context = contexts[citation.sourceId]
     if (context?.source === "nks") {
       analytics.kbSitatLenkeKlikket({
         tittel: context.title,
@@ -147,7 +147,7 @@ const MultiCitation = ({
             </Markdown>
             <TextFragmentLink
               text={citation.text}
-              matchingContextCitationData={contexts.at(citation.sourceId)!}
+              matchingContextCitationData={contexts[citation.sourceId]!}
               title=''
               className='inline'
               onClick={() => handleCitationLinkClick(citation)}

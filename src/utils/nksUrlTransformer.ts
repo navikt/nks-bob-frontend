@@ -16,5 +16,10 @@ export const transfromNksUrls = (context: Context): Context => {
 }
 
 export const transformNksUrlsArray = (contexts: Contexts): Contexts => {
-  return contexts.map(transfromNksUrls)
+  const entries: [string, Context][] = Object.entries(contexts).map(([sourceId, context]) => [
+    sourceId,
+    transfromNksUrls(context),
+  ])
+
+  return Object.fromEntries(entries)
 }

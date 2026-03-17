@@ -24,7 +24,8 @@ export type Message = {
   followUp: string[]
   starred?: boolean
   contextualizedQuestion: null | string
-  tools: string[]
+  tools: Tool[]
+  thinking: string[]
 }
 
 export type Citation = {
@@ -45,8 +46,13 @@ export type Context = {
   semanticSimilarity: number
 }
 
-// TODO future type: { [sourceId: string]: Context }
-export type Contexts = Context[]
+export type Contexts = { [sourceId: string]: Context }
+
+export type Tool = {
+  name: string
+  arguments: { [name: string]: string }
+  success: boolean
+}
 
 export type MessageError = { title: string; description: string }
 

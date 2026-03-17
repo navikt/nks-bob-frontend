@@ -58,7 +58,7 @@ type MessageState = {
 const transformContextData = (contexts: Contexts): Contexts => {
   let transformed = transformNksUrlsArray(contexts)
 
-  if (contexts.length > 0 && "articleColumn" in contexts[0]) {
+  if (Object.entries(contexts).length > 0 && "articleColumn" in contexts[0]) {
     transformed = transformArticleColumnArray(transformed)
   }
 
@@ -177,7 +177,7 @@ const getMessage = (event: ConversationEvent, messages: MessageMap): Message | u
   if (isPendingUpdated(event)) {
     if (!event.pending) {
       const messageLength = event.message.content.length
-      const contextMeta = event.message.context.map(({ source, title }) => ({
+      const contextMeta = Object.entries(event.message.context).map(([_, { source, title }]) => ({
         tittel: title,
         kilde: source,
       }))
