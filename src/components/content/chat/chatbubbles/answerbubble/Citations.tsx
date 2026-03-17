@@ -10,8 +10,8 @@ import { HoverCard } from "../../../../ui/HoverCard.tsx"
 import { SourceIcon, TextFragmentLink } from "../BobAnswerCitations.tsx"
 
 interface CitationNumberProps {
-  citations: { citationId: number }[]
-  citationId: number
+  citations: { citationId: string }[]
+  citationId: string
   context: Contexts
 }
 
@@ -108,7 +108,7 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
 }
 
 interface CitationLinksProps {
-  citations: { citationId: number }[]
+  citations: { citationId: string }[]
   context: Contexts
 }
 
@@ -116,7 +116,7 @@ export const CitationLinks = ({ citations, context }: CitationLinksProps) => {
   type Group = {
     key: string
     source: Context
-    citationIds: number[]
+    citationIds: string[]
   }
 
   const groups = new Map<string, Group>()
@@ -154,9 +154,9 @@ export const CitationLinks = ({ citations, context }: CitationLinksProps) => {
 }
 
 type GroupedCitationLinkProps = {
-  citations: { citationId: number }[]
+  citations: { citationId: string }[]
   source: Context
-  citationIds: number[]
+  citationIds: string[]
 }
 
 const GroupedCitationLink = ({ citations, source, citationIds }: GroupedCitationLinkProps) => {

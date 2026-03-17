@@ -57,7 +57,7 @@ export const BobAnswerBubble = memo(
 
     const isPending = ({ pending, content }: Message): boolean => pending && content === ""
 
-    const [citations, setCitations] = useState<{ citationId: number; position: number }[]>([])
+    const [citations, setCitations] = useState<{ citationId: string; position: number }[]>([])
 
     const contentReady = !hasError(message) && !isPending(message) && !!message.content
 
@@ -155,11 +155,11 @@ const MessageContent = ({
   onSend,
 }: {
   message: Message
-  citations: { citationId: number; position: number }[]
+  citations: { citationId: string; position: number }[]
   setCitations: React.Dispatch<
     React.SetStateAction<
       {
-        citationId: number
+        citationId: string
         position: number
       }[]
     >
@@ -175,7 +175,7 @@ const MessageContent = ({
     e.stopImmediatePropagation()
   })
 
-  const addCitation = (citationId: number, position: number) => {
+  const addCitation = (citationId: string, position: number) => {
     let existingCitations = citations
     const newCitation = { citationId, position }
 
@@ -206,7 +206,7 @@ const MessageContent = ({
     const dataCitation = props["data-citation"]
     const dataPosition = props["data-position"]
     if (dataCitation && dataPosition) {
-      const citationId = parseInt(dataCitation, 10)
+      const citationId = dataCitation
       addCitation(citationId, parseInt(dataPosition, 10))
       return (
         <CitationNumber
@@ -241,24 +241,26 @@ const MessageContent = ({
         </AppMarkdown>
       </BodyLong>
 
-      {message.context.length === 0 && message.citations.length === 0 && message.contextualizedQuestion !== null && (
-        <Button
-          data-color='neutral'
-          size='small'
-          variant='tertiary'
-          className='my-3 w-fit'
-          icon={<FileSearchIcon fontSize={24} />}
-          onClick={handleFindSourcesClick}
-        >
-          Forsøk å finne kilder som støtter svaret
-        </Button>
-      )}
+      {Object.entries(message.context).length === 0 &&
+        message.citations.length === 0 &&
+        message.contextualizedQuestion !== null && (
+          <Button
+            data-color='neutral'
+            size='small'
+            variant='tertiary'
+            className='my-3 w-fit'
+            icon={<FileSearchIcon fontSize={24} />}
+            onClick={handleFindSourcesClick}
+          >
+            Forsøk å finne kilder som støtter svaret
+          </Button>
+        )}
     </div>
   )
 }
 
 interface CitationsProps extends Omit<BobAnswerBubbleProps, "isHighlighted" | "followUp"> {
-  citations: { citationId: number; position: number }[]
+  citations: { citationId: string; position: number }[]
   showLinks: boolean
 }
 
