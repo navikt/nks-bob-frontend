@@ -20,7 +20,7 @@ function remarkCitations(): (tree: Root) => void {
     visit(tree, "text", (node: Text, index, parent) => {
       if (!parent) return
 
-      const citationRegex = /\[(\d)\]/g
+      const citationRegex = /\[([a-z0-9]{6})\]/g
       const value = node.value
 
       let match
