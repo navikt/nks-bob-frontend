@@ -58,7 +58,11 @@ type MessageState = {
 const transformContextData = (contexts: Contexts): Contexts => {
   let transformed = transformNksUrlsArray(contexts)
 
-  if (Object.entries(contexts).length > 0 && "articleColumn" in contexts[0]) {
+  const entries = Object.entries(contexts)
+  const hasContexts = entries.length > 0
+  const hasArticleColumn = "articleColumn" in entries.map(([_, c]) => c)
+
+  if (hasContexts && hasArticleColumn) {
     transformed = transformArticleColumnArray(transformed)
   }
 
