@@ -7,10 +7,12 @@ import remarkStringify, { Options } from "remark-stringify"
 import stripMarkdown from "strip-markdown"
 import { visit } from "unist-util-visit"
 
+const citationRegex = /\{([a-z0-9]{6})\}/g
+
 // Remove all citations ([0]) from the text
 function removeCitations(): (tree: Root) => void {
   return (tree) => {
-    findAndReplace(tree as any, [/\s?\[\d\]/g])
+    findAndReplace(tree as any, [citationRegex])
   }
 }
 
@@ -20,9 +22,7 @@ function remarkCitations(): (tree: Root) => void {
     visit(tree, "text", (node: Text, index, parent) => {
       if (!parent) return
 
-      const citationRegex = /\[([a-z0-9]{6})\]/g
       const value = node.value
-
       let match
       let lastIndex = 0
       const newNodes: any[] = []
