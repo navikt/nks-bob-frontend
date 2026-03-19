@@ -453,7 +453,6 @@ export const whitelistWords = [
   "Ditt",
   "Sykefravær",
   "Tasta",
-  "PD-U",
   "PD U",
   "PDU",
   "Oversett",
@@ -469,7 +468,7 @@ export const whitelistWords = [
   "AU",
   "Dekker",
   "Kronekort",
-  "Bealer",
+  "Betaler",
   "Nav-kontoret",
   "Siden",
   "Arbeidsgiverperioden",
@@ -530,6 +529,7 @@ export const whitelistWords = [
   "Salesforce",
   "SM",
   "Stoppe",
+  "X",
 ]
 
 export const whitelistedCountries = [
@@ -622,7 +622,7 @@ export const whitelistedCountries = [
   "Kuwait",
   "Kypros", "Cyprus",
   "Laos",
-  "Latvia", "Latvia",
+  "Latvia", 
   "Lesotho",
   "Libanon", "Lebanon",
   "Liberia",
