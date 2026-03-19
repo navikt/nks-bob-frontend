@@ -1,5 +1,5 @@
 import { FileSearchIcon } from "@navikt/aksel-icons"
-import { BodyLong, Button, Heading, HStack, Skeleton, VStack } from "@navikt/ds-react"
+import { BodyLong, BodyShort, Button, Heading, HStack, Loader, Skeleton, VStack } from "@navikt/ds-react"
 import React, { memo, useState } from "react"
 import Markdown from "react-markdown"
 import rehypeRaw from "rehype-raw"
@@ -80,7 +80,7 @@ export const BobAnswerBubble = memo(
               {hasError(message) ? (
                 <ErrorContent message={message} />
               ) : isPending(message) ? (
-                <LoadingContent />
+                <LoadingContent status={message.status} />
               ) : (
                 <MessageContent
                   message={message}
@@ -135,18 +135,34 @@ const ErrorContent = ({ message }: { message: Message }) => (
   </BodyLong>
 )
 
-const LoadingContent = () => (
-  <div className='w-full'>
-    <Skeleton
-      width='100%'
-      variant='text'
-    />
-    <Skeleton
-      width='70%'
-      variant='text'
-    />
-  </div>
-)
+const LoadingContent = ({ status }: { status: string[] | undefined }) => {
+  if (status && status.length > 0) {
+    return <StatusMessageContent status={status} />
+  }
+
+  return (
+    <div className='w-full'>
+      <Skeleton
+        width='100%'
+        variant='text'
+      />
+      <Skeleton
+        width='70%'
+        variant='text'
+      />
+    </div>
+  )
+}
+
+const StatusMessageContent = ({ status }: { status: string[] }) => {
+  const statusMessage = status.at(0) ?? ""
+  return (
+    <HStack gap='space-8'>
+      <Loader size='xsmall' />
+      <BodyShort className='animate-pulse'>{statusMessage}</BodyShort>
+    </HStack>
+  )
+}
 
 const MessageContent = ({
   message,

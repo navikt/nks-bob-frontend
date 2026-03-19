@@ -206,8 +206,10 @@ const getMessage = (event: ConversationEvent, messages: MessageMap): Message | u
   }
 
   if (isStatusUpdate(event)) {
-    console.debug(`Status: ${event.content}`)
-    return undefined
+    return {
+      ...message,
+      status: [event.content],
+    }
   }
 
   if (isErrorsUpdated(event)) {
