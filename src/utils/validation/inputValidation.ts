@@ -1,9 +1,9 @@
-import { isKnownFemaleFirstName, isKnownMaleFirstName, isKnownSurname } from "./validationutils/ssb-api";
+import { isKnownNames } from "./validationutils/ssb-api";
 import { countryCodePattern, whitelistedCountries, whitelistWords } from "./validationutils/whitelist";
 
 export type ValidationResult = ValidationOk | ValidationWarning | ValidationError
 
-export type ValidationType = "fnr" | "dnr" | "hnr" | "firstname-three-times" | "fullname" | "firstname" | "surname" | "tlf" | "email" | "accountnumber" | "address" | "postalcode" | "dob-three-times" | "fullname-and-dob" | "firstname-twice-and-dob"
+export type ValidationType = "fnr" | "dnr" | "hnr" | "firstname-three-times" | "fullname" | "name" | "tlf" | "email" | "accountnumber" | "address" | "postalcode" | "dob-three-times" | "fullname-and-dob" | "firstname-twice-and-dob"
 
 export type ValidationMatch = { value: string; start: number; end: number }
 
@@ -108,11 +108,8 @@ export function replaceValidationResult(validationType: ValidationType) {
       if (validationType === "postalcode") {
     return "(anonymisert postnummer)"
   }
-        if (validationType === "firstname") {
-    return "(anonymisert fornavn)"
-  }
-          if (validationType === "surname") {
-    return "(anonymisert etternavn)"
+        if (validationType === "name") {
+    return "(anonymisert navn)"
   }
 
   return "(anonymisert personopplysning)"
@@ -258,77 +255,25 @@ export const validateFullName = createValidatorWithWhitelist(
   [...whitelistWords, ...whitelistedCountries]
 )
 
-// FemaleFirstNames
+// Names
 
-export const validateFemaleFirstName: Validator = (input: string) => {
-    const words = input.split(/\s+/)
-  const matches: ValidationMatch[] = []
+const nameRegex = /\p{Lu}\p{Ll}+/gu
 
+const baseValidateName = createValidatorWithWhitelist(
+  nameRegex,
+  warning,
+  "Tekst som ligner på et navn",
+  "name",
+  [...whitelistWords, ...whitelistedCountries]
+)
 
-  let currentIndex = 0
-  for (const word of words) {
-    const wordStart = input.indexOf(word, currentIndex)
-    if (isKnownFemaleFirstName(word) && !whitelistWords.includes(word)) {
-      matches.push({
-        value: word,
-        start: wordStart,
-        end: wordStart + word.length,
-      })
-    }
-    currentIndex = wordStart + word.length
+export const validateName: Validator = (input: string) => {
+  const matches = getMatches(nameRegex, input).filter(match => isKnownNames(match.value))
+
+if (matches.length === 0) return ok()
+
+  return baseValidateName(input)
   }
-
-  if (matches.length === 0) return ok()
-  return warning("Tekst som ligner på et jentenavn:", "firstname", matches)
-}
-
-// MaleFirstNames
-
-export const validateMaleFirstName: Validator = (input: string) => {
-    const words = input.split(/\s+/)
-  const matches: ValidationMatch[] = []
-
-
-  let currentIndex = 0
-  for (const word of words) {
-    const wordStart = input.indexOf(word, currentIndex)
-    if (isKnownMaleFirstName(word) && !whitelistWords.includes(word)) {
-      matches.push({
-        value: word,
-        start: wordStart,
-        end: wordStart + word.length,
-      })
-    }
-    currentIndex = wordStart + word.length
-  }
-
-  if (matches.length === 0) return ok()
-  return warning("Tekst som ligner på et guttenavn:", "firstname", matches)
-}
-
-// Surnames
-
-export const validateSurname: Validator = (input: string) => {
-    const words = input.split(/\s+/)
-  const matches: ValidationMatch[] = []
-
-
-  let currentIndex = 0
-  for (const word of words) {
-    const wordStart = input.indexOf(word, currentIndex)
-    if (isKnownSurname(word) && !whitelistWords.includes(word)) {
-      matches.push({
-        value: word,
-        start: wordStart,
-        end: wordStart + word.length,
-      })
-    }
-    currentIndex = wordStart + word.length
-  }
-
-  if (matches.length === 0) return ok()
-  return warning("Tekst som ligner på et etternavn:", "surname", matches)
-}
 
 
 
