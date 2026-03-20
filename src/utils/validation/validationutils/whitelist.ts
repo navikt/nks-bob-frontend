@@ -530,6 +530,8 @@ export const whitelistWords = [
   "SM",
   "Stoppe",
   "X",
+  "Mvh",
+  "Vh",
 ]
 
 export const whitelistedCountries = [

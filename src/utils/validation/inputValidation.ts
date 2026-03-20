@@ -3,7 +3,7 @@ import { countryCodePattern, whitelistedCountries, whitelistWords } from "./vali
 
 export type ValidationResult = ValidationOk | ValidationWarning | ValidationError
 
-export type ValidationType = "fnr" | "dnr" | "hnr" | "firstname-three-times" | "fullname" | "name" | "tlf" | "email" | "accountnumber" | "address" | "postalcode" | "dob-three-times" | "fullname-and-dob" | "firstname-twice-and-dob"
+export type ValidationType = "fnr" | "dnr" | "hnr" | "fullname" | "name" | "tlf" | "email" | "accountnumber" | "address" | "postalcode" | "dob-three-times" | "fullname-and-dob" | "firstname-twice-and-dob"
 
 export type ValidationMatch = { value: string; start: number; end: number }
 
@@ -75,8 +75,8 @@ export function replaceValidationResult(validationType: ValidationType) {
   if (validationType === "fullname") {
     return "(anonymisert navn)"
   }
-  if (validationType === "firstname-three-times") {
-    return "(anonymisert fornavn)"
+   if (validationType === "firstname-twice-and-dob") {
+    return "(anonymisert personopplysning)"
   }
   if (validationType === "dob-three-times") {
     return "(anonymisert dato)"
@@ -100,7 +100,7 @@ export function replaceValidationResult(validationType: ValidationType) {
     return "(anonymisert helsenummer)"
   }
   if (validationType === "fullname-and-dob") {
-    return "(anonymisert dato)"
+    return "(anonymisert personopplysning)"
   }
     if (validationType === "address") {
     return "(anonymisert adresse)"
@@ -259,53 +259,13 @@ export const validateFullName = createValidatorWithWhitelist(
 
 const nameRegex = /\p{Lu}\p{Ll}+/gu
 
-const baseValidateName = createValidatorWithWhitelist(
-  nameRegex,
-  warning,
-  "Tekst som ligner på et navn",
-  "name",
-  [...whitelistWords, ...whitelistedCountries]
-)
-
 export const validateName: Validator = (input: string) => {
-  const matches = getMatches(nameRegex, input).filter(match => isKnownNames(match.value))
+  const allMatches = getMatches(nameRegex, input)
+  const ssbMatches = allMatches.filter(match => isKnownNames(match.value))
 
-if (matches.length === 0) return ok()
+  if (ssbMatches.length === 0) return ok()
 
-  return baseValidateName(input)
-  }
-
-
-
-
-/* nameWordRegex: Matcher på 3x ord med stor forbokstav (deaktiverer denne foreløpig pga ny validering for fornavn)
-
-   - Ord med stor forbokstav i teksten
-   - Matcher ikke første ord i teksten  
-   - Matcher ikke ord etter tegnsetting eller linjeskift */
-
-
-
-const nameWordRegex =
-  /(?<!^)(?<![\p{P}\n]\s*)(?<!\p{Lu}[\p{L}'-]*[ \t-])\b\p{Lu}\p{Ll}+\b(?![ \t-]\p{Lu}[\p{L}'-]*)/gu
-
-const has3NameWordsRegex =
-  /^(?=(?:.*(?<!^)(?<![\p{P}\n]\s*)(?<!\p{Lu}[\p{L}'-]*[ \t-])\b\p{Lu}\p{Ll}+\b(?![ \t-]\p{Lu}[\p{L}'-]*)){3})/u
-
-
-const baseValidateFirstNameThreeTimes = createValidatorWithWhitelist(
-  nameWordRegex,
-  warning,
-  "Tekst som ligner på et navn:",
-  "firstname-three-times",
-  [...whitelistWords, ...whitelistedCountries]
-)
-
-export const validateFirstNameThreeTimes: Validator = (input: string) => {
-  if (!has3NameWordsRegex.test(input)) {
-    return ok()
-  }
-  return baseValidateFirstNameThreeTimes(input)
+  return warning("Tekst som ligner på et navn", "name", ssbMatches)
 }
 
 //
@@ -359,6 +319,9 @@ export const validateFullNameAndDob: Validator = (input: string) => {
 
 // Regel for å matche om 2 ord med stor forbokstav + dato
 
+const nameWordRegex =
+  /(?<!^)(?<![\p{P}\n]\s*)(?<!\p{Lu}[\p{L}'-]*[ \t-])\b\p{Lu}\p{Ll}+\b(?![ \t-]\p{Lu}[\p{L}'-]*)/gu
+
 const has2NamesAnd1DobRegex = new RegExp(
   `^(?=(?:[\\s\\S]*${nameWordRegex.source}){2})(?=[\\s\\S]*${dobRegex.source})`,
   "u",
@@ -380,11 +343,13 @@ const baseValidateNameAndDob = createValidatorWithWhitelist(
 export const validateNameAndDob: Validator = (input: string) => {
   if (!has2NamesAnd1DobRegex.test(input)) return ok()
 
-  const nameMatches = getMatches(new RegExp(nameWordRegex.source, "gu"), input).filter(
+  const allNameMatches = getMatches(new RegExp(nameWordRegex.source, "gu"), input).filter(
     (match) => !whitelistWords.includes(match.value) && !whitelistWords.some(w => match.value.startsWith(w + " "))
   )
 
-  if (nameMatches.length < 2) return ok()
+  const ssbNameMatches = allNameMatches.filter(match => isKnownNames(match.value))
+
+  if (ssbNameMatches.length < 2) return ok()
 
   return baseValidateNameAndDob(input)
 }
