@@ -156,3 +156,9 @@ body {
 .aksel-textarea__input {
   padding-right: 2.5rem;
 }
+
+.validation-alert-maxwidth .aksel-alert__wrapper {
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+}
