@@ -67,7 +67,7 @@ const UserQuestionBubble = memo(
         <div className='questionbubble max-w-prose'>
           <Heading
             size='small'
-            className='sr-only top-0'
+            className='sr-only top-0 select-none'
             level='2'
           >
             Du spurte:

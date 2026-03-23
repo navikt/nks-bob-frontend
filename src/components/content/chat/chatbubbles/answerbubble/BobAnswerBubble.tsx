@@ -225,7 +225,7 @@ const MessageContent = ({
     >
       <Heading
         size='small'
-        className='sr-only top-0'
+        className='sr-only top-0 select-none'
         level='2'
       >
         Svar fra Bob:
