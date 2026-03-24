@@ -34,10 +34,10 @@ import {
   validateAddress,
   validateDateOfBirth,
   validateEmail,
-  validateFirstName,
   validateFullName,
   validateFullNameAndDob,
   validateGlobalPhoneNumber,
+  validateName,
   validateNameAndDob,
   validateNorwegianMobileNumber,
   validatePersonnummer,
@@ -47,7 +47,7 @@ import {
   ValidationType,
   ValidationWarning,
   Validator,
-} from "../../utils/inputValidation.ts"
+} from "../../utils/validation/inputValidation.ts"
 import "./InputField.css"
 
 type InputFieldState = {
@@ -97,7 +97,10 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
   containerRef,
 ) {
   const { userInfo } = useUserInfo()
-  const placeholderText = `Hei ${userInfo?.firstName}! Hva kan jeg hjelpe deg med?`
+  const placeholderText = !userInfo?.firstName
+    ? `Hei! Hva kan jeg hjelpe deg med?`
+    : `Hei ${userInfo?.firstName}! Hva kan jeg hjelpe deg med?`
+
   const [sendDisabled, setSendDisabled] = useState<boolean>(disabled)
   const [isFocused, setIsFocused] = useState(false)
 
@@ -147,8 +150,9 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     e.preventDefault()
   }
 
-  function handlePaste() {
-    analytics.tekstInnholdLimtInn()
+  function handlePaste(e: React.ClipboardEvent<HTMLTextAreaElement>) {
+    const text = e.clipboardData.getData("text")
+    analytics.tekstInnholdLimtInn(text.length)
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
@@ -171,8 +175,8 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
 
   const validators: Validator[] = [
     validatePersonnummer,
+    validateName,
     validateFullName,
-    validateFirstName,
     validateEmail,
     validateAccountNumber,
     validateDateOfBirth,
@@ -197,13 +201,13 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
       "fnr",
       "dnr",
       "hnr",
+      "fullname",
+      "name",
       "address",
       "postalcode",
       "fullname-and-dob",
       "firstname-twice-and-dob",
-      "fullname",
       "dob-three-times",
-      "firstname-three-times",
       "tlf",
       "email",
       "accountnumber",
@@ -298,161 +302,172 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
       ref={containerRef}
       style={{ viewTransitionName: "input-field" }}
     >
-      {validationWarnings.length > 0 && (
-        <Alert
-          variant='warning'
-          size='small'
-          className='fade-in mb-2'
-        >
-          <Heading
-            size='xsmall'
-            spacing
-            className='mt-0.5 text-[16px]'
-          >
-            Spørsmålet ser ut til å inneholde personopplysninger
-          </Heading>
-          <BodyShort size='small'>
-            Vurder om følgende er personopplysninger. Om det er tilfellet, må de fjernes før du sender inn spørsmålet.
-          </BodyShort>
-          <div className=''>
-            <Box
-              marginBlock='space-12'
-              asChild
-            >
-              <List
-                data-aksel-migrated-v8
+      <div className='relative h-full'>
+        <div className='absolute bottom-3 w-full'>
+          <div className='flex flex-col gap-1'>
+            {validationWarnings.length > 0 && (
+              <Alert
+                variant='warning'
                 size='small'
+                className='fade-in validation-alert-maxwidth flex w-full'
               >
-                {validationWarnings.flatMap(({ matches, validationType }, i) =>
-                  matches.map(({ value, start, end }, j) => (
-                    <List.Item
-                      key={`warning-list-${i}-${j}`}
-                      className='items-center'
+                <div className='flex h-full max-h-60 w-full flex-col overflow-auto'>
+                  <Heading
+                    size='xsmall'
+                    spacing
+                    className='mt-0.5 text-[16px]'
+                  >
+                    Spørsmålet ser ut til å inneholde personopplysninger
+                  </Heading>
+                  <BodyShort size='small'>
+                    Vurder om følgende er personopplysninger. Om det er tilfellet, må de fjernes før du sender inn
+                    spørsmålet.
+                  </BodyShort>
+                  <div>
+                    <Box
+                      marginBlock='space-12'
+                      asChild
                     >
-                      <HStack
-                        gap='space-2'
-                        align='center'
+                      <List
+                        data-aksel-migrated-v8
+                        size='small'
                       >
-                        <Tooltip content='Endre'>
-                          <Link
-                            onClick={() => {
-                              if (textareaRef.current) {
-                                scrollToSelection(textareaRef.current, start, end)
-                              }
-                            }}
-                          >
-                            <span className='font-ax-bold cursor-pointer'>{value}</span>
-                          </Link>
-                        </Tooltip>
+                        {validationWarnings.flatMap(({ matches, validationType }, i) =>
+                          matches.map(({ value, start, end }, j) => (
+                            <List.Item
+                              key={`warning-list-${i}-${j}`}
+                              className='items-center'
+                            >
+                              <HStack
+                                gap='space-2'
+                                align='center'
+                              >
+                                <Tooltip content='Endre'>
+                                  <Link
+                                    onClick={() => {
+                                      if (textareaRef.current) {
+                                        scrollToSelection(textareaRef.current, start, end)
+                                      }
+                                    }}
+                                  >
+                                    <span className='font-ax-bold cursor-pointer'>{value}</span>
+                                  </Link>
+                                </Tooltip>
 
-                        <Button
-                          data-color='neutral'
-                          variant='tertiary'
-                          size='xsmall'
-                          onClick={() => {
-                            analytics.ignorerTrykket(validationType)
-                            addIgnoredWord({ value, validationType, conversationId: conversationId ?? null })
-                            validateInput([...ignoredValidations, value])
-                          }}
-                        >
-                          Ignorer
-                        </Button>
-                      </HStack>
-                    </List.Item>
-                  )),
-                )}
-              </List>
-            </Box>
-          </div>
-          <HStack
-            gap='space-4'
-            className='mt-4'
-          >
-            <Button
-              data-color='neutral'
-              size='small'
-              variant='primary'
-              onClick={() => {
-                analytics.anonymiserTrykket(
-                  validationWarnings.length,
-                  validationWarnings.map(({ validationType }) => validationType),
-                )
-                cleanInput(validationWarnings)
-              }}
-            >
-              Anonymiser opplysninger
-            </Button>
-          </HStack>
-        </Alert>
-      )}
-      {validationErrors.length > 0 && (
-        <Alert
-          variant='error'
-          size='small'
-          className='fade-in mb-2'
-        >
-          <Heading
-            size='xsmall'
-            spacing
-            className='mt-0.5 text-[16px]'
-          >
-            Spørsmålet inneholder fødselsnummer/d-nummer/hnr
-          </Heading>
-
-          <BodyShort size='small'>Fjern følgende før du sender inn spørsmålet.</BodyShort>
-          <div>
-            <Box
-              marginBlock='space-12'
-              asChild
-            >
-              <List
-                data-aksel-migrated-v8
+                                <Button
+                                  data-color='neutral'
+                                  variant='tertiary'
+                                  size='xsmall'
+                                  onClick={() => {
+                                    analytics.ignorerTrykket(validationType)
+                                    addIgnoredWord({ value, validationType, conversationId: conversationId ?? null })
+                                    validateInput([...ignoredValidations, value])
+                                  }}
+                                >
+                                  Ignorer
+                                </Button>
+                              </HStack>
+                            </List.Item>
+                          )),
+                        )}
+                      </List>
+                    </Box>
+                  </div>
+                  <HStack
+                    gap='space-4'
+                    className='mt-4'
+                  >
+                    <Button
+                      data-color='neutral'
+                      size='small'
+                      variant='primary'
+                      onClick={() => {
+                        analytics.anonymiserTrykket(
+                          validationWarnings.length,
+                          validationWarnings.map(({ validationType }) => validationType),
+                        )
+                        cleanInput(validationWarnings)
+                      }}
+                    >
+                      Anonymiser opplysninger
+                    </Button>
+                  </HStack>
+                </div>
+              </Alert>
+            )}
+            {validationErrors.length > 0 && (
+              <Alert
+                variant='error'
                 size='small'
+                className='fade-in validation-alert-maxwidth flex w-full'
               >
-                {validationErrors.flatMap(({ matches }, i) =>
-                  matches.map(({ value, start, end }, j) => (
-                    <List.Item
-                      key={`error-list-${i}-${j}`}
-                      className='items-center'
-                    >
-                      <HStack
-                        gap='space-2'
-                        align='center'
-                      >
-                        <Link
-                          onClick={() => {
-                            if (textareaRef.current) {
-                              scrollToSelection(textareaRef.current, start, end)
-                            }
-                          }}
-                        >
-                          <span className='font-ax-bold cursor-pointer'>{value}</span>
-                        </Link>
-                      </HStack>
-                    </List.Item>
-                  )),
-                )}
-              </List>
-            </Box>
-          </div>
+                <div className='flex h-full max-h-60 w-full flex-col overflow-y-auto'>
+                  <Heading
+                    size='xsmall'
+                    spacing
+                    className='mt-0.5 text-[16px]'
+                  >
+                    Spørsmålet inneholder fødselsnummer/d-nummer/hnr
+                  </Heading>
 
-          <Button
-            size='small'
-            data-color='neutral'
-            variant='primary'
-            className='mt-2'
-            onClick={() => {
-              analytics.anonymiserTrykket(
-                validationErrors.length,
-                validationErrors.map(({ validationType }) => validationType),
-              )
-              cleanInput(validationErrors)
-            }}
-          >
-            Anonymiser opplysninger
-          </Button>
-        </Alert>
-      )}
+                  <BodyShort size='small'>Fjern følgende før du sender inn spørsmålet.</BodyShort>
+                  <div>
+                    <Box
+                      marginBlock='space-12'
+                      asChild
+                    >
+                      <List
+                        data-aksel-migrated-v8
+                        size='small'
+                      >
+                        {validationErrors.flatMap(({ matches }, i) =>
+                          matches.map(({ value, start, end }, j) => (
+                            <List.Item
+                              key={`error-list-${i}-${j}`}
+                              className='items-center'
+                            >
+                              <HStack
+                                gap='space-2'
+                                align='center'
+                              >
+                                <Link
+                                  onClick={() => {
+                                    if (textareaRef.current) {
+                                      scrollToSelection(textareaRef.current, start, end)
+                                    }
+                                  }}
+                                >
+                                  <span className='font-ax-bold cursor-pointer'>{value}</span>
+                                </Link>
+                              </HStack>
+                            </List.Item>
+                          )),
+                        )}
+                      </List>
+                    </Box>
+                  </div>
+
+                  <Button
+                    size='small'
+                    data-color='neutral'
+                    variant='primary'
+                    className='mt-2 w-fit'
+                    onClick={() => {
+                      analytics.anonymiserTrykket(
+                        validationErrors.length,
+                        validationErrors.map(({ validationType }) => validationType),
+                      )
+                      cleanInput(validationErrors)
+                    }}
+                  >
+                    Anonymiser opplysninger
+                  </Button>
+                </div>
+              </Alert>
+            )}
+          </div>
+        </div>
+      </div>
       <NewMessageAlert
         setInputValue={setInputValue}
         conversationId={conversationId}
