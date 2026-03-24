@@ -5,85 +5,27 @@
 
 /*  LAYOUT  */
 
+html {
+  background-color: rgba(251, 243, 246, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+   background-color: rgba(14, 21, 31, 1);
+  }
+}
+
 body {
-  background-color: var(--ax-bg-default);
+  background-color: var(--color-ax-bg-brand-magenta-soft);
 }
 
 * {
   scrollbar-color: var(--neutral-500) transparent;
 }
-
-ul li:not(:last-child) {
-  margin-bottom: 0.4rem;
-}
-
-li ul:first-of-type {
-  margin-top: 0.2rem;
-}
-
-li ul {
-  padding-left: 1rem;
-}
-
-ul {
-  padding-left: 0;
-}
-
-ol li:not(:last-child) {
-  margin-bottom: 1rem;
-}
-
-ol li::marker {
-  font-weight: bold;
-}
-
-.markdown {
-  overflow-wrap: break-word;
-}
-
-.markdown>ol,
-.markdown>ul {
-  all: revert;
-  padding-left: 1.5rem;
-}
-
-.markdown>p:not(li p):not(:last-child) {
-  margin-bottom: 1rem;
-}
+ 
 
 .markdown-inline>p {
   display: inline;
-}
-
-.chat-markdown a,
-.chat-markdown a:visited {
-  color: inherit;
-  text-decoration: underline;
-}
-
-.chat-markdown a:hover {
-  color: inherit;
-  text-decoration: underline;
-}
-
-.chat-markdown a:focus-visible {
-  outline: 2px solid currentColor;
-  outline-offset: 2px;
-}
-
-.answer-markdown a,
-.answer-markdown a:visited {
-  text-decoration: underline;
-}
-
-.answer-markdown a:hover {
-  color: inherit;
-  text-decoration: underline;
-}
-
-.answer-markdown a:focus-visible {
-  outline: 2px solid currentColor;
-  outline-offset: 2px;
 }
 
 .pagewrapper {
@@ -223,4 +165,10 @@ ol li::marker {
 
 .aksel-textarea__input {
   padding-right: 2.5rem;
+}
+
+.validation-alert-maxwidth .aksel-alert__wrapper {
+  width: 100%;
+  max-width: none;
+  min-width: 0;
 }

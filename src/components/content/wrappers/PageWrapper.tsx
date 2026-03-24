@@ -55,7 +55,7 @@ interface PageWrapperProps {
 
 function PageWrapper({ children }: PageWrapperProps) {
   return (
-    <div className='pagewrapper'>
+    <div className='pagewrapper bg-ax-brand-magenta-100 dark:bg-ax-bg-default'>
       <ErrorBoundary
         FallbackComponent={ErrorComponent}
         onError={(error: Error) => {

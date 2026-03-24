@@ -1,0 +1,35 @@
+name: Copilot Setup Steps
+
+on:
+  workflow_dispatch:
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read .tool-versions
+        uses: marocchino/tool-versions-action@v1
+        id: versions
+
+      - name: Install pnpm ${{ steps.versions.outputs.pnpm }}
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ steps.versions.outputs.pnpm }}
+
+      - name: Use Node.js ${{ steps.versions.outputs.nodejs }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ steps.versions.outputs.nodejs }}
+          registry-url: 'https://npm.pkg.github.com'
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
