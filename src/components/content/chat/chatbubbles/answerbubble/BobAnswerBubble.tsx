@@ -1,12 +1,12 @@
 import { FileSearchIcon } from "@navikt/aksel-icons"
-import { BodyLong, Button, Heading, HStack, Skeleton, VStack } from "@navikt/ds-react"
+import { BodyLong, BodyShort, Button, Heading, HStack, Loader, Skeleton, VStack } from "@navikt/ds-react"
 import React, { memo, useState } from "react"
 import Markdown from "react-markdown"
 import rehypeRaw from "rehype-raw"
-import remarkGfm from "remark-gfm"
 import { BobRoboHead } from "../../../../../assets/illustrations/BobRoboHead.tsx"
 import { Citation, Message, NewMessage } from "../../../../../types/Message.ts"
 import analytics from "../../../../../utils/analytics.ts"
+import { AppMarkdown } from "../../../../../utils/AppMarkdown.tsx"
 import { md } from "../../../../../utils/markdown.ts"
 import { FollowUpQuestions } from "../../../followupquestions/FollowUpQuestions.tsx"
 import BobSuggests from "../../suggestions/BobSuggests.tsx"
@@ -57,7 +57,7 @@ export const BobAnswerBubble = memo(
 
     const isPending = ({ pending, content }: Message): boolean => pending && content === ""
 
-    const [citations, setCitations] = useState<{ citationId: number; position: number }[]>([])
+    const [citations, setCitations] = useState<{ citationId: string; position: number }[]>([])
 
     const contentReady = !hasError(message) && !isPending(message) && !!message.content
 
@@ -79,7 +79,7 @@ export const BobAnswerBubble = memo(
               {hasError(message) ? (
                 <ErrorContent message={message} />
               ) : isPending(message) ? (
-                <LoadingContent />
+                <LoadingContent status={message.status} />
               ) : (
                 <MessageContent
                   message={message}
@@ -134,18 +134,34 @@ const ErrorContent = ({ message }: { message: Message }) => (
   </BodyLong>
 )
 
-const LoadingContent = () => (
-  <div className='w-full'>
-    <Skeleton
-      width='100%'
-      variant='text'
-    />
-    <Skeleton
-      width='70%'
-      variant='text'
-    />
-  </div>
-)
+const LoadingContent = ({ status }: { status: string[] | undefined }) => {
+  if (status && status.length > 0) {
+    return <StatusMessageContent status={status} />
+  }
+
+  return (
+    <div className='w-full'>
+      <Skeleton
+        width='100%'
+        variant='text'
+      />
+      <Skeleton
+        width='70%'
+        variant='text'
+      />
+    </div>
+  )
+}
+
+const StatusMessageContent = ({ status }: { status: string[] }) => {
+  const statusMessage = status.at(0) ?? ""
+  return (
+    <HStack gap='space-8'>
+      <Loader size='xsmall' />
+      <BodyShort className='animate-pulse'>{statusMessage}</BodyShort>
+    </HStack>
+  )
+}
 
 const MessageContent = ({
   message,
@@ -154,11 +170,11 @@ const MessageContent = ({
   onSend,
 }: {
   message: Message
-  citations: { citationId: number; position: number }[]
+  citations: { citationId: string; position: number }[]
   setCitations: React.Dispatch<
     React.SetStateAction<
       {
-        citationId: number
+        citationId: string
         position: number
       }[]
     >
@@ -174,7 +190,7 @@ const MessageContent = ({
     e.stopImmediatePropagation()
   })
 
-  const addCitation = (citationId: number, position: number) => {
+  const addCitation = (citationId: string, position: number) => {
     let existingCitations = citations
     const newCitation = { citationId, position }
 
@@ -201,6 +217,23 @@ const MessageContent = ({
     onSend(findSources)
   }
 
+  const citationSpanComponent = (props: CitationSpanProps) => {
+    const dataCitation = props["data-citation"]
+    const dataPosition = props["data-position"]
+    if (dataCitation && dataPosition) {
+      const citationId = dataCitation
+      addCitation(citationId, parseInt(dataPosition, 10))
+      return (
+        <CitationNumber
+          citations={citations}
+          citationId={citationId}
+          context={message.context}
+        />
+      )
+    }
+    return <span {...props} />
+  }
+
   return (
     <div
       className='mb-2 flex flex-col gap-3'
@@ -208,44 +241,21 @@ const MessageContent = ({
     >
       <Heading
         size='small'
-        className='sr-only top-0'
+        className='sr-only top-0 select-none'
         level='2'
       >
         Svar fra Bob:
       </Heading>
-      <Markdown
-        className='markdown answer-markdown'
-        remarkPlugins={[remarkGfm, md.remarkCitations]}
-        rehypePlugins={[rehypeRaw]}
-        components={{
-          a: ({ ...props }) => (
-            <a
-              {...props}
-              target='_blank'
-              rel='noopener noreferrer'
-              title='Åpne lenken i ny fane'
-            />
-          ),
-          span: (props: CitationSpanProps) => {
-            const dataCitation = props["data-citation"]
-            const dataPosition = props["data-position"]
-            if (dataCitation && dataPosition) {
-              const citationId = parseInt(dataCitation, 10)
-              addCitation(citationId, parseInt(dataPosition, 10))
-              return (
-                <CitationNumber
-                  citations={citations}
-                  citationId={citationId}
-                  context={message.context}
-                />
-              )
-            }
-            return <span {...props} />
-          },
-        }}
-      >
-        {message.content}
-      </Markdown>
+      <BodyLong>
+        <AppMarkdown
+          remarkPlugins={[md.remarkCitations]}
+          rehypePlugins={[rehypeRaw]}
+          components={{ span: citationSpanComponent }}
+        >
+          {message.content}
+        </AppMarkdown>
+      </BodyLong>
+
       {Object.entries(message.context).length === 0 &&
         message.citations.length === 0 &&
         message.contextualizedQuestion !== null && (
@@ -265,7 +275,7 @@ const MessageContent = ({
 }
 
 interface CitationsProps extends Omit<BobAnswerBubbleProps, "isHighlighted" | "followUp"> {
-  citations: { citationId: number; position: number }[]
+  citations: { citationId: string; position: number }[]
   showLinks: boolean
 }
 

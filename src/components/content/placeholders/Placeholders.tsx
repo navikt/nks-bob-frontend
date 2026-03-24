@@ -14,13 +14,13 @@ export const BobPlaceholder = () => {
     <>
       {!hasErrors && (
         <>
-          <div className='my-18 flex w-full max-w-lg self-center dark:hidden'>
-            <div className='mx-auto w-full px-14'>
+          <div className='my-14 flex w-full max-w-lg self-center dark:hidden'>
+            <div className='mx-auto max-h-100 w-full px-14'>
               <BobTheRobot />
             </div>
           </div>
-          <div className='my-18 hidden w-full max-w-lg self-center dark:flex'>
-            <div className='mx-auto w-full px-14'>
+          <div className='my-14 hidden w-full max-w-lg self-center dark:flex'>
+            <div className='mx-auto max-h-100 w-full px-14'>
               <BobTheRobotDark />
             </div>
           </div>
