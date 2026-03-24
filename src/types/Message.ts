@@ -26,6 +26,7 @@ export type Message = {
   contextualizedQuestion: null | string
   tools: Tool[]
   thinking: string[]
+  status?: string[]
 }
 
 export type Citation = {

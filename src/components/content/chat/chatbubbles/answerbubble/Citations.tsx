@@ -1,18 +1,17 @@
 import { BodyLong, BodyShort, CopyButton, HStack, Tooltip, VStack } from "@navikt/ds-react"
 import { useState } from "react"
-import Markdown from "react-markdown"
-import remarkGfm from "remark-gfm"
 import { KunnskapsbasenIcon } from "../../../../../assets/icons/KunnskapsbasenIcon.tsx"
 import { NavNoIcon } from "../../../../../assets/icons/NavNoIcon.tsx"
 import { Context, Contexts } from "../../../../../types/Message.ts"
 import analytics from "../../../../../utils/analytics.ts"
+import { AppMarkdown } from "../../../../../utils/AppMarkdown.tsx"
 import { buildLinkTitle } from "../../../../../utils/link.ts"
 import { HoverCard } from "../../../../ui/HoverCard.tsx"
 import { SourceIcon, TextFragmentLink } from "../BobAnswerCitations.tsx"
 
 interface CitationNumberProps {
-  citations: { citationId: number }[]
-  citationId: number
+  citations: { citationId: string }[]
+  citationId: string
   context: Contexts
 }
 
@@ -36,34 +35,6 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
           align='center'
           gap='space-4'
         >
-          {/*
-          <Link
-            href={`${source.url}#${source.anchor}`}
-            target='_blank'
-            title='Åpne artikkelen i ny fane'
-            onClick={() => {
-              if (source.source === "nks") {
-                analytics.kbModalLenkeKlikket({
-                  kilde: source.source,
-                  tittel: source.title,
-                  artikkelKolonne: source.articleColumn,
-                })
-              } else if (source.source === "navno") {
-                analytics.navModalLenkeKlikket({
-                  kilde: source.source,
-                  tittel: source.title,
-                })
-              }
-            }}
-          >
-            <Label
-              size='small'
-              className='inline cursor-pointer'
-            >
-              {title}
-            </Label>
-          </Link>
-          */}
           <TextFragmentLink
             title={title}
             matchingContextCitationData={source}
@@ -112,21 +83,7 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
         )}
       </VStack>
       <BodyLong size='small'>
-        <Markdown
-          className='markdown'
-          remarkPlugins={[remarkGfm]}
-          components={{
-            a: ({ ...props }) => (
-              <a
-                {...props}
-                target='_blank'
-                rel='noopener noreferrer'
-              />
-            ),
-          }}
-        >
-          {source.content}
-        </Markdown>
+        <AppMarkdown>{source.content}</AppMarkdown>
       </BodyLong>
     </div>
   )
@@ -151,7 +108,7 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
 }
 
 interface CitationLinksProps {
-  citations: { citationId: number }[]
+  citations: { citationId: string }[]
   context: Contexts
 }
 
@@ -159,7 +116,7 @@ export const CitationLinks = ({ citations, context }: CitationLinksProps) => {
   type Group = {
     key: string
     source: Context
-    citationIds: number[]
+    citationIds: string[]
   }
 
   const groups = new Map<string, Group>()
@@ -197,9 +154,9 @@ export const CitationLinks = ({ citations, context }: CitationLinksProps) => {
 }
 
 type GroupedCitationLinkProps = {
-  citations: { citationId: number }[]
+  citations: { citationId: string }[]
   source: Context
-  citationIds: number[]
+  citationIds: string[]
 }
 
 const GroupedCitationLink = ({ citations, source, citationIds }: GroupedCitationLinkProps) => {

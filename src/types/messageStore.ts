@@ -58,7 +58,11 @@ type MessageState = {
 const transformContextData = (contexts: Contexts): Contexts => {
   let transformed = transformNksUrlsArray(contexts)
 
-  if (Object.entries(contexts).length > 0 && "articleColumn" in contexts[0]) {
+  const entries = Object.entries(contexts)
+  const hasContexts = entries.length > 0
+  const hasArticleColumn = "articleColumn" in entries.map(([_, c]) => c)
+
+  if (hasContexts && hasArticleColumn) {
     transformed = transformArticleColumnArray(transformed)
   }
 
@@ -186,7 +190,13 @@ const getMessage = (event: ConversationEvent, messages: MessageMap): Message | u
       }))
       const tools = event.message.tools
 
-      analytics.svarMottatt(event.id, messageLength, contextMeta, citationMeta, tools)
+      analytics.svarMottatt(
+        event.id,
+        messageLength,
+        contextMeta,
+        citationMeta,
+        tools.map(({ name }) => name),
+      )
     }
 
     return {
@@ -196,8 +206,10 @@ const getMessage = (event: ConversationEvent, messages: MessageMap): Message | u
   }
 
   if (isStatusUpdate(event)) {
-    console.debug(`Status: ${event.content}`)
-    return undefined
+    return {
+      ...message,
+      status: [event.content],
+    }
   }
 
   if (isErrorsUpdated(event)) {
