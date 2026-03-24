@@ -18,13 +18,15 @@ export type Message = {
   messageRole: MessageRole
   createdBy: string
   citations: Citation[]
-  context: Context[]
+  context: Contexts
   pending: boolean
   errors: MessageError[]
   followUp: string[]
   starred?: boolean
   contextualizedQuestion: null | string
-  tools: string[]
+  tools: Tool[]
+  thinking: string[]
+  status?: string[]
 }
 
 export type Citation = {
@@ -43,6 +45,14 @@ export type Context = {
   articleColumn: string | null
   lastModified: string | null
   semanticSimilarity: number
+}
+
+export type Contexts = { [sourceId: string]: Context }
+
+export type Tool = {
+  name: string
+  arguments: { [name: string]: string }
+  success: boolean
 }
 
 export type MessageError = { title: string; description: string }

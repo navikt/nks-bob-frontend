@@ -2,7 +2,7 @@ import { BodyLong, BodyShort, CopyButton, HStack, Tooltip, VStack } from "@navik
 import { useState } from "react"
 import { KunnskapsbasenIcon } from "../../../../../assets/icons/KunnskapsbasenIcon.tsx"
 import { NavNoIcon } from "../../../../../assets/icons/NavNoIcon.tsx"
-import { Context } from "../../../../../types/Message.ts"
+import { Context, Contexts } from "../../../../../types/Message.ts"
 import analytics from "../../../../../utils/analytics.ts"
 import { AppMarkdown } from "../../../../../utils/AppMarkdown.tsx"
 import { buildLinkTitle } from "../../../../../utils/link.ts"
@@ -10,14 +10,14 @@ import { HoverCard } from "../../../../ui/HoverCard.tsx"
 import { SourceIcon, TextFragmentLink } from "../BobAnswerCitations.tsx"
 
 interface CitationNumberProps {
-  citations: { citationId: number }[]
-  citationId: number
-  context: Context[]
+  citations: { citationId: string }[]
+  citationId: string
+  context: Contexts
 }
 
 export const CitationNumber = ({ citations, citationId, context }: CitationNumberProps) => {
   const [isActive, setIsActive] = useState(false)
-  const source = context.at(citationId)
+  const source = context[citationId]
   if (!context || !source) {
     return null
   }
@@ -108,21 +108,21 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
 }
 
 interface CitationLinksProps {
-  citations: { citationId: number }[]
-  context: Context[]
+  citations: { citationId: string }[]
+  context: Contexts
 }
 
 export const CitationLinks = ({ citations, context }: CitationLinksProps) => {
   type Group = {
     key: string
     source: Context
-    citationIds: number[]
+    citationIds: string[]
   }
 
   const groups = new Map<string, Group>()
 
   for (const { citationId } of citations) {
-    const source = context?.at(citationId)
+    const source = context[citationId]
     if (!source) continue
 
     const groupKey = `${source.url}#${source.anchor ?? ""}`
@@ -154,9 +154,9 @@ export const CitationLinks = ({ citations, context }: CitationLinksProps) => {
 }
 
 type GroupedCitationLinkProps = {
-  citations: { citationId: number }[]
+  citations: { citationId: string }[]
   source: Context
-  citationIds: number[]
+  citationIds: string[]
 }
 
 const GroupedCitationLink = ({ citations, source, citationIds }: GroupedCitationLinkProps) => {
