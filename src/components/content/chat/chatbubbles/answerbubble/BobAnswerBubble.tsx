@@ -3,7 +3,7 @@ import { BodyLong, Button, Heading, HStack, Skeleton, VStack } from "@navikt/ds-
 import React, { memo, useState } from "react"
 import Markdown from "react-markdown"
 import rehypeRaw from "rehype-raw"
-import { BobRoboHead } from "../../../../../assets/illustrations/BobRoboHead.tsx"
+import { BobTheEasterRabbitHead } from "../../../../../assets/illustrations/BobRoboHead.tsx"
 import { Citation, Message, NewMessage } from "../../../../../types/Message.ts"
 import analytics from "../../../../../utils/analytics.ts"
 import { AppMarkdown } from "../../../../../utils/AppMarkdown.tsx"
@@ -72,7 +72,8 @@ export const BobAnswerBubble = memo(
           width='full'
         >
           <div className='pt-1'>
-            <BobRoboHead />
+            {/* <BobRoboHead /> */}
+            <BobTheEasterRabbitHead />
           </div>
           <div className='flex w-full flex-col pt-3'>
             <div className={`overflow-wrap mb-2 flex w-full ${isHighlighted ? "bg-ax-bg-brand-beige-soft p-2" : ""} `}>
