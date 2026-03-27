@@ -51,11 +51,10 @@ function ConversationContent() {
   }, [existingMessages, isLoadingExistingMessages, isLoading, setMessages])
 
   useEffect(() => {
-    const initialMessage = pendingInitialMessageStore.getState().consume()
-    if (initialMessage && !isValidating) {
-      if (messages.length === 0) {
-        sendMessage({ content: initialMessage })
-      }
+    const { message: initialMessage } = pendingInitialMessageStore.getState()
+    if (initialMessage && !isValidating && messages.length === 0) {
+      pendingInitialMessageStore.getState().consume()
+      sendMessage({ content: initialMessage })
     }
   }, [messages, isValidating])
 
