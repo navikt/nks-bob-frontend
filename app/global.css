@@ -1,0 +1,182 @@
+@import 'tailwindcss';
+@import '@navikt/ds-css' layer(components);
+
+@config '../tailwind.config.cjs';
+
+/* Custom responsive variants for complex media queries.
+   Tailwind v4 can't convert raw media queries to width-based container breakpoints,
+   so these are defined as custom variants instead of screen config entries. */
+@custom-variant tallWide (@media (max-width: 800px) and (min-height: 1200px));
+@custom-variant marginWide (@media (min-width: 800px));
+@custom-variant narrowWidth (@media (max-width: 750px) and (min-height: 1120px));
+@custom-variant narrowHeight (@media (max-height: 1000px));
+
+/*  LAYOUT  */
+
+html {
+  background-color: rgba(251, 243, 246, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+   background-color: rgba(14, 21, 31, 1);
+  }
+}
+
+body {
+  background-color: var(--color-ax-bg-brand-magenta-soft);
+}
+
+* {
+  scrollbar-color: var(--neutral-500) transparent;
+}
+ 
+
+.markdown-inline>p {
+  display: inline;
+}
+
+.pagewrapper {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  height: 100vh;
+}
+
+.createconversation-wrapper {
+  display: flex;
+  flex-direction: column;
+  max-width: 1200px;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  margin-inline: auto;
+  margin-bottom: 150px;
+}
+
+@media screen and (max-height: 850px) {
+  .createconversation-wrapper {
+    justify-content: flex-start;
+  }
+}
+
+@media screen and (max-width: 760px) {
+  .createconversation-wrapper {
+    justify-content: flex-start;
+  }
+}
+
+.contentwrapper {
+  display: flex;
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.conversation-content {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.dialogwrapper {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  min-width: 25rem;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.chatcontainer {
+  display: flex;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  width: 100%;
+  justify-content: center;
+  height: 100%;
+}
+
+.dialogcontent {
+  display: flex;
+  width: 100%;
+  max-width: 48rem;
+  overflow: visible;
+}
+
+.hide-on-desktop {
+  display: none;
+}
+
+@media screen and (max-width: 450px) and (max-height: 950px) {
+  .createconversation-wrapper {
+    margin-bottom: 0;
+  }
+
+  .hide-on-mobile {
+    display: none;
+  }
+
+  .show-on-mobile {
+    display: flex;
+  }
+
+  .infotext {
+    display: none;
+  }
+
+  .bobhead {
+    display: none;
+  }
+}
+
+.unset {
+  all: unset;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 1s ease-in-out;
+}
+
+.fade-out {
+  animation: fadeOut 1s ease-in-out;
+}
+
+.fade-in-citations {
+  animation: fadeIn 2s ease-in-out;
+}
+
+.aksel-textarea__input {
+  padding-right: 2.5rem;
+}
+
+.validation-alert-maxwidth .aksel-alert__wrapper {
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+}

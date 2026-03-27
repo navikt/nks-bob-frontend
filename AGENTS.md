@@ -2,24 +2,26 @@
 
 ## Repository overview
 
-`nks-bob-frontend` is a React + TypeScript + Vite application with a small Node/Express server in the `server/` workspace package.
-
-The application is used by NKS to assist veiledere with AI-assisted text generation and related workflows.
+`nks-bob-frontend` is a Next.js (App Router) application providing an AI-assisted text generation interface for NKS veiledere.
 
 ## Tech stack
 
-- Frontend: React 19, TypeScript, Vite, React Router, SWR, Zustand
+- Framework: Next.js 16 (App Router, React Server Components)
+- Frontend: React 19, TypeScript, SWR, Zustand
 - Design system: `@navikt/ds-react`, `@navikt/aksel-icons`, Tailwind CSS
-- Server: Node.js, Express, TypeScript, SWC, `tsx`
-- Tooling: pnpm workspaces, ESLint, Prettier, Just, Docker Compose
+- Auth: `@navikt/oasis` (Wonderwall/Texas token exchange)
+- Observability: `prom-client`, `winston`
+- Tooling: pnpm, ESLint (eslint-config-next), Prettier, Just, Docker Compose
 - Deployment: NAIS (`.nais/dev-gcp.yaml`, `.nais/prod-gcp.yaml`)
 
 ## Repository structure
 
-- `src/`: frontend source code
-- `server/src/`: backend/server source code
-- `public/`: static assets
-- `.nais/`: deployment manifests
+- `app/`: Next.js App Router pages, layouts, and API route handlers
+- `components/`: React components (mostly `"use client"`)
+- `lib/`: API hooks, auth utilities, Zustand stores, shared utilities
+- `types/`: TypeScript type definitions
+- `public/`: Static assets
+- `.nais/`: Deployment manifests
 
 ## Install and run
 
@@ -33,17 +35,15 @@ Useful commands:
 
 ```bash
 pnpm run lint              # Lint the whole repo
-pnpm run build             # Build frontend and server
-pnpm run dev               # Run frontend + server locally
-pnpm run preview           # Preview the frontend build
+pnpm run build             # Build Next.js app (standalone output)
+pnpm run dev               # Run Next.js dev server on port 3030
+pnpm run start             # Start production server on port 3030
 just setup                 # Login and fetch env for local dev against dev-gcp
 just localnais             # Start local services for localnais/dev-gcp flow
 docker-compose up          # Start local Wonderwall/Texas/Redis services directly
 ```
 
 ## Validation
-
-There is currently no dedicated automated test command configured in this repository.
 
 Before finishing changes, run:
 
@@ -59,15 +59,17 @@ For changes affecting localnais or auth/local integration, also verify the relev
 - Prefer existing patterns and helpers over introducing new abstractions.
 - Keep changes small and targeted.
 - Preserve TypeScript type safety; avoid `any` unless there is no better option.
-- Follow existing naming and folder conventions in `src/` and `server/src/`.
+- Follow existing naming and folder conventions.
 - Use `pnpm`, not `npm` or `yarn`.
 - Do not add broad error swallowing; surface errors explicitly.
+- Add `"use client"` directive to components using hooks, state, or browser APIs.
+- Keep API route handlers (`app/**/route.ts`) as server-only code.
 
 ## Change boundaries
 
 ### Always
 
-- Update both frontend and server wiring when a feature crosses that boundary.
+- Update both frontend and API route handler wiring when a feature crosses that boundary.
 - Keep NAIS config, runtime assumptions, and local development scripts in sync.
 - Verify builds still pass after changing shared interfaces or env-dependent logic.
 
@@ -86,6 +88,7 @@ For changes affecting localnais or auth/local integration, also verify the relev
 
 ## Notes for agents
 
-- Treat this as a workspace repo: root scripts orchestrate both frontend and `server/`.
+- This is a Next.js App Router application with `output: "standalone"` for NAIS deployment.
 - `README.md` is the source of truth for developer onboarding and localnais setup.
-- If a requested change needs tests, note that the repo currently lacks a configured test runner and validate with lint/build unless the task adds test infrastructure explicitly.
+- The `server/` directory is the legacy Express server (kept for reference but not used).
+- If a requested change needs tests, note that the repo currently lacks a configured test runner.
