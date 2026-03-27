@@ -1,7 +1,7 @@
 import { Alert as AlertComponent, Heading } from "@navikt/ds-react"
 import Markdown from "react-markdown"
 import { useAlerts } from "../../../api/api.ts"
-import { BobTheRobot, BobTheRobotDark } from "../../../assets/illustrations/BobTheRobot.tsx"
+import { BobTheEasterRabbit } from "../../../assets/illustrations/BobTheEasterRabbit.tsx"
 import { SadBob } from "../../../assets/illustrations/SadBob.tsx"
 import { Alert } from "../../../types/Notifications.ts"
 import "./Placeholders.css"
@@ -14,14 +14,14 @@ export const BobPlaceholder = () => {
     <>
       {!hasErrors && (
         <>
-          <div className='my-18 flex w-full max-w-lg self-center dark:hidden'>
-            <div className='mx-auto w-full px-14'>
-              <BobTheRobot />
+          <div className='my-14 flex w-full max-w-lg self-center dark:hidden'>
+            <div className='mx-auto max-h-100 w-full px-14'>
+              {/* <BobTheRobot /> */} <BobTheEasterRabbit />
             </div>
           </div>
-          <div className='my-18 hidden w-full max-w-lg self-center dark:flex'>
-            <div className='mx-auto w-full px-14'>
-              <BobTheRobotDark />
+          <div className='my-14 hidden w-full max-w-lg self-center dark:flex'>
+            <div className='mx-auto max-h-100 w-full px-14'>
+              {/* <BobTheRobotDark /> */} <BobTheEasterRabbit />
             </div>
           </div>
         </>
