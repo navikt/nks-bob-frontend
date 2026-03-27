@@ -29,7 +29,7 @@ function Header({ conversation }: HeaderProps) {
         <div className='flex h-full max-h-30 gap-3'>
           <div className='flex items-center justify-center align-middle'>
             {conversation && <NewButton conversationId={conversation} />}
-            <RegretNewButton />
+            {!conversation && <RegretNewButton />}
             <NotificationToggle />
             <Guide />
             <ThemeButton />
