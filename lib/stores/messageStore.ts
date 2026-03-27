@@ -1,7 +1,7 @@
 "use client"
 
 import { create } from "zustand"
-import { MessageEvent as ConversationEvent } from "../api/sse"
+import { SseEvent as ConversationEvent } from "../../types/SseEvent"
 import analytics from "../utils/analytics"
 import { transformArticleColumnArray } from "../utils/articleColumnTransformer"
 import { transformNksUrlsArray } from "../utils/nksUrlTransformer"
