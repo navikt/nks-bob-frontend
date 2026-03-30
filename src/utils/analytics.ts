@@ -69,7 +69,7 @@ const kildeToggleÅpnet = (kilde: "navno" | "nks") => logEvent("Kilde toggle åp
 
 const kildeToggleSkjult = (kilde: "navno" | "nks") => logEvent("Kilde toggle skjult", { kilde })
 
-const tekstInnholdLimtInn = () => logEvent("Tekstinnhold limt inn")
+const tekstInnholdLimtInn = (antallTegn: number) => logEvent("Tekstinnhold limt inn", { antallTegn })
 
 const tekstInneholderFnr = () => logEvent("Tekst inneholder fnr")
 
