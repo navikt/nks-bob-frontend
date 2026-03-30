@@ -1,7 +1,7 @@
 "use client"
 
 import { BodyLong, Button, Heading } from "@navikt/ds-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import analytics from "../../../lib/utils/analytics"
 import { setItem, useLocalStorage } from "../../../lib/utils/localStorage"
 
@@ -9,7 +9,15 @@ const PASTE_INFO_MODAL_KEY = "pasteInfoModalSeen"
 
 export const PasteInfoModal = () => {
   const hasSeenModal = useLocalStorage(PASTE_INFO_MODAL_KEY)
-  const [open, setOpen] = useState(!hasSeenModal)
+  const [open, setOpen] = useState(false)
+
+  // null = localStorage not yet read; undefined = key absent (new user); true = already seen.
+  // Only open once we've confirmed the user hasn't seen it.
+  useEffect(() => {
+    if (hasSeenModal === undefined) {
+      setOpen(true)
+    }
+  }, [hasSeenModal])
 
   const handleClose = () => {
     setOpen(false)

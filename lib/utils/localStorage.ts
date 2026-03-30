@@ -18,12 +18,11 @@ function getItem(key: string) {
 }
 
 export function useLocalStorage(key: string) {
-  const [storedValue, setStoredValue] = useState(() => {
-    return getItem(key)
-  })
+  // null = not yet read (SSR / before mount), undefined = key absent, any other value = stored value
+  const [storedValue, setStoredValue] = useState<unknown>(null)
 
   useEffect(() => {
-    setStoredValue(getItem(key))
+    setStoredValue(getItem(key) ?? undefined)
   }, [key])
 
   return storedValue
