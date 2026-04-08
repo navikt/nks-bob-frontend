@@ -1,0 +1,201 @@
+"use client"
+
+import { BellIcon } from "@navikt/aksel-icons"
+import { ActionMenu, BodyLong, BodyShort, Button, Detail, Heading, Tabs, Tooltip } from "@navikt/ds-react"
+import { useEffect, useState } from "react"
+import { useHotkeys } from "react-hotkeys-hook"
+import Markdown from "react-markdown"
+import { useNewsNotifications } from "../../lib/api/api"
+import { NewsNotification } from "../../types/Notifications"
+import { useUpdateLocalStorage } from "../../lib/utils/localStorage"
+import "./NotificationDrawer.css"
+
+const useReadNotifications = () => {
+  const [_, setRead, getRead] = useUpdateLocalStorage("readNotifications")
+
+  const setReadNotifications = (notificationIds: string[]) => {
+    setRead(notificationIds)
+  }
+
+  const readNotifications = (getRead() as string[] | undefined) ?? []
+
+  const isUnread = (notificationId: string) => !readNotifications.includes(notificationId)
+
+  const hasUnreadNotifications = (notificationIds: string[]) => notificationIds.some(isUnread)
+
+  return {
+    readNotifications,
+    setReadNotifications,
+    hasUnreadNotifications,
+    isUnread,
+  }
+}
+
+type TabName = "alle" | "nye"
+
+const defaultTabName: TabName = "alle"
+
+export const NotificationToggle = () => {
+  const { newsNotifications } = useNewsNotifications()
+  const { setReadNotifications, hasUnreadNotifications } = useReadNotifications()
+  const [activeTab, setActiveTab] = useState<TabName>(defaultTabName)
+  const notificationIds = newsNotifications.map(({ id }) => id)
+
+  const [initialOpen, setInitialOpen] = useState<boolean | null>(null)
+  const hasUnread = hasUnreadNotifications(notificationIds)
+
+  useEffect(() => {
+    if (hasUnread) {
+      setInitialOpen(true)
+      setActiveTab("nye")
+    }
+
+    if (!hasUnread) {
+      setActiveTab("alle")
+    }
+  }, [initialOpen, setInitialOpen, hasUnread])
+
+  useHotkeys("Alt+Ctrl+V", () => setInitialOpen((prev) => !prev), {
+    enableOnFormTags: true,
+  })
+
+  return (
+    <ActionMenu
+      open={initialOpen ?? false}
+      onOpenChange={(open) => {
+        if (!open && activeTab === "nye") {
+          setReadNotifications(notificationIds)
+        }
+        setInitialOpen(open)
+      }}
+    >
+      <Tooltip content='Vis varsler ( Alt+Ctrl+V )'>
+        <ActionMenu.Trigger>
+          <Button
+            data-color='neutral'
+            variant='tertiary'
+            aria-label='Vis varsler'
+            size='medium'
+            icon={
+              <div className='relative'>
+                <BellIcon aria-hidden />
+                {hasUnread && <NotificationTick className='absolute top-[3px] right-[7px]' />}
+              </div>
+            }
+          />
+        </ActionMenu.Trigger>
+      </Tooltip>
+      <ActionMenu.Content className='*:max-h-[800px] *:w-[450px] *:p-0'>
+        <NotificationDrawer
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+        />
+      </ActionMenu.Content>
+    </ActionMenu>
+  )
+}
+
+const NotificationDrawer = ({
+  activeTab,
+  setActiveTab,
+}: {
+  activeTab: TabName
+  setActiveTab: React.Dispatch<React.SetStateAction<TabName>>
+}) => {
+  const { newsNotifications } = useNewsNotifications()
+  const { readNotifications: readNotificationIds } = useReadNotifications()
+
+  const unreadNotifications = newsNotifications.filter(({ id }) => !readNotificationIds.includes(id))
+
+  return (
+    <Tabs
+      defaultValue={defaultTabName}
+      value={activeTab}
+      onChange={(value) => setActiveTab(value as TabName)}
+    >
+      <div className='sticky top-0 z-10'>
+        <div className='bg-ax-bg-default'>
+          <div className='bg-ax-bg-neutral-soft p-4'>Varsler</div>
+          <Tabs.List>
+            <Tabs.Tab
+              value='alle'
+              label='Alle'
+            />
+            <Tabs.Tab
+              value='nye'
+              label='Nye'
+            />
+          </Tabs.List>
+        </div>
+      </div>
+      <Tabs.Panel value='alle'>
+        <NotificationList notifications={newsNotifications} />
+      </Tabs.Panel>
+      <Tabs.Panel value='nye'>
+        <NotificationList notifications={unreadNotifications} />
+      </Tabs.Panel>
+    </Tabs>
+  )
+}
+
+const NotificationList = ({ notifications }: { notifications: NewsNotification[] }) => {
+  if (notifications.length === 0) {
+    return (
+      <BodyShort
+        textColor='subtle'
+        className='p-4'
+      >
+        Ingen nye varsler
+      </BodyShort>
+    )
+  }
+
+  return (
+    <div>
+      {notifications.map((notification) => (
+        <NotificationItem
+          key={`notification-${notification.id}`}
+          notification={notification}
+          className='border-b-ax-border-neutral-subtle p-4 not-last:border-b'
+        />
+      ))}
+    </div>
+  )
+}
+
+const NotificationItem = ({ notification, className }: { notification: NewsNotification; className?: string }) => {
+  const { isUnread } = useReadNotifications()
+
+  const date = new Date(notification.createdAt)
+  const localeDate = date.toLocaleDateString("no-NB", {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+  })
+
+  return (
+    <div className={className}>
+      <div className='flex items-center gap-2 pb-2'>
+        <Detail textColor='subtle'>{localeDate}</Detail>
+        {isUnread(notification.id) && <NotificationTick />}
+      </div>
+      <Heading
+        textColor='subtle'
+        size='small'
+        spacing
+      >
+        {notification.title}
+      </Heading>
+      <BodyLong
+        as='div'
+        textColor='subtle'
+      >
+        <Markdown>{notification.content}</Markdown>
+      </BodyLong>
+    </div>
+  )
+}
+
+const NotificationTick = ({ className }: { className?: string }) => {
+  return <div className={`bg-ax-bg-danger-strong h-1.5 w-1.5 animate-ping rounded-full ${className}`} />
+}

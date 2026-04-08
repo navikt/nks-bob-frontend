@@ -1,4 +1,1 @@
-packages:
-  - server
-
 minimumReleaseAge: 10080  # 1 week in minutes

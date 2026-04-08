@@ -1,0 +1,63 @@
+"use client"
+
+import { Chips } from "@navikt/ds-react"
+import { useState } from "react"
+import { Message } from "../../../../../types/Message.ts"
+import analytics from "../../../../../lib/utils/analytics.ts"
+
+interface ToggleCitationsProps {
+  onToggle: (selected: string[]) => void
+  message: Message
+}
+
+const citationOptions = ["Sitater fra Kunnskapsbasen", "Sitater fra Nav.no"]
+
+const ToggleCitations = ({ onToggle, message }: ToggleCitationsProps) => {
+  const hasKunnskapsbasenCitations = message.citations.some(
+    (citation) => message.context[citation.sourceId].source === "nks",
+  )
+  const hasNavnoCitations = message.citations.some((citation) => message.context[citation.sourceId].source === "navno")
+
+  const filteredOptions = citationOptions.filter((option) => {
+    if (option === "Sitater fra Nav.no" && !hasNavnoCitations) {
+      return false
+    }
+    return !(option === "Sitater fra Kunnskapsbasen" && !hasKunnskapsbasenCitations)
+  })
+
+  const [selected, setSelected] = useState<string[]>(citationOptions)
+
+  const handleToggle = (option: string) => {
+    trackOption(option)
+    const newSelected = selected.includes(option) ? selected.filter((x) => x !== option) : [...selected, option]
+    setSelected(newSelected)
+    onToggle(newSelected)
+  }
+
+  const trackOption = (option: string) => {
+    const source = option.includes("Kunnskapsbasen") ? "nks" : "navno"
+    if (selected.includes(option)) {
+      analytics.kildeToggleSkjult(source)
+    } else {
+      analytics.kildeToggleÅpnet(source)
+    }
+  }
+
+  return (
+    <div className='mb-3'>
+      <Chips size='small'>
+        {filteredOptions.map((option) => (
+          <Chips.Toggle
+            key={option}
+            selected={selected.includes(option)}
+            onClick={() => handleToggle(option)}
+          >
+            {option}
+          </Chips.Toggle>
+        ))}
+      </Chips>
+    </div>
+  )
+}
+
+export default ToggleCitations

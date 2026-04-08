@@ -1,12 +1,13 @@
 FROM gcr.io/distroless/nodejs24-debian13
 
 WORKDIR /usr/src/app
-COPY dist/ dist/
-COPY /server server/
-COPY node_modules/ node_modules/
+COPY .next/standalone ./
+COPY .next/static ./.next/static
+COPY public ./public
 
-WORKDIR /usr/src/app/server
 USER apprunner
 
 EXPOSE 3030
-CMD ["dist/src/server.js"]
+ENV PORT=3030
+ENV HOSTNAME="0.0.0.0"
+CMD ["server.js"]
