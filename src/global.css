@@ -6,17 +6,11 @@
 /*  LAYOUT  */
 
 html {
-  background-color: rgba(251, 243, 246, 1);
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-   background-color: rgba(14, 21, 31, 1);
-  }
+  background-color: var(--color-ax-bg-default);
 }
 
 body {
-  background-color: var(--color-ax-bg-brand-magenta-soft);
+  background-color: var(--color-ax-bg-default);
 }
 
 * {
