@@ -1,4 +1,3 @@
-import { Link } from "react-router"
 import { BobLogo } from "../../assets/icons/logo/BobLogo.tsx"
 import Guide from "../content/guide/Guide.tsx"
 import { NewButton } from "../menu/NewButton.tsx"
@@ -18,13 +17,7 @@ function Header({ conversation }: HeaderProps) {
     >
       <div className='marginWide:px-16 mx-auto flex max-h-16 w-full max-w-screen-2xl items-center justify-between self-center px-4 py-4'>
         <div className='ml-1 flex max-w-16'>
-          <Link
-            to='https://www.nav.no/'
-            target='_blank'
-            tabIndex={-1}
-          >
-            <BobLogo />
-          </Link>
+          <BobLogo />
         </div>
         <div className='flex h-full max-h-30 gap-3'>
           <div className='flex items-center justify-center align-middle'>
