@@ -5,7 +5,7 @@ interface CreateConversationWrapperProps {
 }
 
 function CreateConversationWrapper({ children }: CreateConversationWrapperProps) {
-  return <div className='createconversation-wrapper bg-ax-brand-magenta-100 dark:bg-ax-bg-default'>{children}</div>
+  return <div className='createconversation-wrapper'>{children}</div>
 }
 
 export default CreateConversationWrapper
