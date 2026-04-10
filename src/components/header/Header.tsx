@@ -16,7 +16,7 @@ function Header({ conversation }: HeaderProps) {
       style={{ viewTransitionName: "nav-header" }}
     >
       <div className='marginWide:px-16 mx-auto flex max-h-16 w-full max-w-screen-2xl items-center justify-between self-center px-4 py-4'>
-        <div className='ml-1 flex max-w-16'>
+        <div className='ml-1 flex w-16'>
           <BobLogo />
         </div>
         <div className='flex h-full max-h-30 gap-3'>
