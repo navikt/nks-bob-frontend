@@ -1,8 +1,7 @@
 export const BobLogo = () => {
   return (
     <svg
-      width='auto'
-      height='auto'
+      width='100%'
       viewBox='0 0 1052 400'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
