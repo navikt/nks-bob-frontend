@@ -226,14 +226,14 @@ const GroupedCitationLink = ({ citations, source, citationIds, context }: Groupe
         <Accordion.Content>
           {citationObjects.length === 1 ? (
             <SingleCitation
-              citation={{ sourceId: Number(citationObjects[0].sourceId), text: citationObjects[0].text }}
+              citation={{ sourceId: citationObjects[0].sourceId as unknown as number, text: citationObjects[0].text }}
               context={context[citationObjects[0].sourceId]}
             />
           ) : (
             <MultiCitation
               title={title}
               source={source.source}
-              citations={citationObjects.map((c) => ({ sourceId: Number(c.sourceId), text: c.text }))}
+              citations={citationObjects.map((c) => ({ sourceId: c.sourceId as unknown as number, text: c.text }))}
               contexts={context}
             />
           )}

@@ -106,7 +106,7 @@ export const MultiCitation = ({
       <div className='mb-2 flex flex-col gap-4'>
         {citations.map((citation) => (
           <div
-            key={`multi-citation-${citation.sourceId}`}
+            key={`multi-citation-${citation.sourceId ?? index}`}
             className='group mt-1 mb-2 gap-1'
           >
             <BodyLong
