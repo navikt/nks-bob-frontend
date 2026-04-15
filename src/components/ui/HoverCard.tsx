@@ -1,4 +1,4 @@
-import { Box } from "@navikt/ds-react"
+import { Box, Portal } from "@navikt/ds-react"
 import React, { useRef, useState } from "react"
 import analytics from "../../utils/analytics.ts"
 import { Context } from "../../types/Message.ts"
@@ -119,31 +119,33 @@ export const HoverCard = ({ children, content, onOpenChange, context }: HoverCar
         {children}
       </span>
       {isOpen && (
-        <div
-          ref={cardRef}
-          className='fixed z-50'
-          style={{
-            left: position.x,
-            top: position.showAbove ? undefined : position.y,
-            bottom: position.showAbove ? `${window.innerHeight - position.y}px` : undefined,
-            transform: "translateX(-50%)",
-            maxHeight: position.maxHeight,
-            width: position.width,
-          }}
-          onMouseEnter={handleCardMouseEnter}
-          onMouseLeave={handleCardMouseLeave}
-        >
-          <Box
-            padding='space-16'
-            borderRadius='4'
-            borderWidth='1'
-            shadow='dialog'
-            className='border-ax-border-neutral bg-ax-bg-default overflow-y-auto'
-            style={{ maxHeight: "inherit" }}
+        <Portal>
+          <div
+            ref={cardRef}
+            className='fixed z-50'
+            style={{
+              left: position.x,
+              top: position.showAbove ? undefined : position.y,
+              bottom: position.showAbove ? `${window.innerHeight - position.y}px` : undefined,
+              transform: "translateX(-50%)",
+              maxHeight: position.maxHeight,
+              width: position.width,
+            }}
+            onMouseEnter={handleCardMouseEnter}
+            onMouseLeave={handleCardMouseLeave}
           >
-            {content}
-          </Box>
-        </div>
+            <Box
+              padding='space-16'
+              borderRadius='4'
+              borderWidth='1'
+              shadow='dialog'
+              className='border-ax-border-neutral bg-ax-bg-default overflow-y-auto'
+              style={{ maxHeight: "inherit" }}
+            >
+              {content}
+            </Box>
+          </div>
+        </Portal>
       )}
     </>
   )
