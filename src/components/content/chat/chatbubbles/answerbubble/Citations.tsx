@@ -183,7 +183,7 @@ const GroupedCitationLink = ({ citations, source, citationIds, context }: Groupe
   return (
     <>
       <Accordion.Item>
-        <Accordion.Header className='citation-accordion-header w-full text-base'>
+        <Accordion.Header className='citation-accordion-header w-full text-base [&>span:last-child]:w-full [&>span:last-child]:min-w-0 [&>span:last-child]:overflow-hidden'>
           <HStack
             gap='space-2'
             align='center'
@@ -191,7 +191,6 @@ const GroupedCitationLink = ({ citations, source, citationIds, context }: Groupe
             className='w-full min-w-0'
           >
             {source.source === "nks" ? <KunnskapsbasenIcon size={18} /> : <NavNoIcon size={18} />}
-
             <BodyShort
               size='small'
               className='min-w-0 flex-1 truncate'
