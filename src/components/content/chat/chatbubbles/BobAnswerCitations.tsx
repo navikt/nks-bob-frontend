@@ -76,6 +76,7 @@ export const SingleCitation = ({ citation, context }: { citation: Citation; cont
 }
 
 export const MultiCitation = ({
+  title,
   citations,
   contexts,
 }: {
@@ -106,7 +107,7 @@ export const MultiCitation = ({
       <div className='mb-2 flex flex-col gap-4'>
         {citations.map((citation) => (
           <div
-            key={`multi-citation-${citation.sourceId ?? index}`}
+            key={`multi-citation-${title}-${citation.sourceId}`}
             className='group mt-1 mb-2 gap-1'
           >
             <BodyLong

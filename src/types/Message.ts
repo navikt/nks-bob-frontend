@@ -31,7 +31,7 @@ export type Message = {
 
 export type Citation = {
   text: string
-  sourceId: number
+  sourceId: string
 }
 
 export type Context = {
