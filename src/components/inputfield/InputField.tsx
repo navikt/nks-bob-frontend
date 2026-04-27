@@ -534,7 +534,7 @@ interface NewMessageAlertProps {
 
 const NewMessageAlert = ({ setInputValue, conversationId }: NewMessageAlertProps) => {
   const [newMessageAlert, setNewMessageAlert] = useState(false)
-  const reopenWarning = useRef<NodeJS.Timeout | null>(null)
+  const reopenWarning = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const WARNING_TIMER = 30 * 60 * 1000
 
