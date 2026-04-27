@@ -4,7 +4,6 @@ import { PluggableList } from "unified"
 
 interface AppMarkdownProps {
   children: string
-  className?: string
   remarkPlugins?: PluggableList
   rehypePlugins?: PluggableList
   components?: Components
@@ -66,14 +65,12 @@ const defaultComponents: Components = {
 
 export const AppMarkdown = ({
   children,
-  className,
   remarkPlugins = [],
   rehypePlugins = [],
   components = {},
 }: AppMarkdownProps) => {
   return (
     <Markdown
-      className={className}
       remarkPlugins={[remarkGfm, ...remarkPlugins]}
       rehypePlugins={rehypePlugins}
       components={{ ...defaultComponents, ...components }}
