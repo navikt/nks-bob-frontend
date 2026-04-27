@@ -66,14 +66,12 @@ const defaultComponents: Components = {
 
 export const AppMarkdown = ({
   children,
-  className,
   remarkPlugins = [],
   rehypePlugins = [],
   components = {},
 }: AppMarkdownProps) => {
   return (
     <Markdown
-      className={className}
       remarkPlugins={[remarkGfm, ...remarkPlugins]}
       rehypePlugins={rehypePlugins}
       components={{ ...defaultComponents, ...components }}
