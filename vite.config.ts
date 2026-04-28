@@ -127,18 +127,31 @@ export default defineConfig({
     rollupOptions: {
       output: {
         // Split vendor code (node_modules) into a separate chunk
-        manualChunks: {
-          vendor: ["react", "react-dom", "react-router", "zustand"],
-          markdown: [
-            "react-markdown",
-            "remark-gfm",
-            "rehype-raw",
-            "remark-rehype",
-            "rehype-stringify",
-            "remark",
-            "strip-markdown",
-          ],
-          navikt: ["@navikt/ds-react", "@navikt/aksel-icons"],
+        manualChunks: (id) => {
+          if (
+            ["react", "react-dom", "react-router", "zustand"].some((pkg) =>
+              id.includes(`/node_modules/${pkg}/`),
+            )
+          )
+            return "vendor"
+          if (
+            [
+              "react-markdown",
+              "remark-gfm",
+              "rehype-raw",
+              "remark-rehype",
+              "rehype-stringify",
+              "remark",
+              "strip-markdown",
+            ].some((pkg) => id.includes(`/node_modules/${pkg}/`))
+          )
+            return "markdown"
+          if (
+            ["@navikt/ds-react", "@navikt/aksel-icons"].some((pkg) =>
+              id.includes(`/node_modules/${pkg}/`),
+            )
+          )
+            return "navikt"
         },
         // Use hashed filenames with content-based hashing for better caching
         chunkFileNames: "assets/[name]-[hash].js",

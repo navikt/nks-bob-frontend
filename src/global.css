@@ -3,6 +3,11 @@
 
 @config '../tailwind.config.cjs';
 
+@custom-variant tallWide (@media (max-width: 800px) and (min-height: 1200px));
+@custom-variant marginWide (@media (min-width: 800px));
+@custom-variant narrowWidth (@media (max-width: 750px) and (min-height: 1120px));
+@custom-variant narrowHeight (@media (max-height: 1000px));
+
 /*  LAYOUT  */
 
 html {

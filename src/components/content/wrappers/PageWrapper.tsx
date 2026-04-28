@@ -7,7 +7,7 @@ import embarressedBob from "../../../assets/illustrations/EmbarrassedBob.svg"
 import Header from "../../header/Header"
 import { LoginBoundary } from "../../LoginBoundary"
 
-const ErrorComponent = ({ error }: { error: any; resetErrorBoundary: (...args: any[]) => void }) => {
+const ErrorComponent = ({ error }: { error: unknown; resetErrorBoundary: (...args: unknown[]) => void }) => {
   console.log({ error })
   return (
     <>
@@ -58,7 +58,11 @@ function PageWrapper({ children }: PageWrapperProps) {
     <div className='pagewrapper'>
       <ErrorBoundary
         FallbackComponent={ErrorComponent}
-        onError={(error: Error) => {
+        onError={(error) => {
+          if (!(error instanceof Error)) {
+            return api.log("error", String(error))
+          }
+
           if (error.message === "network error") {
             // Vanlig feil som oppstår om man åpner en fane med en utlogget sesjon
             return api.log("warn", error.message)

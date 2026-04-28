@@ -238,7 +238,7 @@ export default () => {
   return (
     <ErrorBoundary
       FallbackComponent={ConversationNotFound}
-      onError={(error: Error) => {
+      onError={(error) => {
         if (isApiError(error) && error.status !== 404) {
           throw error
         }

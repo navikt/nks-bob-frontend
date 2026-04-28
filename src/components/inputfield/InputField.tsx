@@ -35,7 +35,6 @@ import {
   validateDateOfBirth,
   validateEmail,
   validateFullName,
-  validateFullNameAndDob,
   validateGlobalPhoneNumber,
   validateName,
   validateNameAndDob,
@@ -182,7 +181,6 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
     validateDateOfBirth,
     validateNorwegianMobileNumber,
     validateGlobalPhoneNumber,
-    validateFullNameAndDob,
     validateNameAndDob,
     validateAddress,
     validatePostalCode,
@@ -205,7 +203,6 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
       "name",
       "address",
       "postalcode",
-      "fullname-and-dob",
       "firstname-twice-and-dob",
       "dob-three-times",
       "tlf",
@@ -537,7 +534,7 @@ interface NewMessageAlertProps {
 
 const NewMessageAlert = ({ setInputValue, conversationId }: NewMessageAlertProps) => {
   const [newMessageAlert, setNewMessageAlert] = useState(false)
-  const reopenWarning = useRef<NodeJS.Timeout | null>(null)
+  const reopenWarning = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const WARNING_TIMER = 30 * 60 * 1000
 

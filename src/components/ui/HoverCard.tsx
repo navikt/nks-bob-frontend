@@ -21,7 +21,7 @@ export const HoverCard = ({ children, content, onOpenChange, context }: HoverCar
   })
   const triggerRef = useRef<HTMLElement>(null)
   const cardRef = useRef<HTMLDivElement>(null)
-  const timeoutRef = useRef<NodeJS.Timeout>(null)
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>(null)
 
   const handleMouseEnter = () => {
     if (timeoutRef.current) {

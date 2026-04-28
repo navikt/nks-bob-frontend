@@ -3,7 +3,7 @@ import { countryCodePattern, whitelistedCountries, whitelistWords } from "./vali
 
 export type ValidationResult = ValidationOk | ValidationWarning | ValidationError
 
-export type ValidationType = "fnr" | "dnr" | "hnr" | "fullname" | "name" | "tlf" | "email" | "accountnumber" | "address" | "postalcode" | "dob-three-times" | "fullname-and-dob" | "firstname-twice-and-dob"
+export type ValidationType = "fnr" | "dnr" | "hnr" | "fullname" | "name" | "tlf" | "email" | "accountnumber" | "address" | "postalcode" | "dob-three-times" | "firstname-twice-and-dob"
 
 export type ValidationMatch = { value: string; start: number; end: number }
 
@@ -98,9 +98,6 @@ export function replaceValidationResult(validationType: ValidationType) {
   }
   if (validationType === "hnr") {
     return "(anonymisert helsenummer)"
-  }
-  if (validationType === "fullname-and-dob") {
-    return "(anonymisert personopplysning)"
   }
     if (validationType === "address") {
     return "(anonymisert adresse)"
@@ -295,28 +292,6 @@ export const validateDateOfBirth: Validator = (input: string) => {
   return baseValidateDateOfBirth(input)
 }
 
-//
-
-const hasFullNameAnd1DobRegex = new RegExp(
-  `^(?=[\\s\\S]*${fullNameRegex.source})(?=[\\s\\S]*${dobRegex.source})`,
-  "u",
-)
-
-const dobOnlyRegex = new RegExp(dobRegex.source, "g")
-
-const baseValidationFullNameAndDob = createValidatorWithWhitelist(
-  dobOnlyRegex,
-  warning,
-  "Tekst som ligner på fullt navn + fødselsdato",
-  "fullname-and-dob",
-  [...whitelistWords, ...whitelistedCountries]
-)
-
-export const validateFullNameAndDob: Validator = (input: string) => {
-  if (!hasFullNameAnd1DobRegex.test(input)) return ok()
-    return baseValidationFullNameAndDob(input)
-}
-
 // Regel for å matche om 2 ord med stor forbokstav + dato
 
 const nameWordRegex =
@@ -388,7 +363,12 @@ export const validateAccountNumber = createValidator(accountNumberRegex, warning
 // addressRegex matcher på adresse:
     // 2-3 ord (første ord må starte med stor bokstav) + mellomrom? + tall + bokstav
 
-const addressRegex = /\p{Lu}\p{L}+[-']?(?:\p{Lu}\p{L}+|\p{L}+)?(?:[ \t]?\p{Lu}\p{L}+)*(?:[ \t]?\p{L}+)?[ \t]+\d+(?!\d)(?!\p{L}{2,})(?:[ \t]?\p{L}(?![\p{L}]))?/gu
+const streetSuffixes = "gate|vei|veg|alle|allé|plass|torget|torg|stien|sti|løkka|bakken|haugen|dalen|åsen|bygda|veien|gaten"
+
+const addressRegex = new RegExp(
+  `\\p{Lu}\\p{L}+(?:[ \\t]\\p{Lu}\\p{L}+)*(?:[ \\t](?:${streetSuffixes}))?[ \\t]+\\d+(?!\\d)(?!\\p{L}{2,})(?:[ \\t]?\\p{L}(?![\\p{L}]))?`,
+  "gu"
+)
 
 const baseValidateAddress = createValidatorWithWhitelist(
   addressRegex,
