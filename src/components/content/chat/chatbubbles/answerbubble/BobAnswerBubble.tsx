@@ -1,17 +1,16 @@
 import { FileSearchIcon } from "@navikt/aksel-icons"
-import { BodyLong, Button, Heading, HStack, Skeleton, VStack } from "@navikt/ds-react"
+import { BodyLong, BodyShort, Button, Heading, HStack, Loader, Skeleton, VStack } from "@navikt/ds-react"
 import React, { memo, useState } from "react"
 import Markdown from "react-markdown"
 import rehypeRaw from "rehype-raw"
 import { BobRoboHead } from "../../../../../assets/illustrations/BobRoboHead.tsx"
-import { Citation, Message, NewMessage } from "../../../../../types/Message.ts"
+import { Message, NewMessage } from "../../../../../types/Message.ts"
 import analytics from "../../../../../utils/analytics.ts"
 import { AppMarkdown } from "../../../../../utils/AppMarkdown.tsx"
 import { md } from "../../../../../utils/markdown.ts"
 import { FollowUpQuestions } from "../../../followupquestions/FollowUpQuestions.tsx"
 import BobSuggests from "../../suggestions/BobSuggests.tsx"
-import BobAnswerCitations from "../BobAnswerCitations.tsx"
-import ToggleCitations from "../citations/ToggleCitations.tsx"
+
 import { NoSourcesNeeded, ShowAllSourcesToggle } from "../sources/ShowAllSources.tsx"
 import { CitationLinks, CitationNumber } from "./Citations.tsx"
 
@@ -24,7 +23,7 @@ interface BobAnswerBubbleProps {
   followUp: string[]
 }
 
-const options = ["Sitater fra Kunnskapsbasen", "Sitater fra Nav.no"]
+/* const options = ["Sitater fra Kunnskapsbasen", "Sitater fra Nav.no"] */
 
 interface CitationSpanProps extends React.HTMLAttributes<HTMLSpanElement> {
   "data-citation"?: string
@@ -32,7 +31,7 @@ interface CitationSpanProps extends React.HTMLAttributes<HTMLSpanElement> {
 }
 
 const getSourcesComponent = (message: Message) => {
-  const hasContext = message.context && message.context.length > 0
+  const hasContext = message.context && Object.entries(message.context).length > 0
   const hasCitations = message.citations && message.citations.length > 0
 
   if (!hasContext && !hasCitations) {
@@ -57,7 +56,7 @@ export const BobAnswerBubble = memo(
 
     const isPending = ({ pending, content }: Message): boolean => pending && content === ""
 
-    const [citations, setCitations] = useState<{ citationId: number; position: number }[]>([])
+    const [citations, setCitations] = useState<{ citationId: string; position: number }[]>([])
 
     const contentReady = !hasError(message) && !isPending(message) && !!message.content
 
@@ -79,7 +78,7 @@ export const BobAnswerBubble = memo(
               {hasError(message) ? (
                 <ErrorContent message={message} />
               ) : isPending(message) ? (
-                <LoadingContent />
+                <LoadingContent status={message.status} />
               ) : (
                 <MessageContent
                   message={message}
@@ -134,18 +133,34 @@ const ErrorContent = ({ message }: { message: Message }) => (
   </BodyLong>
 )
 
-const LoadingContent = () => (
-  <div className='w-full'>
-    <Skeleton
-      width='100%'
-      variant='text'
-    />
-    <Skeleton
-      width='70%'
-      variant='text'
-    />
-  </div>
-)
+const LoadingContent = ({ status }: { status: string[] | undefined }) => {
+  if (status && status.length > 0) {
+    return <StatusMessageContent status={status} />
+  }
+
+  return (
+    <div className='w-full'>
+      <Skeleton
+        width='100%'
+        variant='text'
+      />
+      <Skeleton
+        width='70%'
+        variant='text'
+      />
+    </div>
+  )
+}
+
+const StatusMessageContent = ({ status }: { status: string[] }) => {
+  const statusMessage = status.at(0) ?? ""
+  return (
+    <HStack gap='space-8'>
+      <Loader size='xsmall' />
+      <BodyShort className='animate-pulse'>{statusMessage}</BodyShort>
+    </HStack>
+  )
+}
 
 const MessageContent = ({
   message,
@@ -154,11 +169,11 @@ const MessageContent = ({
   onSend,
 }: {
   message: Message
-  citations: { citationId: number; position: number }[]
+  citations: { citationId: string; position: number }[]
   setCitations: React.Dispatch<
     React.SetStateAction<
       {
-        citationId: number
+        citationId: string
         position: number
       }[]
     >
@@ -174,7 +189,7 @@ const MessageContent = ({
     e.stopImmediatePropagation()
   })
 
-  const addCitation = (citationId: number, position: number) => {
+  const addCitation = (citationId: string, position: number) => {
     let existingCitations = citations
     const newCitation = { citationId, position }
 
@@ -205,7 +220,7 @@ const MessageContent = ({
     const dataCitation = props["data-citation"]
     const dataPosition = props["data-position"]
     if (dataCitation && dataPosition) {
-      const citationId = parseInt(dataCitation, 10)
+      const citationId = dataCitation
       addCitation(citationId, parseInt(dataPosition, 10))
       return (
         <CitationNumber
@@ -240,29 +255,32 @@ const MessageContent = ({
         </AppMarkdown>
       </BodyLong>
 
-      {message.context.length === 0 && message.citations.length === 0 && message.contextualizedQuestion !== null && (
-        <Button
-          data-color='neutral'
-          size='small'
-          variant='tertiary'
-          className='my-3 w-fit'
-          icon={<FileSearchIcon fontSize={24} />}
-          onClick={handleFindSourcesClick}
-        >
-          Forsøk å finne kilder som støtter svaret
-        </Button>
-      )}
+      {Object.entries(message.context).length === 0 &&
+        message.citations.length === 0 &&
+        message.contextualizedQuestion !== null && (
+          <Button
+            data-color='neutral'
+            size='small'
+            variant='tertiary'
+            className='my-3 w-fit'
+            icon={<FileSearchIcon fontSize={24} />}
+            onClick={handleFindSourcesClick}
+          >
+            Forsøk å finne kilder som støtter svaret
+          </Button>
+        )}
     </div>
   )
 }
 
 interface CitationsProps extends Omit<BobAnswerBubbleProps, "isHighlighted" | "followUp"> {
-  citations: { citationId: number; position: number }[]
+  citations: { citationId: string; position: number }[]
   showLinks: boolean
 }
 
 const Citations = memo(
   ({ message, citations, showLinks }: CitationsProps) => {
+    /*
     const [selectedCitations, setSelectedCitations] = useState<string[]>(options)
 
     const handleToggleCitations = (selected: string[]) => {
@@ -286,7 +304,7 @@ const Citations = memo(
 
     const citationData = filteredCitations
       .map((citation) => {
-        const matchingContext = message.context.at(citation.sourceId)!
+        const matchingContext = message.context[citation.sourceId]!
 
         return {
           title: matchingContext.title,
@@ -318,6 +336,8 @@ const Citations = memo(
         return 0
       })
 
+      */
+
     return (
       <div className='mb-4 flex flex-col gap-4'>
         {showLinks && citations.length > 0 && (
@@ -328,6 +348,7 @@ const Citations = memo(
             />
           </div>
         )}
+        {/*
         {message.citations && message.citations.length > 0 && (
           <div className='fade-in flex flex-col gap-2'>
             <ToggleCitations
@@ -337,12 +358,13 @@ const Citations = memo(
             {citationData.map((citation, index) => (
               <BobAnswerCitations
                 citation={citation}
-                key={`citation-${index}`}
+                key={`citation-${index}`} 
                 context={message.context}
               />
             ))}
           </div>
         )}
+          */}
       </div>
     )
   },
