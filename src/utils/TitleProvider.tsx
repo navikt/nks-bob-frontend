@@ -1,4 +1,6 @@
 import { Head } from "@unhead/react"
+import prodIcon from "../assets/icons/RoboBobHead.svg"
+import devIcon from "../assets/icons/BobDevHead.svg"
 
 function resolveEnvironment() {
   if (window.location.href.includes("localhost")) {
@@ -14,10 +16,10 @@ function resolveEnvironment() {
 
 function resolveIcon(environment: string) {
   if (environment === "prod") {
-    return "./src/assets/icons/BobHead.svg"
+    return prodIcon
   }
 
-  return "./src/assets/icons/BobDevHead.svg"
+  return devIcon
 }
 
 const resolveTitle = (environment: string) => {
