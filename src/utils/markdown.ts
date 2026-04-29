@@ -7,10 +7,10 @@ import remarkStringify, { Options } from "remark-stringify"
 import stripMarkdown from "strip-markdown"
 import { visit } from "unist-util-visit"
 
-// Remove all citations ([0]) from the text
+// Remove all citations ([0]) from the text, including any trailing space before punctuation
 function removeCitations(): (tree: Root) => void {
   return (tree) => {
-    findAndReplace(tree as any, [/\s?\[\d\]/g])
+    findAndReplace(tree as any, [/\s?\[\d+\](?:\s(?=[.,;:!?]))?/g, ""])
   }
 }
 

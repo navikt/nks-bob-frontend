@@ -171,7 +171,6 @@ const MessageContent = ({
     const copyLength = window.getSelection()?.toString().length ?? 0
 
     analytics.svartekstMarkert(copyLength / messageLength)
-    e.stopImmediatePropagation()
   })
 
   const addCitation = (citationId: number, position: number) => {
