@@ -49,7 +49,7 @@ function ChatContainer({ messages, onSend, isLoading }: ChatDialogProps) {
     const sel = window.getSelection()?.toString()
     if (!sel) return
     e.preventDefault()
-    e.clipboardData.setData("text/plain", sel.trimEnd())
+    e.clipboardData.setData("text/plain", sel.replace(/ +([.,;:!?])/g, "$1").trimEnd())
   }
 
   return (
