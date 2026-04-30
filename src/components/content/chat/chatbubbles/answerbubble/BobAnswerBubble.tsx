@@ -1,6 +1,6 @@
 import { FileSearchIcon } from "@navikt/aksel-icons"
 import { BodyLong, BodyShort, Button, Heading, HStack, Loader, Skeleton, VStack } from "@navikt/ds-react"
-import React, { memo, useState } from "react"
+import React, { memo, useEffect, useState } from "react"
 import Markdown from "react-markdown"
 import rehypeRaw from "rehype-raw"
 import { BobRoboHead } from "../../../../../assets/illustrations/BobRoboHead.tsx"
@@ -161,7 +161,6 @@ const StatusMessageContent = ({ status }: { status: string[] }) => {
     </HStack>
   )
 }
-
 const MessageContent = ({
   message,
   citations,
@@ -181,13 +180,31 @@ const MessageContent = ({
   onSend: (message: NewMessage) => void
 }) => {
   const divRef = React.useRef<HTMLDivElement>(null)
-  divRef.current?.addEventListener("copy", (e) => {
-    const messageLength = md.toPlaintext(message.content).length
-    const copyLength = window.getSelection()?.toString().length ?? 0
 
-    analytics.svartekstMarkert(copyLength / messageLength)
-    e.stopImmediatePropagation()
-  })
+  useEffect(() => {
+    const handleCopy = (e: ClipboardEvent) => {
+      const root = divRef.current
+      const selection = window.getSelection()
+      if (!root || !selection || selection.isCollapsed || selection.rangeCount === 0) return
+      if (!root.contains(selection.anchorNode) || !root.contains(selection.focusNode)) return
+
+      const fragment = selection.getRangeAt(0).cloneContents()
+
+      const container = document.createElement("div")
+      container.appendChild(fragment)
+
+      const plain = (container.textContent ?? "").replace(/\s+([.,:;!?])/g, "$1")
+      const html = container.innerHTML.replace(/\s+([.,:;!?])/g, "$1")
+
+      e.clipboardData?.setData("text/plain", plain)
+      e.clipboardData?.setData("text/html", html)
+
+      e.preventDefault()
+    }
+
+    document.addEventListener("copy", handleCopy)
+    return () => document.removeEventListener("copy", handleCopy)
+  }, [])
 
   const addCitation = (citationId: string, position: number) => {
     let existingCitations = citations
@@ -245,7 +262,7 @@ const MessageContent = ({
       >
         Svar fra Bob:
       </Heading>
-      <BodyLong>
+      <BodyLong as='div'>
         <AppMarkdown
           remarkPlugins={[md.remarkCitations]}
           rehypePlugins={[rehypeRaw]}
