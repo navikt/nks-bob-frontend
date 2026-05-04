@@ -66,18 +66,8 @@ export const HoverCard = ({ children, content, onOpenChange, context }: HoverCar
       const desiredWidth = maxChatWidth - 16
       const width = Math.min(desiredWidth, viewportWidth - 16)
 
-      // Calculate horizontal position to keep card within viewport
-      let xPosition = rect.left + rect.width / 2
-      const halfWidth = width / 2
-      const leftBound = 8 // Minimum distance from left edge
-      const rightBound = viewportWidth - 8 // Maximum distance from right edge
-
-      // Adjust x position if card would overflow viewport
-      if (xPosition - halfWidth < leftBound) {
-        xPosition = leftBound + halfWidth
-      } else if (xPosition + halfWidth > rightBound) {
-        xPosition = rightBound - halfWidth
-      }
+      // Center card horizontally on the page
+      const xPosition = viewportWidth / 2
 
       setPosition({
         x: xPosition,

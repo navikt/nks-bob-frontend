@@ -2,7 +2,7 @@ import { ChevronRightDoubleIcon } from "@navikt/aksel-icons"
 import { BodyLong, BodyShort, CopyButton, Detail, HStack, Label, Link, Tooltip } from "@navikt/ds-react"
 import { KunnskapsbasenIcon } from "../../../../assets/icons/KunnskapsbasenIcon.tsx"
 import { NavNoIcon } from "../../../../assets/icons/NavNoIcon.tsx"
-import { Citation, Context } from "../../../../types/Message.ts"
+import { Citation, Context, Contexts } from "../../../../types/Message.ts"
 import analytics from "../../../../utils/analytics.ts"
 import { AppMarkdown } from "../../../../utils/AppMarkdown.tsx"
 import { transformArticleColumnValue } from "../../../../utils/articleColumnTransformer.ts"
@@ -11,7 +11,7 @@ import { md } from "../../../../utils/markdown.ts"
 
 interface BobAnswerCitationProps {
   citation: { title: string; source: "navno" | "nks"; citations: Citation[] }
-  context: Context[]
+  context: Contexts
 }
 
 // Matching citation.text against context metadata, to find correct URL //
@@ -21,7 +21,7 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
     return (
       <SingleCitation
         citation={singleCitation}
-        context={context.at(singleCitation.sourceId)}
+        context={context[singleCitation.sourceId]}
       />
     )
   }
@@ -42,7 +42,7 @@ function BobAnswerCitations({ citation, context }: BobAnswerCitationProps) {
 
 export default BobAnswerCitations
 
-const SingleCitation = ({ citation, context }: { citation: Citation; context: Context | undefined }) => {
+export const SingleCitation = ({ citation, context }: { citation: Citation; context: Context | undefined }) => {
   function handleClick() {
     if (context?.source === "nks") {
       analytics.kbSitatLenkeKlikket({
@@ -56,16 +56,10 @@ const SingleCitation = ({ citation, context }: { citation: Citation; context: Co
   }
 
   return (
-    <div className='border-ax-border-neutral-subtle mb-2 flex flex-col border-b pb-6'>
-      {context ? (
-        <TitleLink context={context} />
-      ) : (
-        <BodyShort size='medium'>Kunne ikke finne lenke til artikkelen.</BodyShort>
-      )}
-
+    <div className='flex flex-col pb-6'>
       <BodyLong
-        size='medium'
-        className='italic'
+        size='small'
+        className='mb-3'
       >
         <AppMarkdown remarkPlugins={[md.rewriteRelativeLinks]}>{citation.text}</AppMarkdown>
       </BodyLong>
@@ -81,20 +75,21 @@ const SingleCitation = ({ citation, context }: { citation: Citation; context: Co
   )
 }
 
-const MultiCitation = ({
+export const MultiCitation = ({
+  title,
   citations,
   contexts,
 }: {
   title: string
   source: "navno" | "nks"
   citations: Citation[]
-  contexts: Context[]
+  contexts: Contexts
 }) => {
-  const mainCitation = citations[0]
-  const mainContext = mainCitation ? contexts.at(mainCitation.sourceId) : undefined
+  //const mainCitation = citations[0]
+  // const mainContext = mainCitation ? contexts[mainCitation.sourceId] : undefined
 
   function handleCitationLinkClick(citation: Citation) {
-    const context = contexts.at(citation.sourceId)
+    const context = contexts[citation.sourceId]
     if (context?.source === "nks") {
       analytics.kbSitatLenkeKlikket({
         tittel: context.title,
@@ -107,12 +102,12 @@ const MultiCitation = ({
   }
 
   return (
-    <div className='border-ax-border-neutral-subtle mb-4 flex flex-col border-b pb-6'>
-      {mainCitation && <TitleLink context={mainContext} />}
-      <div className='flex flex-col gap-2'>
+    <div className='flex flex-col pb-6'>
+      {/* {mainCitation && <TitleLink context={mainContext} />} */}
+      <div className='mb-2 flex flex-col gap-4'>
         {citations.map((citation) => (
           <div
-            key={`multi-citation-${citation.sourceId}`}
+            key={`multi-citation-${title}-${citation.sourceId}`}
             className='group mt-1 mb-2 gap-1'
           >
             <BodyLong
@@ -123,7 +118,7 @@ const MultiCitation = ({
             </BodyLong>
             <TextFragmentLink
               text={citation.text}
-              matchingContextCitationData={contexts.at(citation.sourceId)!}
+              matchingContextCitationData={contexts[citation.sourceId]!}
               title=''
               className='inline'
               onClick={() => handleCitationLinkClick(citation)}
@@ -285,10 +280,14 @@ export const TextFragmentLink = ({
           >
             {title ?? matchingContextCitationData.title}
             {title === "" ? (
-              <div className='mt-2 flex items-center gap-1'>
+              <BodyShort
+                size='small'
+                className='mt-2 flex items-center gap-1'
+                weight='semibold'
+              >
                 Finn sitatet i artikkelen
                 <ChevronRightDoubleIcon />
-              </div>
+              </BodyShort>
             ) : null}
           </Link>
         </Tooltip>

@@ -27,7 +27,7 @@ type KontekstMeta = { tittel: string; kilde: "navno" | "nks" }
 
 type KontekstArtikkelMeta = KontekstMeta & { artikkelKolonne: string | null }
 
-type SitatMeta = { kildeId: number }
+type SitatMeta = { kildeId: string }
 
 function reduceToObject<T>(acc: { [key: number]: T }, current: T, index: number) {
   acc[index] = current
@@ -171,7 +171,6 @@ const ignorerTrykket = (type: string) => logEvent("Ignorer trykket", { type })
 const anonymiserTrykket = (antall: number, typer: string[]) => logEvent("Anonymiser trykket", { antall, typer })
 
 const innlimingInfoModalLukket = () => logEvent("Infomodal om innliming lukket")
-
 
 export default {
   svarKopiert,

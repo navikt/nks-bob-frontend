@@ -1,22 +1,35 @@
 #!/bin/bash
 
-kubectl config use-context dev-gcp
+SECRET_NAME="nks-bob-frontend-lokal-credentials"
+TEAM="nks-aiautomatisering"
 
-function get_secrets() {
-  local repo=$1
-  kubectl -n nks-aiautomatisering get secret ${repo} -o json | jq '.data | map_values(@base64d)'
-}
+NKS_BOB_FRONTEND_LOKAL_SECRETS=$(nais secret get "$SECRET_NAME" \
+  -t "$TEAM" \
+  -e dev-gcp \
+  --with-values \
+  --reason "Henter miljøvariabler for lokal utvikling" \
+  -o json 2>&1)
 
-NKS_BOB_FRONTEND_LOKAL_SECRETS=$(get_secrets azuread-nks-bob-frontend-lokal)
-
-if [ -z "$NKS_BOB_FRONTEND_LOKAL_SECRETS" ]
+if [ $? -ne 0 ] || [ -z "$NKS_BOB_FRONTEND_LOKAL_SECRETS" ] || ! echo "$NKS_BOB_FRONTEND_LOKAL_SECRETS" | jq . > /dev/null 2>&1
 then
-      echo "Klarte ikke å hente miljøvariabler. Er du pålogget Naisdevice og google?"
+      echo "Klarte ikke å hente miljøvariabler."
+      echo "Er du pålogget med 'nais auth login'?"
+      echo ""
+      echo "Hvis secreten ikke finnes, må den opprettes i NAIS Console:"
+      echo "  https://console.nav.cloud.nais.io → $TEAM → Secrets → Opprett '$SECRET_NAME' (dev)"
+      echo "  Med nøklene: AZURE_APP_CLIENT_ID, AZURE_APP_JWK, AZURE_APP_WELL_KNOWN_URL,"
+      echo "  AZURE_OPENID_CONFIG_JWKS_URI, AZURE_OPENID_CONFIG_ISSUER, AZURE_OPENID_CONFIG_TOKEN_ENDPOINT"
       exit 1
 fi
 
+# nais secret get JSON: {"data": [{"key": "NAME", "value": "..."}]}
 function copy_envvar() {
-  echo "$1='$(echo $NKS_BOB_FRONTEND_LOKAL_SECRETS | jq -r .$1)'"
+  local value=$(echo "$NKS_BOB_FRONTEND_LOKAL_SECRETS" | jq -r --arg k "$1" '.data[] | select(.key == $k) | .value // empty')
+  if [ -z "$value" ]; then
+    echo "ADVARSEL: Fant ikke nøkkel '$1' i secreten '$SECRET_NAME'" >&2
+    return 1
+  fi
+  echo "$1='$value'"
 }
 
 # Generate random 32 character strings for the cookie and session keys
