@@ -7,7 +7,7 @@ import { BobRoboHead } from "../../../../../assets/illustrations/BobRoboHead.tsx
 import { Citation, Message, NewMessage } from "../../../../../types/Message.ts"
 import analytics from "../../../../../utils/analytics.ts"
 import { AppMarkdown } from "../../../../../utils/AppMarkdown.tsx"
-import { copyBobAnswerHandler } from "../../../../../utils/copyMarkdownHandler.ts"
+import { copyMarkedBobAnswerHandler } from "../../../../../utils/copyBobAnswerHandler.ts"
 import { md } from "../../../../../utils/markdown.ts"
 import { FollowUpQuestions } from "../../../followupquestions/FollowUpQuestions.tsx"
 import BobSuggests from "../../suggestions/BobSuggests.tsx"
@@ -171,7 +171,7 @@ const MessageContent = ({
   const handleCopy = async (e: React.ClipboardEvent<HTMLDivElement>) => {
     e.preventDefault()
 
-    await copyBobAnswerHandler(message)
+    await copyMarkedBobAnswerHandler(message)
   }
 
   const addCitation = (citationId: number, position: number) => {

@@ -13,6 +13,7 @@ import { useHotkeys } from "react-hotkeys-hook"
 import { useStarMessage } from "../../../../api/api.ts"
 import { Message, NewMessage } from "../../../../types/Message.ts"
 import analytics from "../../../../utils/analytics.ts"
+import { copyFullBobAnswerHandler } from "../../../../utils/copyBobAnswerHandler.ts"
 import { md } from "../../../../utils/markdown.ts"
 import { FeedbackOnAnswer } from "../feedback/GiveUsFeedback.tsx"
 import "./BobSuggests.css"
@@ -62,17 +63,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
     onSend(simplifyMessage)
   }
 
-  const copyMessageContent = () => {
-    const html = new Blob([md.toHtml(message.content)], { type: "text/html" })
-
-    const plain = new Blob([md.toPlaintext(message.content)], {
-      type: "text/plain",
-    })
-
-    const data = new ClipboardItem({ "text/html": html, "text/plain": plain })
-
-    return navigator.clipboard.write([data])
-  }
+  const copyMessageContent = () => copyFullBobAnswerHandler(message)
 
   useHotkeys("alt+ctrl+c", () => new Promise((resolve) => setTimeout(resolve, 100)).then(() => copyMessageContent()), {
     enableOnFormTags: true,
