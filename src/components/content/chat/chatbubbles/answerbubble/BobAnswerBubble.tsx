@@ -7,6 +7,7 @@ import { BobRoboHead } from "../../../../../assets/illustrations/BobRoboHead.tsx
 import { Citation, Message, NewMessage } from "../../../../../types/Message.ts"
 import analytics from "../../../../../utils/analytics.ts"
 import { AppMarkdown } from "../../../../../utils/AppMarkdown.tsx"
+import { copyBobAnswerHandler } from "../../../../../utils/copyMarkdownHandler.ts"
 import { md } from "../../../../../utils/markdown.ts"
 import { FollowUpQuestions } from "../../../followupquestions/FollowUpQuestions.tsx"
 import BobSuggests from "../../suggestions/BobSuggests.tsx"
@@ -166,13 +167,11 @@ const MessageContent = ({
   onSend: (message: NewMessage) => void
 }) => {
   const divRef = React.useRef<HTMLDivElement>(null)
-  divRef.current?.addEventListener("copy", (e) => {
-    const messageLength = md.toPlaintext(message.content).length
-    const copyLength = window.getSelection()?.toString().length ?? 0
 
-    analytics.svartekstMarkert(copyLength / messageLength)
-    e.stopImmediatePropagation()
-  })
+  const handleCopy = async (e: React.ClipboardEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    await copyBobAnswerHandler()
+  }
 
   const addCitation = (citationId: number, position: number) => {
     let existingCitations = citations
@@ -222,6 +221,7 @@ const MessageContent = ({
     <div
       className='mb-2 flex flex-col gap-3'
       ref={divRef}
+      onCopy={handleCopy}
     >
       <Heading
         size='small'
