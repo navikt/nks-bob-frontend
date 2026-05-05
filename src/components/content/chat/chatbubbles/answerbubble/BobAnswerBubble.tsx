@@ -171,13 +171,7 @@ const MessageContent = ({
   const handleCopy = async (e: React.ClipboardEvent<HTMLDivElement>) => {
     e.preventDefault()
 
-    const messageLength = md.toPlaintext(message.content).length
-    const copyLength = window.getSelection()?.toString().length ?? 0
-    if (messageLength > 0) {
-      analytics.svartekstMarkert(copyLength / messageLength)
-    }
-
-    await copyBobAnswerHandler()
+    await copyBobAnswerHandler(message)
   }
 
   const addCitation = (citationId: number, position: number) => {

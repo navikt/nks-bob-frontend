@@ -1,9 +1,13 @@
+import analytics from "./analytics"
+import { Message } from "../types/Message"
+import { md } from "./markdown"
+
 /**
  * Kopierer den markerte delen av en rendret AppMarkdown til utklippstavlen,
  * med kulepunkter i plain text og bevart struktur i HTML-versjonen.
  * Fjerner sitatnumre fra begge versjoner.
  */
-export async function copyBobAnswerHandler(): Promise<void> {
+export async function copyBobAnswerHandler(message: Message): Promise<void> {
   const selection = document.getSelection()
   if (!selection || selection.rangeCount === 0) return
 
@@ -41,4 +45,9 @@ const html = htmlContainer.innerHTML.replace(/\s+(?=\p{P})/gu, "")
       "text/html": new Blob([html], { type: "text/html" }),
     }),
   ])
+  
+ const messageLength = md.toPlaintext(message.content).length
+  const copyLength = window.getSelection()?.toString().length ?? 0
+
+  analytics.svartekstMarkert(copyLength / messageLength)
 }
