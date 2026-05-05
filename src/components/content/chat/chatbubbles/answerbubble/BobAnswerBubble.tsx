@@ -188,7 +188,7 @@ const MessageContent = ({
     await copyMarkedBobAnswerHandler(message)
   }
 
-  const addCitation = (citationId: number, position: number) => {
+  const addCitation = (citationId: string, position: number) => {
     let existingCitations = citations
     const newCitation = { citationId, position }
 
