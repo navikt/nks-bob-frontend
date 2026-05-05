@@ -89,7 +89,7 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
   )
 
   return (
-    <sup className='align-sub'>
+    <sup className='align-sub select-none'>
       <HoverCard
         content={hoverContent}
         onOpenChange={setIsActive}
