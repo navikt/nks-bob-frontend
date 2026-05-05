@@ -7,6 +7,7 @@ import { BobRoboHead } from "../../../../../assets/illustrations/BobRoboHead.tsx
 import { Message, NewMessage } from "../../../../../types/Message.ts"
 import analytics from "../../../../../utils/analytics.ts"
 import { AppMarkdown } from "../../../../../utils/AppMarkdown.tsx"
+import { copyMarkedBobAnswerHandler } from "../../../../../utils/copyBobAnswerHandler.ts"
 import { md } from "../../../../../utils/markdown.ts"
 import { FollowUpQuestions } from "../../../followupquestions/FollowUpQuestions.tsx"
 import BobSuggests from "../../suggestions/BobSuggests.tsx"
@@ -181,7 +182,13 @@ const MessageContent = ({
 }) => {
   const divRef = React.useRef<HTMLDivElement>(null)
 
-  const addCitation = (citationId: string, position: number) => {
+  const handleCopy = async (e: React.ClipboardEvent<HTMLDivElement>) => {
+    e.preventDefault()
+
+    await copyMarkedBobAnswerHandler(message)
+  }
+
+  const addCitation = (citationId: number, position: number) => {
     let existingCitations = citations
     const newCitation = { citationId, position }
 
@@ -229,6 +236,7 @@ const MessageContent = ({
     <div
       className='mb-2 flex flex-col gap-3'
       ref={divRef}
+      onCopy={handleCopy}
     >
       <Heading
         size='small'
