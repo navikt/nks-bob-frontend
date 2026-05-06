@@ -32,10 +32,10 @@ textContainer.querySelectorAll("ol").forEach((ol) => {
 const text = (textContainer.textContent ?? "")
   .replace(/[ \t]+/g, " ")
   .replace(/\s*\n\s*/g, "\n\n")     
-  .replace(/[ \t]+(?=\p{P})/gu, "")
+  .replace(/[ \t]+(?=[.,;:!?)}»])/gu, "")
   .trim()
 
-  const html = htmlContainer.innerHTML.replace(/\s+(?=\p{P})/gu, "")
+  const html = htmlContainer.innerHTML.replace(/[ \t]+(?=[.,;:!?)}»])/gu, "")
 
   return { text, html }
 }
