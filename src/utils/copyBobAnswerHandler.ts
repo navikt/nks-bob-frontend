@@ -11,18 +11,29 @@ function buildClipboardContent(sourceNode: Node): { text: string; html: string }
   textContainer.querySelectorAll("[data-citation], sup").forEach((el) => el.remove())
   htmlContainer.querySelectorAll("[data-citation], sup").forEach((el) => el.remove())
 
-  textContainer.querySelectorAll("li").forEach((li) => {
-    li.textContent = `• ${li.textContent?.trim()}`
-  })
+ textContainer.querySelectorAll("ul > li").forEach((li) => {
+  li.textContent = `• ${li.textContent?.trim() ?? ""}`
+})
+
+textContainer.querySelectorAll("ol").forEach((ol) => {
+  Array.from(ol.children)
+    .filter((c): c is HTMLLIElement => c.tagName === "LI")
+    .forEach((li, i) => {
+      li.textContent = `${i + 1}. ${li.textContent?.trim() ?? ""}`
+    })
+})
+
   textContainer.querySelectorAll("p").forEach((p) => p.append("\n"))
 
   htmlContainer.querySelectorAll("ul, ol, p, h1, h2, h3, strong").forEach((el) => {
     el.insertAdjacentHTML("afterend", "<br>")
   })
 
-  const text = (textContainer.textContent ?? "")
-    .replace(/[ \t]+/g, " ")
-    .replace(/[ \t]+(?=\p{P})/gu, "")
+const text = (textContainer.textContent ?? "")
+  .replace(/[ \t]+/g, " ")
+  .replace(/\s*\n\s*/g, "\n\n")     
+  .replace(/[ \t]+(?=\p{P})/gu, "")
+  .trim()
 
   const html = htmlContainer.innerHTML.replace(/\s+(?=\p{P})/gu, "")
 
