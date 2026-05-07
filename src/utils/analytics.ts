@@ -172,6 +172,8 @@ const anonymiserTrykket = (antall: number, typer: string[]) => logEvent("Anonymi
 
 const innlimingInfoModalLukket = () => logEvent("Infomodal om innliming lukket")
 
+const finnKilderKlikket = () => logEvent("Finn kilder til svaret klikket")
+
 export default {
   svarKopiert,
   svarEndret,
@@ -212,4 +214,5 @@ export default {
   ignorerTrykket,
   anonymiserTrykket,
   innlimingInfoModalLukket,
+  finnKilderKlikket,
 }

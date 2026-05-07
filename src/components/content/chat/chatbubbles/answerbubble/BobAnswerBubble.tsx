@@ -4,7 +4,7 @@ import React, { memo, useState } from "react"
 import Markdown from "react-markdown"
 import rehypeRaw from "rehype-raw"
 import { BobRoboHead } from "../../../../../assets/illustrations/BobRoboHead.tsx"
-import { Message, NewMessage } from "../../../../../types/Message.ts"
+import { Message, NewMessage, Tool } from "../../../../../types/Message.ts"
 import analytics from "../../../../../utils/analytics.ts"
 import { AppMarkdown } from "../../../../../utils/AppMarkdown.tsx"
 import { copyMarkedBobAnswerHandler } from "../../../../../utils/copyBobAnswerHandler.ts"
@@ -22,8 +22,6 @@ interface BobAnswerBubbleProps {
   isHighlighted: boolean
   followUp: string[]
 }
-
-/* const options = ["Sitater fra Kunnskapsbasen", "Sitater fra Nav.no"] */
 
 interface CitationSpanProps extends React.HTMLAttributes<HTMLSpanElement> {
   "data-citation"?: string
@@ -60,6 +58,16 @@ export const BobAnswerBubble = memo(
 
     const contentReady = !hasError(message) && !isPending(message) && !!message.content
 
+      function handleFindSourcesClick() {
+    analytics.finnKilderKlikket()
+    const findSources: NewMessage = {
+      content: `Se om du kan finne kilder som støtter svaret:\n${message.content}`,
+    }
+    onSend(findSources)
+  }
+
+      const toolNames = ["date_duration", "end_date", "emphatic_guidelines", "is_country_eea", "search_nav_information", "nav_dictionary"]
+
     return (
       <VStack
         gap='space-4'
@@ -85,6 +93,7 @@ export const BobAnswerBubble = memo(
                   citations={citations}
                   setCitations={setCitations}
                   onSend={onSend}
+                  followUp={followUp}
                 />
               )}
             </div>
@@ -98,6 +107,7 @@ export const BobAnswerBubble = memo(
                   />
                   {getSourcesComponent(message)}
                 </HStack>
+                {message.citations.length > 0 && (
                 <Citations
                   message={message}
                   onSend={onSend}
@@ -106,6 +116,25 @@ export const BobAnswerBubble = memo(
                   citations={citations}
                   showLinks={contentReady}
                 />
+                )}
+                                    {followUp.length > 0 &&
+        Object.keys(message.context).length === 0 &&
+        message.citations.length === 0 &&
+        (message.tools.length === 0 || !message.tools.some((tool) => toolNames.includes(tool.name))) && (
+          <div className="bg-ax-bg-accent-soft p-4 w-full pb-2 mb-6">
+            <BodyShort>Ønsker du at Bob skal finne kilder for dette svaret?</BodyShort>
+          <Button
+            data-color='info'
+            size='small'
+            variant='primary'
+            className='my-3 w-fit'
+            icon={<FileSearchIcon fontSize={24} />}
+            onClick={handleFindSourcesClick}
+          >
+            Finn kilder
+          </Button>
+          </div>
+        )}
                 <FollowUpQuestions
                   followUp={followUp}
                   onSend={(question) => onSend({ content: question })}
@@ -167,6 +196,7 @@ const MessageContent = ({
   citations,
   setCitations,
   onSend,
+  followUp,
 }: {
   message: Message
   citations: { citationId: string; position: number }[]
@@ -179,6 +209,7 @@ const MessageContent = ({
     >
   >
   onSend: (message: NewMessage) => void
+  followUp: string[]
 }) => {
   const divRef = React.useRef<HTMLDivElement>(null)
 
@@ -207,14 +238,6 @@ const MessageContent = ({
     setCitations(newState)
   }
 
-  function handleFindSourcesClick() {
-    analytics.svarEndret("punktliste")
-    const findSources: NewMessage = {
-      content: `Se om du kan finne kilder som støtter svaret:\n${message.content}`,
-    }
-    onSend(findSources)
-  }
-
   const citationSpanComponent = (props: CitationSpanProps) => {
     const dataCitation = props["data-citation"]
     const dataPosition = props["data-position"]
@@ -234,7 +257,7 @@ const MessageContent = ({
 
   return (
     <div
-      className='mb-2 flex flex-col gap-3'
+      className='mb-2 flex flex-col gap-3 w-full'
       ref={divRef}
       onCopy={handleCopy}
     >
@@ -254,21 +277,6 @@ const MessageContent = ({
           {message.content}
         </AppMarkdown>
       </BodyLong>
-
-      {Object.entries(message.context).length === 0 &&
-        message.citations.length === 0 &&
-        message.contextualizedQuestion !== null && (
-          <Button
-            data-color='neutral'
-            size='small'
-            variant='tertiary'
-            className='my-3 w-fit'
-            icon={<FileSearchIcon fontSize={24} />}
-            onClick={handleFindSourcesClick}
-          >
-            Forsøk å finne kilder som støtter svaret
-          </Button>
-        )}
     </div>
   )
 }
