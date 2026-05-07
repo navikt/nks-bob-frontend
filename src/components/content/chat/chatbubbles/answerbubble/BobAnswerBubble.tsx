@@ -194,7 +194,7 @@ const MessageContent = ({
   }
 
   function handleFindSourcesClick() {
-    analytics.svarEndret("punktliste")
+    analytics.finnKilderTilSvaret()
     const findSources: NewMessage = {
       content: `Se om du kan finne kilder som støtter svaret:\n${message.content}`,
     }
