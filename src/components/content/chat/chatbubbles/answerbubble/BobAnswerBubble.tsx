@@ -59,7 +59,7 @@ export const BobAnswerBubble = memo(
     const contentReady = !hasError(message) && !isPending(message) && !!message.content
 
     function handleFindSourcesClick() {
-      analytics.finnKilderKlikket()
+      analytics.finnKilderTilSvaret()
       const findSources: NewMessage = {
         content: `Se om du kan finne kilder som støtter svaret:\n${message.content}`,
       }
