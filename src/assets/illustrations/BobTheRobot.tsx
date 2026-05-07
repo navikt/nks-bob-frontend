@@ -13,7 +13,13 @@ export const BobTheRobot = () => {
         d='M46 0C20.5949 0 0 20.5949 0 46V308.857C0 315.69 3.53777 322.035 9.34987 325.627C15.162 329.219 22.4196 329.546 28.5308 326.49L67.9929 306.759C74.6718 303.42 78.8907 296.593 78.8907 289.126V138.023C78.8907 105.36 105.37 78.8804 138.034 78.8804H361.429C372.316 78.8804 381.143 70.054 381.143 59.1661V46C381.143 20.5949 360.548 0 335.143 0H46ZM151.143 105.143C125.738 105.143 105.143 125.738 105.143 151.143V361.429C105.143 386.834 125.738 407.429 151.143 407.429H330.489L431.469 457.919C437.58 460.974 444.838 460.648 450.65 457.056C456.462 453.464 460 447.118 460 440.286V151.143C460 125.738 439.405 105.143 414 105.143H151.143ZM203.714 236.571C192.826 236.571 184 245.398 184 256.286C184 267.174 192.826 276 203.714 276H203.977C214.865 276 223.691 267.174 223.691 256.286C223.691 245.398 214.865 236.571 203.977 236.571H203.714ZM262.857 256.286C262.857 245.398 271.683 236.571 282.571 236.571H282.834C293.722 236.571 302.548 245.398 302.548 256.286C302.548 267.174 293.722 276 282.834 276H282.571C271.683 276 262.857 267.174 262.857 256.286Z'
         fill='#FFF4EE'
       />
-      <ellipse cx='229' cy='406' rx='58' ry='5.5' fill='#ECEDEF' />
+      <ellipse
+        cx='229'
+        cy='406'
+        rx='58'
+        ry='5.5'
+        fill='#ECEDEF'
+      />
       <path
         d='M203.346 408.809C191.507 408.809 186.787 405.016 186.969 402.618L232.843 403.12L268.34 403.454C270.1 404.793 264.983 406.826 260.506 407.805C252.861 409.479 240.3 408.307 235.749 406.969C231.137 407.526 218.64 408.809 203.346 408.809Z'
         fill='#383838'
@@ -539,7 +545,10 @@ export const BobTheRobot = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -548,7 +557,10 @@ export const BobTheRobot = () => {
           />
           <feOffset dy='4' />
           <feGaussianBlur stdDeviation='2' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -574,7 +586,10 @@ export const BobTheRobot = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -583,7 +598,10 @@ export const BobTheRobot = () => {
           />
           <feOffset dy='4' />
           <feGaussianBlur stdDeviation='2' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -609,7 +627,10 @@ export const BobTheRobot = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -618,7 +639,10 @@ export const BobTheRobot = () => {
           />
           <feOffset dy='4' />
           <feGaussianBlur stdDeviation='2' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -644,7 +668,10 @@ export const BobTheRobot = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -653,7 +680,10 @@ export const BobTheRobot = () => {
           />
           <feOffset dy='4' />
           <feGaussianBlur stdDeviation='2' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -679,7 +709,10 @@ export const BobTheRobot = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feBlend
             mode='normal'
             in='SourceGraphic'
@@ -694,7 +727,12 @@ export const BobTheRobot = () => {
           />
           <feOffset dy='-3' />
           <feGaussianBlur stdDeviation='2' />
-          <feComposite in2='hardAlpha' operator='arithmetic' k2='-1' k3='1' />
+          <feComposite
+            in2='hardAlpha'
+            operator='arithmetic'
+            k2='-1'
+            k3='1'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -714,7 +752,10 @@ export const BobTheRobot = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feBlend
             mode='normal'
             in='SourceGraphic'
@@ -729,7 +770,12 @@ export const BobTheRobot = () => {
           />
           <feOffset dy='-3' />
           <feGaussianBlur stdDeviation='2' />
-          <feComposite in2='hardAlpha' operator='arithmetic' k2='-1' k3='1' />
+          <feComposite
+            in2='hardAlpha'
+            operator='arithmetic'
+            k2='-1'
+            k3='1'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -749,7 +795,10 @@ export const BobTheRobot = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -758,7 +807,10 @@ export const BobTheRobot = () => {
           />
           <feOffset dy='4' />
           <feGaussianBlur stdDeviation='2' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -784,16 +836,25 @@ export const BobTheRobot = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0'
             result='hardAlpha'
           />
-          <feOffset dx='-1' dy='1' />
+          <feOffset
+            dx='-1'
+            dy='1'
+          />
           <feGaussianBlur stdDeviation='1' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -819,16 +880,25 @@ export const BobTheRobot = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0'
             result='hardAlpha'
           />
-          <feOffset dx='-1' dy='1' />
+          <feOffset
+            dx='-1'
+            dy='1'
+          />
           <feGaussianBlur stdDeviation='1' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -854,7 +924,10 @@ export const BobTheRobot = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -863,7 +936,10 @@ export const BobTheRobot = () => {
           />
           <feOffset dy='1' />
           <feGaussianBlur stdDeviation='1.65' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0'
@@ -889,7 +965,10 @@ export const BobTheRobot = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -898,7 +977,10 @@ export const BobTheRobot = () => {
           />
           <feOffset dy='1' />
           <feGaussianBlur stdDeviation='1.65' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0'
@@ -924,7 +1006,10 @@ export const BobTheRobot = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -932,7 +1017,10 @@ export const BobTheRobot = () => {
             result='hardAlpha'
           />
           <feOffset dy='0.3' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0'
@@ -954,8 +1042,16 @@ export const BobTheRobot = () => {
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0'
             result='hardAlpha'
           />
-          <feOffset dx='0.1' dy='0.5' />
-          <feComposite in2='hardAlpha' operator='arithmetic' k2='-1' k3='1' />
+          <feOffset
+            dx='0.1'
+            dy='0.5'
+          />
+          <feComposite
+            in2='hardAlpha'
+            operator='arithmetic'
+            k2='-1'
+            k3='1'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -974,8 +1070,15 @@ export const BobTheRobot = () => {
           y2='365.588'
           gradientUnits='userSpaceOnUse'
         >
-          <stop stop-color='#E8E7E2' stop-opacity='0' />
-          <stop offset='1' stop-color='#171412' stop-opacity='0.6' />
+          <stop
+            stop-color='#E8E7E2'
+            stop-opacity='0'
+          />
+          <stop
+            offset='1'
+            stop-color='#171412'
+            stop-opacity='0.6'
+          />
         </linearGradient>
         <linearGradient
           id='paint1_linear_1260_19890'
@@ -985,8 +1088,14 @@ export const BobTheRobot = () => {
           y2='355.409'
           gradientUnits='userSpaceOnUse'
         >
-          <stop stop-color='#9E9C98' stop-opacity='0' />
-          <stop offset='1' stop-color='#383736' />
+          <stop
+            stop-color='#9E9C98'
+            stop-opacity='0'
+          />
+          <stop
+            offset='1'
+            stop-color='#383736'
+          />
         </linearGradient>
         <linearGradient
           id='paint2_linear_1260_19890'
@@ -996,8 +1105,14 @@ export const BobTheRobot = () => {
           y2='277.71'
           gradientUnits='userSpaceOnUse'
         >
-          <stop stop-color='#D9D9D9' stop-opacity='0.2' />
-          <stop offset='1' stop-color='#737373' />
+          <stop
+            stop-color='#D9D9D9'
+            stop-opacity='0.2'
+          />
+          <stop
+            offset='1'
+            stop-color='#737373'
+          />
         </linearGradient>
         <linearGradient
           id='paint3_linear_1260_19890'
@@ -1007,7 +1122,10 @@ export const BobTheRobot = () => {
           y2='277.192'
           gradientUnits='userSpaceOnUse'
         >
-          <stop stop-color='#D9D9D9' stop-opacity='0.4' />
+          <stop
+            stop-color='#D9D9D9'
+            stop-opacity='0.4'
+          />
           <stop offset='1' />
         </linearGradient>
         <radialGradient
@@ -1018,8 +1136,14 @@ export const BobTheRobot = () => {
           gradientUnits='userSpaceOnUse'
           gradientTransform='translate(154.641 369.45) rotate(-78.8639) scale(15.4181 5.7996)'
         >
-          <stop offset='0.74' stop-color='#83827E' />
-          <stop offset='1' stop-color='#1D1D1C' />
+          <stop
+            offset='0.74'
+            stop-color='#83827E'
+          />
+          <stop
+            offset='1'
+            stop-color='#1D1D1C'
+          />
         </radialGradient>
         <radialGradient
           id='paint5_radial_1260_19890'
@@ -1029,8 +1153,14 @@ export const BobTheRobot = () => {
           gradientUnits='userSpaceOnUse'
           gradientTransform='translate(301.02 369.45) rotate(-101.136) scale(15.4181 5.7996)'
         >
-          <stop offset='0.74' stop-color='#83827E' />
-          <stop offset='1' stop-color='#1D1D1C' />
+          <stop
+            offset='0.74'
+            stop-color='#83827E'
+          />
+          <stop
+            offset='1'
+            stop-color='#1D1D1C'
+          />
         </radialGradient>
       </defs>
     </svg>
@@ -1052,7 +1182,13 @@ export const BobTheRobotDark = () => {
         d='M46 0C20.5949 0 0 20.5949 0 46V308.857C0 315.69 3.53777 322.035 9.34987 325.627C15.162 329.219 22.4196 329.546 28.5308 326.49L67.9929 306.759C74.6718 303.42 78.8907 296.593 78.8907 289.126V138.023C78.8907 105.36 105.37 78.8804 138.034 78.8804H361.429C372.316 78.8804 381.143 70.054 381.143 59.1661V46C381.143 20.5949 360.548 0 335.143 0H46ZM151.143 105.143C125.738 105.143 105.143 125.738 105.143 151.143V361.429C105.143 386.834 125.738 407.429 151.143 407.429H330.489L431.469 457.919C437.58 460.974 444.838 460.648 450.65 457.056C456.462 453.464 460 447.118 460 440.286V151.143C460 125.738 439.405 105.143 414 105.143H151.143ZM203.714 236.571C192.826 236.571 184 245.398 184 256.286C184 267.174 192.826 276 203.714 276H203.977C214.865 276 223.691 267.174 223.691 256.286C223.691 245.398 214.865 236.571 203.977 236.571H203.714ZM262.857 256.286C262.857 245.398 271.683 236.571 282.571 236.571H282.834C293.722 236.571 302.548 245.398 302.548 256.286C302.548 267.174 293.722 276 282.834 276H282.571C271.683 276 262.857 267.174 262.857 256.286Z'
         fill='#161D28'
       />
-      <ellipse cx='229' cy='406' rx='58' ry='5.5' fill='#07090D' />
+      <ellipse
+        cx='229'
+        cy='406'
+        rx='58'
+        ry='5.5'
+        fill='#07090D'
+      />
       <path
         d='M203.346 408.809C191.507 408.809 186.787 405.016 186.969 402.618L232.843 403.12L268.34 403.454C270.1 404.793 264.983 406.826 260.506 407.805C252.861 409.479 240.3 408.307 235.749 406.969C231.137 407.526 218.64 408.809 203.346 408.809Z'
         fill='#383838'
@@ -1578,7 +1714,10 @@ export const BobTheRobotDark = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1587,7 +1726,10 @@ export const BobTheRobotDark = () => {
           />
           <feOffset dy='4' />
           <feGaussianBlur stdDeviation='2' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -1613,7 +1755,10 @@ export const BobTheRobotDark = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1622,7 +1767,10 @@ export const BobTheRobotDark = () => {
           />
           <feOffset dy='4' />
           <feGaussianBlur stdDeviation='2' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -1648,7 +1796,10 @@ export const BobTheRobotDark = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1657,7 +1808,10 @@ export const BobTheRobotDark = () => {
           />
           <feOffset dy='4' />
           <feGaussianBlur stdDeviation='2' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -1683,7 +1837,10 @@ export const BobTheRobotDark = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1692,7 +1849,10 @@ export const BobTheRobotDark = () => {
           />
           <feOffset dy='4' />
           <feGaussianBlur stdDeviation='2' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -1718,7 +1878,10 @@ export const BobTheRobotDark = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feBlend
             mode='normal'
             in='SourceGraphic'
@@ -1733,7 +1896,12 @@ export const BobTheRobotDark = () => {
           />
           <feOffset dy='-3' />
           <feGaussianBlur stdDeviation='2' />
-          <feComposite in2='hardAlpha' operator='arithmetic' k2='-1' k3='1' />
+          <feComposite
+            in2='hardAlpha'
+            operator='arithmetic'
+            k2='-1'
+            k3='1'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -1753,7 +1921,10 @@ export const BobTheRobotDark = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feBlend
             mode='normal'
             in='SourceGraphic'
@@ -1768,7 +1939,12 @@ export const BobTheRobotDark = () => {
           />
           <feOffset dy='-3' />
           <feGaussianBlur stdDeviation='2' />
-          <feComposite in2='hardAlpha' operator='arithmetic' k2='-1' k3='1' />
+          <feComposite
+            in2='hardAlpha'
+            operator='arithmetic'
+            k2='-1'
+            k3='1'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -1788,7 +1964,10 @@ export const BobTheRobotDark = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1797,7 +1976,10 @@ export const BobTheRobotDark = () => {
           />
           <feOffset dy='4' />
           <feGaussianBlur stdDeviation='2' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -1823,16 +2005,25 @@ export const BobTheRobotDark = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0'
             result='hardAlpha'
           />
-          <feOffset dx='-1' dy='1' />
+          <feOffset
+            dx='-1'
+            dy='1'
+          />
           <feGaussianBlur stdDeviation='1' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -1858,16 +2049,25 @@ export const BobTheRobotDark = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0'
             result='hardAlpha'
           />
-          <feOffset dx='-1' dy='1' />
+          <feOffset
+            dx='-1'
+            dy='1'
+          />
           <feGaussianBlur stdDeviation='1' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -1893,7 +2093,10 @@ export const BobTheRobotDark = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1902,7 +2105,10 @@ export const BobTheRobotDark = () => {
           />
           <feOffset dy='1' />
           <feGaussianBlur stdDeviation='1.65' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0'
@@ -1928,7 +2134,10 @@ export const BobTheRobotDark = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1937,7 +2146,10 @@ export const BobTheRobotDark = () => {
           />
           <feOffset dy='1' />
           <feGaussianBlur stdDeviation='1.65' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0'
@@ -1963,7 +2175,10 @@ export const BobTheRobotDark = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1971,7 +2186,10 @@ export const BobTheRobotDark = () => {
             result='hardAlpha'
           />
           <feOffset dy='0.3' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0'
@@ -1993,8 +2211,16 @@ export const BobTheRobotDark = () => {
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0'
             result='hardAlpha'
           />
-          <feOffset dx='0.1' dy='0.5' />
-          <feComposite in2='hardAlpha' operator='arithmetic' k2='-1' k3='1' />
+          <feOffset
+            dx='0.1'
+            dy='0.5'
+          />
+          <feComposite
+            in2='hardAlpha'
+            operator='arithmetic'
+            k2='-1'
+            k3='1'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -2013,8 +2239,15 @@ export const BobTheRobotDark = () => {
           y2='365.588'
           gradientUnits='userSpaceOnUse'
         >
-          <stop stop-color='#E8E7E2' stop-opacity='0' />
-          <stop offset='1' stop-color='#171412' stop-opacity='0.6' />
+          <stop
+            stop-color='#E8E7E2'
+            stop-opacity='0'
+          />
+          <stop
+            offset='1'
+            stop-color='#171412'
+            stop-opacity='0.6'
+          />
         </linearGradient>
         <linearGradient
           id='paint1_linear_1260_19890'
@@ -2024,8 +2257,14 @@ export const BobTheRobotDark = () => {
           y2='355.409'
           gradientUnits='userSpaceOnUse'
         >
-          <stop stop-color='#9E9C98' stop-opacity='0' />
-          <stop offset='1' stop-color='#383736' />
+          <stop
+            stop-color='#9E9C98'
+            stop-opacity='0'
+          />
+          <stop
+            offset='1'
+            stop-color='#383736'
+          />
         </linearGradient>
         <linearGradient
           id='paint2_linear_1260_19890'
@@ -2035,8 +2274,14 @@ export const BobTheRobotDark = () => {
           y2='277.71'
           gradientUnits='userSpaceOnUse'
         >
-          <stop stop-color='#D9D9D9' stop-opacity='0.2' />
-          <stop offset='1' stop-color='#737373' />
+          <stop
+            stop-color='#D9D9D9'
+            stop-opacity='0.2'
+          />
+          <stop
+            offset='1'
+            stop-color='#737373'
+          />
         </linearGradient>
         <linearGradient
           id='paint3_linear_1260_19890'
@@ -2046,7 +2291,10 @@ export const BobTheRobotDark = () => {
           y2='277.192'
           gradientUnits='userSpaceOnUse'
         >
-          <stop stop-color='#D9D9D9' stop-opacity='0.4' />
+          <stop
+            stop-color='#D9D9D9'
+            stop-opacity='0.4'
+          />
           <stop offset='1' />
         </linearGradient>
         <radialGradient
@@ -2057,8 +2305,14 @@ export const BobTheRobotDark = () => {
           gradientUnits='userSpaceOnUse'
           gradientTransform='translate(154.641 369.45) rotate(-78.8639) scale(15.4181 5.7996)'
         >
-          <stop offset='0.74' stop-color='#83827E' />
-          <stop offset='1' stop-color='#1D1D1C' />
+          <stop
+            offset='0.74'
+            stop-color='#83827E'
+          />
+          <stop
+            offset='1'
+            stop-color='#1D1D1C'
+          />
         </radialGradient>
         <radialGradient
           id='paint5_radial_1260_19890'
@@ -2068,8 +2322,14 @@ export const BobTheRobotDark = () => {
           gradientUnits='userSpaceOnUse'
           gradientTransform='translate(301.02 369.45) rotate(-101.136) scale(15.4181 5.7996)'
         >
-          <stop offset='0.74' stop-color='#83827E' />
-          <stop offset='1' stop-color='#1D1D1C' />
+          <stop
+            offset='0.74'
+            stop-color='#83827E'
+          />
+          <stop
+            offset='1'
+            stop-color='#1D1D1C'
+          />
         </radialGradient>
       </defs>
     </svg>

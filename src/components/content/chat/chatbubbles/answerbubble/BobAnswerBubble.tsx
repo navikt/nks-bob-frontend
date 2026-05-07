@@ -4,7 +4,7 @@ import React, { memo, useState } from "react"
 import Markdown from "react-markdown"
 import rehypeRaw from "rehype-raw"
 import { BobRoboHead } from "../../../../../assets/illustrations/BobRoboHead.tsx"
-import { Message, NewMessage, Tool } from "../../../../../types/Message.ts"
+import { Message, NewMessage } from "../../../../../types/Message.ts"
 import analytics from "../../../../../utils/analytics.ts"
 import { AppMarkdown } from "../../../../../utils/AppMarkdown.tsx"
 import { copyMarkedBobAnswerHandler } from "../../../../../utils/copyBobAnswerHandler.ts"
@@ -58,15 +58,22 @@ export const BobAnswerBubble = memo(
 
     const contentReady = !hasError(message) && !isPending(message) && !!message.content
 
-      function handleFindSourcesClick() {
-    analytics.finnKilderKlikket()
-    const findSources: NewMessage = {
-      content: `Se om du kan finne kilder som støtter svaret:\n${message.content}`,
+    function handleFindSourcesClick() {
+      analytics.finnKilderKlikket()
+      const findSources: NewMessage = {
+        content: `Se om du kan finne kilder som støtter svaret:\n${message.content}`,
+      }
+      onSend(findSources)
     }
-    onSend(findSources)
-  }
 
-      const toolNames = ["date_duration", "end_date", "emphatic_guidelines", "is_country_eea", "search_nav_information", "nav_dictionary"]
+    const toolNames = [
+      "date_duration",
+      "end_date",
+      "emphatic_guidelines",
+      "is_country_eea",
+      "search_nav_information",
+      "nav_dictionary",
+    ]
 
     return (
       <VStack
@@ -99,7 +106,7 @@ export const BobAnswerBubble = memo(
             </div>
             {contentReady && message.content && (
               <>
-                <HStack className='mb-6 flex-wrap-reverse items-center gap-4'>
+                <HStack className='flex-wrap-reverse items-center gap-4'>
                   <BobSuggests
                     message={message}
                     onSend={onSend}
@@ -108,33 +115,30 @@ export const BobAnswerBubble = memo(
                   {getSourcesComponent(message)}
                 </HStack>
                 {message.citations.length > 0 && (
-                <Citations
-                  message={message}
-                  onSend={onSend}
-                  isLoading={isLoading}
-                  isLastMessage={isLastMessage}
-                  citations={citations}
-                  showLinks={contentReady}
-                />
+                  <Citations
+                    message={message}
+                    onSend={onSend}
+                    isLoading={isLoading}
+                    isLastMessage={isLastMessage}
+                    citations={citations}
+                    showLinks={contentReady}
+                  />
                 )}
-                                    {followUp.length > 0 &&
-        Object.keys(message.context).length === 0 &&
-        message.citations.length === 0 &&
-        (message.tools.length === 0 || !message.tools.some((tool) => toolNames.includes(tool.name))) && (
-          <div className="bg-ax-bg-accent-soft p-4 w-full pb-2 mb-6">
-            <BodyShort>Ønsker du at Bob skal finne kilder for dette svaret?</BodyShort>
-          <Button
-            data-color='info'
-            size='small'
-            variant='primary'
-            className='my-3 w-fit'
-            icon={<FileSearchIcon fontSize={24} />}
-            onClick={handleFindSourcesClick}
-          >
-            Finn kilder
-          </Button>
-          </div>
-        )}
+                {followUp.length > 0 &&
+                  Object.keys(message.context).length === 0 &&
+                  message.citations.length === 0 &&
+                  (message.tools.length === 0 || !message.tools.some((tool) => toolNames.includes(tool.name))) && (
+                    <Button
+                      data-color='info'
+                      size='small'
+                      variant='primary'
+                      className='my-3 w-fit mt-6 mb-8'
+                      icon={<FileSearchIcon fontSize={24} />}
+                      onClick={handleFindSourcesClick}
+                    >
+                      Finn kilder til svaret
+                    </Button>
+                  )}
                 <FollowUpQuestions
                   followUp={followUp}
                   onSend={(question) => onSend({ content: question })}
@@ -195,8 +199,6 @@ const MessageContent = ({
   message,
   citations,
   setCitations,
-  onSend,
-  followUp,
 }: {
   message: Message
   citations: { citationId: string; position: number }[]
@@ -257,7 +259,7 @@ const MessageContent = ({
 
   return (
     <div
-      className='mb-2 flex flex-col gap-3 w-full'
+      className='mb-2 flex w-full flex-col gap-3'
       ref={divRef}
       onCopy={handleCopy}
     >
@@ -288,66 +290,8 @@ interface CitationsProps extends Omit<BobAnswerBubbleProps, "isHighlighted" | "f
 
 const Citations = memo(
   ({ message, citations, showLinks }: CitationsProps) => {
-    /*
-    const [selectedCitations, setSelectedCitations] = useState<string[]>(options)
-
-    const handleToggleCitations = (selected: string[]) => {
-      setSelectedCitations(selected)
-    }
-
-    const filteredCitations = message.citations.filter((citation) => {
-      if (selectedCitations.length === 0) {
-        return false
-      }
-      return selectedCitations.some((selected) => {
-        if (selected === "Sitater fra Kunnskapsbasen") {
-          return message.context[citation.sourceId].source === "nks"
-        }
-        if (selected === "Sitater fra Nav.no") {
-          return message.context[citation.sourceId].source === "navno"
-        }
-        return false
-      })
-    })
-
-    const citationData = filteredCitations
-      .map((citation) => {
-        const matchingContext = message.context[citation.sourceId]!
-
-        return {
-          title: matchingContext.title,
-          source: matchingContext.source,
-          citation,
-        }
-      })
-      .reduce(
-        (acc, { title, source, citation }) => {
-          const existingGroup = acc.find((group) => group.title === title)
-
-          if (existingGroup) {
-            existingGroup.citations.push(citation)
-          } else {
-            acc.push({ title, source, citations: [citation] })
-          }
-
-          return acc
-        },
-        [] as {
-          title: string
-          source: "navno" | "nks"
-          citations: Citation[]
-        }[],
-      )
-      .sort((a, b) => {
-        if (a.source === "nks" && b.source === "navno") return -1
-        if (a.source === "navno" && b.source === "nks") return 1
-        return 0
-      })
-
-      */
-
     return (
-      <div className='mb-4 flex flex-col gap-4'>
+      <div className='mb-4 flex flex-col gap-4 mt-6'>
         {showLinks && citations.length > 0 && (
           <div className='flex flex-col gap-2'>
             <CitationLinks
@@ -356,23 +300,6 @@ const Citations = memo(
             />
           </div>
         )}
-        {/*
-        {message.citations && message.citations.length > 0 && (
-          <div className='fade-in flex flex-col gap-2'>
-            <ToggleCitations
-              onToggle={handleToggleCitations}
-              message={message}
-            />
-            {citationData.map((citation, index) => (
-              <BobAnswerCitations
-                citation={citation}
-                key={`citation-${index}`} 
-                context={message.context}
-              />
-            ))}
-          </div>
-        )}
-          */}
       </div>
     )
   },

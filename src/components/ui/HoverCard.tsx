@@ -1,7 +1,7 @@
 import { Box, Portal } from "@navikt/ds-react"
 import React, { useRef, useState } from "react"
-import analytics from "../../utils/analytics.ts"
 import { Context } from "../../types/Message.ts"
+import analytics from "../../utils/analytics.ts"
 
 interface HoverCardProps {
   children: React.ReactNode

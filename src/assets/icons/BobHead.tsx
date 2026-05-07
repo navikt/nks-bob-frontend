@@ -289,7 +289,10 @@ export const BobSantaHead = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -298,7 +301,10 @@ export const BobSantaHead = () => {
           />
           <feOffset dy='2' />
           <feGaussianBlur stdDeviation='0.5' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'

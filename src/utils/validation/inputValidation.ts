@@ -1,9 +1,21 @@
-import { isKnownNames } from "./validationutils/ssb-api";
-import { countryCodePattern, whitelistedCountries, whitelistWords } from "./validationutils/whitelist";
+import { isKnownNames } from "./validationutils/ssb-api"
+import { countryCodePattern, whitelistedCountries, whitelistWords } from "./validationutils/whitelist"
 
 export type ValidationResult = ValidationOk | ValidationWarning | ValidationError
 
-export type ValidationType = "fnr" | "dnr" | "hnr" | "fullname" | "name" | "tlf" | "email" | "accountnumber" | "address" | "postalcode" | "dob-three-times" | "firstname-twice-and-dob"
+export type ValidationType =
+  | "fnr"
+  | "dnr"
+  | "hnr"
+  | "fullname"
+  | "name"
+  | "tlf"
+  | "email"
+  | "accountnumber"
+  | "address"
+  | "postalcode"
+  | "dob-three-times"
+  | "firstname-twice-and-dob"
 
 export type ValidationMatch = { value: string; start: number; end: number }
 
@@ -75,7 +87,7 @@ export function replaceValidationResult(validationType: ValidationType) {
   if (validationType === "fullname") {
     return "(anonymisert navn)"
   }
-   if (validationType === "firstname-twice-and-dob") {
+  if (validationType === "firstname-twice-and-dob") {
     return "(anonymisert personopplysning)"
   }
   if (validationType === "dob-three-times") {
@@ -99,13 +111,13 @@ export function replaceValidationResult(validationType: ValidationType) {
   if (validationType === "hnr") {
     return "(anonymisert helsenummer)"
   }
-    if (validationType === "address") {
+  if (validationType === "address") {
     return "(anonymisert adresse)"
   }
-      if (validationType === "postalcode") {
+  if (validationType === "postalcode") {
     return "(anonymisert postnummer)"
   }
-        if (validationType === "name") {
+  if (validationType === "name") {
     return "(anonymisert navn)"
   }
 
@@ -124,13 +136,10 @@ function matchesOverlap(match1: ValidationMatch, match2: ValidationMatch): boole
   return match1.start < match2.end && match2.start < match1.end
 }
 
-function filterOverlappingMatches(
-  results: ValidationResult[],
-  priorityOrder: ValidationType[]
-): ValidationResult[] {
+function filterOverlappingMatches(results: ValidationResult[], priorityOrder: ValidationType[]): ValidationResult[] {
   const notOkResults = results.filter(isNotOk)
   const okResults = results.filter(isOk)
-  
+
   const sortedResults = notOkResults.sort((a, b) => {
     const aIndex = priorityOrder.indexOf(a.validationType)
     const bIndex = priorityOrder.indexOf(b.validationType)
@@ -141,14 +150,12 @@ function filterOverlappingMatches(
   const usedRanges: ValidationMatch[] = []
 
   for (const result of sortedResults) {
-    const filteredMatches = result.matches.filter(match => 
-      !usedRanges.some(used => matchesOverlap(match, used))
-    )
+    const filteredMatches = result.matches.filter((match) => !usedRanges.some((used) => matchesOverlap(match, used)))
 
     if (filteredMatches.length > 0) {
       filteredResults.push({
         ...result,
-        matches: filteredMatches
+        matches: filteredMatches,
       })
       usedRanges.push(...filteredMatches)
     }
@@ -189,8 +196,8 @@ function createValidatorWithWhitelist(
 
     const matches = getMatches(regex, input).filter((match) => {
       if (whitelist.includes(match.value)) return false
-      if (whitelist.some(w => match.value.startsWith(w + " "))) return false
-      if (whitelist.some(w => match.value.endsWith(" " + w))) return false
+      if (whitelist.some((w) => match.value.startsWith(w + " "))) return false
+      if (whitelist.some((w) => match.value.endsWith(" " + w))) return false
       return true
     })
 
@@ -208,7 +215,6 @@ const dnrRegex = /\b(4[1-9]|[56]\d|7[01])(0[1-9]|1[0-2])\d{2}[ .-]*?\d{3}[ .-]*\
 
 const hnrRegex = /\b(0[1-9]|[12]\d|3[01])(4[1-9]|5[0-2])\d{2}[ .-]*?\d{3}\d{2}\b/g
 // hnrRegex fanger opp H-nummer der månedfeltet er fødselsmåned + 40 (41–52), mens dag og resten av nummeret følger vanlig struktur.
-
 
 /* const personnummerRegex = new RegExp(
   [fnrRegex, dnrRegex, hnrRegex].map(({ source }) => source).join("|"),
@@ -229,9 +235,9 @@ export const validatePersonnummer = (input: string): ValidationResult => {
   return validateHnr(input)
 }
 
-  //
+//
 
-  /* fullNameRegex matcher på tekst som ligner på fullt navn
+/* fullNameRegex matcher på tekst som ligner på fullt navn
 
    Matcher fullt navn med to eller tre navnedeler:
    - Består av fornavn og etternavn
@@ -249,7 +255,7 @@ export const validateFullName = createValidatorWithWhitelist(
   warning,
   "Tekst som ligner på et navn:",
   "fullname",
-  [...whitelistWords, ...whitelistedCountries]
+  [...whitelistWords, ...whitelistedCountries],
 )
 
 // Names
@@ -258,7 +264,7 @@ const nameRegex = /\p{Lu}\p{Ll}+/gu
 
 export const validateName: Validator = (input: string) => {
   const allMatches = getMatches(nameRegex, input)
-  const ssbMatches = allMatches.filter(match => isKnownNames(match.value))
+  const ssbMatches = allMatches.filter((match) => isKnownNames(match.value))
 
   if (ssbMatches.length === 0) return ok()
 
@@ -270,8 +276,7 @@ export const validateName: Validator = (input: string) => {
 /* Matcher på dato om det skrives inn minst 3 ganger
    Format: dd.mm.yy eller dd.mm.yyyy (f.eks. 01/02/1990), med ulike skilletegn som -, ., / eller , mellom tallene. */
 
-const dobRegex =
-  /\b(?:[0]?[1-9]|[12]\d|3[01])[-./,]+?(?:[0]?[1-9]|[12]\d|3[01])[-./,]+?\d{2,4}\b/g
+const dobRegex = /\b(?:[0]?[1-9]|[12]\d|3[01])[-./,]+?(?:[0]?[1-9]|[12]\d|3[01])[-./,]+?\d{2,4}\b/g
 
 const has3DobRegex =
   /^(?=(?:[\s\S]*\b(?:[0]?[1-9]|[12]\d|3[01])[-./,]+?(?:[0]?[1-9]|[12]\d|3[01])[-./,]+?\d{2,4}\b){3})/
@@ -281,7 +286,7 @@ const baseValidateDateOfBirth = createValidatorWithWhitelist(
   warning,
   "Tekst som ligner på fødselsdato:",
   "dob-three-times",
- [...whitelistWords, ...whitelistedCountries]
+  [...whitelistWords, ...whitelistedCountries],
 )
 
 export const validateDateOfBirth: Validator = (input: string) => {
@@ -294,35 +299,31 @@ export const validateDateOfBirth: Validator = (input: string) => {
 
 // Regel for å matche om 2 ord med stor forbokstav + dato
 
-const nameWordRegex =
-  /(?<!^)(?<![\p{P}\n]\s*)(?<!\p{Lu}[\p{L}'-]*[ \t-])\b\p{Lu}\p{Ll}+\b(?![ \t-]\p{Lu}[\p{L}'-]*)/gu
+const nameWordRegex = /(?<!^)(?<![\p{P}\n]\s*)(?<!\p{Lu}[\p{L}'-]*[ \t-])\b\p{Lu}\p{Ll}+\b(?![ \t-]\p{Lu}[\p{L}'-]*)/gu
 
 const has2NamesAnd1DobRegex = new RegExp(
   `^(?=(?:[\\s\\S]*${nameWordRegex.source}){2})(?=[\\s\\S]*${dobRegex.source})`,
   "u",
 )
 
-const nameOrDobRegex = new RegExp(
-  `(?:${nameWordRegex.source})|(?:${dobRegex.source})`,
-  "gu",
-)
+const nameOrDobRegex = new RegExp(`(?:${nameWordRegex.source})|(?:${dobRegex.source})`, "gu")
 
 const baseValidateNameAndDob = createValidatorWithWhitelist(
   nameOrDobRegex,
   warning,
   "Tekst som ligner på fornavn + fødselsdato:",
-  "firstname-twice-and-dob", 
-  [...whitelistWords, ...whitelistedCountries]
+  "firstname-twice-and-dob",
+  [...whitelistWords, ...whitelistedCountries],
 )
 
 export const validateNameAndDob: Validator = (input: string) => {
   if (!has2NamesAnd1DobRegex.test(input)) return ok()
 
   const allNameMatches = getMatches(new RegExp(nameWordRegex.source, "gu"), input).filter(
-    (match) => !whitelistWords.includes(match.value) && !whitelistWords.some(w => match.value.startsWith(w + " "))
+    (match) => !whitelistWords.includes(match.value) && !whitelistWords.some((w) => match.value.startsWith(w + " ")),
   )
 
-  const ssbNameMatches = allNameMatches.filter(match => isKnownNames(match.value))
+  const ssbNameMatches = allNameMatches.filter((match) => isKnownNames(match.value))
 
   if (ssbNameMatches.length < 2) return ok()
 
@@ -332,18 +333,25 @@ export const validateNameAndDob: Validator = (input: string) => {
 //
 
 // globalPhoneNumberRegex fanger opp alle telefonnumre som starter med + eller 00 etterfulgt av landekode og 6–15 sifre, med valgfri bruk av mellomrom eller bindestrek.
-const globalPhoneNumberRegex = new RegExp(
-  `(?:\\+|00)(?:${countryCodePattern})[ -]*(?:\\d[ -]*){5,14}\\d`,
-  "g"
-)
+const globalPhoneNumberRegex = new RegExp(`(?:\\+|00)(?:${countryCodePattern})[ -]*(?:\\d[ -]*){5,14}\\d`, "g")
 
-export const validateGlobalPhoneNumber= createValidator(globalPhoneNumberRegex, warning, "Tekst som ligner på et norsk mobilnummer:", "tlf")
+export const validateGlobalPhoneNumber = createValidator(
+  globalPhoneNumberRegex,
+  warning,
+  "Tekst som ligner på et norsk mobilnummer:",
+  "tlf",
+)
 
 //
 
 // norwegianMobileNumberRegex fanger opp norske mobilnumre på 8 siffer som starter med 4 eller 9, med valgfri bruk av mellomrom eller bindestrek.
 const norwegianMobileNumberRegex = /(?<!0047[ -]*)(?<!\+47[ -]*)\b[49](?:[ -]?\d){7}\b/g
-export const validateNorwegianMobileNumber = createValidator(norwegianMobileNumberRegex, warning, "Tekst som ligner på et norsk mobilnummer:", "tlf")
+export const validateNorwegianMobileNumber = createValidator(
+  norwegianMobileNumberRegex,
+  warning,
+  "Tekst som ligner på et norsk mobilnummer:",
+  "tlf",
+)
 
 //
 
@@ -356,18 +364,24 @@ export const validateEmail = createValidator(emailRegex, warning, "Tekst som lig
 // accountNumberRegex fanger opp norske kontonumre i formatet 4-2-5 siffer, med mellomrom, punktum eller bindestrek som skilletegn.
 const accountNumberRegex = /\b\d{4}[ .-]+\d{2}[ .-]+\d{5}\b/g
 
-export const validateAccountNumber = createValidator(accountNumberRegex, warning, "Tekst som ligner på et kontonummer", "accountnumber")
+export const validateAccountNumber = createValidator(
+  accountNumberRegex,
+  warning,
+  "Tekst som ligner på et kontonummer",
+  "accountnumber",
+)
 
 //
 
 // addressRegex matcher på adresse:
-    // 2-3 ord (første ord må starte med stor bokstav) + mellomrom? + tall + bokstav
+// 2-3 ord (første ord må starte med stor bokstav) + mellomrom? + tall + bokstav
 
-const streetSuffixes = "gate|vei|veg|alle|allé|plass|torget|torg|stien|sti|løkka|bakken|haugen|dalen|åsen|bygda|veien|gaten"
+const streetSuffixes =
+  "gate|vei|veg|alle|allé|plass|torget|torg|stien|sti|løkka|bakken|haugen|dalen|åsen|bygda|veien|gaten"
 
 const addressRegex = new RegExp(
   `\\p{Lu}\\p{L}+(?:[ \\t]\\p{Lu}\\p{L}+)*(?:[ \\t](?:${streetSuffixes}))?[ \\t]+\\d+(?!\\d)(?!\\p{L}{2,})(?:[ \\t]?\\p{L}(?![\\p{L}]))?`,
-  "gu"
+  "gu",
 )
 
 const baseValidateAddress = createValidatorWithWhitelist(
@@ -375,7 +389,7 @@ const baseValidateAddress = createValidatorWithWhitelist(
   warning,
   "Tekst som ligner på en adresse:",
   "address",
-   [...whitelistWords, ...whitelistedCountries]
+  [...whitelistWords, ...whitelistedCountries],
 )
 
 export const validateAddress: Validator = (input: string) => {

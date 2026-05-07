@@ -7,9 +7,6 @@ export type Notification = {
   notificationType: "News" | "Error" | "Warning"
 }
 
-export type NewsNotification = Omit<
-  Notification,
-  "expiresAt" | "notificationType"
->
+export type NewsNotification = Omit<Notification, "expiresAt" | "notificationType">
 
 export type Alert = Notification

@@ -1,6 +1,6 @@
 import { Head } from "@unhead/react"
-import prodIcon from "../assets/icons/RoboBobHead.svg"
 import devIcon from "../assets/icons/BobDevHead.svg"
+import prodIcon from "../assets/icons/RoboBobHead.svg"
 
 function resolveEnvironment() {
   if (window.location.href.includes("localhost")) {

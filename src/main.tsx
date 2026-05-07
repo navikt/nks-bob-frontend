@@ -15,8 +15,8 @@ import { ThemeProvider } from "./components/menu/darkmode/DarkModeToggle.tsx"
 import { PageNotFound } from "./components/not-found/NotFound.tsx"
 import "./global.css"
 import { AnalyticsProvider } from "./utils/AnalyticsProvider.tsx"
-import { fetchAllNamesFromSSB } from "./utils/validation/validationutils/ssb-api.ts"
 import { TitleProvider } from "./utils/TitleProvider.tsx"
+import { fetchAllNamesFromSSB } from "./utils/validation/validationutils/ssb-api.ts"
 
 const head = createHead()
 

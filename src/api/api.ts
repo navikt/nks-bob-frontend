@@ -230,7 +230,8 @@ export const useAddFeedback = (messageId: string) => {
 export const useAddIgnoredWord = () => {
   const { trigger, isMutating } = useSWRMutation("/api/v1/ignored-words", request("POST"))
 
-  const addIgnoredWord = (body: { value: string; validationType: string; conversationId: string | null }) => trigger(body)
+  const addIgnoredWord = (body: { value: string; validationType: string; conversationId: string | null }) =>
+    trigger(body)
 
   return {
     addIgnoredWord,

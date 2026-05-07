@@ -86,24 +86,22 @@ export const SidebarWrapper = ({
   }
 
   return (
-    <HStack
-      className={`pointer-events-none fixed right-0 h-full items-center ${className}`}
-    >
+    <HStack className={`pointer-events-none fixed right-0 h-full items-center ${className}`}>
       <div
-        className={`group pointer-events-auto flex h-full w-2 cursor-ew-resize items-center justify-center bg-ax-border-neutral-subtle transition-colors duration-200 hover:bg-ax-border-accent active:bg-ax-border-accent ${isOpen ? "opacity-100" : "opacity-0"}`}
+        className={`group bg-ax-border-neutral-subtle hover:bg-ax-border-accent active:bg-ax-border-accent pointer-events-auto flex h-full w-2 cursor-ew-resize items-center justify-center transition-colors duration-200 ${isOpen ? "opacity-100" : "opacity-0"}`}
         ref={resizeRef}
         onMouseDown={startResizing}
         style={{ zIndex: 105 }}
       >
-        <div className='h-10 w-0.5 bg-ax-border-neutral transition-colors duration-200 group-hover:bg-ax-border-accent group-active:bg-ax-border-accent'></div>
+        <div className='bg-ax-border-neutral group-hover:bg-ax-border-accent group-active:bg-ax-border-accent h-10 w-0.5 transition-colors duration-200'></div>
       </div>
       <div
-        className='pointer-events-auto relative mt-1 h-full overflow-y-auto border-l border-ax-border-neutral-subtle bg-ax-bg-default'
+        className='border-ax-border-neutral-subtle bg-ax-bg-default pointer-events-auto relative mt-1 h-full overflow-y-auto border-l'
         style={{
-          width: isOpen ? `${width}px` : "0px"
+          width: isOpen ? `${width}px` : "0px",
         }}
       >
-        {typeof children === 'function' ? children(width) : children}
+        {typeof children === "function" ? children(width) : children}
       </div>
     </HStack>
   )
