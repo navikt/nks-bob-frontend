@@ -174,6 +174,13 @@ const innlimingInfoModalLukket = () => logEvent("Infomodal om innliming lukket")
 
 const finnKilderTilSvaret = () => logEvent("Finn kilder klikket")
 
+const sporBob = (kontekst: KontekstMeta, lengde: number) => logEvent("Spør Bob om avsnitt", { kontekst, lengde })
+
+const avsnittKopiert = (kontekst: KontekstMeta, lengde: number) => logEvent("Avsnitt kopiert", { kontekst, lengde })
+
+const avsnittÅpnetLenke = (kontekst: KontekstMeta, lengde: number) =>
+  logEvent("Avsnitt åpnet lenke", { kontekst, lengde })
+
 export default {
   svarKopiert,
   svarEndret,
@@ -215,4 +222,7 @@ export default {
   anonymiserTrykket,
   innlimingInfoModalLukket,
   finnKilderTilSvaret,
+  sporBob,
+  avsnittKopiert,
+  avsnittÅpnetLenke,
 }

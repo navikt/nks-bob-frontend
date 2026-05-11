@@ -72,7 +72,18 @@ const UserQuestionBubble = memo(
           >
             Du spurte:
           </Heading>
-          <AppMarkdown>{raw}</AppMarkdown>
+          <AppMarkdown
+            components={{
+              blockquote: ({ ...props }) => (
+                <blockquote
+                  {...props}
+                  className='text-ax-text-brand-magenta border-l-4 pl-2'
+                />
+              ),
+            }}
+          >
+            {raw}
+          </AppMarkdown>
         </div>
       </div>
     )

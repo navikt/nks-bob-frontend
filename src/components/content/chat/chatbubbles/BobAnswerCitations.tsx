@@ -5,6 +5,7 @@ import { NavNoIcon } from "../../../../assets/icons/NavNoIcon.tsx"
 import { Citation, Context, Contexts } from "../../../../types/Message.ts"
 import analytics from "../../../../utils/analytics.ts"
 import { AppMarkdown } from "../../../../utils/AppMarkdown.tsx"
+import { hoverComponents } from "../../../../utils/hoverComponents.tsx"
 import { buildLinkTitle } from "../../../../utils/link.ts"
 import { md } from "../../../../utils/markdown.ts"
 import { buildTextFragmentLink } from "../../../../utils/buildTextFragmentLink.tsx"
@@ -61,7 +62,12 @@ export const SingleCitation = ({ citation, context }: { citation: Citation; cont
         size='small'
         className='mb-3'
       >
-        <AppMarkdown remarkPlugins={[md.rewriteRelativeLinks]}>{citation.text}</AppMarkdown>
+        <AppMarkdown
+          remarkPlugins={[md.rewriteRelativeLinks]}
+          components={hoverComponents(context!)} // TODO
+        >
+          {citation.text}
+        </AppMarkdown>
       </BodyLong>
       {context && (
         <TextFragmentLink
@@ -114,7 +120,7 @@ export const MultiCitation = ({
               size='small'
               className='italic'
             >
-              <AppMarkdown>{citation.text}</AppMarkdown>
+              <AppMarkdown components={hoverComponents(contexts[citation.sourceId])}>{citation.text}</AppMarkdown>
             </BodyLong>
             <TextFragmentLink
               text={citation.text}

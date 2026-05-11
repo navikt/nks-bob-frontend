@@ -2,7 +2,7 @@ import { Message } from "../types/Message"
 import analytics from "./analytics"
 import { md } from "./markdown"
 
-function buildClipboardContent(sourceNode: Node): { text: string; html: string } {
+export function buildClipboardContent(sourceNode: Node): { text: string; html: string } {
   const textContainer = document.createElement("div")
   const htmlContainer = document.createElement("div")
   textContainer.appendChild(sourceNode.cloneNode(true))
