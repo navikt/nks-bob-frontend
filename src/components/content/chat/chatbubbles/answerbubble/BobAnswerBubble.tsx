@@ -13,6 +13,7 @@ import { FollowUpQuestions } from "../../../followupquestions/FollowUpQuestions.
 import BobSuggests from "../../suggestions/BobSuggests.tsx"
 import { NoSourcesNeeded, ShowAllSourcesToggle } from "../sources/ShowAllSources.tsx"
 import { CitationLinks, CitationNumber } from "./Citations.tsx"
+import { hoverComponents } from "../../../../../utils/hoverComponents.tsx"
 
 interface BobAnswerBubbleProps {
   message: Message
@@ -132,7 +133,7 @@ export const BobAnswerBubble = memo(
                       data-color='info'
                       size='small'
                       variant='primary'
-                      className='my-3 w-fit mt-6 mb-8'
+                      className='my-3 mt-6 mb-8 w-fit'
                       icon={<FileSearchIcon fontSize={24} />}
                       onClick={handleFindSourcesClick}
                     >
@@ -274,7 +275,7 @@ const MessageContent = ({
         <AppMarkdown
           remarkPlugins={[md.remarkCitations]}
           rehypePlugins={[rehypeRaw]}
-          components={{ span: citationSpanComponent }}
+          components={{ span: citationSpanComponent, ...hoverComponents(["ask bob", "copy"]) }}
         >
           {message.content}
         </AppMarkdown>
@@ -291,7 +292,7 @@ interface CitationsProps extends Omit<BobAnswerBubbleProps, "isHighlighted" | "f
 const Citations = memo(
   ({ message, citations, showLinks }: CitationsProps) => {
     return (
-      <div className='mb-4 flex flex-col gap-4 mt-6'>
+      <div className='mt-6 mb-4 flex flex-col gap-4'>
         {showLinks && citations.length > 0 && (
           <div className='flex flex-col gap-2'>
             <CitationLinks

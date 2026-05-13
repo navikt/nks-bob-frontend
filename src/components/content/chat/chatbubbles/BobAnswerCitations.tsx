@@ -64,7 +64,7 @@ export const SingleCitation = ({ citation, context }: { citation: Citation; cont
       >
         <AppMarkdown
           remarkPlugins={[md.rewriteRelativeLinks]}
-          components={hoverComponents(context!)} // TODO
+          components={hoverComponents(["ask bob", "copy", "open in article"], context!)}
         >
           {citation.text}
         </AppMarkdown>
@@ -120,7 +120,11 @@ export const MultiCitation = ({
               size='small'
               className='italic'
             >
-              <AppMarkdown components={hoverComponents(contexts[citation.sourceId])}>{citation.text}</AppMarkdown>
+              <AppMarkdown
+                components={hoverComponents(["ask bob", "copy", "open in article"], contexts[citation.sourceId])}
+              >
+                {citation.text}
+              </AppMarkdown>
             </BodyLong>
             <TextFragmentLink
               text={citation.text}

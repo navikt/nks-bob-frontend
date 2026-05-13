@@ -17,9 +17,11 @@ type HoverProps = {
 const HoverWrapper = ({
   renderElement,
   context,
+  features,
 }: {
   renderElement: (hoverProps: HoverProps) => React.ReactNode
-  context: Context
+  context?: Context
+  features: HoverFeature[]
 }) => {
   const ref = React.useRef<HTMLElement>(null)
   const [isOpen, setIsOpen] = React.useState(false)
@@ -62,12 +64,49 @@ const HoverWrapper = ({
   }
 
   const { setInputValue, inputValue, focusTextarea } = useInputFieldStore()
-  const askBob = (text: string) => {
-    const selectedText = "> " + text.replaceAll("\n", "\n> ")
+  const askBob = () => {
+    const content = getContent()
+    if (!content) {
+      return
+    }
+
+    const selectedText = "> " + content.text.replaceAll("\n", "\n> ")
     const newInput = `${selectedText}\n\n${inputValue}`
     setInputValue(newInput)
     focusTextarea()
-    // TODO analytics
+
+    analytics.sporBob(context ? { tittel: context.title, kilde: context.source } : null, content.text.length)
+  }
+
+  const copyParagraph = () => {
+    const content = getContent()
+    if (!content) {
+      return
+    }
+
+    navigator.clipboard.write([
+      new ClipboardItem({
+        "text/plain": new Blob([content.text], { type: "text/plain" }),
+        "text/html": new Blob([content.html], { type: "text/html" }),
+      }),
+    ])
+
+    analytics.avsnittKopiert(context ? { tittel: context.title, kilde: context.source } : null, content.text.length)
+  }
+
+  const openInArticle = () => {
+    if (!context) {
+      return
+    }
+
+    const content = getContent()
+    if (!content) {
+      return
+    }
+
+    analytics.avsnittÅpnetLenke({ tittel: context.title, kilde: context.source }, content.text.length)
+    const link = buildTextFragmentLink(content.text, context)
+    window.open(link)
   }
 
   return (
@@ -92,57 +131,39 @@ const HoverWrapper = ({
           gap='space-4'
           padding='space-4'
         >
-          <Tooltip content='Spør Bob om dette avsnittet'>
-            <Button
-              variant='tertiary'
-              size='small'
-              icon={<QuestionmarkCircleIcon />}
-              data-color='neutral'
-              onClick={() => {
-                const content = getContent()
-                if (content) {
-                  analytics.sporBob({ tittel: context.title, kilde: context.source }, content.text.length)
-                  askBob(content.text)
-                }
-              }}
-            />
-          </Tooltip>
-          <Tooltip content='Kopier'>
-            <Button
-              variant='tertiary'
-              size='small'
-              icon={<FilesIcon />}
-              data-color='neutral'
-              onClick={() => {
-                const content = getContent()
-                if (content) {
-                  analytics.avsnittKopiert({ tittel: context.title, kilde: context.source }, content.text.length)
-                  navigator.clipboard.write([
-                    new ClipboardItem({
-                      "text/plain": new Blob([content.text], { type: "text/plain" }),
-                      "text/html": new Blob([content.html], { type: "text/html" }),
-                    }),
-                  ])
-                }
-              }}
-            />
-          </Tooltip>
-          <Tooltip content='Vis i artikkelen'>
-            <Button
-              variant='tertiary'
-              size='small'
-              data-color='neutral'
-              icon={<ExternalLinkIcon />}
-              onClick={() => {
-                const content = getContent()
-                if (content) {
-                  analytics.avsnittÅpnetLenke({ tittel: context.title, kilde: context.source }, content.text.length)
-                  const link = buildTextFragmentLink(content.text, context)
-                  window.open(link)
-                }
-              }}
-            />
-          </Tooltip>
+          {features.includes("ask bob") && (
+            <Tooltip content='Spør Bob om dette avsnittet'>
+              <Button
+                variant='tertiary'
+                size='small'
+                icon={<QuestionmarkCircleIcon />}
+                data-color='neutral'
+                onClick={askBob}
+              />
+            </Tooltip>
+          )}
+          {features.includes("copy") && (
+            <Tooltip content='Kopier'>
+              <Button
+                variant='tertiary'
+                size='small'
+                icon={<FilesIcon />}
+                data-color='neutral'
+                onClick={copyParagraph}
+              />
+            </Tooltip>
+          )}
+          {features.includes("open in article") && (
+            <Tooltip content='Vis i artikkelen'>
+              <Button
+                variant='tertiary'
+                size='small'
+                data-color='neutral'
+                icon={<ExternalLinkIcon />}
+                onClick={openInArticle}
+              />
+            </Tooltip>
+          )}
         </HStack>
       </Popover>
       {renderElement({
@@ -166,9 +187,12 @@ const HoverWrapper = ({
 
 const cln = (className: string) => `hover:bg-ax-bg-sunken [.peer:hover+&]:bg-ax-bg-sunken ${className}`
 
-export const hoverComponents: (context: Context) => Components = (context) => ({
+type HoverFeature = "ask bob" | "open in article" | "copy"
+
+export const hoverComponents: (features: HoverFeature[], context?: Context) => Components = (features, context) => ({
   p: ({ ...props }) => (
     <HoverWrapper
+      features={features}
       context={context}
       renderElement={({ itemRef, ...hoverProps }) => (
         <p
@@ -182,6 +206,7 @@ export const hoverComponents: (context: Context) => Components = (context) => ({
   ),
   ul: ({ ...props }) => (
     <HoverWrapper
+      features={features}
       context={context}
       renderElement={({ itemRef, ...hoverProps }) => (
         <ul
@@ -195,6 +220,7 @@ export const hoverComponents: (context: Context) => Components = (context) => ({
   ),
   ol: ({ ...props }) => (
     <HoverWrapper
+      features={features}
       context={context}
       renderElement={({ itemRef, ...hoverProps }) => (
         <ol
