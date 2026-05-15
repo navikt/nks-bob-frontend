@@ -1,8 +1,8 @@
-import { BodyShort, Button, Heading, HStack, Stack, VStack } from "@navikt/ds-react"
-import Header from "../header/Header"
 import { NotePencilIcon } from "@navikt/aksel-icons"
+import { BodyShort, Button, Heading, HStack, Stack, VStack } from "@navikt/ds-react"
 import { Link } from "react-router"
 import embarressedBob from "../../assets/illustrations/EmbarrassedBob.svg"
+import Header from "../header/Header"
 
 export const PageNotFound = () => {
   return (

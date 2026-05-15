@@ -1,10 +1,10 @@
 import { CheckmarkIcon, MonitorIcon, MoonIcon, SunIcon, ThemeIcon } from "@navikt/aksel-icons"
 import { ActionMenu, Button, HStack, Theme, Tooltip } from "@navikt/ds-react"
+import { useEffect, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import { create } from "zustand"
 import { createJSONStorage, persist } from "zustand/middleware"
 import analytics, { UmamiThemeType } from "../../../utils/analytics"
-import { useEffect, useState } from "react"
 
 type ThemeType = "light" | "dark" | "system"
 

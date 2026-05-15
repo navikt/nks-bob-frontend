@@ -1,20 +1,19 @@
 import { FileSearchIcon } from "@navikt/aksel-icons"
-import { BodyLong, Button, Heading, HStack, Skeleton, VStack } from "@navikt/ds-react"
+import { BodyLong, BodyShort, Button, Heading, HStack, Loader, Skeleton, VStack } from "@navikt/ds-react"
 import React, { memo, useState } from "react"
 import Markdown from "react-markdown"
 import rehypeRaw from "rehype-raw"
 import { BobRoboHead } from "../../../../../assets/illustrations/BobRoboHead.tsx"
-import { Citation, Message, NewMessage } from "../../../../../types/Message.ts"
+import { Message, NewMessage } from "../../../../../types/Message.ts"
 import analytics from "../../../../../utils/analytics.ts"
 import { AppMarkdown } from "../../../../../utils/AppMarkdown.tsx"
 import { copyMarkedBobAnswerHandler } from "../../../../../utils/copyBobAnswerHandler.ts"
 import { md } from "../../../../../utils/markdown.ts"
 import { FollowUpQuestions } from "../../../followupquestions/FollowUpQuestions.tsx"
 import BobSuggests from "../../suggestions/BobSuggests.tsx"
-import BobAnswerCitations from "../BobAnswerCitations.tsx"
-import ToggleCitations from "../citations/ToggleCitations.tsx"
 import { NoSourcesNeeded, ShowAllSourcesToggle } from "../sources/ShowAllSources.tsx"
 import { CitationLinks, CitationNumber } from "./Citations.tsx"
+import { hoverComponents } from "../../../../../utils/hoverComponents.tsx"
 
 interface BobAnswerBubbleProps {
   message: Message
@@ -25,15 +24,13 @@ interface BobAnswerBubbleProps {
   followUp: string[]
 }
 
-const options = ["Sitater fra Kunnskapsbasen", "Sitater fra Nav.no"]
-
 interface CitationSpanProps extends React.HTMLAttributes<HTMLSpanElement> {
   "data-citation"?: string
   "data-position"?: string
 }
 
 const getSourcesComponent = (message: Message) => {
-  const hasContext = message.context && message.context.length > 0
+  const hasContext = message.context && Object.entries(message.context).length > 0
   const hasCitations = message.citations && message.citations.length > 0
 
   if (!hasContext && !hasCitations) {
@@ -58,9 +55,26 @@ export const BobAnswerBubble = memo(
 
     const isPending = ({ pending, content }: Message): boolean => pending && content === ""
 
-    const [citations, setCitations] = useState<{ citationId: number; position: number }[]>([])
+    const [citations, setCitations] = useState<{ citationId: string; position: number }[]>([])
 
     const contentReady = !hasError(message) && !isPending(message) && !!message.content
+
+    function handleFindSourcesClick() {
+      analytics.finnKilderTilSvaret()
+      const findSources: NewMessage = {
+        content: `Se om du kan finne kilder som støtter svaret:\n${message.content}`,
+      }
+      onSend(findSources)
+    }
+
+    const toolNames = [
+      "date_duration",
+      "end_date",
+      "emphatic_guidelines",
+      "is_country_eea",
+      "search_nav_information",
+      "nav_dictionary",
+    ]
 
     return (
       <VStack
@@ -80,19 +94,20 @@ export const BobAnswerBubble = memo(
               {hasError(message) ? (
                 <ErrorContent message={message} />
               ) : isPending(message) ? (
-                <LoadingContent />
+                <LoadingContent status={message.status} />
               ) : (
                 <MessageContent
                   message={message}
                   citations={citations}
                   setCitations={setCitations}
                   onSend={onSend}
+                  followUp={followUp}
                 />
               )}
             </div>
             {contentReady && message.content && (
               <>
-                <HStack className='mb-6 flex-wrap-reverse items-center gap-4'>
+                <HStack className='flex-wrap-reverse items-center gap-4'>
                   <BobSuggests
                     message={message}
                     onSend={onSend}
@@ -100,14 +115,31 @@ export const BobAnswerBubble = memo(
                   />
                   {getSourcesComponent(message)}
                 </HStack>
-                <Citations
-                  message={message}
-                  onSend={onSend}
-                  isLoading={isLoading}
-                  isLastMessage={isLastMessage}
-                  citations={citations}
-                  showLinks={contentReady}
-                />
+                {message.citations.length > 0 && (
+                  <Citations
+                    message={message}
+                    onSend={onSend}
+                    isLoading={isLoading}
+                    isLastMessage={isLastMessage}
+                    citations={citations}
+                    showLinks={contentReady}
+                  />
+                )}
+                {followUp.length > 0 &&
+                  Object.keys(message.context).length === 0 &&
+                  message.citations.length === 0 &&
+                  (message.tools.length === 0 || !message.tools.some((tool) => toolNames.includes(tool.name))) && (
+                    <Button
+                      data-color='info'
+                      size='small'
+                      variant='primary'
+                      className='my-3 mt-6 mb-8 w-fit'
+                      icon={<FileSearchIcon fontSize={24} />}
+                      onClick={handleFindSourcesClick}
+                    >
+                      Finn kilder til svaret
+                    </Button>
+                  )}
                 <FollowUpQuestions
                   followUp={followUp}
                   onSend={(question) => onSend({ content: question })}
@@ -135,36 +167,52 @@ const ErrorContent = ({ message }: { message: Message }) => (
   </BodyLong>
 )
 
-const LoadingContent = () => (
-  <div className='w-full'>
-    <Skeleton
-      width='100%'
-      variant='text'
-    />
-    <Skeleton
-      width='70%'
-      variant='text'
-    />
-  </div>
-)
+const LoadingContent = ({ status }: { status: string[] | undefined }) => {
+  if (status && status.length > 0) {
+    return <StatusMessageContent status={status} />
+  }
+
+  return (
+    <div className='w-full'>
+      <Skeleton
+        width='100%'
+        variant='text'
+      />
+      <Skeleton
+        width='70%'
+        variant='text'
+      />
+    </div>
+  )
+}
+
+const StatusMessageContent = ({ status }: { status: string[] }) => {
+  const statusMessage = status.at(0) ?? ""
+  return (
+    <HStack gap='space-8'>
+      <Loader size='xsmall' />
+      <BodyShort className='animate-pulse'>{statusMessage}</BodyShort>
+    </HStack>
+  )
+}
 
 const MessageContent = ({
   message,
   citations,
   setCitations,
-  onSend,
 }: {
   message: Message
-  citations: { citationId: number; position: number }[]
+  citations: { citationId: string; position: number }[]
   setCitations: React.Dispatch<
     React.SetStateAction<
       {
-        citationId: number
+        citationId: string
         position: number
       }[]
     >
   >
   onSend: (message: NewMessage) => void
+  followUp: string[]
 }) => {
   const divRef = React.useRef<HTMLDivElement>(null)
 
@@ -174,7 +222,7 @@ const MessageContent = ({
     await copyMarkedBobAnswerHandler(message)
   }
 
-  const addCitation = (citationId: number, position: number) => {
+  const addCitation = (citationId: string, position: number) => {
     let existingCitations = citations
     const newCitation = { citationId, position }
 
@@ -193,19 +241,11 @@ const MessageContent = ({
     setCitations(newState)
   }
 
-  function handleFindSourcesClick() {
-    analytics.finnKilderTilSvaret()
-    const findSources: NewMessage = {
-      content: `Se om du kan finne kilder som støtter svaret:\n${message.content}`,
-    }
-    onSend(findSources)
-  }
-
   const citationSpanComponent = (props: CitationSpanProps) => {
     const dataCitation = props["data-citation"]
     const dataPosition = props["data-position"]
     if (dataCitation && dataPosition) {
-      const citationId = parseInt(dataCitation, 10)
+      const citationId = dataCitation
       addCitation(citationId, parseInt(dataPosition, 10))
       return (
         <CitationNumber
@@ -220,7 +260,7 @@ const MessageContent = ({
 
   return (
     <div
-      className='mb-2 flex flex-col gap-3'
+      className='mb-2 flex w-full flex-col gap-3'
       ref={divRef}
       onCopy={handleCopy}
     >
@@ -235,113 +275,30 @@ const MessageContent = ({
         <AppMarkdown
           remarkPlugins={[md.remarkCitations]}
           rehypePlugins={[rehypeRaw]}
-          components={{ span: citationSpanComponent }}
+          components={{ span: citationSpanComponent, ...hoverComponents(["ask bob", "copy"]) }}
         >
           {message.content}
         </AppMarkdown>
       </BodyLong>
-
-      {message.context.length === 0 && message.citations.length === 0 && message.contextualizedQuestion !== null && (
-        <Button
-          data-color='neutral'
-          size='small'
-          variant='tertiary'
-          className='my-3 w-fit'
-          icon={<FileSearchIcon fontSize={24} />}
-          onClick={handleFindSourcesClick}
-        >
-          Forsøk å finne kilder som støtter svaret
-        </Button>
-      )}
     </div>
   )
 }
 
 interface CitationsProps extends Omit<BobAnswerBubbleProps, "isHighlighted" | "followUp"> {
-  citations: { citationId: number; position: number }[]
+  citations: { citationId: string; position: number }[]
   showLinks: boolean
 }
 
 const Citations = memo(
   ({ message, citations, showLinks }: CitationsProps) => {
-    const [selectedCitations, setSelectedCitations] = useState<string[]>(options)
-
-    const handleToggleCitations = (selected: string[]) => {
-      setSelectedCitations(selected)
-    }
-
-    const filteredCitations = message.citations.filter((citation) => {
-      if (selectedCitations.length === 0) {
-        return false
-      }
-      return selectedCitations.some((selected) => {
-        if (selected === "Sitater fra Kunnskapsbasen") {
-          return message.context[citation.sourceId].source === "nks"
-        }
-        if (selected === "Sitater fra Nav.no") {
-          return message.context[citation.sourceId].source === "navno"
-        }
-        return false
-      })
-    })
-
-    const citationData = filteredCitations
-      .map((citation) => {
-        const matchingContext = message.context.at(citation.sourceId)!
-
-        return {
-          title: matchingContext.title,
-          source: matchingContext.source,
-          citation,
-        }
-      })
-      .reduce(
-        (acc, { title, source, citation }) => {
-          const existingGroup = acc.find((group) => group.title === title)
-
-          if (existingGroup) {
-            existingGroup.citations.push(citation)
-          } else {
-            acc.push({ title, source, citations: [citation] })
-          }
-
-          return acc
-        },
-        [] as {
-          title: string
-          source: "navno" | "nks"
-          citations: Citation[]
-        }[],
-      )
-      .sort((a, b) => {
-        if (a.source === "nks" && b.source === "navno") return -1
-        if (a.source === "navno" && b.source === "nks") return 1
-        return 0
-      })
-
     return (
-      <div className='mb-4 flex flex-col gap-4'>
+      <div className='mt-6 mb-4 flex flex-col gap-4'>
         {showLinks && citations.length > 0 && (
           <div className='flex flex-col gap-2'>
             <CitationLinks
               citations={citations}
               context={message.context}
             />
-          </div>
-        )}
-        {message.citations && message.citations.length > 0 && (
-          <div className='fade-in flex flex-col gap-2'>
-            <ToggleCitations
-              onToggle={handleToggleCitations}
-              message={message}
-            />
-            {citationData.map((citation, index) => (
-              <BobAnswerCitations
-                citation={citation}
-                key={`citation-${index}`}
-                context={message.context}
-              />
-            ))}
           </div>
         )}
       </div>

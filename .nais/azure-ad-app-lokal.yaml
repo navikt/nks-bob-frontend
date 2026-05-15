@@ -1,7 +1,11 @@
 #######
 # Denne er brukt til å gjøre det mulig å bruke tokens lokalt
 #
-# secret kan hentes fra cluster med "kubectl -n nks-aiautomatisering get secret azuread-nks-bob-frontend-lokal -o json | jq '.data | map_values(@base64d)'"
+# Credentials fra denne appen roteres årlig.
+# Ved rotasjon (neste: ca. desember 2026), kjør:
+#   just dump-credentials
+# og oppdater secreten "nks-bob-frontend-lokal-credentials" i NAIS Console (dev-miljø)
+# med de nye verdiene. Kjør deretter 'just setup' på nytt.
 #
 # Kjøres en gang eller ved endringer med
 # kubectl apply -f .nais/azure-ad-app-lokal.yaml

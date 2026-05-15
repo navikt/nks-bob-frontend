@@ -3,7 +3,7 @@ import { MessageEvent as ConversationEvent } from "../api/sse"
 import analytics from "../utils/analytics"
 import { transformArticleColumnArray } from "../utils/articleColumnTransformer"
 import { transformNksUrlsArray } from "../utils/nksUrlTransformer"
-import { Message } from "./Message"
+import { Citation, Contexts, Message } from "./Message"
 
 // Type guard functions for MessageEvent types
 function isNewMessage(event: ConversationEvent): event is { type: "NewMessage"; id: string; message: Message } {
@@ -16,11 +16,13 @@ function isContentUpdated(event: ConversationEvent): event is { type: "ContentUp
 
 function isCitationsUpdated(
   event: ConversationEvent,
-): event is { type: "CitationsUpdated"; id: string; citations: any[] } {
+): event is { type: "CitationsUpdated"; id: string; citations: Citation[] } {
   return event.type === "CitationsUpdated"
 }
 
-function isContextUpdated(event: ConversationEvent): event is { type: "ContextUpdated"; id: string; context: any[] } {
+function isContextUpdated(
+  event: ConversationEvent,
+): event is { type: "ContextUpdated"; id: string; context: Contexts } {
   return event.type === "ContextUpdated"
 }
 
@@ -38,6 +40,10 @@ function isErrorsUpdated(event: ConversationEvent): event is { type: "ErrorsUpda
   return event.type === "ErrorsUpdated"
 }
 
+function isMessageUpdated(event: ConversationEvent): event is { type: "MessageUpdated"; id: string; message: Message } {
+  return event.type === "MessageUpdated"
+}
+
 type MessageMap = { [id: string]: Message }
 
 type MessageState = {
@@ -49,11 +55,15 @@ type MessageState = {
   resetMessages: () => void
 }
 
-const transformContextData = <T extends { url: string; articleColumn?: string | null }>(contexts: T[]): T[] => {
+const transformContextData = (contexts: Contexts): Contexts => {
   let transformed = transformNksUrlsArray(contexts)
 
-  if (contexts.length > 0 && "articleColumn" in contexts[0]) {
-    transformed = transformArticleColumnArray(transformed as any) as T[]
+  const entries = Object.entries(contexts)
+  const hasContexts = entries.length > 0
+  const hasArticleColumn = "articleColumn" in entries.map(([_, c]) => c)
+
+  if (hasContexts && hasArticleColumn) {
+    transformed = transformArticleColumnArray(transformed)
   }
 
   return transformed
@@ -150,6 +160,10 @@ const getMessage = (event: ConversationEvent, messages: MessageMap): Message | u
     }
   }
 
+  if (isMessageUpdated(event)) {
+    return event.message
+  }
+
   if (isCitationsUpdated(event)) {
     return {
       ...message,
@@ -167,7 +181,7 @@ const getMessage = (event: ConversationEvent, messages: MessageMap): Message | u
   if (isPendingUpdated(event)) {
     if (!event.pending) {
       const messageLength = event.message.content.length
-      const contextMeta = event.message.context.map(({ source, title }) => ({
+      const contextMeta = Object.entries(event.message.context).map(([_, { source, title }]) => ({
         tittel: title,
         kilde: source,
       }))
@@ -176,7 +190,13 @@ const getMessage = (event: ConversationEvent, messages: MessageMap): Message | u
       }))
       const tools = event.message.tools
 
-      analytics.svarMottatt(event.id, messageLength, contextMeta, citationMeta, tools)
+      analytics.svarMottatt(
+        event.id,
+        messageLength,
+        contextMeta,
+        citationMeta,
+        tools.map(({ name }) => name),
+      )
     }
 
     return {
@@ -186,8 +206,10 @@ const getMessage = (event: ConversationEvent, messages: MessageMap): Message | u
   }
 
   if (isStatusUpdate(event)) {
-    console.debug(`Status: ${event.content}`)
-    return undefined
+    return {
+      ...message,
+      status: [event.content],
+    }
   }
 
   if (isErrorsUpdated(event)) {

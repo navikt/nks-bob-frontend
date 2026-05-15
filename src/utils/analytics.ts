@@ -27,7 +27,7 @@ type KontekstMeta = { tittel: string; kilde: "navno" | "nks" }
 
 type KontekstArtikkelMeta = KontekstMeta & { artikkelKolonne: string | null }
 
-type SitatMeta = { kildeId: number }
+type SitatMeta = { kildeId: string }
 
 function reduceToObject<T>(acc: { [key: number]: T }, current: T, index: number) {
   acc[index] = current
@@ -172,8 +172,15 @@ const anonymiserTrykket = (antall: number, typer: string[]) => logEvent("Anonymi
 
 const innlimingInfoModalLukket = () => logEvent("Infomodal om innliming lukket")
 
-const finnKilderTilSvaret = () => logEvent("Finn kilder knapp klikket")
+const finnKilderTilSvaret = () => logEvent("Finn kilder klikket")
 
+const sporBob = (kontekst: KontekstMeta | null, lengde: number) => logEvent("Spør Bob om avsnitt", { kontekst, lengde })
+
+const avsnittKopiert = (kontekst: KontekstMeta | null, lengde: number) =>
+  logEvent("Avsnitt kopiert", { kontekst, lengde })
+
+const avsnittÅpnetLenke = (kontekst: KontekstMeta, lengde: number) =>
+  logEvent("Avsnitt åpnet lenke", { kontekst, lengde })
 
 export default {
   svarKopiert,
@@ -216,4 +223,7 @@ export default {
   anonymiserTrykket,
   innlimingInfoModalLukket,
   finnKilderTilSvaret,
+  sporBob,
+  avsnittKopiert,
+  avsnittÅpnetLenke,
 }

@@ -457,8 +457,18 @@ export const BobTheChristmasWizardDefault = () => {
           fill='#F12F37'
         />
       </g>
-      <circle cx='58.9645' cy='247.991' r='3.13245' fill='#FA6A52' />
-      <circle cx='46.4355' cy='272.216' r='3.96777' fill='#FA6A52' />
+      <circle
+        cx='58.9645'
+        cy='247.991'
+        r='3.13245'
+        fill='#FA6A52'
+      />
+      <circle
+        cx='46.4355'
+        cy='272.216'
+        r='3.96777'
+        fill='#FA6A52'
+      />
       <path
         d='M66.6932 276.81C71.8722 262.943 65.9275 241.239 62.3078 232.12L65.0226 233.582C70.8698 239.262 74.2807 264.35 75.2553 276.183C76.4247 278.355 83.8173 278.341 87.3674 278.063C86.3233 280.986 89.6645 292.472 71.2875 302.078C49.068 309.429 36.8305 294.003 33.4893 285.372C35.3687 287.042 39.6289 290.467 41.6336 290.801C44.1396 291.219 60.2195 294.143 66.6932 276.81Z'
         fill='#880016'
@@ -570,8 +580,18 @@ export const BobTheChristmasWizardDefault = () => {
         d='M93.9743 257.176C83.7834 247.988 90.7027 240.122 95.4362 237.338C115.588 252.334 134.875 241.842 143.498 233.416C143.69 232.67 144.34 232.09 145.138 231.699C144.645 232.255 144.097 232.831 143.498 233.416C142.904 235.729 146.71 239.638 164.141 244.438C192.96 252.373 232.638 243.394 239.947 236.502C245.794 230.989 248.369 231.421 248.926 232.326C262.709 248.823 245.794 257.176 226.373 261.771C175.084 270.458 150.289 261.492 144.302 255.924C135.323 262.815 106.713 268.662 93.9743 257.176Z'
         fill='#FDF6E4'
       />
-      <circle cx='257.07' cy='181.162' r='3.13245' fill='#F87259' />
-      <circle cx='280.46' cy='115.59' r='3.13245' fill='#F87259' />
+      <circle
+        cx='257.07'
+        cy='181.162'
+        r='3.13245'
+        fill='#F87259'
+      />
+      <circle
+        cx='280.46'
+        cy='115.59'
+        r='3.13245'
+        fill='#F87259'
+      />
       <ellipse
         cx='295.078'
         cy='133.967'
@@ -613,23 +633,108 @@ export const BobTheChristmasWizardDefault = () => {
         d='M255.629 84.5947C255.684 87.1028 256.37 90.3761 257.007 92.7942C255.446 90.2629 253.689 86.2242 255.629 84.5947Z'
         fill='#E45E55'
       />
-      <circle cx='19.8391' cy='189.1' r='2.29713' fill='#B7CBD7' />
-      <circle cx='27.3557' cy='169.471' r='1.04415' fill='#B7CBD7' />
-      <circle cx='63.6926' cy='160.281' r='1.04415' fill='#B7CBD7' />
-      <circle cx='85.4113' cy='150.259' r='1.04415' fill='#B7CBD7' />
-      <circle cx='111.932' cy='269.499' r='1.67064' fill='#B7CBD7' />
-      <circle cx='99.4027' cy='263.235' r='0.83532' fill='#B7CBD7' />
-      <circle cx='95.2259' cy='304.583' r='0.83532' fill='#B7CBD7' />
-      <circle cx='94.809' cy='286.624' r='0.83532' fill='#B7CBD7' />
-      <circle cx='103.998' cy='289.966' r='0.41766' fill='#B7CBD7' />
-      <circle cx='116.526' cy='302.495' r='0.41766' fill='#B7CBD7' />
-      <circle cx='97.3161' cy='320.872' r='0.41766' fill='#B7CBD7' />
-      <circle cx='95.6452' cy='323.379' r='0.41766' fill='#B7CBD7' />
-      <circle cx='72.6725' cy='319.202' r='0.41766' fill='#B7CBD7' />
-      <circle cx='61.1883' cy='329.851' r='0.20883' fill='#B7CBD7' />
-      <circle cx='55.5492' cy='310.847' r='0.83532' fill='#B7CBD7' />
-      <circle cx='23.8063' cy='297.484' r='0.41766' fill='#B7CBD7' />
-      <circle cx='34.8742' cy='232.119' r='1.04415' fill='#B7CBD7' />
+      <circle
+        cx='19.8391'
+        cy='189.1'
+        r='2.29713'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='27.3557'
+        cy='169.471'
+        r='1.04415'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='63.6926'
+        cy='160.281'
+        r='1.04415'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='85.4113'
+        cy='150.259'
+        r='1.04415'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='111.932'
+        cy='269.499'
+        r='1.67064'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='99.4027'
+        cy='263.235'
+        r='0.83532'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='95.2259'
+        cy='304.583'
+        r='0.83532'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='94.809'
+        cy='286.624'
+        r='0.83532'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='103.998'
+        cy='289.966'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='116.526'
+        cy='302.495'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='97.3161'
+        cy='320.872'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='95.6452'
+        cy='323.379'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='72.6725'
+        cy='319.202'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='61.1883'
+        cy='329.851'
+        r='0.20883'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='55.5492'
+        cy='310.847'
+        r='0.83532'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='23.8063'
+        cy='297.484'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='34.8742'
+        cy='232.119'
+        r='1.04415'
+        fill='#B7CBD7'
+      />
       <ellipse
         cx='36.9624'
         cy='249.244'
@@ -658,8 +763,18 @@ export const BobTheChristmasWizardDefault = () => {
         ry='0.62649'
         fill='#B7CBD7'
       />
-      <circle cx='16.0789' cy='248.409' r='0.20883' fill='#B7CBD7' />
-      <circle cx='21.9276' cy='213.743' r='0.20883' fill='#B7CBD7' />
+      <circle
+        cx='16.0789'
+        cy='248.409'
+        r='0.20883'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='21.9276'
+        cy='213.743'
+        r='0.20883'
+        fill='#B7CBD7'
+      />
       <ellipse
         cx='28.6089'
         cy='188.683'
@@ -814,53 +929,288 @@ export const BobTheChristmasWizardDefault = () => {
         ry='0.62649'
         fill='#B7CBD7'
       />
-      <circle cx='53.0436' cy='81.9704' r='0.41766' fill='#B7CBD7' />
-      <circle cx='53.0436' cy='75.7057' r='0.41766' fill='#B7CBD7' />
-      <circle cx='80.6091' cy='72.7829' r='0.41766' fill='#B7CBD7' />
-      <circle cx='68.4968' cy='60.6696' r='0.41766' fill='#B7CBD7' />
-      <circle cx='92.3024' cy='55.6589' r='0.41766' fill='#B7CBD7' />
-      <circle cx='100.239' cy='41.8747' r='0.41766' fill='#B7CBD7' />
-      <circle cx='118.197' cy='46.0514' r='0.41766' fill='#B7CBD7' />
-      <circle cx='113.603' cy='34.3561' r='0.41766' fill='#B7CBD7' />
-      <circle cx='117.363' cy='27.2565' r='0.41766' fill='#B7CBD7' />
-      <circle cx='133.233' cy='13.4743' r='0.41766' fill='#B7CBD7' />
-      <circle cx='148.688' cy='29.7614' r='0.41766' fill='#B7CBD7' />
-      <circle cx='161.635' cy='21.4089' r='0.41766' fill='#B7CBD7' />
-      <circle cx='172.077' cy='19.7389' r='0.41766' fill='#B7CBD7' />
-      <circle cx='177.506' cy='14.3102' r='0.41766' fill='#B7CBD7' />
-      <circle cx='196.717' cy='17.6501' r='0.41766' fill='#B7CBD7' />
-      <circle cx='224.284' cy='17.6501' r='0.41766' fill='#B7CBD7' />
-      <circle cx='244.749' cy='14.7272' r='0.41766' fill='#B7CBD7' />
-      <circle cx='246.419' cy='11.3864' r='0.41766' fill='#B7CBD7' />
-      <circle cx='253.936' cy='23.9167' r='0.41766' fill='#B7CBD7' />
-      <circle cx='261.873' cy='36.445' r='0.41766' fill='#B7CBD7' />
-      <circle cx='279.832' cy='33.1042' r='0.41766' fill='#B7CBD7' />
-      <circle cx='280.668' cy='45.2165' r='0.41766' fill='#B7CBD7' />
-      <circle cx='273.568' cy='61.0866' r='0.41766' fill='#B7CBD7' />
-      <circle cx='307.815' cy='72.7829' r='0.41766' fill='#B7CBD7' />
-      <circle cx='304.057' cy='87.3991' r='0.41766' fill='#B7CBD7' />
-      <circle cx='308.234' cy='95.7526' r='0.41766' fill='#B7CBD7' />
-      <circle cx='318.258' cy='121.647' r='0.41766' fill='#B7CBD7' />
-      <circle cx='331.621' cy='124.572' r='0.41766' fill='#B7CBD7' />
-      <circle cx='321.181' cy='139.607' r='0.41766' fill='#B7CBD7' />
-      <circle cx='324.522' cy='150.049' r='0.41766' fill='#B7CBD7' />
-      <circle cx='323.686' cy='162.578' r='0.41766' fill='#B7CBD7' />
-      <circle cx='349.164' cy='155.479' r='0.83532' fill='#B7CBD7' />
-      <circle cx='346.241' cy='180.537' r='0.83532' fill='#B7CBD7' />
-      <circle cx='322.015' cy='177.615' r='0.41766' fill='#B7CBD7' />
-      <circle cx='327.864' cy='201.84' r='0.41766' fill='#B7CBD7' />
-      <circle cx='331.204' cy='208.521' r='0.41766' fill='#B7CBD7' />
-      <circle cx='345.823' cy='215.623' r='0.41766' fill='#B7CBD7' />
-      <circle cx='320.763' cy='244.44' r='0.41766' fill='#B7CBD7' />
-      <circle cx='291.944' cy='237.757' r='0.41766' fill='#B7CBD7' />
-      <circle cx='288.184' cy='255.299' r='0.41766' fill='#B7CBD7' />
-      <circle cx='291.109' cy='264.486' r='0.41766' fill='#B7CBD7' />
-      <circle cx='294.452' cy='279.941' r='0.41766' fill='#B7CBD7' />
-      <circle cx='290.273' cy='285.79' r='0.41766' fill='#B7CBD7' />
-      <circle cx='293.616' cy='305.002' r='0.41766' fill='#B7CBD7' />
-      <circle cx='280.668' cy='310.847' r='0.41766' fill='#B7CBD7' />
-      <circle cx='267.721' cy='311.684' r='0.41766' fill='#B7CBD7' />
-      <circle cx='257.279' cy='317.949' r='0.41766' fill='#B7CBD7' />
+      <circle
+        cx='53.0436'
+        cy='81.9704'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='53.0436'
+        cy='75.7057'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='80.6091'
+        cy='72.7829'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='68.4968'
+        cy='60.6696'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='92.3024'
+        cy='55.6589'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='100.239'
+        cy='41.8747'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='118.197'
+        cy='46.0514'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='113.603'
+        cy='34.3561'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='117.363'
+        cy='27.2565'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='133.233'
+        cy='13.4743'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='148.688'
+        cy='29.7614'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='161.635'
+        cy='21.4089'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='172.077'
+        cy='19.7389'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='177.506'
+        cy='14.3102'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='196.717'
+        cy='17.6501'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='224.284'
+        cy='17.6501'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='244.749'
+        cy='14.7272'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='246.419'
+        cy='11.3864'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='253.936'
+        cy='23.9167'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='261.873'
+        cy='36.445'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='279.832'
+        cy='33.1042'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='280.668'
+        cy='45.2165'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='273.568'
+        cy='61.0866'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='307.815'
+        cy='72.7829'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='304.057'
+        cy='87.3991'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='308.234'
+        cy='95.7526'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='318.258'
+        cy='121.647'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='331.621'
+        cy='124.572'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='321.181'
+        cy='139.607'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='324.522'
+        cy='150.049'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='323.686'
+        cy='162.578'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='349.164'
+        cy='155.479'
+        r='0.83532'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='346.241'
+        cy='180.537'
+        r='0.83532'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='322.015'
+        cy='177.615'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='327.864'
+        cy='201.84'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='331.204'
+        cy='208.521'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='345.823'
+        cy='215.623'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='320.763'
+        cy='244.44'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='291.944'
+        cy='237.757'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='288.184'
+        cy='255.299'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='291.109'
+        cy='264.486'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='294.452'
+        cy='279.941'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='290.273'
+        cy='285.79'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='293.616'
+        cy='305.002'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='280.668'
+        cy='310.847'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='267.721'
+        cy='311.684'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='257.279'
+        cy='317.949'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
       <ellipse
         cx='298.836'
         cy='324.004'
@@ -868,20 +1218,90 @@ export const BobTheChristmasWizardDefault = () => {
         ry='0.62649'
         fill='#B7CBD7'
       />
-      <circle cx='274.82' cy='271.171' r='0.41766' fill='#B7CBD7' />
-      <circle cx='247.674' cy='260.312' r='0.41766' fill='#B7CBD7' />
-      <circle cx='239.736' cy='275.764' r='0.41766' fill='#B7CBD7' />
-      <circle cx='188.781' cy='288.712' r='0.41766' fill='#B7CBD7' />
-      <circle cx='192.958' cy='305.836' r='0.83532' fill='#B7CBD7' />
-      <circle cx='191.287' cy='315.442' r='0.83532' fill='#B7CBD7' />
-      <circle cx='171.24' cy='300.823' r='0.41766' fill='#B7CBD7' />
-      <circle cx='179.175' cy='310.429' r='0.41766' fill='#B7CBD7' />
-      <circle cx='201.731' cy='325.466' r='0.41766' fill='#B7CBD7' />
-      <circle cx='172.077' cy='324.631' r='0.41766' fill='#B7CBD7' />
-      <circle cx='245.584' cy='291.635' r='0.41766' fill='#B7CBD7' />
-      <circle cx='263.125' cy='286.624' r='0.41766' fill='#B7CBD7' />
-      <circle cx='269.391' cy='248.618' r='0.41766' fill='#B7CBD7' />
-      <circle cx='264.797' cy='259.475' r='0.41766' fill='#B7CBD7' />
+      <circle
+        cx='274.82'
+        cy='271.171'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='247.674'
+        cy='260.312'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='239.736'
+        cy='275.764'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='188.781'
+        cy='288.712'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='192.958'
+        cy='305.836'
+        r='0.83532'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='191.287'
+        cy='315.442'
+        r='0.83532'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='171.24'
+        cy='300.823'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='179.175'
+        cy='310.429'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='201.731'
+        cy='325.466'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='172.077'
+        cy='324.631'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='245.584'
+        cy='291.635'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='263.125'
+        cy='286.624'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='269.391'
+        cy='248.618'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='264.797'
+        cy='259.475'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
       <ellipse
         cx='319.719'
         cy='267.62'
@@ -889,9 +1309,24 @@ export const BobTheChristmasWizardDefault = () => {
         ry='0.62649'
         fill='#B7CBD7'
       />
-      <circle cx='309.485' cy='209.358' r='0.41766' fill='#B7CBD7' />
-      <circle cx='302.387' cy='213.115' r='0.41766' fill='#B7CBD7' />
-      <circle cx='301.55' cy='216.874' r='0.83532' fill='#B7CBD7' />
+      <circle
+        cx='309.485'
+        cy='209.358'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='302.387'
+        cy='213.115'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='301.55'
+        cy='216.874'
+        r='0.83532'
+        fill='#B7CBD7'
+      />
       <ellipse
         cx='330.161'
         cy='233.373'
@@ -899,9 +1334,24 @@ export const BobTheChristmasWizardDefault = () => {
         ry='0.62649'
         fill='#B7CBD7'
       />
-      <circle cx='289.439' cy='109.119' r='0.41766' fill='#B7CBD7' />
-      <circle cx='292.78' cy='112.041' r='0.41766' fill='#B7CBD7' />
-      <circle cx='282.339' cy='88.235' r='0.41766' fill='#B7CBD7' />
+      <circle
+        cx='289.439'
+        cy='109.119'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='292.78'
+        cy='112.041'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='282.339'
+        cy='88.235'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
       <ellipse
         cx='286.723'
         cy='96.7984'
@@ -909,7 +1359,12 @@ export const BobTheChristmasWizardDefault = () => {
         ry='0.62649'
         fill='#B7CBD7'
       />
-      <circle cx='277.328' cy='102.854' r='0.41766' fill='#B7CBD7' />
+      <circle
+        cx='277.328'
+        cy='102.854'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
       <ellipse
         cx='282.129'
         cy='71.3208'
@@ -924,17 +1379,72 @@ export const BobTheChristmasWizardDefault = () => {
         ry='0.62649'
         fill='#B7CBD7'
       />
-      <circle cx='267.301' cy='68.1872' r='0.41766' fill='#B7CBD7' />
-      <circle cx='261.037' cy='73.6169' r='0.41766' fill='#B7CBD7' />
-      <circle cx='255.609' cy='64.4294' r='0.41766' fill='#B7CBD7' />
-      <circle cx='261.871' cy='52.3168' r='0.83532' fill='#B7CBD7' />
-      <circle cx='222.613' cy='32.2682' r='0.41766' fill='#B7CBD7' />
-      <circle cx='210.919' cy='47.3054' r='0.41766' fill='#B7CBD7' />
-      <circle cx='223.449' cy='47.3054' r='0.41766' fill='#B7CBD7' />
-      <circle cx='216.766' cy='61.9225' r='0.41766' fill='#B7CBD7' />
-      <circle cx='217.183' cy='71.946' r='0.41766' fill='#B7CBD7' />
-      <circle cx='238.902' cy='53.1511' r='0.41766' fill='#B7CBD7' />
-      <circle cx='213.008' cy='29.7614' r='0.41766' fill='#B7CBD7' />
+      <circle
+        cx='267.301'
+        cy='68.1872'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='261.037'
+        cy='73.6169'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='255.609'
+        cy='64.4294'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='261.871'
+        cy='52.3168'
+        r='0.83532'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='222.613'
+        cy='32.2682'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='210.919'
+        cy='47.3054'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='223.449'
+        cy='47.3054'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='216.766'
+        cy='61.9225'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='217.183'
+        cy='71.946'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='238.902'
+        cy='53.1511'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='213.008'
+        cy='29.7614'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
       <ellipse
         cx='206.115'
         cy='34.565'
@@ -949,12 +1459,42 @@ export const BobTheChristmasWizardDefault = () => {
         ry='0.62649'
         fill='#B7CBD7'
       />
-      <circle cx='173.328' cy='1.77966' r='0.83532' fill='#B7CBD7' />
-      <circle cx='130.309' cy='31.0163' r='0.41766' fill='#B7CBD7' />
-      <circle cx='130.309' cy='30.5983' r='0.41766' fill='#B7CBD7' />
-      <circle cx='58.8913' cy='46.0514' r='0.41766' fill='#B7CBD7' />
-      <circle cx='96.0622' cy='83.2224' r='0.41766' fill='#B7CBD7' />
-      <circle cx='114.02' cy='74.0349' r='0.41766' fill='#B7CBD7' />
+      <circle
+        cx='173.328'
+        cy='1.77966'
+        r='0.83532'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='130.309'
+        cy='31.0163'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='130.309'
+        cy='30.5983'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='58.8913'
+        cy='46.0514'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='96.0622'
+        cy='83.2224'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='114.02'
+        cy='74.0349'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
       <ellipse
         cx='40.7212'
         cy='161.117'
@@ -962,11 +1502,36 @@ export const BobTheChristmasWizardDefault = () => {
         ry='0.62649'
         fill='#B7CBD7'
       />
-      <circle cx='15.662' cy='149.424' r='0.20883' fill='#B7CBD7' />
-      <circle cx='74.5526' cy='168.217' r='0.20883' fill='#B7CBD7' />
-      <circle cx='0.20883' cy='206.224' r='0.20883' fill='#B7CBD7' />
-      <circle cx='72.0471' cy='129.375' r='2.29713' fill='#B7CBD7' />
-      <circle cx='97.9417' cy='70.0667' r='2.29713' fill='#B7CBD7' />
+      <circle
+        cx='15.662'
+        cy='149.424'
+        r='0.20883'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='74.5526'
+        cy='168.217'
+        r='0.20883'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='0.20883'
+        cy='206.224'
+        r='0.20883'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='72.0471'
+        cy='129.375'
+        r='2.29713'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='97.9417'
+        cy='70.0667'
+        r='2.29713'
+        fill='#B7CBD7'
+      />
       <ellipse
         cx='144.303'
         cy='21.2007'
@@ -974,8 +1539,18 @@ export const BobTheChristmasWizardDefault = () => {
         ry='0.62649'
         fill='#B7CBD7'
       />
-      <circle cx='327.655' cy='103.897' r='2.29713' fill='#B7CBD7' />
-      <circle cx='303.012' cy='257.596' r='2.29713' fill='#B7CBD7' />
+      <circle
+        cx='327.655'
+        cy='103.897'
+        r='2.29713'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='303.012'
+        cy='257.596'
+        r='2.29713'
+        fill='#B7CBD7'
+      />
       <ellipse
         cx='261.038'
         cy='275.765'
@@ -983,7 +1558,12 @@ export const BobTheChristmasWizardDefault = () => {
         ry='1.25298'
         fill='#B7CBD7'
       />
-      <circle cx='282.756' cy='293.306' r='0.83532' fill='#B7CBD7' />
+      <circle
+        cx='282.756'
+        cy='293.306'
+        r='0.83532'
+        fill='#B7CBD7'
+      />
       <ellipse
         cx='309.277'
         cy='297.693'
@@ -991,9 +1571,24 @@ export const BobTheChristmasWizardDefault = () => {
         ry='0.62649'
         fill='#B7CBD7'
       />
-      <circle cx='314.707' cy='225.018' r='2.29713' fill='#B7CBD7' />
-      <circle cx='294.24' cy='56.7014' r='2.29713' fill='#B7CBD7' />
-      <circle cx='87.9173' cy='19.1116' r='2.29713' fill='#B7CBD7' />
+      <circle
+        cx='314.707'
+        cy='225.018'
+        r='2.29713'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='294.24'
+        cy='56.7014'
+        r='2.29713'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='87.9173'
+        cy='19.1116'
+        r='2.29713'
+        fill='#B7CBD7'
+      />
       <defs>
         <filter
           id='filter0_d_815_23181'
@@ -1004,7 +1599,10 @@ export const BobTheChristmasWizardDefault = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1013,7 +1611,10 @@ export const BobTheChristmasWizardDefault = () => {
           />
           <feOffset dy='4' />
           <feGaussianBlur stdDeviation='2' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -1039,7 +1640,10 @@ export const BobTheChristmasWizardDefault = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1048,7 +1652,10 @@ export const BobTheChristmasWizardDefault = () => {
           />
           <feOffset dy='4' />
           <feGaussianBlur stdDeviation='2' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -1074,7 +1681,10 @@ export const BobTheChristmasWizardDefault = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1083,7 +1693,10 @@ export const BobTheChristmasWizardDefault = () => {
           />
           <feOffset dy='4' />
           <feGaussianBlur stdDeviation='2' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -1109,7 +1722,10 @@ export const BobTheChristmasWizardDefault = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1118,7 +1734,10 @@ export const BobTheChristmasWizardDefault = () => {
           />
           <feOffset dy='4' />
           <feGaussianBlur stdDeviation='2' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -1144,7 +1763,10 @@ export const BobTheChristmasWizardDefault = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1153,7 +1775,10 @@ export const BobTheChristmasWizardDefault = () => {
           />
           <feOffset dy='4' />
           <feGaussianBlur stdDeviation='2' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -1179,7 +1804,10 @@ export const BobTheChristmasWizardDefault = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1188,7 +1816,10 @@ export const BobTheChristmasWizardDefault = () => {
           />
           <feOffset dy='2' />
           <feGaussianBlur stdDeviation='0.5' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -1214,16 +1845,25 @@ export const BobTheChristmasWizardDefault = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0'
             result='hardAlpha'
           />
-          <feOffset dx='2' dy='5' />
+          <feOffset
+            dx='2'
+            dy='5'
+          />
           <feGaussianBlur stdDeviation='1.2' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0'
@@ -1249,7 +1889,10 @@ export const BobTheChristmasWizardDefault = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1258,7 +1901,10 @@ export const BobTheChristmasWizardDefault = () => {
           />
           <feOffset />
           <feGaussianBlur stdDeviation='1.15' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.8 0'
@@ -1284,7 +1930,10 @@ export const BobTheChristmasWizardDefault = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1293,7 +1942,10 @@ export const BobTheChristmasWizardDefault = () => {
           />
           <feOffset />
           <feGaussianBlur stdDeviation='1.15' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.8 0'
@@ -1319,7 +1971,10 @@ export const BobTheChristmasWizardDefault = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1328,7 +1983,10 @@ export const BobTheChristmasWizardDefault = () => {
           />
           <feOffset dy='1' />
           <feGaussianBlur stdDeviation='0.5' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.6 0'
@@ -1354,7 +2012,10 @@ export const BobTheChristmasWizardDefault = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1363,7 +2024,10 @@ export const BobTheChristmasWizardDefault = () => {
           />
           <feOffset dy='1' />
           <feGaussianBlur stdDeviation='0.5' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0'
@@ -1389,7 +2053,10 @@ export const BobTheChristmasWizardDefault = () => {
           gradientUnits='userSpaceOnUse'
         >
           <stop stop-color='#F9D277' />
-          <stop offset='1' stop-color='#A06A37' />
+          <stop
+            offset='1'
+            stop-color='#A06A37'
+          />
         </linearGradient>
         <linearGradient
           id='paint1_linear_815_23181'
@@ -1400,7 +2067,10 @@ export const BobTheChristmasWizardDefault = () => {
           gradientUnits='userSpaceOnUse'
         >
           <stop stop-color='#F9C446' />
-          <stop offset='1' stop-color='#EF8D36' />
+          <stop
+            offset='1'
+            stop-color='#EF8D36'
+          />
         </linearGradient>
         <linearGradient
           id='paint2_linear_815_23181'
@@ -1411,7 +2081,10 @@ export const BobTheChristmasWizardDefault = () => {
           gradientUnits='userSpaceOnUse'
         >
           <stop stop-color='#A45246' />
-          <stop offset='1' stop-color='#9A7D79' />
+          <stop
+            offset='1'
+            stop-color='#9A7D79'
+          />
         </linearGradient>
       </defs>
     </svg>
@@ -1877,8 +2550,18 @@ export const BobTheDarkChristmasWizard = () => {
           fill='#F12F37'
         />
       </g>
-      <circle cx='58.9645' cy='247.991' r='3.13245' fill='#FA6A52' />
-      <circle cx='46.4355' cy='272.216' r='3.96777' fill='#FA6A52' />
+      <circle
+        cx='58.9645'
+        cy='247.991'
+        r='3.13245'
+        fill='#FA6A52'
+      />
+      <circle
+        cx='46.4355'
+        cy='272.216'
+        r='3.96777'
+        fill='#FA6A52'
+      />
       <path
         d='M66.6932 276.81C71.8722 262.943 65.9275 241.239 62.3078 232.12L65.0226 233.582C70.8698 239.262 74.2807 264.35 75.2553 276.183C76.4247 278.355 83.8173 278.341 87.3674 278.063C86.3233 280.986 89.6645 292.472 71.2875 302.078C49.068 309.429 36.8305 294.003 33.4893 285.372C35.3687 287.042 39.6289 290.467 41.6336 290.801C44.1396 291.219 60.2195 294.143 66.6932 276.81Z'
         fill='#880016'
@@ -1990,8 +2673,18 @@ export const BobTheDarkChristmasWizard = () => {
         d='M93.9743 257.176C83.7834 247.988 90.7027 240.122 95.4362 237.338C115.588 252.334 134.875 241.842 143.498 233.416C143.69 232.67 144.34 232.09 145.138 231.699C144.645 232.255 144.097 232.831 143.498 233.416C142.904 235.729 146.71 239.638 164.141 244.438C192.96 252.373 232.638 243.394 239.947 236.502C245.794 230.989 248.369 231.421 248.926 232.326C262.709 248.823 245.794 257.176 226.373 261.771C175.084 270.458 150.289 261.492 144.302 255.924C135.323 262.815 106.713 268.662 93.9743 257.176Z'
         fill='#FDF6E4'
       />
-      <circle cx='257.07' cy='181.162' r='3.13245' fill='#F87259' />
-      <circle cx='280.46' cy='115.59' r='3.13245' fill='#F87259' />
+      <circle
+        cx='257.07'
+        cy='181.162'
+        r='3.13245'
+        fill='#F87259'
+      />
+      <circle
+        cx='280.46'
+        cy='115.59'
+        r='3.13245'
+        fill='#F87259'
+      />
       <ellipse
         cx='295.078'
         cy='133.967'
@@ -2033,23 +2726,108 @@ export const BobTheDarkChristmasWizard = () => {
         d='M255.629 84.5947C255.684 87.1028 256.37 90.3761 257.007 92.7942C255.446 90.2629 253.689 86.2242 255.629 84.5947Z'
         fill='#E45E55'
       />
-      <circle cx='19.8391' cy='189.1' r='2.29713' fill='#B7CBD7' />
-      <circle cx='27.3557' cy='169.471' r='1.04415' fill='#B7CBD7' />
-      <circle cx='63.6926' cy='160.281' r='1.04415' fill='#B7CBD7' />
-      <circle cx='85.4113' cy='150.259' r='1.04415' fill='#B7CBD7' />
-      <circle cx='111.932' cy='269.499' r='1.67064' fill='#B7CBD7' />
-      <circle cx='99.4027' cy='263.235' r='0.83532' fill='#B7CBD7' />
-      <circle cx='95.2259' cy='304.583' r='0.83532' fill='#B7CBD7' />
-      <circle cx='94.809' cy='286.624' r='0.83532' fill='#B7CBD7' />
-      <circle cx='103.998' cy='289.966' r='0.41766' fill='#B7CBD7' />
-      <circle cx='116.526' cy='302.495' r='0.41766' fill='#B7CBD7' />
-      <circle cx='97.3161' cy='320.872' r='0.41766' fill='#B7CBD7' />
-      <circle cx='95.6452' cy='323.379' r='0.41766' fill='#B7CBD7' />
-      <circle cx='72.6725' cy='319.202' r='0.41766' fill='#B7CBD7' />
-      <circle cx='61.1883' cy='329.851' r='0.20883' fill='#B7CBD7' />
-      <circle cx='55.5492' cy='310.847' r='0.83532' fill='#B7CBD7' />
-      <circle cx='23.8063' cy='297.484' r='0.41766' fill='#B7CBD7' />
-      <circle cx='34.8742' cy='232.119' r='1.04415' fill='#B7CBD7' />
+      <circle
+        cx='19.8391'
+        cy='189.1'
+        r='2.29713'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='27.3557'
+        cy='169.471'
+        r='1.04415'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='63.6926'
+        cy='160.281'
+        r='1.04415'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='85.4113'
+        cy='150.259'
+        r='1.04415'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='111.932'
+        cy='269.499'
+        r='1.67064'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='99.4027'
+        cy='263.235'
+        r='0.83532'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='95.2259'
+        cy='304.583'
+        r='0.83532'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='94.809'
+        cy='286.624'
+        r='0.83532'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='103.998'
+        cy='289.966'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='116.526'
+        cy='302.495'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='97.3161'
+        cy='320.872'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='95.6452'
+        cy='323.379'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='72.6725'
+        cy='319.202'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='61.1883'
+        cy='329.851'
+        r='0.20883'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='55.5492'
+        cy='310.847'
+        r='0.83532'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='23.8063'
+        cy='297.484'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='34.8742'
+        cy='232.119'
+        r='1.04415'
+        fill='#B7CBD7'
+      />
       <ellipse
         cx='36.9624'
         cy='249.244'
@@ -2078,8 +2856,18 @@ export const BobTheDarkChristmasWizard = () => {
         ry='0.62649'
         fill='#B7CBD7'
       />
-      <circle cx='16.0789' cy='248.409' r='0.20883' fill='#B7CBD7' />
-      <circle cx='21.9276' cy='213.743' r='0.20883' fill='#B7CBD7' />
+      <circle
+        cx='16.0789'
+        cy='248.409'
+        r='0.20883'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='21.9276'
+        cy='213.743'
+        r='0.20883'
+        fill='#B7CBD7'
+      />
       <ellipse
         cx='28.6089'
         cy='188.683'
@@ -2234,53 +3022,288 @@ export const BobTheDarkChristmasWizard = () => {
         ry='0.62649'
         fill='#B7CBD7'
       />
-      <circle cx='53.0436' cy='81.9704' r='0.41766' fill='#B7CBD7' />
-      <circle cx='53.0436' cy='75.7057' r='0.41766' fill='#B7CBD7' />
-      <circle cx='80.6091' cy='72.7829' r='0.41766' fill='#B7CBD7' />
-      <circle cx='68.4968' cy='60.6696' r='0.41766' fill='#B7CBD7' />
-      <circle cx='92.3024' cy='55.6589' r='0.41766' fill='#B7CBD7' />
-      <circle cx='100.239' cy='41.8747' r='0.41766' fill='#B7CBD7' />
-      <circle cx='118.197' cy='46.0514' r='0.41766' fill='#B7CBD7' />
-      <circle cx='113.603' cy='34.3561' r='0.41766' fill='#B7CBD7' />
-      <circle cx='117.363' cy='27.2565' r='0.41766' fill='#B7CBD7' />
-      <circle cx='133.233' cy='13.4743' r='0.41766' fill='#B7CBD7' />
-      <circle cx='148.688' cy='29.7614' r='0.41766' fill='#B7CBD7' />
-      <circle cx='161.635' cy='21.4089' r='0.41766' fill='#B7CBD7' />
-      <circle cx='172.077' cy='19.7389' r='0.41766' fill='#B7CBD7' />
-      <circle cx='177.506' cy='14.3102' r='0.41766' fill='#B7CBD7' />
-      <circle cx='196.717' cy='17.6501' r='0.41766' fill='#B7CBD7' />
-      <circle cx='224.284' cy='17.6501' r='0.41766' fill='#B7CBD7' />
-      <circle cx='244.749' cy='14.7272' r='0.41766' fill='#B7CBD7' />
-      <circle cx='246.419' cy='11.3864' r='0.41766' fill='#B7CBD7' />
-      <circle cx='253.936' cy='23.9167' r='0.41766' fill='#B7CBD7' />
-      <circle cx='261.873' cy='36.445' r='0.41766' fill='#B7CBD7' />
-      <circle cx='279.832' cy='33.1042' r='0.41766' fill='#B7CBD7' />
-      <circle cx='280.668' cy='45.2165' r='0.41766' fill='#B7CBD7' />
-      <circle cx='273.568' cy='61.0866' r='0.41766' fill='#B7CBD7' />
-      <circle cx='307.815' cy='72.7829' r='0.41766' fill='#B7CBD7' />
-      <circle cx='304.057' cy='87.3991' r='0.41766' fill='#B7CBD7' />
-      <circle cx='308.234' cy='95.7526' r='0.41766' fill='#B7CBD7' />
-      <circle cx='318.258' cy='121.647' r='0.41766' fill='#B7CBD7' />
-      <circle cx='331.621' cy='124.572' r='0.41766' fill='#B7CBD7' />
-      <circle cx='321.181' cy='139.607' r='0.41766' fill='#B7CBD7' />
-      <circle cx='324.522' cy='150.049' r='0.41766' fill='#B7CBD7' />
-      <circle cx='323.686' cy='162.578' r='0.41766' fill='#B7CBD7' />
-      <circle cx='349.164' cy='155.479' r='0.83532' fill='#B7CBD7' />
-      <circle cx='346.241' cy='180.537' r='0.83532' fill='#B7CBD7' />
-      <circle cx='322.015' cy='177.615' r='0.41766' fill='#B7CBD7' />
-      <circle cx='327.864' cy='201.84' r='0.41766' fill='#B7CBD7' />
-      <circle cx='331.204' cy='208.521' r='0.41766' fill='#B7CBD7' />
-      <circle cx='345.823' cy='215.623' r='0.41766' fill='#B7CBD7' />
-      <circle cx='320.763' cy='244.44' r='0.41766' fill='#B7CBD7' />
-      <circle cx='291.944' cy='237.757' r='0.41766' fill='#B7CBD7' />
-      <circle cx='288.184' cy='255.299' r='0.41766' fill='#B7CBD7' />
-      <circle cx='291.109' cy='264.486' r='0.41766' fill='#B7CBD7' />
-      <circle cx='294.452' cy='279.941' r='0.41766' fill='#B7CBD7' />
-      <circle cx='290.273' cy='285.79' r='0.41766' fill='#B7CBD7' />
-      <circle cx='293.616' cy='305.002' r='0.41766' fill='#B7CBD7' />
-      <circle cx='280.668' cy='310.847' r='0.41766' fill='#B7CBD7' />
-      <circle cx='267.721' cy='311.684' r='0.41766' fill='#B7CBD7' />
-      <circle cx='257.279' cy='317.949' r='0.41766' fill='#B7CBD7' />
+      <circle
+        cx='53.0436'
+        cy='81.9704'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='53.0436'
+        cy='75.7057'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='80.6091'
+        cy='72.7829'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='68.4968'
+        cy='60.6696'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='92.3024'
+        cy='55.6589'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='100.239'
+        cy='41.8747'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='118.197'
+        cy='46.0514'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='113.603'
+        cy='34.3561'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='117.363'
+        cy='27.2565'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='133.233'
+        cy='13.4743'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='148.688'
+        cy='29.7614'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='161.635'
+        cy='21.4089'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='172.077'
+        cy='19.7389'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='177.506'
+        cy='14.3102'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='196.717'
+        cy='17.6501'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='224.284'
+        cy='17.6501'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='244.749'
+        cy='14.7272'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='246.419'
+        cy='11.3864'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='253.936'
+        cy='23.9167'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='261.873'
+        cy='36.445'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='279.832'
+        cy='33.1042'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='280.668'
+        cy='45.2165'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='273.568'
+        cy='61.0866'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='307.815'
+        cy='72.7829'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='304.057'
+        cy='87.3991'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='308.234'
+        cy='95.7526'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='318.258'
+        cy='121.647'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='331.621'
+        cy='124.572'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='321.181'
+        cy='139.607'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='324.522'
+        cy='150.049'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='323.686'
+        cy='162.578'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='349.164'
+        cy='155.479'
+        r='0.83532'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='346.241'
+        cy='180.537'
+        r='0.83532'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='322.015'
+        cy='177.615'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='327.864'
+        cy='201.84'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='331.204'
+        cy='208.521'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='345.823'
+        cy='215.623'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='320.763'
+        cy='244.44'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='291.944'
+        cy='237.757'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='288.184'
+        cy='255.299'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='291.109'
+        cy='264.486'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='294.452'
+        cy='279.941'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='290.273'
+        cy='285.79'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='293.616'
+        cy='305.002'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='280.668'
+        cy='310.847'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='267.721'
+        cy='311.684'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='257.279'
+        cy='317.949'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
       <ellipse
         cx='298.836'
         cy='324.004'
@@ -2288,20 +3311,90 @@ export const BobTheDarkChristmasWizard = () => {
         ry='0.62649'
         fill='#B7CBD7'
       />
-      <circle cx='274.82' cy='271.171' r='0.41766' fill='#B7CBD7' />
-      <circle cx='247.674' cy='260.312' r='0.41766' fill='#B7CBD7' />
-      <circle cx='239.736' cy='275.764' r='0.41766' fill='#B7CBD7' />
-      <circle cx='188.781' cy='288.712' r='0.41766' fill='#B7CBD7' />
-      <circle cx='192.958' cy='305.836' r='0.83532' fill='#B7CBD7' />
-      <circle cx='191.287' cy='315.442' r='0.83532' fill='#B7CBD7' />
-      <circle cx='171.24' cy='300.823' r='0.41766' fill='#B7CBD7' />
-      <circle cx='179.175' cy='310.429' r='0.41766' fill='#B7CBD7' />
-      <circle cx='201.731' cy='325.466' r='0.41766' fill='#B7CBD7' />
-      <circle cx='172.077' cy='324.631' r='0.41766' fill='#B7CBD7' />
-      <circle cx='245.584' cy='291.635' r='0.41766' fill='#B7CBD7' />
-      <circle cx='263.125' cy='286.624' r='0.41766' fill='#B7CBD7' />
-      <circle cx='269.391' cy='248.618' r='0.41766' fill='#B7CBD7' />
-      <circle cx='264.797' cy='259.475' r='0.41766' fill='#B7CBD7' />
+      <circle
+        cx='274.82'
+        cy='271.171'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='247.674'
+        cy='260.312'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='239.736'
+        cy='275.764'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='188.781'
+        cy='288.712'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='192.958'
+        cy='305.836'
+        r='0.83532'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='191.287'
+        cy='315.442'
+        r='0.83532'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='171.24'
+        cy='300.823'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='179.175'
+        cy='310.429'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='201.731'
+        cy='325.466'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='172.077'
+        cy='324.631'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='245.584'
+        cy='291.635'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='263.125'
+        cy='286.624'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='269.391'
+        cy='248.618'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='264.797'
+        cy='259.475'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
       <ellipse
         cx='319.719'
         cy='267.62'
@@ -2309,9 +3402,24 @@ export const BobTheDarkChristmasWizard = () => {
         ry='0.62649'
         fill='#B7CBD7'
       />
-      <circle cx='309.485' cy='209.358' r='0.41766' fill='#B7CBD7' />
-      <circle cx='302.387' cy='213.115' r='0.41766' fill='#B7CBD7' />
-      <circle cx='301.55' cy='216.874' r='0.83532' fill='#B7CBD7' />
+      <circle
+        cx='309.485'
+        cy='209.358'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='302.387'
+        cy='213.115'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='301.55'
+        cy='216.874'
+        r='0.83532'
+        fill='#B7CBD7'
+      />
       <ellipse
         cx='330.161'
         cy='233.373'
@@ -2319,9 +3427,24 @@ export const BobTheDarkChristmasWizard = () => {
         ry='0.62649'
         fill='#B7CBD7'
       />
-      <circle cx='289.439' cy='109.119' r='0.41766' fill='#B7CBD7' />
-      <circle cx='292.78' cy='112.041' r='0.41766' fill='#B7CBD7' />
-      <circle cx='282.339' cy='88.235' r='0.41766' fill='#B7CBD7' />
+      <circle
+        cx='289.439'
+        cy='109.119'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='292.78'
+        cy='112.041'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='282.339'
+        cy='88.235'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
       <ellipse
         cx='286.723'
         cy='96.7984'
@@ -2329,7 +3452,12 @@ export const BobTheDarkChristmasWizard = () => {
         ry='0.62649'
         fill='#B7CBD7'
       />
-      <circle cx='277.328' cy='102.854' r='0.41766' fill='#B7CBD7' />
+      <circle
+        cx='277.328'
+        cy='102.854'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
       <ellipse
         cx='282.129'
         cy='71.3208'
@@ -2344,17 +3472,72 @@ export const BobTheDarkChristmasWizard = () => {
         ry='0.62649'
         fill='#B7CBD7'
       />
-      <circle cx='267.301' cy='68.1872' r='0.41766' fill='#B7CBD7' />
-      <circle cx='261.037' cy='73.6169' r='0.41766' fill='#B7CBD7' />
-      <circle cx='255.609' cy='64.4294' r='0.41766' fill='#B7CBD7' />
-      <circle cx='261.871' cy='52.3168' r='0.83532' fill='#B7CBD7' />
-      <circle cx='222.613' cy='32.2682' r='0.41766' fill='#B7CBD7' />
-      <circle cx='210.919' cy='47.3054' r='0.41766' fill='#B7CBD7' />
-      <circle cx='223.449' cy='47.3054' r='0.41766' fill='#B7CBD7' />
-      <circle cx='216.766' cy='61.9225' r='0.41766' fill='#B7CBD7' />
-      <circle cx='217.183' cy='71.946' r='0.41766' fill='#B7CBD7' />
-      <circle cx='238.902' cy='53.1511' r='0.41766' fill='#B7CBD7' />
-      <circle cx='213.008' cy='29.7614' r='0.41766' fill='#B7CBD7' />
+      <circle
+        cx='267.301'
+        cy='68.1872'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='261.037'
+        cy='73.6169'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='255.609'
+        cy='64.4294'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='261.871'
+        cy='52.3168'
+        r='0.83532'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='222.613'
+        cy='32.2682'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='210.919'
+        cy='47.3054'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='223.449'
+        cy='47.3054'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='216.766'
+        cy='61.9225'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='217.183'
+        cy='71.946'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='238.902'
+        cy='53.1511'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='213.008'
+        cy='29.7614'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
       <ellipse
         cx='206.115'
         cy='34.565'
@@ -2369,12 +3552,42 @@ export const BobTheDarkChristmasWizard = () => {
         ry='0.62649'
         fill='#B7CBD7'
       />
-      <circle cx='173.328' cy='1.77966' r='0.83532' fill='#B7CBD7' />
-      <circle cx='130.309' cy='31.0163' r='0.41766' fill='#B7CBD7' />
-      <circle cx='130.309' cy='30.5983' r='0.41766' fill='#B7CBD7' />
-      <circle cx='58.8913' cy='46.0514' r='0.41766' fill='#B7CBD7' />
-      <circle cx='96.0622' cy='83.2224' r='0.41766' fill='#B7CBD7' />
-      <circle cx='114.02' cy='74.0349' r='0.41766' fill='#B7CBD7' />
+      <circle
+        cx='173.328'
+        cy='1.77966'
+        r='0.83532'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='130.309'
+        cy='31.0163'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='130.309'
+        cy='30.5983'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='58.8913'
+        cy='46.0514'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='96.0622'
+        cy='83.2224'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='114.02'
+        cy='74.0349'
+        r='0.41766'
+        fill='#B7CBD7'
+      />
       <ellipse
         cx='40.7212'
         cy='161.117'
@@ -2382,11 +3595,36 @@ export const BobTheDarkChristmasWizard = () => {
         ry='0.62649'
         fill='#B7CBD7'
       />
-      <circle cx='15.662' cy='149.424' r='0.20883' fill='#B7CBD7' />
-      <circle cx='74.5526' cy='168.217' r='0.20883' fill='#B7CBD7' />
-      <circle cx='0.20883' cy='206.224' r='0.20883' fill='#B7CBD7' />
-      <circle cx='72.0471' cy='129.375' r='2.29713' fill='#B7CBD7' />
-      <circle cx='97.9417' cy='70.0667' r='2.29713' fill='#B7CBD7' />
+      <circle
+        cx='15.662'
+        cy='149.424'
+        r='0.20883'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='74.5526'
+        cy='168.217'
+        r='0.20883'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='0.20883'
+        cy='206.224'
+        r='0.20883'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='72.0471'
+        cy='129.375'
+        r='2.29713'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='97.9417'
+        cy='70.0667'
+        r='2.29713'
+        fill='#B7CBD7'
+      />
       <ellipse
         cx='144.303'
         cy='21.2007'
@@ -2394,8 +3632,18 @@ export const BobTheDarkChristmasWizard = () => {
         ry='0.62649'
         fill='#B7CBD7'
       />
-      <circle cx='327.655' cy='103.897' r='2.29713' fill='#B7CBD7' />
-      <circle cx='303.012' cy='257.596' r='2.29713' fill='#B7CBD7' />
+      <circle
+        cx='327.655'
+        cy='103.897'
+        r='2.29713'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='303.012'
+        cy='257.596'
+        r='2.29713'
+        fill='#B7CBD7'
+      />
       <ellipse
         cx='261.038'
         cy='275.765'
@@ -2403,7 +3651,12 @@ export const BobTheDarkChristmasWizard = () => {
         ry='1.25298'
         fill='#B7CBD7'
       />
-      <circle cx='282.756' cy='293.306' r='0.83532' fill='#B7CBD7' />
+      <circle
+        cx='282.756'
+        cy='293.306'
+        r='0.83532'
+        fill='#B7CBD7'
+      />
       <ellipse
         cx='309.277'
         cy='297.693'
@@ -2411,9 +3664,24 @@ export const BobTheDarkChristmasWizard = () => {
         ry='0.62649'
         fill='#B7CBD7'
       />
-      <circle cx='314.707' cy='225.018' r='2.29713' fill='#B7CBD7' />
-      <circle cx='294.24' cy='56.7014' r='2.29713' fill='#B7CBD7' />
-      <circle cx='87.9173' cy='19.1116' r='2.29713' fill='#B7CBD7' />
+      <circle
+        cx='314.707'
+        cy='225.018'
+        r='2.29713'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='294.24'
+        cy='56.7014'
+        r='2.29713'
+        fill='#B7CBD7'
+      />
+      <circle
+        cx='87.9173'
+        cy='19.1116'
+        r='2.29713'
+        fill='#B7CBD7'
+      />
       <defs>
         <filter
           id='filter0_d_815_23181'
@@ -2424,7 +3692,10 @@ export const BobTheDarkChristmasWizard = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -2433,7 +3704,10 @@ export const BobTheDarkChristmasWizard = () => {
           />
           <feOffset dy='4' />
           <feGaussianBlur stdDeviation='2' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -2459,7 +3733,10 @@ export const BobTheDarkChristmasWizard = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -2468,7 +3745,10 @@ export const BobTheDarkChristmasWizard = () => {
           />
           <feOffset dy='4' />
           <feGaussianBlur stdDeviation='2' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -2494,7 +3774,10 @@ export const BobTheDarkChristmasWizard = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -2503,7 +3786,10 @@ export const BobTheDarkChristmasWizard = () => {
           />
           <feOffset dy='4' />
           <feGaussianBlur stdDeviation='2' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -2529,7 +3815,10 @@ export const BobTheDarkChristmasWizard = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -2538,7 +3827,10 @@ export const BobTheDarkChristmasWizard = () => {
           />
           <feOffset dy='4' />
           <feGaussianBlur stdDeviation='2' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -2564,7 +3856,10 @@ export const BobTheDarkChristmasWizard = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -2573,7 +3868,10 @@ export const BobTheDarkChristmasWizard = () => {
           />
           <feOffset dy='4' />
           <feGaussianBlur stdDeviation='2' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -2599,7 +3897,10 @@ export const BobTheDarkChristmasWizard = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -2608,7 +3909,10 @@ export const BobTheDarkChristmasWizard = () => {
           />
           <feOffset dy='2' />
           <feGaussianBlur stdDeviation='0.5' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -2634,16 +3938,25 @@ export const BobTheDarkChristmasWizard = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0'
             result='hardAlpha'
           />
-          <feOffset dx='2' dy='5' />
+          <feOffset
+            dx='2'
+            dy='5'
+          />
           <feGaussianBlur stdDeviation='1.2' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0'
@@ -2669,7 +3982,10 @@ export const BobTheDarkChristmasWizard = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -2678,7 +3994,10 @@ export const BobTheDarkChristmasWizard = () => {
           />
           <feOffset />
           <feGaussianBlur stdDeviation='1.15' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.8 0'
@@ -2704,7 +4023,10 @@ export const BobTheDarkChristmasWizard = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -2713,7 +4035,10 @@ export const BobTheDarkChristmasWizard = () => {
           />
           <feOffset />
           <feGaussianBlur stdDeviation='1.15' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.8 0'
@@ -2739,7 +4064,10 @@ export const BobTheDarkChristmasWizard = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -2748,7 +4076,10 @@ export const BobTheDarkChristmasWizard = () => {
           />
           <feOffset dy='1' />
           <feGaussianBlur stdDeviation='0.5' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.6 0'
@@ -2774,7 +4105,10 @@ export const BobTheDarkChristmasWizard = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood
+            flood-opacity='0'
+            result='BackgroundImageFix'
+          />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -2783,7 +4117,10 @@ export const BobTheDarkChristmasWizard = () => {
           />
           <feOffset dy='1' />
           <feGaussianBlur stdDeviation='0.5' />
-          <feComposite in2='hardAlpha' operator='out' />
+          <feComposite
+            in2='hardAlpha'
+            operator='out'
+          />
           <feColorMatrix
             type='matrix'
             values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0'
@@ -2809,7 +4146,10 @@ export const BobTheDarkChristmasWizard = () => {
           gradientUnits='userSpaceOnUse'
         >
           <stop stop-color='#F9D277' />
-          <stop offset='1' stop-color='#A06A37' />
+          <stop
+            offset='1'
+            stop-color='#A06A37'
+          />
         </linearGradient>
         <linearGradient
           id='paint1_linear_815_23181'
@@ -2820,7 +4160,10 @@ export const BobTheDarkChristmasWizard = () => {
           gradientUnits='userSpaceOnUse'
         >
           <stop stop-color='#F9C446' />
-          <stop offset='1' stop-color='#EF8D36' />
+          <stop
+            offset='1'
+            stop-color='#EF8D36'
+          />
         </linearGradient>
         <linearGradient
           id='paint2_linear_815_23181'
@@ -2831,7 +4174,10 @@ export const BobTheDarkChristmasWizard = () => {
           gradientUnits='userSpaceOnUse'
         >
           <stop stop-color='#A45246' />
-          <stop offset='1' stop-color='#9A7D79' />
+          <stop
+            offset='1'
+            stop-color='#9A7D79'
+          />
         </linearGradient>
       </defs>
     </svg>

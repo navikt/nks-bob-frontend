@@ -32,8 +32,12 @@ export const ShowAllSources = () => {
   const { activeMessage, setActiveMessage } = useSourcesStore()
 
   const context = activeMessage?.context
-  const nksContext = context?.filter(({ source }) => source === "nks") ?? []
-  const navContext = context?.filter(({ source }) => source === "navno") ?? []
+  const nksContext = Object.entries(context ?? {})
+    .filter(([_, { source }]) => source === "nks")
+    .map(([_, context]) => context)
+  const navContext = Object.entries(context ?? {})
+    .filter(([_, { source }]) => source === "navno")
+    .map(([_, context]) => context)
 
   return (
     <VStack className={`all-sources-container ${activeMessage ? "active" : "inactive"}`}>

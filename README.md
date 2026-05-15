@@ -36,6 +36,14 @@ Dette vil starte en lokal utviklingsserver som du får tilgang til via nettleser
 
 # Lokal utvikling mot dev-gcp
 
+## Forutsetninger
+
+Hemmeligheter for lokal utvikling ligger i en nais-managed secret (`nks-bob-frontend-lokal-credentials`) i NAIS Console.
+Denne er allerede opprettet — du trenger ikke gjøre noe med den med mindre credentials har blitt rotert (skjer ca. årlig).
+Ved rotasjon: oppdater secreten i [NAIS Console](https://console.nav.cloud.nais.io) → team `nks-aiautomatisering` → Secrets → `nks-bob-frontend-lokal-credentials` (dev).
+
+## Oppsett
+
 ```sh
 # Installer just om du ikke allerede har det
 > brew install just

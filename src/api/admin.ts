@@ -2,8 +2,8 @@ import useSWR, { preload } from "swr"
 import useSWRMutation from "swr/mutation"
 import { Feedback, Message } from "../types/Message"
 import { Alert, NewsNotification, Notification } from "../types/Notifications"
-import { ApiError, fetcher, request } from "./api"
 import { transformNksUrlsArray } from "../utils/nksUrlTransformer"
+import { ApiError, fetcher, request } from "./api"
 
 export const useAdminMessages = (conversationId: string) => {
   const { data, isLoading, error } = useSWR<Message[], ApiError>(
@@ -11,9 +11,9 @@ export const useAdminMessages = (conversationId: string) => {
     fetcher,
   )
 
-  const transformedMessages = data?.map(message => ({
+  const transformedMessages = data?.map((message) => ({
     ...message,
-    context: transformNksUrlsArray(message.context)
+    context: transformNksUrlsArray(message.context),
   }))
 
   return {

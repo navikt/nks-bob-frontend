@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from "react"
-import { Button, Modal, Tooltip } from "@navikt/ds-react"
 import { InformationSquareIcon } from "@navikt/aksel-icons"
+import { Button, Modal, Tooltip } from "@navikt/ds-react"
+import { useEffect, useRef, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import { useUpdateUserConfig, useUserConfig } from "../../../api/api.ts"
-import { StepModalContent } from "./GuideModals.tsx"
-import analytics from "../../../utils/analytics.ts"
 import { BobTheGuide1, BobTheGuide2, BobThePirate } from "../../../assets/illustrations/BobTheGuide.tsx"
+import analytics from "../../../utils/analytics.ts"
+import { StepModalContent } from "./GuideModals.tsx"
 
 const Guide = () => {
   const modalRef = useRef<HTMLDialogElement | null>(null)

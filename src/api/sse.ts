@@ -1,5 +1,5 @@
 import { useTransition } from "react"
-import { Citation, Context, Message, MessageError } from "../types/Message"
+import { Citation, Contexts, Message, MessageError } from "../types/Message"
 import { messageStore } from "../types/messageStore"
 import { API_URL } from "./api"
 
@@ -11,6 +11,7 @@ export type MessageEvent =
   | PendingUpdated
   | StatusUpdate
   | ErrorsUpdated
+  | MessageUpdated
 
 type NewMessageEvent = {
   type: "NewMessage"
@@ -33,7 +34,7 @@ type CitationsUpdated = {
 type ContextUpdated = {
   type: "ContextUpdated"
   id: string
-  context: Context[]
+  context: Contexts
 }
 
 type PendingUpdated = {
@@ -53,6 +54,12 @@ type ErrorsUpdated = {
   type: "ErrorsUpdated"
   id: string
   errors: MessageError[]
+}
+
+type MessageUpdated = {
+  type: "MessageUpdated"
+  id: string
+  message: Message
 }
 
 function createSSEParser(onEvent: (data: any) => void) {
@@ -116,7 +123,7 @@ export const useSendMessage = (conversationId: string) => {
 
     ;(async () => {
       try {
-        const response = await fetch(`${API_URL}/api/v1/conversations/${conversationId}/messages/sse`, {
+        const response = await fetch(`${API_URL}/api/v2/conversations/${conversationId}/messages/sse`, {
           method: "POST",
           headers: { "Content-Type": "text/event-stream" },
           body: JSON.stringify({ content }),

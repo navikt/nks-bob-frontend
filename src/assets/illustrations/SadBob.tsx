@@ -528,7 +528,10 @@ export const SadBob = ({ level }: { level: "error" | "warning" }) => (
         filterUnits='userSpaceOnUse'
         color-interpolation-filters='sRGB'
       >
-        <feFlood flood-opacity='0' result='BackgroundImageFix' />
+        <feFlood
+          flood-opacity='0'
+          result='BackgroundImageFix'
+        />
         <feColorMatrix
           in='SourceAlpha'
           type='matrix'
@@ -537,7 +540,10 @@ export const SadBob = ({ level }: { level: "error" | "warning" }) => (
         />
         <feOffset dy='4' />
         <feGaussianBlur stdDeviation='2' />
-        <feComposite in2='hardAlpha' operator='out' />
+        <feComposite
+          in2='hardAlpha'
+          operator='out'
+        />
         <feColorMatrix
           type='matrix'
           values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -563,7 +569,10 @@ export const SadBob = ({ level }: { level: "error" | "warning" }) => (
         filterUnits='userSpaceOnUse'
         color-interpolation-filters='sRGB'
       >
-        <feFlood flood-opacity='0' result='BackgroundImageFix' />
+        <feFlood
+          flood-opacity='0'
+          result='BackgroundImageFix'
+        />
         <feColorMatrix
           in='SourceAlpha'
           type='matrix'
@@ -572,7 +581,10 @@ export const SadBob = ({ level }: { level: "error" | "warning" }) => (
         />
         <feOffset dy='4' />
         <feGaussianBlur stdDeviation='2' />
-        <feComposite in2='hardAlpha' operator='out' />
+        <feComposite
+          in2='hardAlpha'
+          operator='out'
+        />
         <feColorMatrix
           type='matrix'
           values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -598,7 +610,10 @@ export const SadBob = ({ level }: { level: "error" | "warning" }) => (
         filterUnits='userSpaceOnUse'
         color-interpolation-filters='sRGB'
       >
-        <feFlood flood-opacity='0' result='BackgroundImageFix' />
+        <feFlood
+          flood-opacity='0'
+          result='BackgroundImageFix'
+        />
         <feColorMatrix
           in='SourceAlpha'
           type='matrix'
@@ -607,7 +622,10 @@ export const SadBob = ({ level }: { level: "error" | "warning" }) => (
         />
         <feOffset dy='4' />
         <feGaussianBlur stdDeviation='2' />
-        <feComposite in2='hardAlpha' operator='out' />
+        <feComposite
+          in2='hardAlpha'
+          operator='out'
+        />
         <feColorMatrix
           type='matrix'
           values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -633,7 +651,10 @@ export const SadBob = ({ level }: { level: "error" | "warning" }) => (
         filterUnits='userSpaceOnUse'
         color-interpolation-filters='sRGB'
       >
-        <feFlood flood-opacity='0' result='BackgroundImageFix' />
+        <feFlood
+          flood-opacity='0'
+          result='BackgroundImageFix'
+        />
         <feColorMatrix
           in='SourceAlpha'
           type='matrix'
@@ -642,7 +663,10 @@ export const SadBob = ({ level }: { level: "error" | "warning" }) => (
         />
         <feOffset dy='4' />
         <feGaussianBlur stdDeviation='2' />
-        <feComposite in2='hardAlpha' operator='out' />
+        <feComposite
+          in2='hardAlpha'
+          operator='out'
+        />
         <feColorMatrix
           type='matrix'
           values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -668,7 +692,10 @@ export const SadBob = ({ level }: { level: "error" | "warning" }) => (
         filterUnits='userSpaceOnUse'
         color-interpolation-filters='sRGB'
       >
-        <feFlood flood-opacity='0' result='BackgroundImageFix' />
+        <feFlood
+          flood-opacity='0'
+          result='BackgroundImageFix'
+        />
         <feBlend
           mode='normal'
           in='SourceGraphic'
@@ -683,7 +710,12 @@ export const SadBob = ({ level }: { level: "error" | "warning" }) => (
         />
         <feOffset dy='-3' />
         <feGaussianBlur stdDeviation='2' />
-        <feComposite in2='hardAlpha' operator='arithmetic' k2='-1' k3='1' />
+        <feComposite
+          in2='hardAlpha'
+          operator='arithmetic'
+          k2='-1'
+          k3='1'
+        />
         <feColorMatrix
           type='matrix'
           values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -703,7 +735,10 @@ export const SadBob = ({ level }: { level: "error" | "warning" }) => (
         filterUnits='userSpaceOnUse'
         color-interpolation-filters='sRGB'
       >
-        <feFlood flood-opacity='0' result='BackgroundImageFix' />
+        <feFlood
+          flood-opacity='0'
+          result='BackgroundImageFix'
+        />
         <feBlend
           mode='normal'
           in='SourceGraphic'
@@ -718,7 +753,12 @@ export const SadBob = ({ level }: { level: "error" | "warning" }) => (
         />
         <feOffset dy='-3' />
         <feGaussianBlur stdDeviation='2' />
-        <feComposite in2='hardAlpha' operator='arithmetic' k2='-1' k3='1' />
+        <feComposite
+          in2='hardAlpha'
+          operator='arithmetic'
+          k2='-1'
+          k3='1'
+        />
         <feColorMatrix
           type='matrix'
           values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -738,7 +778,10 @@ export const SadBob = ({ level }: { level: "error" | "warning" }) => (
         filterUnits='userSpaceOnUse'
         color-interpolation-filters='sRGB'
       >
-        <feFlood flood-opacity='0' result='BackgroundImageFix' />
+        <feFlood
+          flood-opacity='0'
+          result='BackgroundImageFix'
+        />
         <feColorMatrix
           in='SourceAlpha'
           type='matrix'
@@ -747,7 +790,10 @@ export const SadBob = ({ level }: { level: "error" | "warning" }) => (
         />
         <feOffset dy='4' />
         <feGaussianBlur stdDeviation='2' />
-        <feComposite in2='hardAlpha' operator='out' />
+        <feComposite
+          in2='hardAlpha'
+          operator='out'
+        />
         <feColorMatrix
           type='matrix'
           values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -773,16 +819,25 @@ export const SadBob = ({ level }: { level: "error" | "warning" }) => (
         filterUnits='userSpaceOnUse'
         color-interpolation-filters='sRGB'
       >
-        <feFlood flood-opacity='0' result='BackgroundImageFix' />
+        <feFlood
+          flood-opacity='0'
+          result='BackgroundImageFix'
+        />
         <feColorMatrix
           in='SourceAlpha'
           type='matrix'
           values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0'
           result='hardAlpha'
         />
-        <feOffset dx='-1' dy='1' />
+        <feOffset
+          dx='-1'
+          dy='1'
+        />
         <feGaussianBlur stdDeviation='1' />
-        <feComposite in2='hardAlpha' operator='out' />
+        <feComposite
+          in2='hardAlpha'
+          operator='out'
+        />
         <feColorMatrix
           type='matrix'
           values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -808,16 +863,25 @@ export const SadBob = ({ level }: { level: "error" | "warning" }) => (
         filterUnits='userSpaceOnUse'
         color-interpolation-filters='sRGB'
       >
-        <feFlood flood-opacity='0' result='BackgroundImageFix' />
+        <feFlood
+          flood-opacity='0'
+          result='BackgroundImageFix'
+        />
         <feColorMatrix
           in='SourceAlpha'
           type='matrix'
           values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0'
           result='hardAlpha'
         />
-        <feOffset dx='-1' dy='1' />
+        <feOffset
+          dx='-1'
+          dy='1'
+        />
         <feGaussianBlur stdDeviation='1' />
-        <feComposite in2='hardAlpha' operator='out' />
+        <feComposite
+          in2='hardAlpha'
+          operator='out'
+        />
         <feColorMatrix
           type='matrix'
           values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
@@ -843,7 +907,10 @@ export const SadBob = ({ level }: { level: "error" | "warning" }) => (
         filterUnits='userSpaceOnUse'
         color-interpolation-filters='sRGB'
       >
-        <feFlood flood-opacity='0' result='BackgroundImageFix' />
+        <feFlood
+          flood-opacity='0'
+          result='BackgroundImageFix'
+        />
         <feColorMatrix
           in='SourceAlpha'
           type='matrix'
@@ -852,7 +919,10 @@ export const SadBob = ({ level }: { level: "error" | "warning" }) => (
         />
         <feOffset dy='1' />
         <feGaussianBlur stdDeviation='1.65' />
-        <feComposite in2='hardAlpha' operator='out' />
+        <feComposite
+          in2='hardAlpha'
+          operator='out'
+        />
         <feColorMatrix
           type='matrix'
           values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0'
@@ -878,7 +948,10 @@ export const SadBob = ({ level }: { level: "error" | "warning" }) => (
         filterUnits='userSpaceOnUse'
         color-interpolation-filters='sRGB'
       >
-        <feFlood flood-opacity='0' result='BackgroundImageFix' />
+        <feFlood
+          flood-opacity='0'
+          result='BackgroundImageFix'
+        />
         <feColorMatrix
           in='SourceAlpha'
           type='matrix'
@@ -887,7 +960,10 @@ export const SadBob = ({ level }: { level: "error" | "warning" }) => (
         />
         <feOffset dy='1' />
         <feGaussianBlur stdDeviation='1.65' />
-        <feComposite in2='hardAlpha' operator='out' />
+        <feComposite
+          in2='hardAlpha'
+          operator='out'
+        />
         <feColorMatrix
           type='matrix'
           values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0'
@@ -912,8 +988,15 @@ export const SadBob = ({ level }: { level: "error" | "warning" }) => (
         y2='296.088'
         gradientUnits='userSpaceOnUse'
       >
-        <stop stop-color='#E8E7E2' stop-opacity='0' />
-        <stop offset='1' stop-color='#171412' stop-opacity='0.6' />
+        <stop
+          stop-color='#E8E7E2'
+          stop-opacity='0'
+        />
+        <stop
+          offset='1'
+          stop-color='#171412'
+          stop-opacity='0.6'
+        />
       </linearGradient>
       <linearGradient
         id='paint1_linear_1452_1877'
@@ -923,8 +1006,14 @@ export const SadBob = ({ level }: { level: "error" | "warning" }) => (
         y2='285.909'
         gradientUnits='userSpaceOnUse'
       >
-        <stop stop-color='#9E9C98' stop-opacity='0' />
-        <stop offset='1' stop-color='#383736' />
+        <stop
+          stop-color='#9E9C98'
+          stop-opacity='0'
+        />
+        <stop
+          offset='1'
+          stop-color='#383736'
+        />
       </linearGradient>
       <linearGradient
         id='paint2_linear_1452_1877'
@@ -934,8 +1023,14 @@ export const SadBob = ({ level }: { level: "error" | "warning" }) => (
         y2='208.21'
         gradientUnits='userSpaceOnUse'
       >
-        <stop stop-color='#D9D9D9' stop-opacity='0.2' />
-        <stop offset='1' stop-color='#737373' />
+        <stop
+          stop-color='#D9D9D9'
+          stop-opacity='0.2'
+        />
+        <stop
+          offset='1'
+          stop-color='#737373'
+        />
       </linearGradient>
       <linearGradient
         id='paint3_linear_1452_1877'
@@ -945,7 +1040,10 @@ export const SadBob = ({ level }: { level: "error" | "warning" }) => (
         y2='207.692'
         gradientUnits='userSpaceOnUse'
       >
-        <stop stop-color='#D9D9D9' stop-opacity='0.4' />
+        <stop
+          stop-color='#D9D9D9'
+          stop-opacity='0.4'
+        />
         <stop offset='1' />
       </linearGradient>
       <radialGradient
@@ -956,8 +1054,14 @@ export const SadBob = ({ level }: { level: "error" | "warning" }) => (
         gradientUnits='userSpaceOnUse'
         gradientTransform='translate(24.6408 299.95) rotate(-78.8639) scale(15.4181 5.7996)'
       >
-        <stop offset='0.74' stop-color='#83827E' />
-        <stop offset='1' stop-color='#1D1D1C' />
+        <stop
+          offset='0.74'
+          stop-color='#83827E'
+        />
+        <stop
+          offset='1'
+          stop-color='#1D1D1C'
+        />
       </radialGradient>
       <radialGradient
         id='paint5_radial_1452_1877'
@@ -967,8 +1071,14 @@ export const SadBob = ({ level }: { level: "error" | "warning" }) => (
         gradientUnits='userSpaceOnUse'
         gradientTransform='translate(171.02 299.95) rotate(-101.136) scale(15.4181 5.7996)'
       >
-        <stop offset='0.74' stop-color='#83827E' />
-        <stop offset='1' stop-color='#1D1D1C' />
+        <stop
+          offset='0.74'
+          stop-color='#83827E'
+        />
+        <stop
+          offset='1'
+          stop-color='#1D1D1C'
+        />
       </radialGradient>
     </defs>
   </svg>

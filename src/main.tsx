@@ -15,6 +15,7 @@ import { ThemeProvider } from "./components/menu/darkmode/DarkModeToggle.tsx"
 import { PageNotFound } from "./components/not-found/NotFound.tsx"
 import "./global.css"
 import { AnalyticsProvider } from "./utils/AnalyticsProvider.tsx"
+import { TitleProvider } from "./utils/TitleProvider.tsx"
 import { fetchAllNamesFromSSB } from "./utils/validation/validationutils/ssb-api.ts"
 
 const head = createHead()
@@ -79,6 +80,7 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ThemeProvider>
       <UnheadProvider head={head}>
+        <TitleProvider />
         <SWRConfig
           value={{
             onError: (err) => {
