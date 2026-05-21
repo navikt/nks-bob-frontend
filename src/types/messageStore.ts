@@ -46,10 +46,14 @@ function isMessageUpdated(event: ConversationEvent): event is { type: "MessageUp
 
 type MessageMap = { [id: string]: Message }
 
+export const OPTIMISTIC_USER_MSG_ID = "optimistic-user-question"
+
 type MessageState = {
   messages: Message[]
   messageMap: MessageMap
   addMessage: (message: Message) => void
+  addOptimisticUserMessage: (content: string) => void
+  removeOptimisticUserMessage: () => void
   updateMessage: (event: ConversationEvent) => void
   setMessages: (messages: Message[]) => void
   resetMessages: () => void
@@ -80,15 +84,59 @@ export const messageStore = create<MessageState>()((set) => {
         return state
       }
 
-      const messageMap: MessageMap = {
+      const newMessageMap: MessageMap = { ...state.messageMap }
+
+      if (isNewMessage(event) && event.message.messageRole === "human") {
+        delete newMessageMap[OPTIMISTIC_USER_MSG_ID]
+      }
+
+      newMessageMap[message.id] = message
+
+      return {
+        ...state,
+        messageMap: newMessageMap,
+        messages: Object.values(newMessageMap).sort(byDate),
+      }
+    })
+
+  const addOptimisticUserMessage = (content: string) =>
+    set((state) => {
+      const optimisticMessage: Message = {
+        id: OPTIMISTIC_USER_MSG_ID,
+        content,
+        createdAt: new Date().toISOString(),
+        messageType: "question",
+        messageRole: "human",
+        createdBy: "",
+        citations: [],
+        context: {},
+        pending: true,
+        errors: [],
+        followUp: [],
+        contextualizedQuestion: null,
+        tools: [],
+        thinking: [],
+      }
+
+      const messageMap = {
         ...state.messageMap,
-        [message.id]: message,
+        [OPTIMISTIC_USER_MSG_ID]: optimisticMessage,
       }
 
       return {
         ...state,
         messageMap,
         messages: Object.values(messageMap).sort(byDate),
+      }
+    })
+
+  const removeOptimisticUserMessage = () =>
+    set((state) => {
+      const { [OPTIMISTIC_USER_MSG_ID]: _, ...restMap } = state.messageMap
+      return {
+        ...state,
+        messageMap: restMap,
+        messages: Object.values(restMap).sort(byDate),
       }
     })
 
@@ -134,6 +182,8 @@ export const messageStore = create<MessageState>()((set) => {
     messages: [],
     messageMap: {},
     addMessage,
+    addOptimisticUserMessage,
+    removeOptimisticUserMessage,
     updateMessage,
     setMessages,
     resetMessages: () => set((state) => ({ ...state, messageMap: {}, messages: [] })),
