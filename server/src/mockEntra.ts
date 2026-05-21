@@ -16,7 +16,7 @@ type MockTokenResponse = {
 }
 
 async function fetchToken() {
-  const url = "http://localhost:8899/entraid/token"
+  const url = "http://localhost:8898/entraid/token"
   const options = {
     method: "POST",
     headers: { "content-type": "application/x-www-form-urlencoded" },
@@ -48,8 +48,7 @@ export async function getToken(log: Logger): Promise<TokenResult> {
 }
 
 export const entraHandler =
-  (_audience: string, log: Logger) =>
-  async (_req: Request, res: Response, next: NextFunction) => {
+  (_audience: string, log: Logger) => async (_req: Request, res: Response, next: NextFunction) => {
     const result = await getToken(log)
     if (result.ok) {
       res.setHeader("Authorization", `Bearer ${result.data}`)
