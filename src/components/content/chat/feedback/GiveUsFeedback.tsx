@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { useAddFeedback } from "../../../../api/api.ts"
 import { Message } from "../../../../types/Message.ts"
 import analytics from "../../../../utils/analytics.ts"
+import { FeedbackSuccess } from "./FeedbackSuccess.tsx"
 
 const OPTIONS = {
   "feil-med-svar": "Hele-/deler av svaret er feil",
@@ -32,6 +33,7 @@ export const FeedbackOnAnswer = ({ message }: FeedbackOnAnswerProps) => {
   const [comment, setComment] = useState<string | null>(null)
   const [commentDirty, setCommentDirty] = useState<boolean>(false)
   const [commentError, setCommentError] = useState<string | null>(null)
+  const [showSuccess, setShowSuccess] = useState(false)
 
   const resetFields = () => {
     setOptions([])
@@ -85,6 +87,11 @@ export const FeedbackOnAnswer = ({ message }: FeedbackOnAnswerProps) => {
 
     analytics.feilMeldt(optionLabels, comment?.length ?? 0)
     resetFields()
+    setShowSuccess(true)
+  }
+
+  const handleSuccessDone = () => {
+    setShowSuccess(false)
     modalRef.current?.close()
   }
 
@@ -108,7 +115,9 @@ export const FeedbackOnAnswer = ({ message }: FeedbackOnAnswerProps) => {
           icon: <ChatExclamationmarkIcon />,
         }}
         width={600}
+        style={{ position: "relative" }}
       >
+        {showSuccess && <FeedbackSuccess onDone={handleSuccessDone} />}
         <Modal.Body>
           <CheckboxGroup
             legend='Hva er galt med svaret?'
@@ -118,13 +127,15 @@ export const FeedbackOnAnswer = ({ message }: FeedbackOnAnswerProps) => {
             error={optionsError}
           >
             {Object.entries(OPTIONS).map(([value, label]) => (
-              <Checkbox
-                key={`feedback-option-${value}`}
-                value={value}
-                className='mb-1 first:mt-3 last:mb-4'
-              >
-                {label}
-              </Checkbox>
+              <div className='mt-2 first:mt-4 last:mb-6'>
+                <Checkbox
+                  key={`feedback-option-${value}`}
+                  value={value}
+                  className='mb-1'
+                >
+                  {label}
+                </Checkbox>
+              </div>
             ))}
           </CheckboxGroup>
           {options.length > 0 ? (
