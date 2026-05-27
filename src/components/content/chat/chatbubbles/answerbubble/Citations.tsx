@@ -5,6 +5,7 @@ import { NavNoIcon } from "../../../../../assets/icons/NavNoIcon.tsx"
 import { Context, Contexts } from "../../../../../types/Message.ts"
 import analytics from "../../../../../utils/analytics.ts"
 import { AppMarkdown } from "../../../../../utils/AppMarkdown.tsx"
+import { hoverComponents } from "../../../../../utils/hoverComponents.tsx"
 import { buildLinkTitle } from "../../../../../utils/link.ts"
 import { HoverCard } from "../../../../ui/HoverCard.tsx"
 import { MultiCitation, SingleCitation, SourceIcon, TextFragmentLink } from "../BobAnswerCitations.tsx"
@@ -78,12 +79,16 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
             size='small'
             weight='semibold'
           >
-            {source.ingress}
+            <AppMarkdown components={hoverComponents(["ask bob", "copy", "open in article"], source!)}>
+              {source.ingress}
+            </AppMarkdown>
           </BodyLong>
         )}
       </VStack>
       <BodyLong size='small'>
-        <AppMarkdown>{source.content}</AppMarkdown>
+        <AppMarkdown components={hoverComponents(["ask bob", "copy", "open in article"], source!)}>
+          {source.content}
+        </AppMarkdown>
       </BodyLong>
     </div>
   )
