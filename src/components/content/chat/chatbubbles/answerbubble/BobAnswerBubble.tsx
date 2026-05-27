@@ -8,12 +8,12 @@ import { Message, NewMessage } from "../../../../../types/Message.ts"
 import analytics from "../../../../../utils/analytics.ts"
 import { AppMarkdown } from "../../../../../utils/AppMarkdown.tsx"
 import { copyMarkedBobAnswerHandler } from "../../../../../utils/copyBobAnswerHandler.ts"
+import { hoverComponents } from "../../../../../utils/hoverComponents.tsx"
 import { md } from "../../../../../utils/markdown.ts"
 import { FollowUpQuestions } from "../../../followupquestions/FollowUpQuestions.tsx"
 import BobSuggests from "../../suggestions/BobSuggests.tsx"
 import { NoSourcesNeeded, ShowAllSourcesToggle } from "../sources/ShowAllSources.tsx"
 import { CitationLinks, CitationNumber } from "./Citations.tsx"
-import { hoverComponents } from "../../../../../utils/hoverComponents.tsx"
 
 interface BobAnswerBubbleProps {
   message: Message
