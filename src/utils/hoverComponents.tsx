@@ -3,10 +3,10 @@ import { Button, HStack, Popover, Tooltip } from "@navikt/ds-react"
 import * as React from "react"
 import { Components } from "react-markdown"
 import { useInputFieldStore } from "../components/inputfield/InputField"
-import { buildClipboardContent } from "./copyBobAnswerHandler"
 import { Context } from "../types/Message"
-import { buildTextFragmentLink } from "./buildTextFragmentLink"
 import analytics from "./analytics"
+import { buildTextFragmentLink } from "./buildTextFragmentLink"
+import { buildClipboardContent } from "./copyBobAnswerHandler"
 
 type HoverProps = {
   itemRef: React.RefObject<HTMLElement | null>
@@ -106,7 +106,7 @@ const HoverWrapper = ({
 
     analytics.avsnittÅpnetLenke({ tittel: context.title, kilde: context.source }, content.text.length)
     const link = buildTextFragmentLink(content.text, context)
-    window.open(link)
+    window.open(link, "_blank", "noopener")
   }
 
   return (
@@ -116,7 +116,7 @@ const HoverWrapper = ({
         open={isOpen}
         onClose={closePopover}
         placement='top-end'
-        offset={0}
+        offset={6}
         onMouseEnter={() => {
           clearTimeoutClosed()
           openPopover()
@@ -185,7 +185,8 @@ const HoverWrapper = ({
   )
 }
 
-const cln = (className: string) => `hover:bg-ax-bg-sunken [.peer:hover+&]:bg-ax-bg-sunken ${className}`
+const cln = (className: string) =>
+  `hover:bg-ax-bg-neutral-soft dark:hover:bg-ax-bg-raised [.peer:hover+&]:bg-ax-bg-neutral-moderate [.peer:hover+&]:shadow-[0_0_0_6px_var(--ax-bg-neutral-moderate)] hover:shadow-[0_0_0_6px_var(--ax-bg-neutral-soft)] dark:hover:shadow-[0_0_0_6px_var(--ax-bg-raised)] rounded-sm ${className} [.peer:hover+&]:underline`
 
 type HoverFeature = "ask bob" | "open in article" | "copy"
 
@@ -205,29 +206,27 @@ export const hoverComponents: (features: HoverFeature[], context?: Context) => C
     />
   ),
   ul: ({ ...props }) => (
-    <HoverWrapper
-      features={features}
-      context={context}
-      renderElement={({ itemRef, ...hoverProps }) => (
-        <ul
-          {...props}
-          ref={itemRef as React.Ref<HTMLUListElement>}
-          {...hoverProps}
-          className={cln("ml-4 list-disc")}
-        />
-      )}
+    <ul
+      {...props}
+      className='ml-4 list-disc'
     />
   ),
   ol: ({ ...props }) => (
+    <ol
+      {...props}
+      className='ml-6 list-decimal marker:font-medium'
+    />
+  ),
+  li: ({ ...props }) => (
     <HoverWrapper
       features={features}
       context={context}
       renderElement={({ itemRef, ...hoverProps }) => (
-        <ol
+        <li
           {...props}
-          ref={itemRef as React.Ref<HTMLOListElement>}
+          ref={itemRef as React.Ref<HTMLLIElement>}
           {...hoverProps}
-          className={cln("ml-6 list-decimal marker:font-medium")}
+          className={cln("mb-3")}
         />
       )}
     />
