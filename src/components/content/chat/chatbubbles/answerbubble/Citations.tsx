@@ -5,6 +5,7 @@ import { NavNoIcon } from "../../../../../assets/icons/NavNoIcon.tsx"
 import { Context, Contexts } from "../../../../../types/Message.ts"
 import analytics from "../../../../../utils/analytics.ts"
 import { AppMarkdown } from "../../../../../utils/AppMarkdown.tsx"
+import { hoverComponents } from "../../../../../utils/hoverComponents.tsx"
 import { buildLinkTitle } from "../../../../../utils/link.ts"
 import { HoverCard } from "../../../../ui/HoverCard.tsx"
 import { MultiCitation, SingleCitation, SourceIcon, TextFragmentLink } from "../BobAnswerCitations.tsx"
@@ -78,12 +79,16 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
             size='small'
             weight='semibold'
           >
-            {source.ingress}
+            <AppMarkdown components={hoverComponents(["ask bob", "copy", "open in article"], source!)}>
+              {source.ingress}
+            </AppMarkdown>
           </BodyLong>
         )}
       </VStack>
       <BodyLong size='small'>
-        <AppMarkdown>{source.content}</AppMarkdown>
+        <AppMarkdown components={hoverComponents(["ask bob", "copy", "open in article"], source!)}>
+          {source.content}
+        </AppMarkdown>
       </BodyLong>
     </div>
   )
@@ -98,7 +103,8 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
         <button
           type='button'
           aria-pressed={isActive}
-          className='bg-ax-bg-neutral-moderate aria-pressed:bg-ax-bg-neutral-strong-pressed aria-pressed:text-ax-bg-default ml-1 cursor-pointer rounded-sm px-1'
+          data-color='neutral'
+          className='bg-ax-bg-neutral-moderate aria-pressed:bg-ax-bg-neutral-strong-pressed dark:bg-ax-bg-info-moderate-pressed dark:aria-pressed:bg-ax-bg-info-strong-pressed dark:text-ax-text-neutral dark:aria-pressed:text-ax-bg-default text-ax-text-neutral-subtle aria-pressed:text-ax-bg-neutral-soft outline-ax-neutral-500 aria-pressed:outline-ax-text-neutral-contrast ml-0.5 cursor-pointer rounded-sm px-1 outline -outline-offset-1'
         >
           <BodyShort size='small'>{displayId}</BodyShort>
         </button>

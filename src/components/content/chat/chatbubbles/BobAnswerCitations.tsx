@@ -5,10 +5,10 @@ import { NavNoIcon } from "../../../../assets/icons/NavNoIcon.tsx"
 import { Citation, Context, Contexts } from "../../../../types/Message.ts"
 import analytics from "../../../../utils/analytics.ts"
 import { AppMarkdown } from "../../../../utils/AppMarkdown.tsx"
+import { buildTextFragmentLink } from "../../../../utils/buildTextFragmentLink.tsx"
 import { hoverComponents } from "../../../../utils/hoverComponents.tsx"
 import { buildLinkTitle } from "../../../../utils/link.ts"
 import { md } from "../../../../utils/markdown.ts"
-import { buildTextFragmentLink } from "../../../../utils/buildTextFragmentLink.tsx"
 
 interface BobAnswerCitationProps {
   citation: { title: string; source: "navno" | "nks"; citations: Citation[] }
@@ -163,7 +163,7 @@ export const TextFragmentLink = ({
           href={link}
           target='_blank'
           inlineText
-          className={`${className} aksel-body-short--small`}
+          className={`${className} aksel-body-short--small font-semibold`}
           onClick={onClick}
         >
           {title ?? matchingContextCitationData.title}
