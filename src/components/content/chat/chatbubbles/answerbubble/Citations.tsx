@@ -103,7 +103,8 @@ export const CitationNumber = ({ citations, citationId, context }: CitationNumbe
         <button
           type='button'
           aria-pressed={isActive}
-          className='bg-ax-bg-neutral-moderate aria-pressed:bg-ax-bg-neutral-strong-pressed dark:bg-ax-bg-info-moderate-pressed dark:aria-pressed:bg-ax-bg-info-strong-pressed dark:text-ax-text-neutral dark:aria-pressed:text-ax-bg-default text-ax-text-neutral-subtle aria-pressed:text-ax-bg-neutral-soft ml-1 cursor-pointer rounded-sm px-1'
+          data-color='neutral'
+          className='bg-ax-bg-neutral-moderate aria-pressed:bg-ax-bg-neutral-strong-pressed dark:bg-ax-bg-info-moderate-pressed dark:aria-pressed:bg-ax-bg-info-strong-pressed dark:text-ax-text-neutral dark:aria-pressed:text-ax-bg-default text-ax-text-neutral-subtle aria-pressed:text-ax-bg-neutral-soft outline-ax-neutral-500 aria-pressed:outline-ax-text-neutral-contrast ml-0.5 cursor-pointer rounded-sm px-1 outline -outline-offset-1'
         >
           <BodyShort size='small'>{displayId}</BodyShort>
         </button>
