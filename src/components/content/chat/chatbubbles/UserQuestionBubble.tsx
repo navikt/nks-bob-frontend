@@ -1,9 +1,10 @@
 import { Message } from "../../../../types/Message.ts"
 
 import { FilesIcon, PencilWritingIcon } from "@navikt/aksel-icons"
-import { Button, CopyButton, Heading, Tooltip } from "@navikt/ds-react"
+import { Button, CopyButton, Heading, Loader, Tooltip } from "@navikt/ds-react"
 import { memo } from "react"
 import analytics from "../../../../utils/analytics.ts"
+import { OPTIMISTIC_USER_MSG_ID } from "../../../../types/messageStore.ts"
 import { AppMarkdown } from "../../../../utils/AppMarkdown.tsx"
 import { useInputFieldStore } from "../../../inputfield/InputField.tsx"
 import "./ChatBubbles.css"
@@ -15,6 +16,7 @@ interface UserChatBubbleProps {
 const UserQuestionBubble = memo(
   ({ userQuestion }: UserChatBubbleProps) => {
     const raw = userQuestion?.content?.trimEnd() ?? ""
+    const isOptimistic = userQuestion?.id === OPTIMISTIC_USER_MSG_ID
 
     const { setInputValue, focusTextarea } = useInputFieldStore()
 
@@ -28,42 +30,51 @@ const UserQuestionBubble = memo(
 
     return (
       <div className='questionhover mb-4 flex w-fit flex-row items-end gap-1 self-end'>
-        <div className='hide-show-edit fade-in hidden'>
-          <Tooltip
-            content='Kopier teksten'
-            placement='bottom'
-          >
-            <CopyButton
-              copyText={raw}
-              size='small'
-              activeText='Kopiert!'
-              icon={
-                <FilesIcon
-                  aria-hidden
-                  fontSize='1.25rem'
-                />
-              }
-            />
-          </Tooltip>
-          <Tooltip
-            content='Rediger teksten'
-            placement='bottom'
-          >
-            <Button
-              data-color='neutral'
-              variant='tertiary'
-              size='small'
-              aria-label='Rediger spørsmålet'
-              onClick={editQuestion}
-              icon={
-                <PencilWritingIcon
-                  aria-hidden
-                  fontSize='1.25rem'
-                />
-              }
-            />
-          </Tooltip>
-        </div>
+        {!isOptimistic && (
+          <div className='hide-show-edit fade-in hidden'>
+            <Tooltip
+              content='Kopier teksten'
+              placement='bottom'
+            >
+              <CopyButton
+                copyText={raw}
+                size='small'
+                activeText='Kopiert!'
+                icon={
+                  <FilesIcon
+                    aria-hidden
+                    fontSize='1.25rem'
+                  />
+                }
+              />
+            </Tooltip>
+            <Tooltip
+              content='Rediger teksten'
+              placement='bottom'
+            >
+              <Button
+                data-color='neutral'
+                variant='tertiary'
+                size='small'
+                aria-label='Rediger spørsmålet'
+                onClick={editQuestion}
+                icon={
+                  <PencilWritingIcon
+                    aria-hidden
+                    fontSize='1.25rem'
+                  />
+                }
+              />
+            </Tooltip>
+          </div>
+        )}
+        {isOptimistic && (
+          <Loader
+            size='small'
+            title='Sender spørsmål'
+            className='mr-2 self-center'
+          />
+        )}
         <div className='questionbubble max-w-prose'>
           <Heading
             size='small'

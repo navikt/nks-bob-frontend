@@ -105,10 +105,12 @@ function createSSEParser(onEvent: (data: any) => void) {
 
 export const useSendMessage = (conversationId: string) => {
   const [isLoading, startTransition] = useTransition()
-  const { updateMessage } = messageStore()
+  const { updateMessage, addOptimisticUserMessage, removeOptimisticUserMessage } = messageStore()
 
   const sendMessage = ({ content }: { content: string }) => {
     const controller = new AbortController()
+
+    addOptimisticUserMessage(content)
 
     const flushQueue = (queue: any[]) => {
       if (queue.length > 0) {
@@ -177,6 +179,7 @@ export const useSendMessage = (conversationId: string) => {
         if (e.name !== "AbortError") {
           console.error("SSE error", e)
         }
+        removeOptimisticUserMessage()
       }
     })()
 
