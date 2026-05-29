@@ -70,7 +70,7 @@ const HoverWrapper = ({
       return
     }
 
-    const selectedText = "Jeg har et spørsmål om denne teksten: " + content.text.replaceAll("\n", "\n> ")
+    const selectedText = "Jeg har et spørsmål om denne teksten: \n\n" + content.text + "\n\n" + "Spørsmål: "
     const newInput = `${selectedText}\n\n${inputValue}`
     setInputValue(newInput)
     focusTextarea()
