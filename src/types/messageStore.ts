@@ -3,7 +3,8 @@ import { MessageEvent as ConversationEvent } from "../api/sse"
 import analytics from "../utils/analytics"
 import { transformArticleColumnArray } from "../utils/articleColumnTransformer"
 import { transformNksUrlsArray } from "../utils/nksUrlTransformer"
-import { Citation, Contexts, Message } from "./Message"
+import { Citation, Contexts, Message, MessageError } from "./Message"
+import { transformNavUrlsArray } from "../utils/navUrlTransformer"
 
 // Type guard functions for MessageEvent types
 function isNewMessage(event: ConversationEvent): event is { type: "NewMessage"; id: string; message: Message } {
@@ -36,7 +37,7 @@ function isStatusUpdate(event: ConversationEvent): event is { type: "StatusUpdat
   return event.type === "StatusUpdate"
 }
 
-function isErrorsUpdated(event: ConversationEvent): event is { type: "ErrorsUpdated"; id: string; errors: any[] } {
+function isErrorsUpdated(event: ConversationEvent): event is { type: "ErrorsUpdated"; id: string; errors: MessageError[] } {
   return event.type === "ErrorsUpdated"
 }
 
@@ -57,10 +58,11 @@ type MessageState = {
 
 const transformContextData = (contexts: Contexts): Contexts => {
   let transformed = transformNksUrlsArray(contexts)
+  transformed = transformNavUrlsArray(transformed)
 
-  const entries = Object.entries(contexts)
+  const entries = Object.entries(transformed)
   const hasContexts = entries.length > 0
-  const hasArticleColumn = "articleColumn" in entries.map(([_, c]) => c)
+  const hasArticleColumn = entries.some(([, c]) => "articleColumn" in c)
 
   if (hasContexts && hasArticleColumn) {
     transformed = transformArticleColumnArray(transformed)
@@ -181,7 +183,7 @@ const getMessage = (event: ConversationEvent, messages: MessageMap): Message | u
   if (isPendingUpdated(event)) {
     if (!event.pending) {
       const messageLength = event.message.content.length
-      const contextMeta = Object.entries(event.message.context).map(([_, { source, title }]) => ({
+      const contextMeta = Object.entries(event.message.context).map(([, { source, title }]) => ({
         tittel: title,
         kilde: source,
       }))

@@ -1,6 +1,6 @@
 import { Context, Contexts } from "../types/Message"
 
-const isLocalDev = ["bob.ansatt.dev.nav.no", "localhost"].some((url) => {
+export const isLocalDev = ["bob.ansatt.dev.nav.no", "localhost"].some((url) => {
   return window.location.href.includes(url)
 })
 
