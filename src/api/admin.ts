@@ -4,6 +4,7 @@ import { Feedback, Message } from "../types/Message"
 import { Alert, NewsNotification, Notification } from "../types/Notifications"
 import { transformNksUrlsArray } from "../utils/nksUrlTransformer"
 import { ApiError, fetcher, request } from "./api"
+import { transformNavUrlsArray } from "../utils/navUrlTransformer"
 
 export const useAdminMessages = (conversationId: string) => {
   const { data, isLoading, error } = useSWR<Message[], ApiError>(
@@ -13,7 +14,7 @@ export const useAdminMessages = (conversationId: string) => {
 
   const transformedMessages = data?.map((message) => ({
     ...message,
-    context: transformNksUrlsArray(message.context),
+    context: transformNavUrlsArray(transformNksUrlsArray(message.context))
   }))
 
   return {

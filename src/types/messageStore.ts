@@ -4,6 +4,7 @@ import analytics from "../utils/analytics"
 import { transformArticleColumnArray } from "../utils/articleColumnTransformer"
 import { transformNksUrlsArray } from "../utils/nksUrlTransformer"
 import { Citation, Contexts, Message } from "./Message"
+import { transformNavUrls, transformNavUrlsArray } from "../utils/navUrlTransformer"
 
 // Type guard functions for MessageEvent types
 function isNewMessage(event: ConversationEvent): event is { type: "NewMessage"; id: string; message: Message } {
@@ -57,10 +58,11 @@ type MessageState = {
 
 const transformContextData = (contexts: Contexts): Contexts => {
   let transformed = transformNksUrlsArray(contexts)
+  transformed = transformNavUrlsArray(transformed)
 
-  const entries = Object.entries(contexts)
+  const entries = Object.entries(transformed)
   const hasContexts = entries.length > 0
-  const hasArticleColumn = "articleColumn" in entries.map(([_, c]) => c)
+  const hasArticleColumn = entries.some(([_, c]) => "articleColumn" in c)
 
   if (hasContexts && hasArticleColumn) {
     transformed = transformArticleColumnArray(transformed)
