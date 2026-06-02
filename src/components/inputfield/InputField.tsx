@@ -23,6 +23,7 @@ import { create } from "zustand"
 import { createJSONStorage, persist } from "zustand/middleware"
 import { useAddIgnoredWord, useAlerts, useUserInfo } from "../../api/api.ts"
 import { NewMessage } from "../../types/Message.ts"
+import { expandAbbreviationInText, getAbbreviationSuggestion } from "../../utils/abbreviations.ts"
 import analytics from "../../utils/analytics.ts"
 import {
   filterOverlappingMatches,
@@ -112,6 +113,8 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
 
   const { inputValue, setInputValue, textareaRef } = useInputFieldStore()
 
+  const abbreviationSuggestion = getAbbreviationSuggestion(inputValue)
+
   const { alerts } = useAlerts()
   const hasAlertErrors = alerts.at(0)?.notificationType === "Error"
 
@@ -142,7 +145,9 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
   }
 
   function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    setInputValue(e.target.value)
+    const newValue = e.target.value
+    const expanded = expandAbbreviationInText(newValue)
+    setInputValue(expanded ?? newValue)
   }
 
   function handleDrop(e: React.DragEvent<HTMLTextAreaElement>) {
