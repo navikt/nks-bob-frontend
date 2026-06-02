@@ -23,7 +23,7 @@ import { create } from "zustand"
 import { createJSONStorage, persist } from "zustand/middleware"
 import { useAddIgnoredWord, useAlerts, useUserInfo } from "../../api/api.ts"
 import { NewMessage } from "../../types/Message.ts"
-import { expandAbbreviationInText, getAbbreviationSuggestion } from "../../utils/abbreviations.ts"
+import { expandAbbreviationInText } from "../../utils/abbreviations.ts"
 import analytics from "../../utils/analytics.ts"
 import {
   filterOverlappingMatches,
@@ -112,8 +112,6 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
   const { conversationId } = useParams()
 
   const { inputValue, setInputValue, textareaRef } = useInputFieldStore()
-
-  const abbreviationSuggestion = getAbbreviationSuggestion(inputValue)
 
   const { alerts } = useAlerts()
   const hasAlertErrors = alerts.at(0)?.notificationType === "Error"
