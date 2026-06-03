@@ -1,3 +1,5 @@
+import { ABBREVIATIONS } from "../../abbreviations"
+
 const countryCodes = [
   "7 840",
   "93",
@@ -313,6 +315,10 @@ export const whitelistNumbers = [
   "41282935",
 ]
 
+const abbreviationWords = [...new Set(
+  Object.values(ABBREVIATIONS).flatMap((v) => v.split(/[\s-]+/))
+)]
+
 export const whitelistWords = [
   "Nav",
   "NAV",
@@ -529,6 +535,8 @@ export const whitelistWords = [
   "X",
   "Mvh",
   "Vh",
+  "Cash-for-Care",
+  ...abbreviationWords,
 ]
 
 export const whitelistedCountries = [

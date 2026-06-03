@@ -23,6 +23,7 @@ import { create } from "zustand"
 import { createJSONStorage, persist } from "zustand/middleware"
 import { useAddIgnoredWord, useAlerts, useUserInfo } from "../../api/api.ts"
 import { NewMessage } from "../../types/Message.ts"
+import { expandAbbreviationInText, expandAllAbbreviations } from "../../utils/abbreviations.ts"
 import analytics from "../../utils/analytics.ts"
 import {
   filterOverlappingMatches,
@@ -142,7 +143,9 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
   }
 
   function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    setInputValue(e.target.value)
+    const newValue = e.target.value
+    const expanded = expandAbbreviationInText(newValue)
+    setInputValue(expanded ?? newValue)
   }
 
   function handleDrop(e: React.DragEvent<HTMLTextAreaElement>) {
@@ -150,8 +153,15 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
   }
 
   function handlePaste(e: React.ClipboardEvent<HTMLTextAreaElement>) {
-    const text = e.clipboardData.getData("text")
-    analytics.tekstInnholdLimtInn(text.length)
+    const pastedText = e.clipboardData.getData("text")
+    e.preventDefault()
+
+    const start = textareaRef.current?.selectionStart ?? inputValue.length
+    const end = textareaRef.current?.selectionEnd ?? inputValue.length
+    const newValue = inputValue.slice(0, start) + pastedText + inputValue.slice(end)
+
+    setInputValue(expandAllAbbreviations(newValue))
+    analytics.tekstInnholdLimtInn(pastedText.length)
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
