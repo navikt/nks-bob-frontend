@@ -23,7 +23,7 @@ import { create } from "zustand"
 import { createJSONStorage, persist } from "zustand/middleware"
 import { useAddIgnoredWord, useAlerts, useUserInfo } from "../../api/api.ts"
 import { NewMessage } from "../../types/Message.ts"
-import { expandAbbreviationInText } from "../../utils/abbreviations.ts"
+import { expandAbbreviationInText, expandAllAbbreviations } from "../../utils/abbreviations.ts"
 import analytics from "../../utils/analytics.ts"
 import {
   filterOverlappingMatches,
@@ -154,6 +154,11 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
 
   function handlePaste(e: React.ClipboardEvent<HTMLTextAreaElement>) {
     const text = e.clipboardData.getData("text")
+    const expanded = expandAllAbbreviations(text)
+    if (expanded) {
+      e.preventDefault()
+      setInputValue(expanded)
+    }
     analytics.tekstInnholdLimtInn(text.length)
   }
 

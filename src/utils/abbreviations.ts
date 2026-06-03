@@ -227,3 +227,10 @@ export function expandAbbreviationInText(text: string): string | null {
 
   return beforeTrigger.slice(0, match.index! + (match[0].length - match[1].length)) + ABBREVIATIONS[word] + lastChar
 }
+
+export function expandAllAbbreviations(text: string): string {
+  return text.replace(
+    /([a-zA-Z0-9øæåØÆÅ][a-zA-Z0-9øæåØÆÅ-]*)(?=[\s,.\-!?]|$)/g,
+    (match) => ABBREVIATIONS[match.toLowerCase()] ?? match,
+  )
+}
