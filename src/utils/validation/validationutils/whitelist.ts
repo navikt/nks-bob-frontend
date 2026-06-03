@@ -536,6 +536,7 @@ export const whitelistWords = [
   "Mvh",
   "Vh",
   "Cash-for-Care",
+  "Finn",
   ...abbreviationWords,
 ]
 
