@@ -153,13 +153,15 @@ const InputField = forwardRef<HTMLDivElement, InputFieldProps>(function InputFie
   }
 
   function handlePaste(e: React.ClipboardEvent<HTMLTextAreaElement>) {
-    const text = e.clipboardData.getData("text")
-    const expanded = expandAllAbbreviations(text)
-    if (expanded) {
-      e.preventDefault()
-      setInputValue(expanded)
-    }
-    analytics.tekstInnholdLimtInn(text.length)
+    const pastedText = e.clipboardData.getData("text")
+    e.preventDefault()
+
+    const start = textareaRef.current?.selectionStart ?? inputValue.length
+    const end = textareaRef.current?.selectionEnd ?? inputValue.length
+    const newValue = inputValue.slice(0, start) + pastedText + inputValue.slice(end)
+
+    setInputValue(expandAllAbbreviations(newValue))
+    analytics.tekstInnholdLimtInn(pastedText.length)
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
