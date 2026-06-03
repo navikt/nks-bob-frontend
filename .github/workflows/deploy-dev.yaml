@@ -18,19 +18,19 @@ jobs:
       packages: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
       - name: Read .tool-versions
-        uses: marocchino/tool-versions-action@v1
+        uses: marocchino/tool-versions-action@18a164fa2b0db1cc1edf7305fcb17ace36d1c306 # v1.2.0
         id: versions
 
       - name: Install pnpm ${{ steps.versions.outputs.pnpm }}
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
         with:
           version: ${{ steps.versions.outputs.pnpm }}
 
       - name: Use Node.js ${{ steps.versions.outputs.nodejs }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: ${{ steps.versions.outputs.nodejs }}
           registry-url: 'https://npm.pkg.github.com'
@@ -43,7 +43,7 @@ jobs:
 
       - run: pnpm run --stream build
 
-      - uses: nais/docker-build-push@v0
+      - uses: nais/docker-build-push@05dbb6091b30bd84279c6d64a45ef8782fd410a5 # v0
         id: gar-push
         with:
           team: nks-aiautomatisering
@@ -53,7 +53,7 @@ jobs:
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
 
       - id: upload
-        uses: nais/deploy/actions/cdn-upload/v2@master
+        uses: nais/deploy/actions/cdn-upload/v2@c55d6073d913975d2dada508bdfefc6427d39867 # v2
         with:
           team: nks-aiautomatisering
           source: ./dist/
@@ -71,9 +71,9 @@ jobs:
     permissions:
       id-token: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
       - name: Deploy til dev-gcp
-        uses: nais/deploy/actions/deploy@v2
+        uses: nais/deploy/actions/deploy@c55d6073d913975d2dada508bdfefc6427d39867 # v2
         env:
           CLUSTER: dev-gcp
           RESOURCE: .nais/dev-gcp.yaml
