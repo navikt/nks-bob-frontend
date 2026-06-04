@@ -80,7 +80,7 @@ export const useInputFieldStore = create<InputFieldState>()(
     },
     {
       name: "input-storage",
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => sessionStorage),
       partialize: (state) => ({ inputValue: state.inputValue }),
     },
   ),
