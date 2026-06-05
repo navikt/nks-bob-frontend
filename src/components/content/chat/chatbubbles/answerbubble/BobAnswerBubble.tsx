@@ -60,9 +60,10 @@ export const BobAnswerBubble = memo(
     const contentReady = !hasError(message) && !isPending(message) && !!message.content
 
     function handleFindSourcesClick() {
+      const plaintextMessageContent = md.toPlaintext(message.content)
       analytics.finnKilderTilSvaret()
       const findSources: NewMessage = {
-        content: `Se om du kan finne kilder som støtter svaret:\n${message.content}`,
+        content: `Se om du kan finne kilder som støtter svaret:\n${plaintextMessageContent}`,
       }
       onSend(findSources)
     }

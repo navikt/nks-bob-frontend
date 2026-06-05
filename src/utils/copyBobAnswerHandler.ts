@@ -11,6 +11,13 @@ export function buildClipboardContent(sourceNode: Node): { text: string; html: s
   textContainer.querySelectorAll("[data-citation], sup").forEach((el) => el.remove())
   htmlContainer.querySelectorAll("[data-citation], sup").forEach((el) => el.remove())
 
+   textContainer.querySelectorAll("a").forEach((a) => {
+    const href = a.getAttribute("href")
+    if (href) {
+      a.replaceWith(href)
+    }
+  })
+
   textContainer.querySelectorAll("ul > li").forEach((li) => {
     li.textContent = `• ${li.textContent?.trim() ?? ""}`
   })
