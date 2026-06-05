@@ -102,7 +102,6 @@ export const ABBREVIATIONS: Record<string, string> = {
   mvh: "Med vennlig hilsen",
   mvhen: "Kind regards",
   mvhnn: "Med venleg helsing",
-  nav: "Nav",
   navk: "Nav klageinstans",
   nay: "Nav arbeid og ytelser",
   nfp: "Nav familie- og pensjonsytelser",
