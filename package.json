@@ -19,12 +19,10 @@
     "preinstall": "npx only-allow pnpm"
   },
   "dependencies": {
-    "@amplitude/analytics-browser": "^2.40.0",
     "@navikt/aksel-icons": "^8.10.0",
     "@navikt/ds-css": "^8.10.0",
     "@navikt/ds-react": "^8.10.0",
     "@navikt/ds-tailwind": "^8.10.0",
-    "@unhead/dom": "^3.0.4",
     "@unhead/react": "^3.0.4",
     "date-fns": "^4.1.0",
     "dotenv": "^17.4.2",
@@ -42,7 +40,6 @@
     "remark-gfm": "^4.0.1",
     "remark-rehype": "^11.1.2",
     "remark-stringify": "^11.0.0",
-    "server": "workspace:*",
     "strip-markdown": "^6.0.0",
     "swr": "^2.4.1",
     "ts-debounce": "^5.0.0",
@@ -57,7 +54,6 @@
     "@types/node": "^25.6.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "@types/unist": "^3.0.3",
     "@vitejs/plugin-react": "^6.0.1",
     "eslint": "^10.2.1",
     "eslint-plugin-react-hooks": "^7.1.1",
