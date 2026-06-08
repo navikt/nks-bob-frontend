@@ -5,12 +5,13 @@ import { randomUUID } from "crypto"
 import express from "express"
 import { readFileSync } from "fs"
 import { IncomingMessage, ServerResponse } from "http"
-import httpProxyMiddleware, {
+import type { Options, Plugin } from "http-proxy-middleware"
+import {
+  createProxyMiddleware,
   debugProxyErrorsPlugin,
   errorResponsePlugin,
   proxyEventsPlugin,
 } from "http-proxy-middleware"
-import { Options, Plugin } from "http-proxy-middleware/dist/types.js"
 import { createHttpTerminator } from "http-terminator"
 import Mustache from "mustache"
 import path from "path"
@@ -20,7 +21,6 @@ import { entraMiddleware, getToken } from "./entra.js"
 import require from "./esm-require.js"
 
 const apiMetricsMiddleware = require("prometheus-api-metrics")
-const { createProxyMiddleware } = httpProxyMiddleware
 
 require("dotenv").config()
 
