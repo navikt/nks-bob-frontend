@@ -272,7 +272,7 @@ const MessageContent = ({
       >
         Svar fra Bob:
       </Heading>
-      <BodyLong>
+      <BodyLong className='font-light'>
         <AppMarkdown
           remarkPlugins={[md.remarkCitations]}
           rehypePlugins={[rehypeRaw]}
