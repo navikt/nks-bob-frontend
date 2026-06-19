@@ -1,5 +1,5 @@
-import { FileSearchIcon } from "@navikt/aksel-icons"
-import { BodyLong, BodyShort, Button, Heading, HStack, Loader, Skeleton, VStack } from "@navikt/ds-react"
+import { FileSearchIcon, SparklesIcon } from "@navikt/aksel-icons"
+import { BodyLong, BodyShort, Button, Heading, HStack, Loader, Skeleton, Tag, VStack } from "@navikt/ds-react"
 import React, { memo, useState } from "react"
 import Markdown from "react-markdown"
 import rehypeRaw from "rehype-raw"
@@ -14,6 +14,7 @@ import { FollowUpQuestions } from "../../../followupquestions/FollowUpQuestions.
 import BobSuggests from "../../suggestions/BobSuggests.tsx"
 import { NoSourcesNeeded, ShowAllSourcesToggle } from "../sources/ShowAllSources.tsx"
 import { CitationLinks, CitationNumber } from "./Citations.tsx"
+import { useUserConfig } from "../../../../../api/api.ts"
 
 interface BobAnswerBubbleProps {
   message: Message
@@ -58,6 +59,10 @@ export const BobAnswerBubble = memo(
     const [citations, setCitations] = useState<{ citationId: string; position: number }[]>([])
 
     const contentReady = !hasError(message) && !isPending(message) && !!message.content
+
+    const { userConfig } = useUserConfig()
+    const userType = userConfig?.userType
+    const isAdmin = userType === "admin"
 
     function handleFindSourcesClick() {
       const plaintextMessageContent = md.toPlaintext(message.content)
@@ -115,6 +120,15 @@ export const BobAnswerBubble = memo(
                     isLastMessage={isLastMessage}
                   />
                   {getSourcesComponent(message)}
+                  {isAdmin && message.model && (
+                    <Tag
+                      size='small'
+                      icon={<SparklesIcon />}
+                      className='rounded-lg py-0'
+                    >
+                      {message.model}
+                    </Tag>
+                  )}
                 </HStack>
                 {message.citations.length > 0 && (
                   <Citations

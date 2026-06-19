@@ -27,6 +27,7 @@ export type Message = {
   tools: Tool[]
   thinking: string[]
   status?: string[]
+  model?: string
 }
 
 export type Citation = {
