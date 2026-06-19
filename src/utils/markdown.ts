@@ -13,6 +13,21 @@ const citationRegex = /\{([a-z0-9]{6})\}/g
 function removeCitations(): (tree: Root) => void {
   return (tree) => {
     findAndReplace(tree as any, [citationRegex])
+
+    visit(tree, "inlineCode", (node, index, parent) => {
+      if (!parent || index === undefined) return
+      if (/^\{[a-z0-9]{6}\}$/.test(node.value)) {
+        parent.children.splice(index, 1)
+      }
+    })
+
+    // Remove any parents left empty after citation removal
+    visit(tree, (node, index, parent) => {
+      if (!parent || index === undefined) return
+      if ("children" in node && (node as any).children.length === 0) {
+        (parent as any).children.splice(index, 1)
+      }
+    })
   }
 }
 
@@ -54,6 +69,17 @@ function remarkCitations(): (tree: Root) => void {
       }
 
       parent.children.splice(index!, 1, ...newNodes)
+    })
+
+    visit(tree, "inlineCode", (node, index, parent) => {
+      if (!parent || index === undefined) return
+      const match = /^\{([a-z0-9]{6})\}$/.exec(node.value)
+      if (!match) return
+      const [, id] = match
+      parent.children.splice(index, 1, {
+        type: "html",
+        value: `<span data-citation="${id}" data-position="${node.position?.start.offset ?? index}"></span>`,
+      })
     })
   }
 }
