@@ -198,7 +198,7 @@ export const ABBREVIATIONS: Record<string, string> = {
   yrk: "yrkesskade",
   ys: "yrkesskade",
   øksit: "økonomiske situasjon",
-};
+}
 
 export function getAbbreviationSuggestion(text: string): { abbr: string; expansion: string } | null {
   const match = text.match(/(?:^|\s)([a-zA-Z0-9øæåØÆÅ][a-zA-Z0-9øæåØÆÅ-]*)$/)
@@ -210,7 +210,7 @@ export function getAbbreviationSuggestion(text: string): { abbr: string; expansi
   return null
 }
 
-const TRIGGERS = new Set([" ", ",", ".", "-", "!", "?"])
+const TRIGGERS = new Set([" ", ",", ".", "!", "?"])
 
 export function expandAbbreviationInText(text: string): string | null {
   if (text.length === 0) return null
