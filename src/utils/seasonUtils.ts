@@ -9,7 +9,7 @@
  * in both light and dark mode.
  */
 
-export type SeasonName = "christmas" | "easter" | "summer"
+export type SeasonName = "christmas" | "easter" | "pride" | "summer"
 
 export type Season = {
   name: SeasonName
@@ -79,6 +79,16 @@ export const SEASONS: Season[] = [
       const palmSunday = getPalmSunday(date.getFullYear())
       // Palm Sunday through Easter Saturday (7 days)
       return inWindow(date, palmSunday, 7)
+    },
+  },
+  {
+    name: "pride",
+    hasDarkVariant: false,
+    isActive: (date) => {
+      const month = date.getMonth()
+      const day = date.getDate()
+      // Jun 19 – Jun 27
+      return month === 5 && day >= 19 && day <= 27
     },
   },
   {

@@ -1,11 +1,9 @@
 import { Alert as AlertComponent, Heading } from "@navikt/ds-react"
 import Markdown from "react-markdown"
 import { useAlerts } from "../../../api/api.ts"
-import {
-  ChristmasBobV1Dark,
-  ChristmasBobV1Light,
-} from "../../../assets/illustrations/ChristmasBob.tsx"
+import { ChristmasBobV1Dark, ChristmasBobV1Light } from "../../../assets/illustrations/ChristmasBob.tsx"
 import { BobTheEasterRabbit } from "../../../assets/illustrations/BobTheEasterRabbit.tsx"
+import prideBob from "../../../assets/illustrations/Pride-Bob.svg"
 import {
   BobPlaceholder2026,
   BobPlaceHolderDark2026,
@@ -29,6 +27,14 @@ const SummerBob = () => (
   />
 )
 
+const PrideBob = () => (
+  <img
+    src={prideBob}
+    alt='Pride Bob'
+    className='ml-[25%] h-full w-full object-contain'
+  />
+)
+
 const SEASON_ILLUSTRATIONS: Record<SeasonName, IllustrationPair> = {
   christmas: {
     Light: ChristmasBobV1Light,
@@ -37,6 +43,10 @@ const SEASON_ILLUSTRATIONS: Record<SeasonName, IllustrationPair> = {
   easter: {
     Light: BobTheEasterRabbit,
     Dark: BobTheEasterRabbit,
+  },
+  pride: {
+    Light: PrideBob,
+    Dark: PrideBob,
   },
   summer: {
     Light: SummerBob,
