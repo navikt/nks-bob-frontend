@@ -9,6 +9,16 @@ import { visit } from "unist-util-visit"
 
 const citationRegex = /\{([a-z0-9]{6})\}/g
 
+// Normalize comma-separated citations {id1, id2} → {id1}{id2}
+function normalizeMultiCitations(markdown: string): string {
+  return markdown.replace(/\{([a-z0-9]{6}(?:\s*,\s*[a-z0-9]{6})+)\}/g, (_, ids: string) =>
+    ids
+      .split(",")
+      .map((id) => `{${id.trim()}}`)
+      .join(""),
+  )
+}
+
 // Remove all citations ([0]) from the text
 function removeCitations(): (tree: Root) => void {
   return (tree) => {
@@ -25,7 +35,7 @@ function removeCitations(): (tree: Root) => void {
     visit(tree, (node, index, parent) => {
       if (!parent || index === undefined) return
       if ("children" in node && (node as any).children.length === 0) {
-        (parent as any).children.splice(index, 1)
+        ;(parent as any).children.splice(index, 1)
       }
     })
   }
@@ -34,6 +44,10 @@ function removeCitations(): (tree: Root) => void {
 // Convert all citations to a span with citation number and position as properties
 function remarkCitations(): (tree: Root) => void {
   return (tree) => {
+    visit(tree, "text", (node: Text) => {
+      node.value = normalizeMultiCitations(node.value)
+    })
+
     visit(tree, "text", (node: Text, index, parent) => {
       if (!parent) return
 
@@ -86,7 +100,7 @@ function remarkCitations(): (tree: Root) => void {
 
 const htmlProcessor = remark().use(removeCitations).use(remarkRehype).use(rehypeStringify)
 
-const toHtml = (markdown: string): string => htmlProcessor.processSync(markdown).toString()
+const toHtml = (markdown: string): string => htmlProcessor.processSync(normalizeMultiCitations(markdown)).toString()
 
 // Convert markdown to plaintext, but keep formatting for lists
 // and transform links to just the url.
@@ -100,7 +114,7 @@ const plaintextProcessor = remark()
   } as Options)
   .use(removeCitations)
 
-const toPlaintext = (markdown: string) => plaintextProcessor.processSync(markdown).toString()
+const toPlaintext = (markdown: string) => plaintextProcessor.processSync(normalizeMultiCitations(markdown)).toString()
 
 // Rewrite relative links (/path/to/resource) to just text with the title
 function rewriteRelativeLinks(): (tree: Root) => void {
