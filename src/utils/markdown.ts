@@ -9,14 +9,18 @@ import { visit } from "unist-util-visit"
 
 const citationRegex = /\{([a-z0-9]{6})\}/g
 
-// Normalize comma-separated citations {id1, id2} → {id1}{id2}
+// Normalize multi-citation formats into adjacent {id}{id} tokens:
+//   {id1, id2}  → {id1}{id2}  (comma-separated)
+//   {id1} {id2} → {id1}{id2}  (space-separated)
 function normalizeMultiCitations(markdown: string): string {
-  return markdown.replace(/\{([a-z0-9]{6}(?:\s*,\s*[a-z0-9]{6})+)\}/g, (_, ids: string) =>
-    ids
-      .split(",")
-      .map((id) => `{${id.trim()}}`)
-      .join(""),
-  )
+  return markdown
+    .replace(/\{([a-z0-9]{6}(?:\s*,\s*[a-z0-9]{6})+)\}/g, (_, ids: string) =>
+      ids
+        .split(",")
+        .map((id) => `{${id.trim()}}`)
+        .join(""),
+    )
+    .replace(/(\{[a-z0-9]{6}\}) (?=\{[a-z0-9]{6}\})/g, "$1")
 }
 
 // Remove all citations ([0]) from the text
@@ -26,7 +30,8 @@ function removeCitations(): (tree: Root) => void {
 
     visit(tree, "inlineCode", (node, index, parent) => {
       if (!parent || index === undefined) return
-      if (/^\{[a-z0-9]{6}\}$/.test(node.value)) {
+      const normalized = normalizeMultiCitations(node.value)
+      if (/^\{[a-z0-9]{6}\}$/.test(normalized) || /^(\{[a-z0-9]{6}\})+$/.test(normalized)) {
         parent.children.splice(index, 1)
       }
     })
@@ -56,6 +61,8 @@ function remarkCitations(): (tree: Root) => void {
       let lastIndex = 0
       const newNodes: any[] = []
 
+      citationRegex.lastIndex = 0
+
       while ((match = citationRegex.exec(value)) !== null) {
         const [fullMatch, id] = match
         const start = match.index
@@ -82,18 +89,25 @@ function remarkCitations(): (tree: Root) => void {
         })
       }
 
-      parent.children.splice(index!, 1, ...newNodes)
+      if (newNodes.length > 0) {
+        parent.children.splice(index!, 1, ...newNodes)
+      }
     })
 
     visit(tree, "inlineCode", (node, index, parent) => {
       if (!parent || index === undefined) return
-      const match = /^\{([a-z0-9]{6})\}$/.exec(node.value)
-      if (!match) return
-      const [, id] = match
-      parent.children.splice(index, 1, {
-        type: "html",
-        value: `<span data-citation="${id}" data-position="${node.position?.start.offset ?? index}"></span>`,
-      })
+      const normalized = normalizeMultiCitations(node.value)
+      const ids = [...normalized.matchAll(/\{([a-z0-9]{6})\}/g)].map((m) => m[1])
+      if (ids.length === 0) return
+      const baseOffset = node.position?.start.offset ?? index
+      parent.children.splice(
+        index,
+        1,
+        ...ids.map((id, i) => ({
+          type: "html" as const,
+          value: `<span data-citation="${id}" data-position="${baseOffset + i}"></span>`,
+        })),
+      )
     })
   }
 }
