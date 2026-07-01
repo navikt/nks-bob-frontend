@@ -40,7 +40,7 @@ jobs:
 
       - run: pnpm run --stream build
 
-      - uses: nais/docker-build-push@05dbb6091b30bd84279c6d64a45ef8782fd410a5 # v0
+      - uses: nais/docker-build-push@f8bc7437f7549c2b08197152d781b98f8727a08a # v0
         id: gar-push
         with:
           team: nks-aiautomatisering
@@ -50,7 +50,7 @@ jobs:
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
 
       - id: upload
-        uses: nais/deploy/actions/cdn-upload/v2@5fdd91aaf69bb0d6dd5e5118cdacb639f487b93b # v2
+        uses: nais/deploy/actions/cdn-upload/v2@2d18f050f07b6a007864c6a57070ed915d571beb # v2
         with:
           team: nks-aiautomatisering
           source: ./dist/
@@ -71,7 +71,7 @@ jobs:
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
       - name: Deploy til prod-gcp
-        uses: nais/deploy/actions/deploy@5fdd91aaf69bb0d6dd5e5118cdacb639f487b93b # v2
+        uses: nais/deploy/actions/deploy@2d18f050f07b6a007864c6a57070ed915d571beb # v2
         env:
           CLUSTER: prod-gcp
           RESOURCE: .nais/prod-gcp.yaml
