@@ -1,6 +1,6 @@
 import { FileSearchIcon, SparklesIcon } from "@navikt/aksel-icons"
 import { BodyLong, BodyShort, Button, Heading, HStack, Loader, Skeleton, Tag, VStack } from "@navikt/ds-react"
-import React, { memo, useState } from "react"
+import React, { memo, useCallback, useMemo, useState } from "react"
 import Markdown from "react-markdown"
 import rehypeRaw from "rehype-raw"
 import { BobRoboHead } from "../../../../../assets/illustrations/BobRoboHead.tsx"
@@ -24,6 +24,10 @@ interface BobAnswerBubbleProps {
   isHighlighted: boolean
   followUp: string[]
 }
+
+// Stable components object for hoverComponents — features never change, so we
+// can create this once per module load rather than on every render of MessageContent.
+const stableHoverComponents = hoverComponents(["ask bob", "copy"])
 
 interface CitationSpanProps extends React.HTMLAttributes<HTMLSpanElement> {
   "data-citation"?: string
@@ -237,41 +241,52 @@ const MessageContent = ({
     await copyMarkedBobAnswerHandler(message)
   }
 
-  const addCitation = (citationId: string, position: number) => {
-    let existingCitations = citations
-    const newCitation = { citationId, position }
+  const addCitation = useCallback(
+    (citationId: string, position: number) => {
+      let existingCitations = citations
+      const newCitation = { citationId, position }
 
-    const existingCitation = citations.find((citation) => citation.citationId === citationId)
+      const existingCitation = citations.find((citation) => citation.citationId === citationId)
 
-    if (existingCitation) {
-      if (existingCitation.position <= position) {
-        return
+      if (existingCitation) {
+        if (existingCitation.position <= position) {
+          return
+        }
+        // Ignore existing citation to overwrite it.
+        existingCitations = citations.filter((citation) => citation.citationId !== citationId)
       }
-      // Ignore existing citation to overwrite it.
-      existingCitations = citations.filter((citation) => citation.citationId !== citationId)
-    }
 
-    // Store citations as a list ordered by `position`
-    const newState = [...existingCitations, newCitation].sort((a, b) => a.position - b.position)
-    setCitations(newState)
-  }
+      // Store citations as a list ordered by `position`
+      const newState = [...existingCitations, newCitation].sort((a, b) => a.position - b.position)
+      setCitations(newState)
+    },
+    [citations, setCitations],
+  )
 
-  const citationSpanComponent = (props: CitationSpanProps) => {
-    const dataCitation = props["data-citation"]
-    const dataPosition = props["data-position"]
-    if (dataCitation && dataPosition) {
-      const citationId = dataCitation
-      addCitation(citationId, parseInt(dataPosition, 10))
-      return (
-        <CitationNumber
-          citations={citations}
-          citationId={citationId}
-          context={message.context}
-        />
-      )
-    }
-    return <span {...props} />
-  }
+  const citationSpanComponent = useCallback(
+    (props: CitationSpanProps) => {
+      const dataCitation = props["data-citation"]
+      const dataPosition = props["data-position"]
+      if (dataCitation && dataPosition) {
+        const citationId = dataCitation
+        addCitation(citationId, parseInt(dataPosition, 10))
+        return (
+          <CitationNumber
+            citations={citations}
+            citationId={citationId}
+            context={message.context}
+          />
+        )
+      }
+      return <span {...props} />
+    },
+    [addCitation, citations, message.context],
+  )
+
+  const markdownComponents = useMemo(
+    () => ({ span: citationSpanComponent, ...stableHoverComponents }),
+    [citationSpanComponent],
+  )
 
   return (
     <div
@@ -290,7 +305,7 @@ const MessageContent = ({
         <AppMarkdown
           remarkPlugins={[md.remarkCitations]}
           rehypePlugins={[rehypeRaw]}
-          components={{ span: citationSpanComponent, ...hoverComponents(["ask bob", "copy"]) }}
+          components={markdownComponents}
         >
           {message.content}
         </AppMarkdown>
