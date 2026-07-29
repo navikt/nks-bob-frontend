@@ -1,4 +1,8 @@
 packages:
   - server
 
-minimumReleaseAge: 10080  # 1 week in minutes
+allowBuilds:
+  '@swc/core': true
+  esbuild: true
+
+minimumReleaseAge: 10080 # 1 week in minutes
