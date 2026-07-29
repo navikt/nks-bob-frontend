@@ -124,6 +124,7 @@ export const useSendMessage = (conversationId: string) => {
     }
 
     ;(async () => {
+      let interval: ReturnType<typeof setInterval> | undefined
       try {
         const response = await fetch(`${API_URL}/api/v2/conversations/${conversationId}/messages/sse`, {
           method: "POST",
@@ -145,7 +146,7 @@ export const useSendMessage = (conversationId: string) => {
         let queue: any[] = []
 
         // flush queue to React at most 20x per second
-        const interval = setInterval(() => {
+        interval = setInterval(() => {
           flushQueue(queue)
           chunkCount = 0 // reset input throttle window
         }, FRAME_MS)
@@ -174,12 +175,13 @@ export const useSendMessage = (conversationId: string) => {
 
         parser.flush()
         flushQueue(queue)
-        clearInterval(interval)
       } catch (e: any) {
         if (e.name !== "AbortError") {
           console.error("SSE error", e)
         }
         removeOptimisticUserMessage()
+      } finally {
+        clearInterval(interval)
       }
     })()
 

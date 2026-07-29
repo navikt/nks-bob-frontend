@@ -23,6 +23,7 @@ import DialogWrapper from "./wrappers/DialogWrapper.tsx"
 function ConversationContent() {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const [showScrollButton, setShowScrollButton] = useState<boolean>(false)
+  const activeControllersRef = useRef<Set<AbortController>>(new Set())
 
   const { conversationId } = useParams()
   const location = useLocation()
@@ -49,18 +50,27 @@ function ConversationContent() {
   }, [existingMessages, isLoadingExistingMessages, isLoading, setMessages])
 
   useEffect(() => {
+    return () => {
+      activeControllersRef.current.forEach((c) => c.abort())
+      activeControllersRef.current.clear()
+    }
+  }, [])
+
+  useEffect(() => {
     if (location.state?.initialMessage && !isValidating) {
       const initialMessage = location.state.initialMessage
 
       if (messages.length === 0) {
-        sendMessage({ content: initialMessage })
+        const controller = sendMessage({ content: initialMessage })
+        if (controller) activeControllersRef.current.add(controller)
         navigate(location.pathname, { replace: true, state: null })
       }
     }
   }, [location, messages, navigate, isValidating])
 
   function handleUserMessage(message: NewMessage) {
-    sendMessage(message)
+    const controller = sendMessage(message)
+    if (controller) activeControllersRef.current.add(controller)
   }
 
   const { setFollowUp } = useInputFieldStore()
