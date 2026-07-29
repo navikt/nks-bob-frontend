@@ -8,7 +8,7 @@ import {
   StarIcon,
 } from "@navikt/aksel-icons"
 import { Button, CopyButton, Tooltip } from "@navikt/ds-react"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import { useStarMessage } from "../../../../api/api.ts"
 import { Message, NewMessage } from "../../../../types/Message.ts"
@@ -25,7 +25,7 @@ interface BobSuggestsProps {
 }
 
 const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
-  const plaintextMessageContent = md.toPlaintext(message.content)
+  const plaintextMessageContent = useMemo(() => md.toPlaintext(message.content), [message.content])
 
   function handleTranslate() {
     analytics.svarEndret("oversett")
