@@ -49,6 +49,13 @@ const HoverWrapper = ({
     }
   }
 
+  React.useEffect(() => {
+    return () => {
+      clearTimeoutOpened()
+      clearTimeoutClosed()
+    }
+  }, [])
+
   // Returns content of selection or of hovered element
   const getContent = () => {
     const selection = document.getSelection()

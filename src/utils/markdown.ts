@@ -5,6 +5,7 @@ import { remark } from "remark"
 import remarkRehype from "remark-rehype"
 import remarkStringify, { Options } from "remark-stringify"
 import stripMarkdown from "strip-markdown"
+import { Processor } from "unified"
 import { visit } from "unist-util-visit"
 
 const citationRegex = /\{([a-z0-9]{6})\}/g
@@ -112,23 +113,39 @@ function remarkCitations(): (tree: Root) => void {
   }
 }
 
-const htmlProcessor = remark().use(removeCitations).use(remarkRehype).use(rehypeStringify)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let _htmlProcessor: Processor<any, any, any, any, string> | undefined
+function getHtmlProcessor() {
+  if (!_htmlProcessor) {
+    _htmlProcessor = remark().use(removeCitations).use(remarkRehype).use(rehypeStringify)
+  }
+  return _htmlProcessor
+}
 
-const toHtml = (markdown: string): string => htmlProcessor.processSync(normalizeMultiCitations(markdown)).toString()
+const toHtml = (markdown: string): string =>
+  getHtmlProcessor().processSync(normalizeMultiCitations(markdown)).toString()
 
 // Convert markdown to plaintext, but keep formatting for lists
 // and transform links to just the url.
-const plaintextProcessor = remark()
-  .use(stripMarkdown, { keep: ["list", "listItem", "link"] })
-  .use(remarkStringify, {
-    bullet: "-",
-    handlers: {
-      link: ({ url }: { url: string }) => url,
-    },
-  } as Options)
-  .use(removeCitations)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let _plaintextProcessor: Processor<any, any, any, any, string> | undefined
+function getPlaintextProcessor() {
+  if (!_plaintextProcessor) {
+    _plaintextProcessor = remark()
+      .use(stripMarkdown, { keep: ["list", "listItem", "link"] })
+      .use(remarkStringify, {
+        bullet: "-",
+        handlers: {
+          link: ({ url }: { url: string }) => url,
+        },
+      } as Options)
+      .use(removeCitations)
+  }
+  return _plaintextProcessor
+}
 
-const toPlaintext = (markdown: string) => plaintextProcessor.processSync(normalizeMultiCitations(markdown)).toString()
+const toPlaintext = (markdown: string) =>
+  getPlaintextProcessor().processSync(normalizeMultiCitations(markdown)).toString()
 
 // Rewrite relative links (/path/to/resource) to just text with the title
 function rewriteRelativeLinks(): (tree: Root) => void {
