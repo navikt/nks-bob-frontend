@@ -30,9 +30,7 @@ const BobSuggests = ({ message, onSend, isLastMessage }: BobSuggestsProps) => {
   function handleTranslate() {
     analytics.svarEndret("oversett")
     const translate: NewMessage = {
-      content: isLastMessage
-        ? "Oversett svaret til engelsk"
-        : `Oversett svaret til engelsk:\n${plaintextMessageContent}`,
+      content: `Oversett svaret til engelsk:\n${plaintextMessageContent}`,
     }
     onSend(translate)
   }

@@ -145,7 +145,10 @@ function getPlaintextProcessor() {
 }
 
 const toPlaintext = (markdown: string) =>
-  getPlaintextProcessor().processSync(normalizeMultiCitations(markdown)).toString()
+  getPlaintextProcessor()
+    .processSync(normalizeMultiCitations(markdown))
+    .toString()
+    .replace(/ +\./g, ".")
 
 // Rewrite relative links (/path/to/resource) to just text with the title
 function rewriteRelativeLinks(): (tree: Root) => void {
