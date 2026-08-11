@@ -25,7 +25,7 @@ jobs:
         id: versions
 
       - name: Install pnpm ${{ steps.versions.outputs.pnpm }}
-        uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
+        uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
         with:
           version: ${{ steps.versions.outputs.pnpm }}
 
@@ -43,7 +43,7 @@ jobs:
 
       - run: pnpm run --stream build
 
-      - uses: nais/docker-build-push@31c3a7321909bcb20799fdf46153fec721fd9512 # v0
+      - uses: nais/docker-build-push@2d2b0a7193e65422b7f0355d4afb445e0a8b2cc3 # v0
         id: gar-push
         with:
           team: nks-aiautomatisering
@@ -53,7 +53,7 @@ jobs:
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
 
       - id: upload
-        uses: nais/deploy/actions/cdn-upload/v2@fc3eae3edebabdf67f7592102ae16176d5ba3b5f # v2
+        uses: nais/deploy/actions/cdn-upload/v2@849e900e3cfa7faf7ad1532bb3a3e6499c932199 # v2
         with:
           team: nks-aiautomatisering
           source: ./dist/
@@ -73,7 +73,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Deploy til dev-gcp
-        uses: nais/deploy/actions/deploy@fc3eae3edebabdf67f7592102ae16176d5ba3b5f # v2
+        uses: nais/deploy/actions/deploy@849e900e3cfa7faf7ad1532bb3a3e6499c932199 # v2
         env:
           CLUSTER: dev-gcp
           RESOURCE: .nais/dev-gcp.yaml
