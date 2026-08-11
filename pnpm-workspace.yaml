@@ -6,3 +6,7 @@ allowBuilds:
   esbuild: true
 
 minimumReleaseAge: 10080 # 1 week in minutes
+
+overrides:
+  brace-expansion@^2: ">=2.1.4"
+  brace-expansion@^5: ">=5.0.9"
