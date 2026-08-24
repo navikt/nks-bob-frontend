@@ -119,6 +119,7 @@ const FILTERS: { [key: string]: { label: string; group: Group } } = {
   "særskilt-viktige": { label: "Særskilt viktige", group: "Viktighet" },
   brukerfeil: { label: "Brukerfeil", group: "Kategori" },
   "ki-feil": { label: "KI-feil", group: "Kategori" },
+  rettet: { label: "Rettet", group: "Kategori" },
   "dato-utgatt": { label: "Utgått dato", group: "Kategori" },
   "hele-deler-av-svaret-er-feil": { label: "Hele-/deler av svaret er feil", group: "Begrunnelse" },
   "mangler-vesentlige-detaljer": { label: "Mangler vesentlige detaljer", group: "Begrunnelse" },
@@ -359,6 +360,7 @@ type ImportanceOptionsValue = keyof typeof IMPORTANCE_OPTIONS
 const CATEGORY_OPTIONS = {
   "ki-feil": "KI-feil",
   brukerfeil: "Brukerfeil",
+  rettet: "Rettet",
   "dato-utgatt": "Utgått dato",
 }
 
