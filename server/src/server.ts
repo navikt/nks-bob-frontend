@@ -15,7 +15,7 @@ import {
 import { createHttpTerminator } from "http-terminator"
 import Mustache from "mustache"
 import path from "path"
-import Prometheus from "prom-client"
+import Prometheus from "@prometheus-io/client"
 import { createLogger, format, LeveledLogMethod, transports } from "winston"
 import { entraMiddleware, getToken } from "./entra.js"
 import require from "./esm-require.js"
