@@ -1,5 +1,4 @@
 import { Link, useLocation, useNavigate, useParams } from "react-router"
-import { useSendMessage } from "../../api/sse.ts"
 
 import { ArrowDownIcon, NotePencilIcon } from "@navikt/aksel-icons"
 import { Alert as AlertComponent, BodyShort, Button, Heading, HStack, Stack, Tooltip, VStack } from "@navikt/ds-react"
@@ -7,7 +6,8 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { ErrorBoundary } from "react-error-boundary"
 import { useHotkeys } from "react-hotkeys-hook"
 import Markdown from "react-markdown"
-import { isApiError, useAlerts, useMessages } from "../../api/api.ts"
+import { isApiError, useAlerts, useMessages, useSendMessage } from "../../api/api.ts"
+import { useConversationMessages } from "../../api/websocket.ts"
 import embarressedBob from "../../assets/illustrations/EmbarrassedBob.svg"
 import { NewMessage } from "../../types/Message.ts"
 import { messageStore } from "../../types/messageStore.ts"
@@ -28,6 +28,10 @@ function ConversationContent() {
   const { conversationId } = useParams()
   const location = useLocation()
   const navigate = useNavigate()
+
+  // Keep listening on the websocket for as long as this conversation is open,
+  // so all message updates (from this tab or elsewhere) are reflected live.
+  useConversationMessages(conversationId)
 
   const {
     messages: existingMessages,

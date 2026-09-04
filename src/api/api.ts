@@ -1,6 +1,7 @@
 import useSWR, { mutate, preload } from "swr"
 import useSWRMutation from "swr/mutation"
 import { Conversation, ConversationFeedback, Feedback, Message, NewConversation, NewMessage } from "../types/Message"
+import { messageStore } from "../types/messageStore"
 import { Alert, NewsNotification } from "../types/Notifications"
 import { UserConfig, UserInfo } from "../types/User"
 import { versionStore } from "../types/versionStore"
@@ -53,23 +54,50 @@ export const request = (method: "POST" | "PUT" | "PATCH" | "DELETE") =>
     })
   }
 
+/**
+ * Sends a new message with a plain POST call. The endpoint responds with
+ * 202 Accepted and no body - the actual message content arrives via the
+ * websocket connection opened by `useConversationMessages`.
+ */
 export const useSendMessage = (conversationId: string) => {
-  const { trigger, isMutating } = useSWRMutation(`/api/v1/conversations/${conversationId}/messages`, request("POST"))
+  const messages = messageStore((state) => state.messages)
+  const addOptimisticUserMessage = messageStore((state) => state.addOptimisticUserMessage)
+  const removeOptimisticUserMessage = messageStore((state) => state.removeOptimisticUserMessage)
 
-  return {
-    sendMessage: trigger,
-    isLoading: isMutating,
+  const sendMessage = ({ content }: NewMessage) => {
+    const controller = new AbortController()
+
+    addOptimisticUserMessage(content)
+    ;(async () => {
+      try {
+        const res = await fetch(`${API_URL}/api/v1/conversations/${conversationId}/messages`, {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({ content }),
+          signal: controller.signal,
+        })
+
+        if (res.status !== 202) {
+          throw new Error(`Unexpected status ${res.status} when sending message`)
+        }
+      } catch (e: any) {
+        if (e.name !== "AbortError") {
+          console.error("Failed to send message", e)
+          removeOptimisticUserMessage()
+        }
+      }
+    })()
+
+    return controller
   }
-}
-
-export const useSendMessagePost = (conversationId: string) => {
-  const sendMessage = (newMessage: NewMessage) =>
-    request("POST")(`/api/v1/conversations/${conversationId}/messages`, {
-      arg: newMessage,
-    })
 
   return {
     sendMessage,
+    isLoading: messages.some((message) => message.pending),
   }
 }
 
