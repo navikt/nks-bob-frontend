@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate, useParams } from "react-router"
+import { Link, useParams } from "react-router"
 
 import { ArrowDownIcon, NotePencilIcon } from "@navikt/aksel-icons"
 import { Alert as AlertComponent, BodyShort, Button, Heading, HStack, Stack, Tooltip, VStack } from "@navikt/ds-react"
@@ -26,8 +26,6 @@ function ConversationContent() {
   const activeControllersRef = useRef<Set<AbortController>>(new Set())
 
   const { conversationId } = useParams()
-  const location = useLocation()
-  const navigate = useNavigate()
 
   // Keep listening on the websocket for as long as this conversation is open,
   // so all message updates (from this tab or elsewhere) are reflected live.
@@ -36,7 +34,6 @@ function ConversationContent() {
   const {
     messages: existingMessages,
     isLoading: isLoadingExistingMessages,
-    isValidating,
   } = useMessages(conversationId!)
   const { sendMessage, isLoading } = useSendMessage(conversationId!)
   const { messages, setMessages } = messageStore()
@@ -59,18 +56,6 @@ function ConversationContent() {
       activeControllersRef.current.clear()
     }
   }, [])
-
-  useEffect(() => {
-    if (location.state?.initialMessage && !isValidating) {
-      const initialMessage = location.state.initialMessage
-
-      if (messages.length === 0) {
-        const controller = sendMessage({ content: initialMessage })
-        if (controller) activeControllersRef.current.add(controller)
-        navigate(location.pathname, { replace: true, state: null })
-      }
-    }
-  }, [location, messages, navigate, isValidating])
 
   function handleUserMessage(message: NewMessage) {
     const controller = sendMessage(message)
