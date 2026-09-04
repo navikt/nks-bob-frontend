@@ -77,13 +77,13 @@ function buildWebSocketUrl(path: string): string {
  * mounted, and forwards every message event to the shared message store.
  * Automatically reconnects if the connection drops unexpectedly.
  */
-export const useConversationMessages = (conversationId: string | undefined) => {
+export const useConversationMessages = (conversationId: string | undefined, enabled: boolean = true) => {
   const updateMessage = messageStore((state) => state.updateMessage)
   const updateMessageRef = useRef(updateMessage)
   updateMessageRef.current = updateMessage
 
   useEffect(() => {
-    if (!conversationId) {
+    if (!conversationId || !enabled) {
       return
     }
 

@@ -27,10 +27,6 @@ function ConversationContent() {
 
   const { conversationId } = useParams()
 
-  // Keep listening on the websocket for as long as this conversation is open,
-  // so all message updates (from this tab or elsewhere) are reflected live.
-  useConversationMessages(conversationId)
-
   const {
     messages: existingMessages,
     isLoading: isLoadingExistingMessages,
@@ -42,6 +38,13 @@ function ConversationContent() {
   const inputContainerRef = useRef<HTMLDivElement | null>(null)
   const [inputHeight, setInputHeight] = useState(0)
 
+  // Seed the store with the already-persisted messages (fetched via REST)
+  // before the websocket connects. The websocket replays every event from
+  // the last 10 minutes on connect - if it connects before the store knows
+  // about these messages, that replay can't be recognised as "already
+  // known" and gets fully re-applied event-by-event (e.g. re-appending
+  // streamed content chunk by chunk), which triggers a burst of redundant
+  // re-renders and makes the page freeze until the replay finishes.
   useEffect(() => {
     if (!isLoadingExistingMessages && !isLoading) {
       if (messages.length < existingMessages.length) {
@@ -49,6 +52,13 @@ function ConversationContent() {
       }
     }
   }, [existingMessages, isLoadingExistingMessages, isLoading, setMessages])
+
+  // Keep listening on the websocket for as long as this conversation is
+  // open, so all message updates (from this tab or elsewhere) are reflected
+  // live. Only connect once the existing messages have been loaded (see
+  // effect above) so replayed events for messages we already have are
+  // correctly skipped instead of being reprocessed one event at a time.
+  useConversationMessages(conversationId, !isLoadingExistingMessages)
 
   useEffect(() => {
     return () => {

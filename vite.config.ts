@@ -104,6 +104,7 @@ export default defineConfig({
       },
       "/bob-api-ws": {
         target: `ws://localhost:${proxyPort}/`,
+        ws: true,
       },
       "/login": {
         target: `http://localhost:${proxyPort}/`,
