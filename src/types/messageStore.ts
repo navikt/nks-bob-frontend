@@ -81,6 +81,18 @@ export const messageStore = create<MessageState>()((set) => {
 
   const updateMessage = (event: ConversationEvent) =>
     set((state) => {
+      const existing = state.messageMap[event.id]
+
+      // The websocket replays all events from the last 10 minutes on every
+      // (re)connect. If we already have the final state for this message
+      // (either from a previous event or from the initial GET request), skip
+      // replayed events entirely instead of re-applying them - re-applying
+      // would duplicate appended content (ContentUpdated) and re-fire
+      // one-off side effects like analytics (PendingUpdated, ErrorsUpdated).
+      if (existing?.pending === false) {
+        return state
+      }
+
       const message = getMessage(event, state.messageMap)
       if (!message) {
         return state
