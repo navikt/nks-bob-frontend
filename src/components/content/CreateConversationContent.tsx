@@ -30,13 +30,13 @@ const CreateConversationContent = () => {
   function handleUserMessage(message: NewMessage) {
     const newConversation: NewConversation = {
       title: message.content,
-      initialMessage: null,
+      initialMessage: message,
     }
 
     createConversation(newConversation)
       .then((conversation) => {
         analytics.nySamtaleOpprettet(conversation.id, umamiThemeType(currentTheme))
-        navigate(`/samtaler/${conversation.id}`, { state: { initialMessage: message.content }, viewTransition: true })
+        navigate(`/samtaler/${conversation.id}`, { viewTransition: true })
       })
 
       .catch((error) => {

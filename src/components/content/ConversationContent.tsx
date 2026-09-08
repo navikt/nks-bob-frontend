@@ -1,5 +1,4 @@
-import { Link, useLocation, useNavigate, useParams } from "react-router"
-import { useSendMessage } from "../../api/sse.ts"
+import { Link, useParams } from "react-router"
 
 import { ArrowDownIcon, NotePencilIcon } from "@navikt/aksel-icons"
 import { Alert as AlertComponent, BodyShort, Button, Heading, HStack, Stack, Tooltip, VStack } from "@navikt/ds-react"
@@ -7,7 +6,8 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { ErrorBoundary } from "react-error-boundary"
 import { useHotkeys } from "react-hotkeys-hook"
 import Markdown from "react-markdown"
-import { isApiError, useAlerts, useMessages } from "../../api/api.ts"
+import { isApiError, useAlerts, useMessages, useSendMessage } from "../../api/api.ts"
+import { useConversationMessages } from "../../api/websocket.ts"
 import embarressedBob from "../../assets/illustrations/EmbarrassedBob.svg"
 import { NewMessage } from "../../types/Message.ts"
 import { messageStore } from "../../types/messageStore.ts"
@@ -26,13 +26,10 @@ function ConversationContent() {
   const activeControllersRef = useRef<Set<AbortController>>(new Set())
 
   const { conversationId } = useParams()
-  const location = useLocation()
-  const navigate = useNavigate()
 
   const {
     messages: existingMessages,
     isLoading: isLoadingExistingMessages,
-    isValidating,
   } = useMessages(conversationId!)
   const { sendMessage, isLoading } = useSendMessage(conversationId!)
   const { messages, setMessages } = messageStore()
@@ -41,6 +38,13 @@ function ConversationContent() {
   const inputContainerRef = useRef<HTMLDivElement | null>(null)
   const [inputHeight, setInputHeight] = useState(0)
 
+  // Seed the store with the already-persisted messages (fetched via REST)
+  // before the websocket connects. The websocket replays every event from
+  // the last 10 minutes on connect - if it connects before the store knows
+  // about these messages, that replay can't be recognised as "already
+  // known" and gets fully re-applied event-by-event (e.g. re-appending
+  // streamed content chunk by chunk), which triggers a burst of redundant
+  // re-renders and makes the page freeze until the replay finishes.
   useEffect(() => {
     if (!isLoadingExistingMessages && !isLoading) {
       if (messages.length < existingMessages.length) {
@@ -49,24 +53,19 @@ function ConversationContent() {
     }
   }, [existingMessages, isLoadingExistingMessages, isLoading, setMessages])
 
+  // Keep listening on the websocket for as long as this conversation is
+  // open, so all message updates (from this tab or elsewhere) are reflected
+  // live. Only connect once the existing messages have been loaded (see
+  // effect above) so replayed events for messages we already have are
+  // correctly skipped instead of being reprocessed one event at a time.
+  useConversationMessages(conversationId, !isLoadingExistingMessages)
+
   useEffect(() => {
     return () => {
       activeControllersRef.current.forEach((c) => c.abort())
       activeControllersRef.current.clear()
     }
   }, [])
-
-  useEffect(() => {
-    if (location.state?.initialMessage && !isValidating) {
-      const initialMessage = location.state.initialMessage
-
-      if (messages.length === 0) {
-        const controller = sendMessage({ content: initialMessage })
-        if (controller) activeControllersRef.current.add(controller)
-        navigate(location.pathname, { replace: true, state: null })
-      }
-    }
-  }, [location, messages, navigate, isValidating])
 
   function handleUserMessage(message: NewMessage) {
     const controller = sendMessage(message)

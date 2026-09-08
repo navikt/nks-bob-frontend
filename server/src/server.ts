@@ -315,7 +315,13 @@ const main = async () => {
   const wsMiddleware = createProxyMiddleware({
     ...proxyOptions,
     pathFilter: "/bob-api-ws",
-    pathRewrite: (path) => path.replace(/bob-api-ws/, ""),
+    // Unlike the REST proxy above (mounted via app.use, where Express already
+    // strips the mount path from req.url), this middleware's `.upgrade()` is
+    // invoked directly from the raw `server.on("upgrade", ...)` handler below,
+    // so `path` here still includes the full "/bob-api-ws" prefix. Anchor the
+    // regex to the start and include the leading slash to avoid leaving a
+    // double slash (e.g. "//api/v2/...") that the backend rejects.
+    pathRewrite: (path) => path.replace(/^\/bob-api-ws/, ""),
     target: {
       dev: "ws://nks-bob-api",
       prod: "ws://nks-bob-api",
@@ -415,10 +421,14 @@ const main = async () => {
     log.info("[HPM] Upgrading Websocket connection")
 
     const result = await getToken(log, req, audience)
-    if (result.ok) {
-      req.headers.authorization = `Bearer ${result.data}`
+    if (!result.ok) {
+      log.warn(`Rejecting websocket upgrade: ${result.error}`)
+      socket.write("HTTP/1.1 401 Unauthorized\r\nConnection: close\r\n\r\n")
+      socket.destroy()
+      return
     }
 
+    req.headers.authorization = `Bearer ${result.data}`
     return wsMiddleware.upgrade(req, socket, head)
   })
 
