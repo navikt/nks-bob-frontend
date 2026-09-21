@@ -43,6 +43,15 @@ jobs:
 
       - run: pnpm run --stream build
 
+      # `pnpm prune` støtter ikke rekursiv/monorepo-kjøring (se pnpm.io/cli/prune),
+      # så vi må slette node_modules og reinstallere med kun prod-dependencies.
+      # Dette fjerner devDependencies (bl.a. vite/esbuild) fra alle workspace-pakker
+      # før Docker-bygget, slik at build-verktøy med innbakte Go-binærer (esbuild)
+      # ikke havner i produksjonsimaget.
+      - run: rm -rf node_modules server/node_modules && pnpm install --prod --frozen-lockfile
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+
       - uses: nais/docker-build-push@8e41f1f58749b9248e376c25d33bfbdd2b1163c0 # v0
         id: gar-push
         with:
