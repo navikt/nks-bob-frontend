@@ -5,11 +5,11 @@
   "type": "module",
   "main": "src/server.ts",
   "dependencies": {
-    "@navikt/oasis": "4.1.4",
-    "@prometheus-io/client": "^0.16.0",
+    "@navikt/oasis": "4.2.2",
+    "@prometheus-io/client": "^0.16.1",
     "body-parser": "^2.3.0",
-    "compression": "^1.8.1",
-    "dotenv": "^17.4.2",
+    "compression": "^1.8.2",
+    "dotenv": "^18.0.4",
     "express": "^5.2.1",
     "http-proxy-middleware": "4.2.0",
     "http-terminator": "3.2.0",
@@ -25,13 +25,13 @@
   },
   "devDependencies": {
     "@swc/cli": "^0.8.1",
-    "@swc/core": "^1.16.1",
+    "@swc/core": "^1.16.12",
     "@types/body-parser": "^1.19.6",
     "@types/compression": "^1.8.1",
     "@types/express": "^5.0.6",
     "@types/mustache": "^4.2.6",
-    "@types/node": "^26.3.0",
-    "tsx": "^4.23.12",
+    "@types/node": "^26.6.3",
+    "tsx": "^4.23.15",
     "typescript": "^7.0.2"
   }
 }
