@@ -3,3 +3,116 @@ vite-plus = "https://github.com/markmals/mise-vite-plus"
 
 [tools]
 vite-plus = "latest"
+
+[tasks.setup]
+description = "Logg inn og hent miljøvariabler for lokal utvikling mot dev-gcp"
+run = ["nais auth login", "bash ./hent-og-lagre-miljøvariabler.sh"]
+
+[tasks.localnais]
+description = "Start tjenester for lokal utvikling mot dev-gcp"
+run = "mise run _localnais-run"
+
+[tasks._localnais-run]
+hide = true
+depends = ["port-forward", "localnais-serve", "wonderwall"]
+
+[tasks.dump-credentials]
+description = "Hent Azure-credentials fra cluster ved rotasjon eller nyoppretting"
+run = '''
+#!/usr/bin/env bash
+set -e
+NAMESPACE="nks-aiautomatisering"
+SECRET="azuread-nks-bob-frontend-lokal"
+JOB="dump-lokal-credentials"
+
+echo "Oppretter jobb for å hente credentials fra '$SECRET'..."
+kubectl apply --cluster dev-gcp -f - <<EOF
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: $JOB
+  namespace: $NAMESPACE
+spec:
+  ttlSecondsAfterFinished: 60
+  template:
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: dump
+        image: gcr.io/distroless/base-debian12:debug
+        command: ["/busybox/sh", "-c", "env | grep -E 'AZURE_APP_(CLIENT_ID|JWK|WELL_KNOWN_URL)|AZURE_OPENID_CONFIG'"]
+        envFrom:
+        - secretRef:
+            name: $SECRET
+        resources:
+          limits:
+            memory: 64Mi
+          requests:
+            cpu: 10m
+            memory: 32Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop: ["ALL"]
+      restartPolicy: Never
+  backoffLimit: 0
+EOF
+
+echo "Venter på at jobben skal fullføre..."
+kubectl wait --cluster dev-gcp -n "$NAMESPACE" --for=condition=complete "job/$JOB" --timeout=30s
+
+echo ""
+echo "=== Credentials fra $SECRET ==="
+kubectl logs --cluster dev-gcp -n "$NAMESPACE" "job/$JOB"
+echo "================================"
+echo ""
+echo "Oppdater 'nks-bob-frontend-lokal-credentials' i NAIS Console (dev) med verdiene over,"
+echo "og kjør deretter 'mise run setup' på nytt."
+
+kubectl delete --cluster dev-gcp -n "$NAMESPACE" "job/$JOB"
+'''
+
+[tasks.stop]
+description = "Stopp localnais-tjenester og frigjør porter"
+run = '''
+#!/usr/bin/env bash
+docker-compose down >/dev/null 2>&1 || true
+lsof -ti :4000 | xargs kill -9 2>/dev/null || true
+lsof -ti :4001 | xargs kill -9 2>/dev/null || true
+lsof -ti :8989 | xargs kill -9 2>/dev/null || true
+echo "Alle localnais-tjenester stoppet"
+'''
+
+[tasks.check-ports]
+hide = true
+run = '''
+#!/usr/bin/env bash
+set -e
+for port in 4000 4001 8989; do
+  if lsof -ti ":$port" > /dev/null 2>&1; then
+    echo "FEIL: Port $port er allerede i bruk av prosess $(lsof -ti ":$port")."
+    echo "Kjør 'mise run stop' for å frigjøre porter, deretter prøv igjen."
+    exit 1
+  fi
+done
+'''
+
+[tasks.port-forward]
+hide = true
+depends = ["check-ports"]
+run = "kubectl port-forward --cluster dev-gcp --namespace nks-aiautomatisering deployment/nks-bob-api 8989:8080"
+
+[tasks.wonderwall]
+hide = true
+depends = ["check-ports"]
+run = "docker-compose up"
+
+[tasks.localnais-serve]
+hide = true
+depends = ["check-ports"]
+run = "vp run localnais"

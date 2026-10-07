@@ -3,9 +3,9 @@
 #
 # Credentials fra denne appen roteres årlig.
 # Ved rotasjon (neste: ca. desember 2026), kjør:
-#   just dump-credentials
+#   mise run dump-credentials
 # og oppdater secreten "nks-bob-frontend-lokal-credentials" i NAIS Console (dev-miljø)
-# med de nye verdiene. Kjør deretter 'just setup' på nytt.
+# med de nye verdiene. Kjør deretter 'mise run setup' på nytt.
 #
 # Kjøres en gang eller ved endringer med
 # kubectl apply -f .nais/azure-ad-app-lokal.yaml
