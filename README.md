@@ -6,31 +6,24 @@ NKS-Bob er en "språkgenereringsmodell", eller "språkbehandlingsassistent" som 
 
 # Komme i gang
 
-Vi bruker `pnpm` for håndtering av pakker. Den må først installeres hvis du allerede ikke har den. Det kan gjøres på en av følgende måter:
+Vi bruker `mise` til å installere Vite+. Vite+ velger Node.js-versjonen fra `.node-version` og pnpm-versjonen fra `devEngines.packageManager` i `package.json`. Installer mise hvis du ikke har det fra før, og kjør deretter:
 
 ```sh
-# med asdf (installerer automatisk versjon satt i .tool-versions)
-asdf plugin add pnpm
-asdf install pnpm
-
-# med npm
-npm install -g pnpm@<versjon>
-
-# med homebrew
-brew install pnpm
+mise install
 ```
 
-For å kjøre applikasjonen lokalt, må du først installere dependencies:
+Installer prosjektavhengighetene og bygg prosjektet første gang:
 
-- pnpm install
+```sh
+vp install
+vp run build
+```
 
-og bygge prosjektet (før første gang)
+Start deretter utviklingsserveren:
 
-- pnpm run build
-
-Deretter starte development server:
-
-- pnpm run dev
+```sh
+vp run dev
+```
 
 Serveren bruker `vp pack` med oppsettet i `server/vite.config.ts`.
 Dev-scriptet bygger på nytt ved endringer og starter serveren etter hvert vellykket bygg.
