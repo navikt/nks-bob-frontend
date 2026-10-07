@@ -32,6 +32,10 @@ Deretter starte development server:
 
 - pnpm run dev
 
+Serveren bruker `vp pack` med oppsettet i `server/vite.config.ts`.
+Dev-scriptet bygger på nytt ved endringer og starter serveren etter hvert vellykket bygg.
+Produksjonsbygget skriver serveren til `server/dist/server.js`.
+
 Dette vil starte en lokal utviklingsserver som du får tilgang til via nettleser på http://localhost:3000.
 
 # Lokal utvikling mot dev-gcp
