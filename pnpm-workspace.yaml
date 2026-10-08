@@ -4,7 +4,7 @@ packages:
 allowBuilds:
   esbuild: true
 
-minimumReleaseAge: 10080 # 1 week in minutes
+minimumReleaseAge: 4320 # 3 dager i minutter
 
 overrides:
   brace-expansion@^2: ">=2.1.4"
@@ -18,14 +18,3 @@ peerDependencyRules:
     - vite
   allowedVersions:
     vite: "*"
-minimumReleaseAgeExclude:
-  - vite-plus
-  - "@voidzero-dev/*"
-  - oxlint
-  - "@oxlint/*"
-  - oxlint-tsgolint
-  - "@oxlint-tsgolint/*"
-  - oxfmt
-  - "@oxfmt/*"
-  - vitest
-  - "@vitest/*"
