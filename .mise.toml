@@ -2,7 +2,7 @@
 vite-plus = "https://github.com/markmals/mise-vite-plus"
 
 [tools]
-vite-plus = "latest"
+vite-plus = "1.0.0"
 
 [tasks.setup]
 description = "Logg inn og hent miljøvariabler for lokal utvikling mot dev-gcp"
