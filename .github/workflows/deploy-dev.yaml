@@ -30,7 +30,11 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
-      - run: vp run build:frontend && vp run --filter server build
+      - run: vp install --frozen-lockfile
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+
+      - run: vp run build
 
       - run: rm -rf node_modules server/node_modules && vp install --prod --frozen-lockfile
         env:
