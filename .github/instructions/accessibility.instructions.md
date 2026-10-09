@@ -1,4 +1,5 @@
 ---
+description: "Universell utforming i React-komponenter: WCAG 2.1 AA, Aksel-komponenter, semantisk HTML, overskriftshierarki, bilder, ARIA og tastaturnavigasjon."
 applyTo: "src/**/*.{tsx,jsx}"
 ---
 
@@ -89,8 +90,6 @@ Aksel-komponenter (`@navikt/ds-react`) håndterer mange a11y-krav automatisk:
 <div onClick={handleClick}>Klikk meg</div>
 ```
 
-
-
 ## Boundaries
 
 ### ✅ Always
@@ -113,8 +112,8 @@ Aksel-komponenter (`@navikt/ds-react`) håndterer mange a11y-krav automatisk:
 
 ## Related
 
-| Resource | Use For |
-|----------|---------|
-| `@accessibility-agent` | Expert guidance on complex WCAG requirements |
-| `@aksel-agent` | Aksel component patterns with built-in a11y |
-| `playwright-testing` skill | E2E accessibility testing with axe-core |
+| Resource                   | Use For                                      |
+| -------------------------- | -------------------------------------------- |
+| `@accessibility-agent`     | Expert guidance on complex WCAG requirements |
+| `@aksel-agent`             | Aksel component patterns with built-in a11y  |
+| `playwright-testing` skill | E2E accessibility testing with axe-core      |

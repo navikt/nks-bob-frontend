@@ -11,7 +11,7 @@
     "compression": "^1.8.2",
     "dotenv": "^18.0.4",
     "express": "^5.2.1",
-    "http-proxy-middleware": "4.2.0",
+    "httpxy": "0.5.5",
     "http-terminator": "3.2.0",
     "mustache": "^4.2.0",
     "node-ts-cache": "^4.4.0",
@@ -20,18 +20,16 @@
     "winston": "3.19.0"
   },
   "scripts": {
-    "build": "swc src -d dist",
-    "dev": "tsx watch src/server.ts"
+    "build": "vp pack",
+    "dev": "vp pack --watch --on-success \"node --enable-source-maps dist/server.js\""
   },
   "devDependencies": {
-    "@swc/cli": "^0.8.1",
-    "@swc/core": "^1.16.12",
     "@types/body-parser": "^1.19.6",
     "@types/compression": "^1.8.1",
     "@types/express": "^5.0.6",
     "@types/mustache": "^4.2.6",
     "@types/node": "^26.6.3",
-    "tsx": "^4.23.15",
-    "typescript": "^7.0.2"
+    "typescript": "^7.0.2",
+    "vite-plus": "catalog:"
   }
 }

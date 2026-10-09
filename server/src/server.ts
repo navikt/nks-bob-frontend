@@ -4,14 +4,10 @@ import compression from "compression"
 import { randomUUID } from "crypto"
 import express from "express"
 import { readFileSync } from "fs"
-import { IncomingMessage, ServerResponse } from "http"
-import type { Options, Plugin } from "http-proxy-middleware"
-import {
-  createProxyMiddleware,
-  debugProxyErrorsPlugin,
-  errorResponsePlugin,
-  proxyEventsPlugin,
-} from "http-proxy-middleware"
+import { ServerResponse } from "http"
+import type { IncomingMessage } from "http"
+import type { Socket } from "net"
+import { createProxyServer } from "httpxy"
 import { createHttpTerminator } from "http-terminator"
 import Mustache from "mustache"
 import path from "path"
@@ -77,78 +73,91 @@ const log = new Proxy(
   },
 )
 
-type HpmPlugin = Plugin<IncomingMessage, ServerResponse<IncomingMessage>>
+const proxyServer = createProxyServer()
+const proxyTargets = new WeakMap<IncomingMessage, string>()
 
-const cookieScraperPlugin: HpmPlugin = (proxyServer) => {
-  proxyServer.on("proxyReq", (proxyReq, _req, _res) => {
-    if (proxyReq.getHeader("cookie")) {
-      proxyReq.removeHeader("cookie")
+proxyServer.on("proxyReq", (proxyReq, _req, res) => {
+  if (proxyReq.getHeader("cookie")) {
+    proxyReq.removeHeader("cookie")
+  }
+  if (!proxyReq.hasHeader(CALL_ID)) {
+    proxyReq.appendHeader(CALL_ID, randomUUID())
+  }
+  const authHeader = res.getHeader("Authorization")
+  if (typeof authHeader === "string") {
+    proxyReq.setHeader("Authorization", authHeader)
+    res.removeHeader("Authorization")
+  }
+})
+
+proxyServer.on("proxyReqWs", (proxyReq) => {
+  if (proxyReq.getHeader("cookie")) {
+    proxyReq.removeHeader("cookie")
+  }
+  if (!proxyReq.hasHeader(CALL_ID)) {
+    proxyReq.appendHeader(CALL_ID, randomUUID())
+  }
+})
+
+proxyServer.on("error", (err, req, res, target) => {
+  const code = (err as NodeJS.ErrnoException).code
+  const targetHost =
+    target instanceof URL
+      ? target.host
+      : typeof target === "string"
+        ? new URL(target).host
+        : (target?.host ?? target?.hostname)
+  const status = res instanceof ServerResponse ? res.statusCode : undefined
+  const level =
+    code && (/HPE_INVALID/.test(code) || ["ECONNRESET", "ENOTFOUND", "ECONNREFUSED", "ETIMEDOUT"].includes(code))
+      ? "warn"
+      : "error"
+
+  proxyEventsCounter.inc({
+    target: targetHost,
+    proxystatus: undefined,
+    status,
+    errcode: code || "unknown",
+  })
+  log.log(
+    level,
+    "[Proxy] Error occurred while proxying request %s to %s [%s]",
+    `${req?.headers.host ?? ""}${req?.url?.split("?")[0] ?? ""}`,
+    targetHost,
+    code || err,
+  )
+
+  if (res instanceof ServerResponse) {
+    if (!res.headersSent) {
+      res.statusCode = 502
+      res.end("Bad Gateway")
+    } else {
+      res.destroy()
     }
-  })
-}
+  } else if (res && !res.destroyed) {
+    res.end("HTTP/1.1 502 Bad Gateway\r\nConnection: close\r\nContent-Length: 0\r\n\r\n")
+  }
+})
 
-// copy with mods from http-proxy-middleware https://github.com/chimurai/http-proxy-middleware/blob/master/src/plugins/default/logger-plugin.ts
-const loggerPlugin: HpmPlugin = (proxyServer) => {
-  proxyServer.on("error", (err: any, req: any, res: any, target: any) => {
-    const hostname = req?.headers?.host
-    // target is undefined when websocket errors
-    const errReference = "https://nodejs.org/api/errors.html#errors_common_system_errors" // link to Node Common Systems Errors page
-    proxyEventsCounter.inc({
-      target: target?.host,
-      proxystatus: undefined,
-      status: res.statusCode,
-      errcode: err.code || "unknown",
-    })
-    const level =
-      /HPE_INVALID/.test(err.code) || ["ECONNRESET", "ENOTFOUND", "ECONNREFUSED", "ETIMEDOUT"].includes(err.code)
-        ? "warn"
-        : "error"
-    log.log(
-      level,
-      "[HPM] Error occurred while proxying request %s to %s [%s] (%s)",
-      `${hostname}${req?.host}${req?.path}`,
-      `${target?.href}`,
-      err.code || err,
-      errReference,
-    )
+proxyServer.on("proxyRes", (proxyRes, req, res) => {
+  const requestPath = req.url?.split("?")[0] ?? ""
+  const upstreamHost = proxyTargets.get(req)
+  proxyEventsCounter.inc({
+    target: upstreamHost,
+    proxystatus: proxyRes.statusCode,
+    status: res.statusCode,
+    errcode: undefined,
   })
+  log.info("[Proxy] %s %s -> %s [%s]", req.method, requestPath, upstreamHost ?? "", proxyRes.statusCode)
+})
 
-  proxyServer.on("proxyRes", (proxyRes: any, req: any, res) => {
-    const originalUrl = req.originalUrl ?? `${req.baseUrl || ""}${req.url}`
-    const pathUpToSearch = proxyRes.req.path.replace(/\?.*$/, "")
-    const exchange = `[HPM] ${req.method} ${originalUrl} -> ${proxyRes.req.protocol}//${proxyRes.req.host}${pathUpToSearch} [${proxyRes.statusCode}]`
+proxyServer.on("open", (socket) => {
+  log.info("[Proxy] Client connected: %o", socket.address())
+})
 
-    proxyEventsCounter.inc({
-      target: proxyRes.req.host,
-      proxystatus: proxyRes.statusCode,
-      status: res.statusCode,
-      errcode: undefined,
-    })
-    log.info(exchange)
-  })
-
-  proxyServer.on("open", (socket) => {
-    log.info("[HPM] Client connected: %o", socket.address())
-  })
-
-  proxyServer.on("close", (_req, proxySocket) => {
-    log.info("[HPM] Client disconnected: %o", proxySocket.address())
-  })
-}
-
-const callIdPlugin: HpmPlugin = (proxyServer) => {
-  proxyServer.on("proxyReq", (proxyReq, _req, _res) => {
-    if (!proxyReq.hasHeader(CALL_ID)) {
-      proxyReq.appendHeader(CALL_ID, randomUUID())
-    }
-  })
-
-  proxyServer.on("proxyReqWs", (proxyReq, _req, _socket, _head) => {
-    if (!proxyReq.hasHeader(CALL_ID)) {
-      proxyReq.appendHeader(CALL_ID, randomUUID())
-    }
-  })
-}
+proxyServer.on("close", (_req, proxySocket) => {
+  log.info("[Proxy] Client disconnected: %o", proxySocket.address())
+})
 
 let BUILD_PATH = path.join(process.cwd(), "../dist")
 
@@ -161,22 +170,6 @@ const indexHtml = Mustache.render(readFileSync(path.join(BUILD_PATH, "index.html
     }
   `,
 })
-
-const proxyOptions: Partial<Options> = {
-  logger: log,
-  secure: true,
-  xfwd: true,
-  changeOrigin: true,
-  ejectPlugins: true,
-  plugins: [
-    cookieScraperPlugin,
-    callIdPlugin,
-    debugProxyErrorsPlugin,
-    errorResponsePlugin,
-    loggerPlugin,
-    proxyEventsPlugin,
-  ],
-}
 
 const main = async () => {
   let appReady = false
@@ -290,41 +283,44 @@ const main = async () => {
     }
   })
 
-  app.use(
-    "/bob-api",
-    entraMiddleware({ log, audience }),
-    createProxyMiddleware({
-      ...proxyOptions,
-      target: {
-        dev: "http://nks-bob-api",
-        prod: "http://nks-bob-api",
-        local: "http://localhost:8080",
-        localnais: "http://localhost:8989",
-      }[MILJO]!,
-      pathRewrite: (path: string) => path.replace(/bob-api/, ""),
-      on: {
-        proxyReq: (proxyReq, _req, res) => {
-          const authHeader = res.getHeader("Authorization") as string
-          proxyReq.setHeader("Authorization", authHeader)
-          res.removeHeader("Authorization")
-        },
-      },
-    }),
-  )
+  const apiTarget = {
+    dev: "http://nks-bob-api",
+    prod: "http://nks-bob-api",
+    local: "http://localhost:8080",
+    localnais: "http://localhost:8989",
+  }[MILJO]!
 
-  const wsMiddleware = createProxyMiddleware({
-    ...proxyOptions,
-    pathFilter: "/bob-api-ws",
-    pathRewrite: (path) => path.replace(/bob-api-ws/, ""),
-    target: {
-      dev: "ws://nks-bob-api",
-      prod: "ws://nks-bob-api",
-      local: "ws://localhost:8080",
-      localnais: "ws://localhost:8989",
-    }[MILJO]!,
+  const proxyOptions = {
+    secure: true,
+    xfwd: true,
+    changeOrigin: true,
+  }
+
+  const proxyHttpRequest = (req: IncomingMessage, res: ServerResponse, target: string) => {
+    proxyTargets.set(req, new URL(target).host)
+    void proxyServer
+      .web(req, res, {
+        ...proxyOptions,
+        target,
+      })
+      .catch((error: unknown) => {
+        log.error("[Proxy] HTTP proxy failed", error)
+        if (!res.headersSent) {
+          res.statusCode = 502
+          res.end("Bad Gateway")
+        } else {
+          res.destroy()
+        }
+      })
+  }
+
+  app.use("/bob-api", entraMiddleware({ log, audience }), (req, res) => {
+    proxyHttpRequest(req, res, apiTarget)
   })
 
-  app.use("/bob-api-ws", wsMiddleware)
+  app.use("/bob-api-ws", (req, res) => {
+    proxyHttpRequest(req, res, apiTarget)
+  })
 
   /**
    * Dersom man ikke har gyldig sesjon redirecter vi til login-proxy aka. wonderwall
@@ -411,15 +407,36 @@ const main = async () => {
     }, 5_000)
   })
 
-  server.on("upgrade", async (req, socket: any, head) => {
-    log.info("[HPM] Upgrading Websocket connection")
+  server.on("upgrade", async (req, socket, head) => {
+    const wsPath = "/bob-api-ws"
+    const requestUrl = req.url ?? "/"
+    const queryStart = requestUrl.indexOf("?")
+    const pathname = queryStart < 0 ? requestUrl : requestUrl.slice(0, queryStart)
+    if (pathname !== wsPath && !pathname.startsWith(`${wsPath}/`)) {
+      socket.destroy()
+      return
+    }
+
+    const rewrittenPath = pathname.slice(wsPath.length) || "/"
+    req.url = `${rewrittenPath}${queryStart < 0 ? "" : requestUrl.slice(queryStart)}`
+
+    log.info("[Proxy] Upgrading WebSocket connection")
+    proxyTargets.set(req, new URL(apiTarget).host)
 
     const result = await getToken(log, req, audience)
     if (result.ok) {
       req.headers.authorization = `Bearer ${result.data}`
     }
 
-    return wsMiddleware.upgrade(req, socket, head)
+    return proxyServer.ws(
+      req,
+      socket as Socket,
+      {
+        ...proxyOptions,
+        target: apiTarget.replace(/^http/, "ws"),
+      },
+      head,
+    )
   })
 
   const terminator = createHttpTerminator({

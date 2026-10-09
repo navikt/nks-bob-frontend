@@ -20,35 +20,23 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - name: Read .tool-versions
-        uses: marocchino/tool-versions-action@4219f2e6bfdb4cce482b78f71ad9663e64f4d247 # v2.0.0
-        id: versions
-
-      - name: Install pnpm ${{ steps.versions.outputs.pnpm }}
-        uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - name: Set up Vite+
+        uses: voidzero-dev/setup-vp@4bd1f9ef2fe651f208080f38c698a3c5707dd1c1
         with:
-          version: ${{ steps.versions.outputs.pnpm }}
-
-      - name: Use Node.js ${{ steps.versions.outputs.nodejs }}
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
-        with:
-          node-version: ${{ steps.versions.outputs.nodejs }}
-          registry-url: 'https://npm.pkg.github.com'
-          cache: pnpm
-          cache-dependency-path: pnpm-lock.yaml
-
-      - run: pnpm install --frozen-lockfile
+          node-version-file: .node-version
+          registry-url: https://npm.pkg.github.com
+          scope: navikt
+          cache: true
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
-      - run: pnpm run --stream build
+      - run: vp install --frozen-lockfile
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
-      # `pnpm prune` støtter ikke rekursiv/monorepo-kjøring (se pnpm.io/cli/prune),
-      # så vi må slette node_modules og reinstallere med kun prod-dependencies.
-      # Dette fjerner devDependencies (bl.a. vite/esbuild) fra alle workspace-pakker
-      # før Docker-bygget, slik at build-verktøy med innbakte Go-binærer (esbuild)
-      # ikke havner i produksjonsimaget.
-      - run: rm -rf node_modules server/node_modules && pnpm install --prod --frozen-lockfile
+      - run: vp run build
+
+      - run: rm -rf node_modules server/node_modules && vp install --prod --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
@@ -66,7 +54,7 @@ jobs:
         with:
           team: nks-aiautomatisering
           source: ./dist/
-          destination: '/'
+          destination: "/"
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
 
@@ -75,7 +63,7 @@ jobs:
       digest: ${{ steps.gar-push.outputs.digest }}
 
   deploy-dev-gcp:
-    needs: [ build ]
+    needs: [build]
     runs-on: ubuntu-latest
     permissions:
       id-token: write

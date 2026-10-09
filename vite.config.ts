@@ -2,7 +2,7 @@ import react from "@vitejs/plugin-react"
 import { config } from "dotenv"
 import { readFileSync, writeFileSync } from "fs"
 import { resolve } from "path"
-import { defineConfig, Plugin } from "vite"
+import { defineConfig, Plugin, lazyPlugins } from "vite-plus"
 
 config()
 
@@ -90,7 +90,28 @@ const prodEnvVars = Object.fromEntries(
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), optimizeHtml()],
+  staged: {
+    "*": "vp check --fix",
+  },
+  lint: {
+    jsPlugins: [{ name: "vite-plus", specifier: "vite-plus/oxlint-plugin" }],
+    rules: { "vite-plus/prefer-vite-plus-imports": "error" },
+    options: { typeAware: true, typeCheck: true },
+  },
+  fmt: {
+    singleAttributePerLine: true,
+    semi: false,
+    printWidth: 120,
+    jsxSingleQuote: true,
+    jsxBracketSameLine: false,
+    arrowParens: "always",
+    bracketSpacing: true,
+    trailingComma: "all",
+    sortPackageJson: false,
+    sortTailwindcss: {},
+    ignorePatterns: ["build", "coverage"],
+  },
+  plugins: lazyPlugins(() => [react(), optimizeHtml()]),
   define: {
     // Only expose the environment variables actually needed by the application
     "process.env": prodEnvVars,
@@ -128,11 +149,7 @@ export default defineConfig({
       output: {
         // Split vendor code (node_modules) into a separate chunk
         manualChunks: (id) => {
-          if (
-            ["react", "react-dom", "react-router", "zustand"].some((pkg) =>
-              id.includes(`/node_modules/${pkg}/`),
-            )
-          )
+          if (["react", "react-dom", "react-router", "zustand"].some((pkg) => id.includes(`/node_modules/${pkg}/`)))
             return "vendor"
           if (
             [
@@ -146,11 +163,7 @@ export default defineConfig({
             ].some((pkg) => id.includes(`/node_modules/${pkg}/`))
           )
             return "markdown"
-          if (
-            ["@navikt/ds-react", "@navikt/aksel-icons"].some((pkg) =>
-              id.includes(`/node_modules/${pkg}/`),
-            )
-          )
+          if (["@navikt/ds-react", "@navikt/aksel-icons"].some((pkg) => id.includes(`/node_modules/${pkg}/`)))
             return "navikt"
         },
         // Use hashed filenames with content-based hashing for better caching

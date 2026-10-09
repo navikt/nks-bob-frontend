@@ -2,11 +2,19 @@ packages:
   - server
 
 allowBuilds:
-  '@swc/core': true
   esbuild: true
 
-minimumReleaseAge: 10080 # 1 week in minutes
+minimumReleaseAge: 4320 # 3 dager i minutter
 
 overrides:
   brace-expansion@^2: ">=2.1.4"
   brace-expansion@^5: ">=5.0.9"
+  vite@*: "catalog:"
+catalog:
+  vite: npm:@voidzero-dev/vite-plus-core@1.0.0
+  vite-plus: 1.0.0
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"

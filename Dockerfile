@@ -9,4 +9,4 @@ WORKDIR /usr/src/app/server
 USER apprunner
 
 EXPOSE 3030
-CMD ["dist/src/server.js"]
+CMD ["dist/server.js"]
