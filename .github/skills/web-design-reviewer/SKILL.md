@@ -62,12 +62,12 @@ Hvis URL ikke er oppgitt, spør:
 
 Ved feilretting, finn ut følgende:
 
-| Element | Eksempel |
-|---------|----------|
-| Rammeverk | React / Vue / Next.js etc.? |
-| Styling | CSS / SCSS / Tailwind / CSS-in-JS? |
-| Kildeplassering | Hvor ligger stil- og komponentfiler? |
-| Omfang | Spesifikke sider eller hele nettstedet? |
+| Element         | Eksempel                                |
+| --------------- | --------------------------------------- |
+| Rammeverk       | React / Vue / Next.js etc.?             |
+| Styling         | CSS / SCSS / Tailwind / CSS-in-JS?      |
+| Kildeplassering | Hvor ligger stil- og komponentfiler?    |
+| Omfang          | Spesifikke sider eller hele nettstedet? |
 
 ### 1.3 Automatisk prosjektdeteksjon
 
@@ -86,15 +86,15 @@ Deteksjonsmål:
 
 ### 1.4 Identifisering av stilmetode
 
-| Metode | Deteksjon | Redigeringsmål |
-|--------|-----------|----------------|
-| Ren CSS | `*.css`-filer | Global CSS eller komponent-CSS |
-| SCSS/Sass | `*.scss`, `*.sass` | SCSS-filer |
-| CSS Modules | `*.module.css` | Modul-CSS-filer |
-| Tailwind CSS | `tailwind.config.*` | className i komponenter |
-| styled-components | `styled.` i koden | JS/TS-filer |
-| Emotion | `@emotion/`-imports | JS/TS-filer |
-| CSS-in-JS (annet) | Inline-stiler | JS/TS-filer |
+| Metode            | Deteksjon           | Redigeringsmål                 |
+| ----------------- | ------------------- | ------------------------------ |
+| Ren CSS           | `*.css`-filer       | Global CSS eller komponent-CSS |
+| SCSS/Sass         | `*.scss`, `*.sass`  | SCSS-filer                     |
+| CSS Modules       | `*.module.css`      | Modul-CSS-filer                |
+| Tailwind CSS      | `tailwind.config.*` | className i komponenter        |
+| styled-components | `styled.` i koden   | JS/TS-filer                    |
+| Emotion           | `@emotion/`-imports | JS/TS-filer                    |
+| CSS-in-JS (annet) | Inline-stiler       | JS/TS-filer                    |
 
 ---
 
@@ -111,48 +111,48 @@ Deteksjonsmål:
 
 #### Layout-problemer
 
-| Problem | Beskrivelse | Alvorlighet |
-|---------|-------------|-------------|
-| Overflow | Innhold flyter utenfor forelder eller viewport | Høy |
-| Overlapping | Utilsiktet overlapping av elementer | Høy |
-| Alignment-feil | Grid- eller flex-alignment-problemer | Middels |
-| Inkonsistent spacing | Padding/margin-inkonsistens | Middels |
-| Text overflow | Lang tekst håndteres ikke riktig | Middels |
+| Problem              | Beskrivelse                                    | Alvorlighet |
+| -------------------- | ---------------------------------------------- | ----------- |
+| Overflow             | Innhold flyter utenfor forelder eller viewport | Høy         |
+| Overlapping          | Utilsiktet overlapping av elementer            | Høy         |
+| Alignment-feil       | Grid- eller flex-alignment-problemer           | Middels     |
+| Inkonsistent spacing | Padding/margin-inkonsistens                    | Middels     |
+| Text overflow        | Lang tekst håndteres ikke riktig               | Middels     |
 
 #### Responsive problemer
 
-| Problem | Beskrivelse | Alvorlighet |
-|---------|-------------|-------------|
-| Ikke mobilvennlig | Layout brekker på små skjermer | Høy |
-| Breakpoint-problemer | Unaturlige overganger ved skjermendring | Middels |
-| Touch targets | Knapper for små på mobil | Middels |
+| Problem              | Beskrivelse                             | Alvorlighet |
+| -------------------- | --------------------------------------- | ----------- |
+| Ikke mobilvennlig    | Layout brekker på små skjermer          | Høy         |
+| Breakpoint-problemer | Unaturlige overganger ved skjermendring | Middels     |
+| Touch targets        | Knapper for små på mobil                | Middels     |
 
 #### Tilgjengelighetsproblemer
 
-| Problem | Beskrivelse | Alvorlighet |
-|---------|-------------|-------------|
-| Utilstrekkelig kontrast | Lav kontrastforhold mellom tekst og bakgrunn | Høy |
-| Ingen fokustilstand | Kan ikke se fokus ved tastaturnavigasjon | Høy |
-| Manglende alt-tekst | Ingen alternativtekst for bilder | Middels |
+| Problem                 | Beskrivelse                                  | Alvorlighet |
+| ----------------------- | -------------------------------------------- | ----------- |
+| Utilstrekkelig kontrast | Lav kontrastforhold mellom tekst og bakgrunn | Høy         |
+| Ingen fokustilstand     | Kan ikke se fokus ved tastaturnavigasjon     | Høy         |
+| Manglende alt-tekst     | Ingen alternativtekst for bilder             | Middels     |
 
 #### Visuell konsistens
 
-| Problem | Beskrivelse | Alvorlighet |
-|---------|-------------|-------------|
-| Fontinkonsistens | Blanding av fontfamilier | Middels |
-| Fargeinkonsistens | Ikke-enhetlige merkefarger | Middels |
-| Spacing-inkonsistens | Ulik spacing mellom like elementer | Lav |
+| Problem              | Beskrivelse                        | Alvorlighet |
+| -------------------- | ---------------------------------- | ----------- |
+| Fontinkonsistens     | Blanding av fontfamilier           | Middels     |
+| Fargeinkonsistens    | Ikke-enhetlige merkefarger         | Middels     |
+| Spacing-inkonsistens | Ulik spacing mellom like elementer | Lav         |
 
 ### 2.3 Viewport-testing (responsiv)
 
 Test ved følgende viewports:
 
-| Navn | Bredde | Representativ enhet |
-|------|--------|---------------------|
-| Mobil | 375px | iPhone SE/12 mini |
-| Nettbrett | 768px | iPad |
-| Desktop | 1280px | Standard PC |
-| Bred | 1920px | Stor skjerm |
+| Navn      | Bredde | Representativ enhet |
+| --------- | ------ | ------------------- |
+| Mobil     | 375px  | iPhone SE/12 mini   |
+| Nettbrett | 768px  | iPad                |
+| Desktop   | 1280px | Standard PC         |
+| Bred      | 1920px | Stor skjerm         |
 
 ---
 
@@ -160,11 +160,11 @@ Test ved følgende viewports:
 
 ### 3.1 Prioritering
 
-| Prioritet | Beskrivelse |
-|-----------|-------------|
-| P1 | Fiks umiddelbart — Layout-problemer som påvirker funksjonalitet |
-| P2 | Fiks snart — Visuelle problemer som forringer UX |
-| P3 | Fiks hvis mulig — Mindre visuelle inkonsistenser |
+| Prioritet | Beskrivelse                                                     |
+| --------- | --------------------------------------------------------------- |
+| P1        | Fiks umiddelbart — Layout-problemer som påvirker funksjonalitet |
+| P2        | Fiks snart — Visuelle problemer som forringer UX                |
+| P3        | Fiks hvis mulig — Mindre visuelle inkonsistenser                |
 
 ### 3.2 Finne kildefiler
 
@@ -226,14 +226,14 @@ Se [references/framework-fixes.md](references/framework-fixes.md) for rammeverks
 
 ## Sammendrag
 
-| Element | Verdi |
-|---------|-------|
-| URL | {URL} |
-| Rammeverk | {Detektert rammeverk} |
-| Styling | {CSS / Tailwind / etc.} |
-| Testede viewports | Desktop, Mobil |
-| Problemer funnet | {N} |
-| Problemer fikset | {M} |
+| Element           | Verdi                   |
+| ----------------- | ----------------------- |
+| URL               | {URL}                   |
+| Rammeverk         | {Detektert rammeverk}   |
+| Styling           | {CSS / Tailwind / etc.} |
+| Testede viewports | Desktop, Mobil          |
+| Problemer funnet  | {N}                     |
+| Problemer fikset  | {M}                     |
 
 ## Problemer funnet
 
@@ -247,11 +247,13 @@ Se [references/framework-fixes.md](references/framework-fixes.md) for rammeverks
 - **Screenshot**: Før/Etter
 
 ### [P2] {Problemtittel}
+
 ...
 
 ## Ikke-fiksede problemer (hvis aktuelt)
 
 ### {Problemtittel}
+
 - **Årsak**: {Hvorfor det ikke ble fikset}
 - **Anbefalt handling**: {Anbefalinger til bruker}
 
@@ -278,3 +280,28 @@ Se [references/framework-fixes.md](references/framework-fixes.md) for rammeverks
 - Ignorere design system eller brand guidelines
 - Fikser som ignorerer ytelse
 - Fikse flere problemer samtidig (vanskelig å verifisere)
+
+## Review contract
+
+_Axes: the inspection points in Steg 2.2 — layout, responsive, accessibility, visual consistency — across the viewports in Steg 2.3. The block below closes the Rapportformat report._
+
+The review ends here, in this shape. A review with no output section has not run.
+
+**Judge primary evidence.** The diff, the file, the `EXPLAIN` output, the rendered page — never your own summary of the change, and never your memory of what you meant to write. Resolve the base first, then cover committed, staged, unstaged **and untracked** changes. Read untracked files in full: diff output omits them.
+
+**Every axis reports.** Each axis produces at least one finding, or one line saying what it inspected and what that evidence does not prove. An axis that says nothing has not looked.
+
+**Report what you inspected.** "No findings in the two files I opened" and "no findings in the change" are different claims, and only the first one is ever true.
+
+```
+Inspected:     <files, queries, URLs, viewports actually opened>
+Not inspected: <in scope, not examined, and why>
+Findings:      <n blocking, n concerns>
+Verdict:       BLOCK | CONCERNS | CLEAN
+```
+
+- `BLOCK` — at least one finding that, shipped as written, risks data loss, a security or privacy breach, a production incident, or a wrong answer to a user.
+- `CONCERNS` — no blocking finding, but at least one a maintainer should fix or answer first.
+- `CLEAN` — every axis inspected against primary evidence, nothing at either bar. `CLEAN` claims only the axes above and the files on the `Inspected` line, and it is wrong if a defect is later found in them.
+
+**Not a review:** `LGTM`; restating what the change does; cosmetic findings only; reading the changed lines without the code they call.

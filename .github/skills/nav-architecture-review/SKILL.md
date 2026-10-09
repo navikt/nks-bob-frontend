@@ -25,7 +25,7 @@ Still disse spørsmålene:
 
 - Hva er endringen? (én setning)
 - Hvorfor gjøres den? (forretningsbehov, teknisk gjeld, regulatorisk)
-- Hva er konsekvensen av å *ikke* gjøre noe?
+- Hva er konsekvensen av å _ikke_ gjøre noe?
 - Hvilke team påvirkes?
 
 ## Steg 2: Fler-perspektiv-review
@@ -75,11 +75,11 @@ Evaluer fra tre perspektiver. For hvert perspektiv: identifiser bekymringer, ris
 
 Identifiser minst to alternativer:
 
-| Alternativ | Fordeler | Ulemper | Nav-vurdering |
-|-----------|---------|---------|---------------|
-| A: [valgt] | ... | ... | ... |
-| B: [forkastet] | ... | ... | ... |
-| C: Gjøre ingenting | ... | ... | ... |
+| Alternativ         | Fordeler | Ulemper | Nav-vurdering |
+| ------------------ | -------- | ------- | ------------- |
+| A: [valgt]         | ...      | ...     | ...           |
+| B: [forkastet]     | ...      | ...     | ...           |
+| C: Gjøre ingenting | ...      | ...     | ...           |
 
 ## Steg 4: Generer ADR
 
@@ -103,11 +103,13 @@ Bruk malen fra [adr-template.md](./references/adr-template.md).
 ## Alternativer vurdert
 
 ### Alternativ A: {navn} (valgt)
+
 - **Fordeler:** ...
 - **Ulemper:** ...
 - **Nav-vurdering:** ...
 
 ### Alternativ B: {navn}
+
 - **Fordeler:** ...
 - **Ulemper:** ...
 - **Nav-vurdering:** ...
@@ -115,21 +117,25 @@ Bruk malen fra [adr-template.md](./references/adr-template.md).
 ## Nav-spesifikke vurderinger
 
 ### Sikkerhet
+
 - Dataklassifisering: {nivå}
 - Auth-mekanisme: {valgt mekanisme}
 - PII-håndtering: {strategi}
 
 ### Plattform
+
 - Nais-konfigurasjon: {endringer}
 - Ressursbehov: {estimat}
 - Observerbarhet: {strategi}
 
 ### Team-påvirkning
+
 - Berørte team: {liste}
 - Migrasjonsstrategi: {plan}
 - Tilbakerulle-strategi: {plan}
 
 ### Migrasjon (ved endring av eksisterende system)
+
 - Bakoverkompatibilitet: {vurdering}
 - Utrullingsstrategi: {big bang / gradvis / parallell}
 - Feature toggle: {toggle-navn og strategi}
@@ -140,12 +146,15 @@ Bruk malen fra [adr-template.md](./references/adr-template.md).
 ## Konsekvenser
 
 ### Positive
+
 - ...
 
 ### Negative
+
 - ...
 
 ### Risiko
+
 - ...
 
 ## Aksjonspunkter
@@ -184,15 +193,15 @@ Bruk denne strukturen til å identifisere, dokumentere og prioritere teknisk gje
 
 Still disse spørsmålene for å finne teknisk gjeld:
 
-| Område | Spørsmål |
-|--------|----------|
-| Avhengigheter | Finnes det utdaterte avhengigheter med kjente sårbarheter? |
-| Arkitektur | Er det moduler med uklare ansvarsområder eller tett kobling? |
-| Kode | Finnes det duplisert logikk, store klasser/filer, eller manglende abstraksjoner? |
-| Tester | Er testdekningen lav i kritisk forretningslogikk? Mangler integrasjonstester? |
-| Infrastruktur | Brukes utdatert base image, mangler observerbarhet, eller er CI/CD treg? |
-| Dokumentasjon | Mangler ADR-er for viktige beslutninger? Er runbooks utdaterte? |
-| Sikkerhet | Er auth-mekanismen oppdatert? Logges PII? |
+| Område        | Spørsmål                                                                         |
+| ------------- | -------------------------------------------------------------------------------- |
+| Avhengigheter | Finnes det utdaterte avhengigheter med kjente sårbarheter?                       |
+| Arkitektur    | Er det moduler med uklare ansvarsområder eller tett kobling?                     |
+| Kode          | Finnes det duplisert logikk, store klasser/filer, eller manglende abstraksjoner? |
+| Tester        | Er testdekningen lav i kritisk forretningslogikk? Mangler integrasjonstester?    |
+| Infrastruktur | Brukes utdatert base image, mangler observerbarhet, eller er CI/CD treg?         |
+| Dokumentasjon | Mangler ADR-er for viktige beslutninger? Er runbooks utdaterte?                  |
+| Sikkerhet     | Er auth-mekanismen oppdatert? Logges PII?                                        |
 
 ### Prioriteringsmodell
 
@@ -220,11 +229,11 @@ Nedslagsfelt (1-3):
 ### Output: Gjeldstabell
 
 ```markdown
-| # | Gjeldspost | Alv. | Frekv. | Nedslagsfelt | Prioritet | Anbefalt tiltak |
-|---|-----------|------|--------|-------------|-----------|----------------|
-| G1 | Utdatert auth-bibliotek | 3 | 3 | 2 | 18 | Oppgrader til nyeste navikt/oasis |
-| G2 | Manglende testdekning i beregningsmodul | 2 | 3 | 1 | 6 | Skriv karakteriseringstester |
-| G3 | Duplisert valideringslogikk | 1 | 2 | 2 | 4 | Ekstraher til felles modul |
+| #   | Gjeldspost                              | Alv. | Frekv. | Nedslagsfelt | Prioritet | Anbefalt tiltak                   |
+| --- | --------------------------------------- | ---- | ------ | ------------ | --------- | --------------------------------- |
+| G1  | Utdatert auth-bibliotek                 | 3    | 3      | 2            | 18        | Oppgrader til nyeste navikt/oasis |
+| G2  | Manglende testdekning i beregningsmodul | 2    | 3      | 1            | 6         | Skriv karakteriseringstester      |
+| G3  | Duplisert valideringslogikk             | 1    | 2      | 2            | 4         | Ekstraher til felles modul        |
 ```
 
 **Leverabel:** Gjeldstabell med prioritert rekkefølge og anbefalt tiltak per post.
@@ -249,3 +258,28 @@ Nedslagsfelt (1-3):
 - Fatt beslutning uten å vurdere sikkerhet
 - Ignorer plattform-konsekvenser
 - Hopp over alternativer — det finnes alltid minst to valg
+
+## Review contract
+
+_Axes: the four perspectives in Steg 2 — arkitektur, sikkerhet, plattform, and migrasjon where it applies. The verdict is on the chosen alternative, and it gates the ADR Status field: `BLOCK` means the ADR is not approvable as written._
+
+The review ends here, in this shape. A review with no output section has not run.
+
+**Judge primary evidence.** The diff, the file, the `EXPLAIN` output, the rendered page — never your own summary of the change, and never your memory of what you meant to write. Resolve the base first, then cover committed, staged, unstaged **and untracked** changes. Read untracked files in full: diff output omits them.
+
+**Every axis reports.** Each axis produces at least one finding, or one line saying what it inspected and what that evidence does not prove. An axis that says nothing has not looked.
+
+**Report what you inspected.** "No findings in the two files I opened" and "no findings in the change" are different claims, and only the first one is ever true.
+
+```
+Inspected:     <files, queries, URLs, viewports actually opened>
+Not inspected: <in scope, not examined, and why>
+Findings:      <n blocking, n concerns>
+Verdict:       BLOCK | CONCERNS | CLEAN
+```
+
+- `BLOCK` — at least one finding that, shipped as written, risks data loss, a security or privacy breach, a production incident, or a wrong answer to a user.
+- `CONCERNS` — no blocking finding, but at least one a maintainer should fix or answer first.
+- `CLEAN` — every axis inspected against primary evidence, nothing at either bar. `CLEAN` claims only the axes above and the files on the `Inspected` line, and it is wrong if a defect is later found in them.
+
+**Not a review:** `LGTM`; restating what the change does; cosmetic findings only; reading the changed lines without the code they call.

@@ -1,4 +1,5 @@
 ---
+description: "GitHub Actions for Nav: SHA-pinning av actions, minimale permissions, Nais-deploy, caching, hemmeligheter og workflow-sikkerhet."
 applyTo: ".github/workflows/*.{yml,yaml}"
 ---
 
@@ -26,8 +27,8 @@ Always set explicit permissions — never rely on defaults:
 
 ```yaml
 permissions:
-  contents: read       # Only read repo content
-  id-token: write      # For OIDC/Nais deploy
+  contents: read # Only read repo content
+  id-token: write # For OIDC/Nais deploy
 
 # ❌ Wrong — overly broad permissions
 permissions: write-all
