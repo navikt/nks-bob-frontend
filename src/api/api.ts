@@ -87,8 +87,8 @@ export const useSendMessage = (conversationId: string) => {
       } catch (e: any) {
         if (e.name !== "AbortError") {
           console.error("Failed to send message", e)
-          removeOptimisticUserMessage()
         }
+        removeOptimisticUserMessage()
       }
     })()
 
