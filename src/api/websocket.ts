@@ -61,10 +61,8 @@ type MessageUpdated = {
   message: Message
 }
 
-// Reconnect with a fixed backoff. The socket is expected to stay open for as
-// long as the conversation is open, so we keep retrying until the component
-// unmounts (conversation is closed) or a new conversationId takes over.
-const RECONNECT_DELAY_MS = 1000
+const RECONNECT_BASE_DELAY_MS = 1000
+const RECONNECT_MAX_DELAY_MS = 30000
 
 function buildWebSocketUrl(path: string): string {
   const base = `${import.meta.env.BASE_URL}bob-api-ws`
@@ -89,10 +87,15 @@ export const useConversationMessages = (conversationId: string | undefined, enab
 
     let socket: WebSocket | undefined
     let reconnectTimeout: ReturnType<typeof setTimeout> | undefined
+    let reconnectAttempt = 0
     let closedByClient = false
 
     const connect = () => {
       socket = new WebSocket(buildWebSocketUrl(`/api/v2/conversations/${conversationId}/messages/ws`))
+
+      socket.onopen = () => {
+        reconnectAttempt = 0
+      }
 
       socket.onmessage = (event) => {
         try {
@@ -105,7 +108,12 @@ export const useConversationMessages = (conversationId: string | undefined, enab
 
       socket.onclose = () => {
         if (!closedByClient) {
-          reconnectTimeout = setTimeout(connect, RECONNECT_DELAY_MS)
+          const delayCap = Math.min(
+            RECONNECT_MAX_DELAY_MS,
+            RECONNECT_BASE_DELAY_MS * 2 ** reconnectAttempt,
+          )
+          reconnectAttempt += 1
+          reconnectTimeout = setTimeout(connect, Math.random() * delayCap)
         }
       }
 
