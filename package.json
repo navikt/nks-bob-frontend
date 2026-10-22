@@ -19,7 +19,7 @@
     "preinstall": "npx only-allow pnpm"
   },
   "dependencies": {
-    "@navikt/aksel-icons": "^8.17.2",
+    "@navikt/aksel-icons": "^8.19.2",
     "@navikt/ds-css": "^8.17.2",
     "@navikt/ds-react": "^8.17.2",
     "@navikt/ds-tailwind": "^8.17.2",
