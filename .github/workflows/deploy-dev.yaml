@@ -62,7 +62,7 @@ jobs:
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
 
       - id: upload
-        uses: nais/deploy/actions/cdn-upload/v2@7ad7c2b833e1db74a80954e3ee6bb6ac060a8ae7 # v2
+        uses: nais/deploy/actions/cdn-upload/v2@1064e26587ab2794266a35f477387e561899a7ef # v2
         with:
           team: nks-aiautomatisering
           source: ./dist/
