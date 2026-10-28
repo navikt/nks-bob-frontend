@@ -5,7 +5,7 @@ allowBuilds:
   '@swc/core': true
   esbuild: true
 
-minimumReleaseAge: 10080 # 1 week in minutes
+minimumReleaseAge: 4320 # 3 days in minutes
 
 overrides:
   brace-expansion@^2: ">=2.1.4"
