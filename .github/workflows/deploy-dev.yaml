@@ -52,7 +52,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
-      - uses: nais/docker-build-push@bfe52e3ad6d0e96fd1056a03acb7b619aaffb39d # v0
+      - uses: nais/docker-build-push@dd7421d5068057a020ca46ead966c26190c516b1 # v0
         id: gar-push
         with:
           team: nks-aiautomatisering
