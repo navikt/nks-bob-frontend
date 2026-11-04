@@ -107,4 +107,32 @@ describe("app-level conversation notifications", () => {
     const link = await screen.findByRole("menuitem", { name: /Åpne samtalen/ })
     expect(link).toHaveAttribute("href", `/samtaler/${id}`)
   })
+
+  it.each(["banner", "menu", "conversation link"])("removes the notice when opened through the %s", async (via) => {
+    const user = userEvent.setup()
+    const { socket } = await setup()
+    const notify = () =>
+      act(async () =>
+        socket.onmessage?.(
+          new MessageEvent("message", {
+            data: JSON.stringify({ type: "ConversationCreated", conversationId: id }),
+          }),
+        ),
+      )
+    await notify()
+    if (via === "menu") {
+      await user.click(screen.getByRole("button", { name: "Vis varsler" }))
+      await user.click(await screen.findByRole("menuitem", { name: /Åpne samtalen/ }))
+    } else {
+      await user.click(screen.getByRole("link", { name: via === "banner" ? "Åpne samtalen" : "Bytt samtale" }))
+    }
+
+    expect(screen.queryByRole("link", { name: "Åpne samtalen" })).not.toBeInTheDocument()
+    expect(screen.getByRole("status")).not.toHaveTextContent("En ny samtale er opprettet")
+    await notify()
+    await user.click(screen.getByRole("button", { name: "Vis varsler" }))
+    expect(await screen.findByText("Ingen samtalevarsler i denne økten")).toBeVisible()
+    expect(screen.queryByRole("menuitem", { name: /Åpne samtalen/ })).not.toBeInTheDocument()
+    expect(FakeSocket.instances).toHaveLength(1)
+  })
 })

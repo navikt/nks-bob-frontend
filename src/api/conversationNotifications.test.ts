@@ -115,6 +115,22 @@ describe("notification lifecycle", () => {
     expect(f.controller.getSnapshot().latest?.conversationId).toBe(id)
   })
 
+  it("removes only the opened conversation without forgetting deduplication", () => {
+    const otherId = "00000000-0000-0000-0000-000000000002"
+    f.sockets[0].message()
+    f.sockets[0].message(event(otherId))
+    f.controller.removeNotice(id)
+    expect(f.controller.getSnapshot().notices.map((notice) => notice.conversationId)).toEqual([otherId])
+    expect(f.controller.getSnapshot().latest?.conversationId).toBe(otherId)
+    f.controller.removeNotice(otherId)
+    expect(f.controller.getSnapshot().latest).toBeNull()
+    expect(f.controller.getSnapshot().notices).toEqual([])
+    f.sockets[0].message()
+    f.sockets[0].message(event(otherId))
+    expect(f.controller.getSnapshot().notices).toEqual([])
+    expect(f.refreshHistory).toHaveBeenCalledTimes(2)
+  })
+
   it("rejects malformed frames once without crashing subsequent messages", () => {
     f.sockets[0].message("{")
     f.sockets[0].message(event("bad-id"))

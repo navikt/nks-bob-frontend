@@ -116,6 +116,14 @@ export class ConversationNotifications {
     this.update(initialSnapshot())
   }
   dismiss = () => this.update({ latest: null })
+  removeNotice = (conversationId: string) => {
+    const notices = this.snapshot.notices.filter((notice) => notice.conversationId !== conversationId)
+    if (notices.length === this.snapshot.notices.length) return
+    this.update({
+      notices,
+      latest: this.snapshot.latest?.conversationId === conversationId ? null : this.snapshot.latest,
+    })
+  }
   checkSession = (): Promise<void> => {
     if (!this.active) return Promise.resolve()
     if (this.request) return this.request

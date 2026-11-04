@@ -1,4 +1,5 @@
 import { createContext, PropsWithChildren, useContext, useEffect, useMemo, useSyncExternalStore } from "react"
+import { useMatch } from "react-router"
 import { useSWRConfig } from "swr"
 import { log } from "../../api/api"
 import { createConversationListRefresher } from "../../api/conversationListRefresh"
@@ -39,6 +40,11 @@ export function ConversationNotificationsProvider({ children }: PropsWithChildre
     [mutate],
   )
   const snapshot = useSyncExternalStore(controller.subscribe, controller.getSnapshot)
+  const conversationId = useMatch("/samtaler/:conversationId")?.params.conversationId
+
+  useEffect(() => {
+    if (conversationId) controller.removeNotice(conversationId.toLowerCase())
+  }, [controller, conversationId, snapshot.notices])
 
   useEffect(() => {
     controller.start()
