@@ -3,10 +3,12 @@ import { ActionMenu, BodyLong, BodyShort, Button, Detail, Heading, Tabs, Tooltip
 import { useEffect, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import Markdown from "react-markdown"
+import { Link as RouterLink } from "react-router"
 import { useNewsNotifications } from "../../api/api"
 import { NewsNotification } from "../../types/Notifications"
 import { useUpdateLocalStorage } from "../../utils/localStorage"
 import "./NotificationDrawer.css"
+import { useConversationNotifications } from "./ConversationNotificationsProvider"
 
 const useReadNotifications = () => {
   const [_, setRead, getRead] = useUpdateLocalStorage("readNotifications")
@@ -34,6 +36,7 @@ type TabName = "alle" | "nye"
 const defaultTabName: TabName = "alle"
 
 export const NotificationToggle = () => {
+  const { snapshot } = useConversationNotifications()
   const { newsNotifications } = useNewsNotifications()
   const { setReadNotifications, hasUnreadNotifications } = useReadNotifications()
   const [activeTab, setActiveTab] = useState<TabName>(defaultTabName)
@@ -77,13 +80,31 @@ export const NotificationToggle = () => {
             icon={
               <div className='relative'>
                 <BellIcon aria-hidden />
-                {hasUnread && <NotificationTick className='absolute top-[3px] right-[7px]' />}
+                {(hasUnread || snapshot.notices.length > 0) && (
+                  <NotificationTick className='absolute top-[3px] right-[7px]' />
+                )}
               </div>
             }
           />
         </ActionMenu.Trigger>
       </Tooltip>
-      <ActionMenu.Content className='*:max-h-[800px] *:w-[450px] *:p-0'>
+      <ActionMenu.Content className='notification-menu'>
+        {snapshot.status !== "disabled" && (
+          <ActionMenu.Group label='Nye samtaler i denne økten'>
+            {snapshot.notices.length === 0 && <BodyShort>Ingen samtalevarsler i denne økten</BodyShort>}
+            {snapshot.notices.map((notice) => (
+              <ActionMenu.Item
+                key={notice.conversationId}
+                as={RouterLink}
+                to={`/samtaler/${notice.conversationId}`}
+              >
+                Åpne samtalen
+                <Detail>{new Date(notice.receivedAt).toLocaleString("nb-NO")}</Detail>
+              </ActionMenu.Item>
+            ))}
+            {snapshot.truncated && <BodyShort>Viser de 100 siste varslene. Eldre varsler er fjernet.</BodyShort>}
+          </ActionMenu.Group>
+        )}
         <NotificationDrawer
           activeTab={activeTab}
           setActiveTab={setActiveTab}

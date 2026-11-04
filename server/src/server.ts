@@ -19,6 +19,12 @@ import Prometheus from "@prometheus-io/client"
 import { createLogger, format, LeveledLogMethod, transports } from "winston"
 import { entraMiddleware, getToken } from "./entra.js"
 import require from "./esm-require.js"
+import {
+  authenticatedWebSocketUpgrade,
+  notificationSessionHandler,
+  notificationsEnabled,
+} from "./notificationSession.js"
+import { createWebSocketProxy } from "./websocketProxy.js"
 
 const apiMetricsMiddleware = require("prometheus-api-metrics")
 
@@ -53,6 +59,15 @@ const proxyEventsCounter = new Prometheus.Counter({
   name: "proxy_events_total",
   help: "Antall proxy events",
   labelNames: ["target", "proxystatus", "status", "errcode"],
+})
+
+const notificationUpgrades = new Prometheus.Counter({
+  name: "conversation_notification_upgrades_total",
+  help: "Notification upgrades forwarded to the API",
+})
+const notificationConnections = new Prometheus.Gauge({
+  name: "conversation_notification_connections",
+  help: "Active notification WebSocket proxy connections",
 })
 
 // proxy calls to log.<level> https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/get
@@ -90,6 +105,10 @@ const cookieScraperPlugin: HpmPlugin = (proxyServer) => {
 // copy with mods from http-proxy-middleware https://github.com/chimurai/http-proxy-middleware/blob/master/src/plugins/default/logger-plugin.ts
 const loggerPlugin: HpmPlugin = (proxyServer) => {
   proxyServer.on("error", (err: any, req: any, res: any, target: any) => {
+    if (!res || !("statusCode" in res)) {
+      log.warn("[HPM] WebSocket proxy error")
+      return
+    }
     const hostname = req?.headers?.host
     // target is undefined when websocket errors
     const errReference = "https://nodejs.org/api/errors.html#errors_common_system_errors" // link to Node Common Systems Errors page
@@ -268,6 +287,15 @@ const main = async () => {
   app.get("/bff/version", (_req, res) => {
     res.status(200).send({ version: GIT_COMMIT })
   })
+  app.get(
+    "/bff/session",
+    notificationSessionHandler({
+      token: (req) => getToken(log, req, audience),
+      enabled: notificationsEnabled,
+      local: MILJO === "local",
+      warn: (category) => log.warn(category),
+    }),
+  )
 
   const jsonParser = bodyParser.json()
 
@@ -312,23 +340,20 @@ const main = async () => {
     }),
   )
 
-  const wsMiddleware = createProxyMiddleware({
-    ...proxyOptions,
-    pathFilter: "/bob-api-ws",
-    // Unlike the REST proxy above (mounted via app.use, where Express already
-    // strips the mount path from req.url), this middleware's `.upgrade()` is
-    // invoked directly from the raw `server.on("upgrade", ...)` handler below,
-    // so `path` here still includes the full "/bob-api-ws" prefix. Anchor the
-    // regex to the start and include the leading slash to avoid leaving a
-    // double slash (e.g. "//api/v2/...") that the backend rejects.
-    pathRewrite: (path) => path.replace(/^\/bob-api-ws/, ""),
-    target: {
+  const wsMiddleware = createWebSocketProxy(
+    {
       dev: "ws://nks-bob-api",
       prod: "ws://nks-bob-api",
       local: "ws://localhost:8080",
       localnais: "ws://localhost:8989",
     }[MILJO]!,
-  })
+    proxyOptions,
+    {
+      forwarded: () => notificationUpgrades.inc(),
+      connected: () => notificationConnections.inc(),
+      disconnected: () => notificationConnections.dec(),
+    },
+  )
 
   app.use("/bob-api-ws", wsMiddleware)
 
@@ -417,20 +442,15 @@ const main = async () => {
     }, 5_000)
   })
 
-  server.on("upgrade", async (req, socket: any, head) => {
-    log.info("[HPM] Upgrading Websocket connection")
-
-    const result = await getToken(log, req, audience)
-    if (!result.ok) {
-      log.warn(`Rejecting websocket upgrade: ${result.error}`)
-      socket.write("HTTP/1.1 401 Unauthorized\r\nConnection: close\r\n\r\n")
-      socket.destroy()
-      return
-    }
-
-    req.headers.authorization = `Bearer ${result.data}`
-    return wsMiddleware.upgrade(req, socket, head)
-  })
+  server.on(
+    "upgrade",
+    authenticatedWebSocketUpgrade({
+      token: (req) => getToken(log, req, audience),
+      enabled: notificationsEnabled,
+      warn: (category) => log.warn(category),
+      upgrade: (req, socket, head) => wsMiddleware.upgrade(req, socket, head),
+    }),
+  )
 
   const terminator = createHttpTerminator({
     server,

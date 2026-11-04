@@ -1,0 +1,10 @@
+.conversation-notification-banner {
+  flex-shrink: 0;
+  width: 100%;
+}
+
+.notification-menu {
+  width: min(28rem, 90vw);
+  max-height: 75dvh;
+  overflow-y: auto;
+}

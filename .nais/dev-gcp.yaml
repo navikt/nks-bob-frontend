@@ -47,6 +47,8 @@ spec:
       rules:
         - application: nks-bob-api
   env:
+    - name: CONVERSATION_NOTIFICATIONS_ENABLED
+      value: "false"
     - name: LOGIN_URL
       value: https://bob.ansatt.dev.nav.no/oauth2/login
     - name: GIT_COMMIT

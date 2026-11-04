@@ -41,7 +41,11 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
+      - run: pnpm test
+      - run: pnpm exec tsc -p server/tsconfig.json --noEmit
       - run: pnpm run --stream build
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm test:e2e
 
       # `pnpm prune` støtter ikke rekursiv/monorepo-kjøring (se pnpm.io/cli/prune),
       # så vi må slette node_modules og reinstallere med kun prod-dependencies.

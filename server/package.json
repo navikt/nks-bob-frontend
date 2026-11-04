@@ -20,7 +20,7 @@
     "winston": "3.19.0"
   },
   "scripts": {
-    "build": "swc src -d dist",
+    "build": "swc src -d dist --ignore '**/*.test.ts'",
     "dev": "tsx watch src/server.ts"
   },
   "devDependencies": {

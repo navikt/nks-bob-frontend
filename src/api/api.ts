@@ -7,6 +7,7 @@ import { UserConfig, UserInfo } from "../types/User"
 import { versionStore } from "../types/versionStore"
 
 export const API_URL = `${import.meta.env.BASE_URL}bob-api`
+export const CONVERSATIONS_KEY = "/api/v1/conversations"
 
 export type ApiError = {
   status: number
@@ -120,7 +121,7 @@ export const useSendConversationFeedback = (conversationId: string) => {
 }
 
 export const useConversations = () => {
-  const { data: conversations, isLoading, error } = useSWR<Conversation[]>(`/api/v1/conversations`, fetcher)
+  const { data: conversations, isLoading, error } = useSWR<Conversation[]>(CONVERSATIONS_KEY, fetcher)
 
   return {
     conversations,
@@ -130,7 +131,7 @@ export const useConversations = () => {
 }
 
 export const useCreateConversation = () => {
-  const { trigger, isMutating } = useSWRMutation(`/api/v1/conversations`, request("POST"))
+  const { trigger, isMutating } = useSWRMutation(CONVERSATIONS_KEY, request("POST"))
 
   return {
     createConversation: trigger as (
@@ -144,7 +145,7 @@ export const useCreateConversation = () => {
 export const useDeleteConversation = (conversation: Conversation) => {
   const { trigger, isMutating } = useSWRMutation(`/api/v1/conversations/${conversation.id}`, async (url) => {
     await request("DELETE")(url)
-    await mutate(`/api/v1/conversations`)
+    await mutate(CONVERSATIONS_KEY)
   })
   return {
     deleteConversation: trigger,
@@ -271,6 +272,7 @@ let hasTriggeredAuth = false
 export const triggerReAuth = () => {
   if (hasTriggeredAuth) return
   hasTriggeredAuth = true
+  window.dispatchEvent(new Event("bob-session-ended"))
 
   const loginUrl = new URL("/login", window.location.origin)
   loginUrl.searchParams.set("referer", window.location.href)

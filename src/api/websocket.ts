@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react"
 import { Citation, Contexts, Message, MessageError } from "../types/Message"
 import { messageStore } from "../types/messageStore"
+import { buildWebSocketUrl } from "./websocketUrl"
 
 export type MessageEvent =
   | NewMessageEvent
@@ -63,12 +64,6 @@ type MessageUpdated = {
 
 const RECONNECT_BASE_DELAY_MS = 1000
 const RECONNECT_MAX_DELAY_MS = 30000
-
-function buildWebSocketUrl(path: string): string {
-  const base = `${import.meta.env.BASE_URL}bob-api-ws`
-  const protocol = window.location.protocol === "https:" ? "wss:" : "ws:"
-  return `${protocol}//${window.location.host}${base}${path}`
-}
 
 /**
  * Keeps a websocket connection open for as long as the conversation is

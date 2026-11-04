@@ -11,6 +11,8 @@ node_modules
 dist
 dist-ssr
 *.local
+test-results
+playwright-report
 
 # TypeScript build info
 *.tsbuildinfo
@@ -29,4 +31,3 @@ dist-ssr
 .env
 .claude
 .login.env
-
