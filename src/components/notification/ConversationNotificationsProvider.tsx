@@ -1,4 +1,5 @@
 import { createContext, PropsWithChildren, useContext, useEffect, useMemo, useSyncExternalStore } from "react"
+import { Box } from "@navikt/ds-react"
 import { useMatch } from "react-router"
 import { useSWRConfig } from "swr"
 import { log } from "../../api/api"
@@ -86,7 +87,7 @@ export function ConversationNotificationsProvider({ children }: PropsWithChildre
   return (
     <NotificationsContext.Provider value={value}>
       <ConversationNotificationBanner />
-      {children}
+      <Box className='conversation-notification-content'>{children}</Box>
     </NotificationsContext.Provider>
   )
 }

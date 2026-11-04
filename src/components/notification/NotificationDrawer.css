@@ -3,6 +3,14 @@
   width: 100%;
 }
 
+.conversation-notification-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+}
+
 .notification-menu {
   width: min(28rem, 90vw);
   max-height: 75dvh;

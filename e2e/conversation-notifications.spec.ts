@@ -205,6 +205,40 @@ test("incoming notices preserve the open conversation and draft, without interru
   expect(harness.notificationClientFrames).toEqual([])
 })
 
+for (const width of [375, 768, 1280]) {
+  test(`notification banners keep the input inside the viewport at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 800 })
+    const harness = await openApp(page, `/samtaler/${currentConversationId}`)
+    const input = page.getByPlaceholder(/Hva kan jeg hjelpe deg med\?/)
+    await expect(input).toBeVisible()
+    const initialInput = await input.boundingBox()
+    if (!initialInput) throw new Error("Missing input bounds")
+
+    sendNotification(harness.notificationSockets[0], notificationConversationId)
+    const banner = page.getByLabel("Ny samtale", { exact: true })
+    await expect(banner).toBeVisible()
+
+    await expect(async () => {
+      const inputBounds = await input.boundingBox()
+      const bannerBounds = await banner.boundingBox()
+      if (!inputBounds || !bannerBounds) throw new Error("Missing notification layout bounds")
+      expect(inputBounds.y).toBeGreaterThanOrEqual(bannerBounds.y + bannerBounds.height)
+      expect(inputBounds.y + inputBounds.height).toBeLessThanOrEqual(801)
+      expect(inputBounds.y + inputBounds.height).toBeLessThanOrEqual(initialInput.y + initialInput.height + 1)
+      const documentHeight = await page.evaluate(() => document.documentElement.scrollHeight)
+      expect(documentHeight).toBeLessThanOrEqual(801)
+    }).toPass()
+
+    await input.fill("Draft remains reachable")
+    await expect(input).toHaveValue("Draft remains reachable")
+    await page.getByRole("button", { name: "Lukk samtalebeskjeden" }).click()
+    await expect(banner).toHaveCount(0)
+    const restoredInput = await input.boundingBox()
+    if (!restoredInput) throw new Error("Missing restored input bounds")
+    expect(restoredInput.y + restoredInput.height).toBeLessThanOrEqual(801)
+  })
+}
+
 test("duplicates and invalid frames do not create extra notices, including after reconnect", async ({ page }) => {
   const harness = await openApp(page)
   const initialListRequests = harness.conversationListRequests

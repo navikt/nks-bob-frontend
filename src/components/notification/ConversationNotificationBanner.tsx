@@ -9,6 +9,7 @@ export function ConversationNotificationBanner() {
   return (
     <Box
       paddingInline='space-16'
+      paddingBlock={latest || unavailable ? "space-16 space-0" : undefined}
       className='conversation-notification-banner'
     >
       <div
