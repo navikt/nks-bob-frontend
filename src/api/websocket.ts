@@ -93,6 +93,7 @@ export const useConversationMessages = (conversationId: string | undefined, enab
       }
 
       socket.onmessage = (event) => {
+        if (closedByClient) return
         try {
           const data = JSON.parse(event.data)
           updateMessageRef.current(data)

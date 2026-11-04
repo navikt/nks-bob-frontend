@@ -32,11 +32,15 @@ function ConversationContent() {
     isLoading: isLoadingExistingMessages,
   } = useMessages(conversationId!)
   const { sendMessage, isLoading } = useSendMessage(conversationId!)
-  const { messages, setMessages } = messageStore()
+  const { messages, setMessages, resetMessages } = messageStore()
   const { alerts } = useAlerts()
 
   const inputContainerRef = useRef<HTMLDivElement | null>(null)
   const [inputHeight, setInputHeight] = useState(0)
+
+  useLayoutEffect(() => {
+    resetMessages()
+  }, [conversationId, resetMessages])
 
   // Seed the store with the already-persisted messages (fetched via REST)
   // before the websocket connects. The websocket replays every event from
@@ -47,11 +51,11 @@ function ConversationContent() {
   // re-renders and makes the page freeze until the replay finishes.
   useEffect(() => {
     if (!isLoadingExistingMessages && !isLoading) {
-      if (messages.length < existingMessages.length) {
+      if (messageStore.getState().messages.length < existingMessages.length) {
         setMessages(existingMessages)
       }
     }
-  }, [existingMessages, isLoadingExistingMessages, isLoading, setMessages])
+  }, [conversationId, existingMessages, isLoadingExistingMessages, isLoading, setMessages])
 
   // Keep listening on the websocket for as long as this conversation is
   // open, so all message updates (from this tab or elsewhere) are reflected
