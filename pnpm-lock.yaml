@@ -22,8 +22,8 @@ importers:
         specifier: ^8.17.2
         version: 8.17.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@navikt/ds-tailwind':
-        specifier: ^8.17.2
-        version: 8.17.2
+        specifier: ^8.21.0
+        version: 8.21.0
       '@unhead/react':
         specifier: ^3.4.3
         version: 3.4.3(@oxc-project/types@0.156.0)(esbuild@0.28.2)(lightningcss@1.33.0)(oxc-parser@0.140.0)(react@19.3.0)(rolldown@1.2.16)(vite@8.3.5(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15))
@@ -730,8 +730,8 @@ packages:
       '@types/react':
         optional: true
 
-  '@navikt/ds-tailwind@8.17.2':
-    resolution: {integrity: sha512-vnk1Rh10u58SArtWY1eoVRc3W5pvQIcb6XLwmTicCO0nSnMhTSPOFnrtTLaMxj0yqwncunQgu7L3ziN5EZ1MsQ==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/8.17.2/27c852f81b6fe3333ba7f876b2950dfb457e9cf3}
+  '@navikt/ds-tailwind@8.21.0':
+    resolution: {integrity: sha512-Hw1XM//fO0BzocksRkigSh+bDXAcIvaMabP/ScHgdP7fhH5wpYtapebOnfs68q27fDfJ1SjwMoURKbb+wtBidg==}
 
   '@navikt/ds-tokens@8.17.2':
     resolution: {integrity: sha512-oDKFZxlgt/L2zNPCma03fo1sls5E9bUTybMh8/ELh7btS3Kurv7fvwlF7CMW8mWTa+/yh1oqLXY/ONp4+/mPTg==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tokens/8.17.2/6d44d329afac5ae8d729cdf2f1c83d009dfd2c80}
@@ -4046,7 +4046,7 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.3.0
 
-  '@navikt/ds-tailwind@8.17.2': {}
+  '@navikt/ds-tailwind@8.21.0': {}
 
   '@navikt/ds-tokens@8.17.2': {}
 
