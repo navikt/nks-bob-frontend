@@ -24,7 +24,7 @@
     "dev": "tsx watch src/server.ts"
   },
   "devDependencies": {
-    "@swc/cli": "^0.8.1",
+    "@swc/cli": "^0.8.2",
     "@swc/core": "^1.16.20",
     "@types/body-parser": "^1.19.6",
     "@types/compression": "^1.8.1",
