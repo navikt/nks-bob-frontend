@@ -2,11 +2,13 @@ packages:
   - server
 
 allowBuilds:
-  '@swc/core': true
+  "@swc/core": true
   esbuild: true
 
 minimumReleaseAge: 4320 # 3 days in minutes
 
 overrides:
+  body-parser@^2: "^2.4.0"
   brace-expansion@^2: ">=2.1.4"
   brace-expansion@^5: ">=5.0.9"
+  qs@^6: "^6.17.1"
